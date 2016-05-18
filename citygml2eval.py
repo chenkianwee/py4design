@@ -65,8 +65,7 @@ class Evals(object):
         rad.set_sensor_points(sensor_pts, sensor_dirs)
         
         #execute radiance cumulative oconv (will create input files for sky and geometry)
-        rad.execute_cumulative_oconv(time, date, str(latitude), str(longtitude), 
-                                     str(meridian), weatherfilepath)#EXECUTE
+        rad.execute_cumulative_oconv(time, date, weatherfilepath)#EXECUTE
                                      
         #execute cumulative_rtrace
         rad.execute_cumulative_rtrace(str(ab))#EXECUTE!! 

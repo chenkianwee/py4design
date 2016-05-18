@@ -1,7 +1,6 @@
 import time
 import os
 import envuo
-from envuo import py3dmodel 
 
 #change the filepath to where you want to save the file to 
 image_file = "F:\\kianwee_work\\spyder_workspace\\envuo_examples\\citygmlenv_examples\\py2radiance_data\\punggol_irradiance.png"
@@ -11,7 +10,7 @@ falsecolour_file = "F:\\kianwee_work\\spyder_workspace\\envuo_examples\\citygmle
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse24.gml")
+citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse5.gml")
 
 evaluations = envuo.citygml2eval.Evals(citygml_filepath)
 xdim = 6

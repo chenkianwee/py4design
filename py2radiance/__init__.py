@@ -90,26 +90,20 @@ class Rad(object):
         # need to automatically set the altituted longtitude and meridian from weatherfile
         # need to go to where the .cal file is to execute rtrace
     #=============================================================================================
-    def create_cumulative_sky_input_file(self, time, date, latitude, longtitude, meridian, weatherfile_path):
-        #gencumulative sky command
-        #open the weatherfile and search for the latitude longtitude and meridian
+    def create_cumulative_sky_input_file(self, time, date, weatherfile_path):
+        #execute epw2wea 
         head,tail = ntpath.split(weatherfile_path)
         wfilename_no_extension = tail.replace(".epw", "")
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
-        
-        weaweatherfile = os.path.join(daysimdir_wea, weaweatherfilename)
-        command1 =  "epw2wea" + " " + epwweatherfile + " " + weaweatherfile
-        
+        weaweatherfile = os.path.join(self.data_folder_path, weaweatherfilename)
+        command1 =  "epw2wea" + " " + weatherfile_path + " " + weaweatherfile
         proc = subprocess.Popen(command1, stdout=subprocess.PIPE)
         site_headers = proc.stdout.read()
         site_headers_list = site_headers.split("\r\n")
-        hea_filepath = self.hea_file
-        hea_file = open(hea_filepath,  "a")
-        for site_header in site_headers_list:
-            if site_header:
-                hea_file.write("\n" + site_header)
-                
-                
+        latitude = site_headers_list[1].split(" ")[1]
+        longtitude = site_headers_list[2].split(" ")[1]
+        meridian = site_headers_list[3].split(" ")[1]
+        #gencumulative sky command  
         cumulative_cal_file_name = "input_cumulative_sky.cal"
         cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
         cumulative_sky_command = "GenCumulativeSky +s1 -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
@@ -130,8 +124,8 @@ class Rad(object):
         cumulative_sky_file.close()
         self.cumulative_sky_file_path = cumulative_sky_file_path
 
-    def execute_cumulative_oconv(self, time, date, latitude, longtitude, meridian, weatherfile_path): # time format = 0 24, date format = 1 1 12 31 (all in string)
-        self.create_cumulative_sky_input_file(time, date, latitude, longtitude, meridian, weatherfile_path)
+    def execute_cumulative_oconv(self, time, date, weatherfile_path): # time format = 0 24, date format = 1 1 12 31 (all in string)
+        self.create_cumulative_sky_input_file(time, date, weatherfile_path)
         self.create_rad_input_file() #what about interior??
         cumulative_oconv_file_path = os.path.join(self.data_folder_path, "cumulative_input.oconv")
         #make sure the dir is at where the .cal file is

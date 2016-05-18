@@ -44,7 +44,7 @@ print "SORTING CITYGML FILE ... ..."
 #===================================================================================================
 #get a specific plot of landuse and the buildings on the plot
 #===================================================================================================
-landuses = landuses[24:25]
+landuses = landuses[5:6]
 pylanduse_polygons = []
 pybuilding_polygons = []
 
@@ -94,7 +94,7 @@ for landuse in landuses:
 #write the citygml from scratch 
 #===================================================================================================
 print "WRITING CITYGML FILE ... ..."
-result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse24.gml")
+result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse5.gml")
 citygml_writer = envuo.pycitygml.Writer()
 luse_cnt = 0
 for luse in landuses:
