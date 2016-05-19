@@ -47,3 +47,11 @@ def pypolygons2occsolid(pypolygon_list):
     if volume < 0:
         solid.Reverse()
     return solid
+    
+#function to round the points
+def round_points(point_list):
+    rounded =  []
+    for point in point_list:
+        rounded_pt = (round(point[0],5), round(point[1],5), round(point[2],5))
+        rounded.append(rounded_pt)
+    return rounded

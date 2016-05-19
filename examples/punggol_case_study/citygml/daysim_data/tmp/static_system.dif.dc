@@ -1,0 +1,2 @@
+# Daysim 2.1 28 Nov 2005 by C Reinhart
+# c:/daysim\bin\rtrace_dc  -h -I+ -oc -aa 0.100000 -ab 5 -ad 1000 -ar 300 -as 20 -dj 0.000000 -dr 2 -ds 0.200000  -lr 6 -lw 0.004000  -sj 1.000000 -st 0.150000    -L 1000.000000  -N 148 -Dd  "F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\daysim_data\tmp\/static_system.dif.oct" < "F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\daysim_data\pts\sensor_points.pts" >> "F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\daysim_data\tmp\/static_system.dif.dc"

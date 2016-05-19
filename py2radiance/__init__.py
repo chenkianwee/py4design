@@ -621,4 +621,8 @@ class RadSurface(Surface):
         material = self.material
         points = self.points[:]
         return write_rad.surface(name, material, points)
-
+#==========================================================================================================================
+#==========================================================================================================================
+def calculate_reflectance(r,g,b):
+    reflectance = (0.2125 * r) + (0.7154 * g) + (0.0721 * b)
+    return reflectance

@@ -39,8 +39,6 @@ for occface in occfaces:
             sensor_dirs.append(normal)
     face_cnt+=1
 
-#set the sensor grid points and direction
-rad.set_sensor_points(sensor_pts, sensor_dirs)
 rad.create_rad_input_file()
 
 #once the geometries are created initialise daysim

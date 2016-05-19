@@ -1,3 +1,5 @@
+import math
+
 from OCCUtils import face, Common, Construct, Topology
 from OCC import BRepFeat 
 from OCC.gp import gp_Pnt, gp_Vec
@@ -131,3 +133,10 @@ def srf_nrml_facing_solid_inward(occ_face, occ_solid):
         return True
     else:
         return False
+        
+def angle_bw_2_vecs(occvec1, occvec2):
+    radangle = occvec1.Angle(occvec2)
+    angle = radangle * (180.0/math.pi)
+    return angle
+    
+    

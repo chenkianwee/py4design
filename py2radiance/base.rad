@@ -4,6 +4,15 @@
 # This file is provided with PLINK version 1.2 (Feb 92) #
 #########################################################
 
+# RAL 2012  lachsorange
+# X=32.4 Y=22.7 Z=7.6
+# reflectance 0.204
+#
+void plastic RAL2012
+0
+0
+5  0.5360 0.1212 0.0565 0 0
+  
 #
 # RAL9010 :  pur white paint / peinture  Blanc pur
 #

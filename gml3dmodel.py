@@ -38,24 +38,20 @@ def generate_sensor_surfaces(occ_face, xdim, ydim):
     mid_pt = py3dmodel.calculate.face_midpt(occ_face)
     location_pt = py3dmodel.modify.move_pt(mid_pt, normal, 0.01)
     
-    #do not subdivide the footprint 
-    if normal != (0,0,-1):    
-        moved_oface = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(mid_pt, location_pt, occ_face))
-        #put it into occ and subdivide surfaces 
-        sensor_surfaces = py3dmodel.construct.grid_face(moved_oface, xdim, ydim)
+    moved_oface = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(mid_pt, location_pt, occ_face))
+    #put it into occ and subdivide surfaces 
+    sensor_surfaces = py3dmodel.construct.grid_face(moved_oface, xdim, ydim)
+
+    sensor_pts = []
+    sensor_dirs = []
+    for sface in sensor_surfaces:
+        smidpt = py3dmodel.calculate.face_midpt(sface)
+        sensor_pts.append(smidpt)
+        sensor_dirs.append(normal)
     
-        sensor_pts = []
-        sensor_dirs = []
-        for sface in sensor_surfaces:
-            smidpt = py3dmodel.calculate.face_midpt(sface)
-            sensor_pts.append(smidpt)
-            sensor_dirs.append(normal)
+    return sensor_surfaces, sensor_pts, sensor_dirs
         
-        return sensor_surfaces, sensor_pts, sensor_dirs
-    else:
-        return None, None, None
-        
-def generate_sensor_surfaces_for_building(gmlbuilding, citygml_reader, xdim, ydim):
+def generate_sensor_pts_4_building_facades(gmlbuilding, citygml_reader, xdim, ydim):
     pypolygon_list = citygml_reader.get_pypolygon_list(gmlbuilding)
     solid = interface2py3d.pypolygons2occsolid(pypolygon_list)
     face_list = py3dmodel.fetch.faces_frm_solid(solid)
@@ -63,17 +59,22 @@ def generate_sensor_surfaces_for_building(gmlbuilding, citygml_reader, xdim, ydi
     sensor_pts = []
     sensor_dirs = []
     sensor_srf_list = []
+    vec1 = py3dmodel.construct.make_vector((0,0,0), (0,0,1))
     for f in face_list:
-        #generate sensor points for a surface
-        a_sensor_srfs, a_sensor_pts, a_sensor_dirs = generate_sensor_surfaces(f, xdim, ydim)
-        
-        if a_sensor_pts != None:
-            sensor_pts.extend(a_sensor_pts)
-            sensor_dirs.extend(a_sensor_dirs)
-            sensor_srf_list.extend(a_sensor_srfs)
+        #get the normal of each face
+        n = py3dmodel.calculate.face_normal(f)
+        vec2 = py3dmodel.construct.make_vector((0,0,0), n)
+        angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, vec2)
+        #means its a facade
+        if angle>45 and angle<135:
+            #generate sensor points for a surface
+            a_sensor_srfs, a_sensor_pts, a_sensor_dirs = generate_sensor_surfaces(f, xdim, ydim)
+            if a_sensor_pts != None:
+                sensor_pts.extend(a_sensor_pts)
+                sensor_dirs.extend(a_sensor_dirs)
+                sensor_srf_list.extend(a_sensor_srfs)
             
     return sensor_pts, sensor_dirs, sensor_srf_list
-    
 #==============================================================================================================================
 #gmlparameterise functions
 #==============================================================================================================================
