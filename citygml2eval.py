@@ -14,61 +14,137 @@ class Evals(object):
         self.stops = self.citygml.get_bus_stops()
         self.roads = self.citygml.get_roads()
         self.railways = self.citygml.get_railways()
-        #radiance and daysim parameters
+        #occ geometries
+        self.roof_occfaces = None
+        self.facade_occfaces = None
+        self.footprint_occfaces = None
+        #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
-        self.radiance_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'py2radiance_data')
-        self.daysim_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'daysim_data')
+        self.sfgai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'sgfai_data')
+        self.dfai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'dfai_data')
+        self.rpvp_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'rpvp_data')
+        self.solarxdim = None
+        self.solarydim = None
+        #rad results 
+        self.irrad_results = None
+        self.illum_results = None
+        self.facade_grid_srfs = None
+        
+    def initialise_occgeom(self):
+        buildings = self.buildings
+        roof_list = []
+        facade_list = []
+        footprint_list = []
+        for building in buildings:
+            #get all the polygons from the building 
+            pypolygonlist = self.citygml.get_pypolygon_list(building) 
+            bsolid = interface2py3d.pypolygons2occsolid(pypolygonlist)
+            #extract the polygons from the building and separate them into facade, roof, footprint
+            facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
+            facade_list.extend(facades)
+            roof_list.extend(roofs)
+            footprint_list.extend(footprints)
+            
+        self.facade_occfaces = facade_list
+        self.roof_occfaces = roof_list
+        self.footprint_occfaces = footprint_list
+        
                 
+    def solar_analyse_facade(self, epweatherfile, xdim, ydim):
+        """
+        Solar Gain Facade Area Index (SGFAI) calculates the ratio of facade area that 
+        receives irradiation below a specified level over the net facade area. 
+        SGFAI is represented as an area ratio.
+        """
+        #check if the building surfaces has been identified
+        if self.facade_occfaces == None:
+            self.initialise_occgeom()
+        
+        self.solarxdim = xdim
+        self.solarydim = ydim
+        #generate sensor points from the facades
+        facade_list = self.facade_occfaces
+        topo_list = []
+        sensor__ptlist = []
+        sensor_dirlist = []
+        
+        for facade in facade_list:
+            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
+            sensor__ptlist.extend(sensor_pts)
+            sensor_dirlist.extend(sensor_dirs)
+            topo_list.extend(sensor_surfaces)
+            
+        #initialise py2radiance 
+        rad = py2radiance.Rad(self.rad_base_filepath, self.sfgai_folderpath)
+        #get all the geometry of the buildings for shading in radiance
+        buildings = self.buildings
+        bcnt = 0
+        for building in buildings:
+            #extract the surfaces from the buildings for shading geometry in radiance
+            gmlpolygons = self.citygml.get_polygons(building) 
+            for gmlpolygon in gmlpolygons:
+                #TODO: need to account for polygons with holes
+                #get all the polygons into a list
+                pypolygon = self.citygml.polygon_2_pt_list(gmlpolygon)
+                del pypolygon[-1]
+                #extract the shading geometry 
+                srfname = gmlpolygon.attrib["{%s}id" % self.citygml.namespaces['gml']]
+                #just use pure white paint
+                srfmat = "RAL9010_pur_white_paint"
+                py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
+                
+            bcnt +=1
+            
+        #get the sensor grid points
+        rad.set_sensor_points(sensor__ptlist, sensor_dirlist)
+        rad.create_sensor_input_file()
+        #create the geometry files
+        rad.create_rad_input_file()
+        #execute cumulative oconv for the whole year
+        time = str(0) + " " + str(24)
+        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
+        rad.execute_cumulative_oconv(time, date, epweatherfile)
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        irrad_ress, illum_ress = rad.eval_cumulative_rad()
+        self.irrad_results = irrad_ress
+        self.illum_results = illum_ress
+        self.facade_grid_srfs = topo_list
+        
+        
     def sgfai(self, irrad_threshold, epweatherfile, xdim, ydim):
         """
         Solar Gain Facade Area Index (SGFAI) calculates the ratio of facade area that 
         receives irradiation below a specified level over the net facade area. 
         SGFAI is represented as an area ratio.
         """
-        
-        #initialise py2radiance 
-        rad = py2radiance.Rad(self.rad_base_filepath, self.radiance_folderpath)
-        
-        buildings = self.buildings
-        topo_list = []
-        sensor_pts = []
-        sensor_dirs = []
-        
-        bcnt = 0
-        for building in buildings:
-            #extract the polygons from the building generate sensor pts, sensor_pts_dir and sensor_srf with it 
-            b_sensor_pts, b_sensor_dirs, b_sensor_srfs = gml3dmodel.generate_sensor_pts_4_building_facades(building, self.citygml, xdim, ydim)
-            sensor_pts.extend(b_sensor_pts)
-            sensor_dirs.extend(b_sensor_dirs)
-            topo_list.extend(b_sensor_srfs)
-                     
-            #extract the surfaces from the buildings for shading geometry in radiance
-            polygons = self.citygml.get_polygons(building)     
-            for polygon in polygons:
-                #TODO: need to account for polygons with holes
-                #get all the polygons into a list
-                a_polygon = self.citygml.polygon_2_pt_list(polygon)
-                del a_polygon[-1]
-                #extract the shading geometry 
-                srfname = polygon.attrib["{%s}id" % self.citygml.namespaces['gml']]
-                #just use pure white paint
-                srfmat = "RAL9010_pur_white_paint"
-                py2radiance.RadSurface(srfname, a_polygon, srfmat, rad)
-                
-            bcnt +=1
+        if self.irrad_results == None:
+            self.solar_analyse_facade( epweatherfile, xdim, ydim)
             
-        #get the sensor grid points
-        rad.set_sensor_points(sensor_pts, sensor_dirs)
-        rad.create_sensor_input_file()
-        #create the geometry files
-        rad.create_rad_input_file()
-        #execute cumulative_rtrace
-        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
-        #retrieve the results
-        irrad_res = rad.eval_cumulative_rad()
-        return topo_list, irrad_res
+        elif (self.solarxdim, self.solarydim) != (xdim, ydim):
+            self.solar_analyse_facade(epweatherfile, xdim, ydim)
         
-    def dfai(self, daylight_threshold, time_percentage):
+        facade_list = self.facade_occfaces
+        irrad_ress = self.irrad_results
+        topo_list = self.facade_grid_srfs
+        high_irrad = []
+        high_irrad_faces = []
+        
+        irrad_cnt = 0
+        for irrad_res in irrad_ress:
+            if irrad_res> irrad_threshold:
+                high_irrad.append(irrad_res)
+                #measure the area of the grid 
+                high_irrad_faces.append(topo_list[irrad_cnt])
+            irrad_cnt +=1
+            
+        total_area = gml3dmodel.faces_surface_area(facade_list)
+        high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
+        sgfai = (high_irrad_area/total_area) * 100
+        return topo_list, irrad_ress, sgfai
+        
+    def dfai(self, daylight_threshold, epweatherfile, xdim, ydim):
         """
         Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
         receives daylighting above a specified level, 
@@ -76,27 +152,107 @@ class Evals(object):
         over the net facade area. 
         DFAI is represented as an area ratio.
         """
-        pass
+        if self.illum_results == None:
+            self.solar_analyse_facade( epweatherfile, xdim, ydim)
+            
+        elif (self.solarxdim, self.solarydim) != (xdim, ydim):
+            self.solar_analyse_facade(epweatherfile, xdim, ydim)
+            
+        facade_list = self.facade_occfaces
+        illum_ress = self.illum_results
+        topo_list = self.facade_grid_srfs
+        high_illum = []
+        high_illum_faces = []
+        illum_cnt = 0
+        print illum_ress
+        for illum_res in illum_ress:
+            if illum_res> daylight_threshold:
+                high_illum.append(illum_res)
+                #measure the area of the grid 
+                high_illum_faces.append(topo_list[illum_cnt])
+            illum_cnt +=1
+            
+        total_area = gml3dmodel.faces_surface_area(facade_list)
+        high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
+        dfai = (high_illum_area/total_area) * 100
+        return topo_list, illum_ress, dfai
     
-    def rpvp(self):
-        """
+    def rpvp(self, epweatherfile, xdim, ydim):
+        '''
         Roof PV Potential (RPVP) calculates the potential electricity 
         that can be generated on the roof of buildings annually.
-        RPVP is represented in Wh.
-        
-        #parameters for the radiance 
-        base_file_path = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
-        data_folder_path = os.path.join(os.path.dirname(self.citygmlfilepath), 'py2radiance_data')
-        time = str(start_hour) + " " + str(end_hour)
-        date = str(start_mth) + " " + str(start_day) + " " + str(end_mth) + " " + str(end_day)
-        rad = py2radiance.Rad(base_file_path, data_folder_path)
-        
-        buildings = self.buildings
-                   
-        
-        """
-        pass
+        RPVP is represented in kWh/yr.
+        '''
+        #check if the building surfaces has been identified
+        if self.facade_occfaces == None:
+            self.initialise_occgeom()
             
+        #generate sensor points from the facades
+        roof_list = self.roof_occfaces
+        topo_list = []
+        sensor__ptlist = []
+        sensor_dirlist = []
+        
+        for roof in roof_list:
+            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
+            sensor__ptlist.extend(sensor_pts)
+            sensor_dirlist.extend(sensor_dirs)
+            topo_list.extend(sensor_surfaces)
+            
+        #initialise py2radiance 
+        rad = py2radiance.Rad(self.rad_base_filepath, self.rpvp_folderpath)
+        #get all the geometry of the buildings for shading in radiance
+        buildings = self.buildings
+        bcnt = 0
+        for building in buildings:
+            #extract the surfaces from the buildings for shading geometry in radiance
+            gmlpolygons = self.citygml.get_polygons(building) 
+            for gmlpolygon in gmlpolygons:
+                #TODO: need to account for polygons with holes
+                #get all the polygons into a list
+                pypolygon = self.citygml.polygon_2_pt_list(gmlpolygon)
+                del pypolygon[-1]
+                #extract the shading geometry 
+                srfname = gmlpolygon.attrib["{%s}id" % self.citygml.namespaces['gml']]
+                #just use pure white paint
+                srfmat = "RAL9010_pur_white_paint"
+                py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
+                
+            bcnt +=1
+            
+        #get the sensor grid points
+        rad.set_sensor_points(sensor__ptlist, sensor_dirlist)
+        rad.create_sensor_input_file()
+        #create the geometry files
+        rad.create_rad_input_file()
+        #execute cumulative oconv for the whole year
+        time = str(0) + " " + str(24)
+        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
+        rad.execute_cumulative_oconv(time, date, epweatherfile)
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        irrad_ress, illum_ress = rad.eval_cumulative_rad()
+        #get the avg irrad_res on the roof
+        
+        '''
+        eqn to calculate the energy produce by pv
+        epv = apv*fpv*gt*nmod*ninv
+        epv is energy produced by pv (kwh/yr)
+        apv is area of pv (m2)
+        fpv is faction of surface with active solar cells (ratio)
+        gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
+        nmod is the pv efficiency (12%)
+        ninv is the avg inverter efficiency (90%)
+        '''
+        apv = gml3dmodel.faces_surface_area(roof_list)
+        fpv = 0.8
+        gt = (sum(irrad_ress))/(float(len(irrad_ress)))
+        nmod = 0.12
+        ninv = 0.9
+        epv = apv*fpv*gt*nmod*ninv
+        return epv
+        
     def ptui(self):
         """
         Public Transport Usability Index (PTUI) is based on CASBEE calculation

@@ -325,10 +325,21 @@ def generate_falsecolour_bar(minval, maxval, export_path, display):
     display.ExportToImage(export_path)
     display.EraseAll()
     
-def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_file, other_topo2dlist = None, other_colourlist = None):
+def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_file, 
+                               other_topo2dlist = None, other_colourlist = None, minval_range = None, maxval_range = None):
+                                   
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = "wx")
-    minval = min(results)
-    maxval = max(results)
+    
+    if minval_range == None: 
+        minval = min(results)
+    elif minval_range != None:
+        minval = minval_range
+    
+    if maxval_range == None: 
+        maxval = max(results)
+    elif maxval_range != None: 
+        maxval = maxval_range
+        
     res_colours = falsecolour(results, minval, maxval)
     falsecolour_bar = generate_falsecolour_bar(minval, maxval, falsecolour_file, display)
     

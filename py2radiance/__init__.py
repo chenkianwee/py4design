@@ -171,7 +171,8 @@ class Rad(object):
         results_read = results.read()
         lines = results_read.split("\n")
         del lines[-1]
-        irradiance_list = []        
+        irradiance_list = []    
+        illuminance_list = []
         for line in lines:
             words  = line.split("\t")
             words.remove("")
@@ -179,7 +180,11 @@ class Rad(object):
             #IRRADIANCE RESULTS 
             irradiance = round((0.265 * numbers[0]) + (0.670 * numbers[1]) + (0.065 * numbers[2]), 1)
             irradiance_list.append(irradiance)
-        return irradiance_list
+            #ILLUMINANCE RESULTS            
+            illuminance = irradiance * 179
+            illuminance_list.append(illuminance)
+            
+        return irradiance_list, illuminance_list
 
     #=============================================================================================
         #FOR GENCUMULATIVE SKY MODULE //END//

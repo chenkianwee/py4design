@@ -43,9 +43,6 @@ def pypolygons2occsolid(pypolygon_list):
     
     solid = py3dmodel.construct.make_solid(shell)
     solid = py3dmodel.modify.fix_shape(solid)
-    volume = py3dmodel.calculate.solid_volume(solid)
-    if volume < 0:
-        solid.Reverse()
     return solid
     
 #function to round the points

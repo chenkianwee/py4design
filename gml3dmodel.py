@@ -51,14 +51,12 @@ def generate_sensor_surfaces(occ_face, xdim, ydim):
     
     return sensor_surfaces, sensor_pts, sensor_dirs
         
-def generate_sensor_pts_4_building_facades(gmlbuilding, citygml_reader, xdim, ydim):
-    pypolygon_list = citygml_reader.get_pypolygon_list(gmlbuilding)
-    solid = interface2py3d.pypolygons2occsolid(pypolygon_list)
-    face_list = py3dmodel.fetch.faces_frm_solid(solid)
+def identify_building_surfaces(bsolid):
+    face_list = py3dmodel.fetch.faces_frm_solid(bsolid)
     #loop thru the faces in the solid 
-    sensor_pts = []
-    sensor_dirs = []
-    sensor_srf_list = []
+    roof_list = []
+    facade_list = []
+    footprint_list = []
     vec1 = py3dmodel.construct.make_vector((0,0,0), (0,0,1))
     for f in face_list:
         #get the normal of each face
@@ -67,14 +65,21 @@ def generate_sensor_pts_4_building_facades(gmlbuilding, citygml_reader, xdim, yd
         angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, vec2)
         #means its a facade
         if angle>45 and angle<135:
-            #generate sensor points for a surface
-            a_sensor_srfs, a_sensor_pts, a_sensor_dirs = generate_sensor_surfaces(f, xdim, ydim)
-            if a_sensor_pts != None:
-                sensor_pts.extend(a_sensor_pts)
-                sensor_dirs.extend(a_sensor_dirs)
-                sensor_srf_list.extend(a_sensor_srfs)
+            facade_list.append(f)
+        elif angle<=45:
+            roof_list.append(f)
+        elif angle>=135:
+            footprint_list.append(f)
             
-    return sensor_pts, sensor_dirs, sensor_srf_list
+    return facade_list, roof_list, footprint_list
+    
+def faces_surface_area(occ_facelist):
+    total_sa = 0
+    for occface in occ_facelist:
+        sa = py3dmodel.calculate.face_area(occface)
+        total_sa = total_sa + sa
+    return total_sa
+    
 #==============================================================================================================================
 #gmlparameterise functions
 #==============================================================================================================================
