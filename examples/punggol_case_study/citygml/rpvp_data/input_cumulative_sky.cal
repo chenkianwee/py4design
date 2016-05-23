@@ -1,5 +1,5 @@
 { This .cal file was generated automatically by GenCumulativeSky }
-{ GenCumulativeSky +s1 -a 1.37 -o -103.98 -m -120.00 -p -E -time 0 24 -date 1 1 12 31 F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\weatherfile\SGP_Singapore.486980_IWEC.epw  }
+{ GenCumulativeSky +s1 -a 1.37 -o -103.98 -m -120 -p -E -time 0 24 -date 1 1 12 31 F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\weatherfile\SGP_Singapore.486980_IWEC.epw  }
 
 skybright=row0+row1+row2+row3+row4+row5+row6+row7;
 
