@@ -28,13 +28,14 @@ for occface in occfaces:
     
     #get the surface that is pointing upwards, the roof
     normal = envuo.py3dmodel.calculate.face_normal(occface)
-    if normal == (0,0,1):
+    if normal == (1,0,0):
         #generate the sensor points
         grid_occfaces = envuo.py3dmodel.construct.grid_face(occface,3,3)
         display2dlist.append(grid_occfaces)
         #calculate the midpt of each surface
         for grid_occface in grid_occfaces:
             midpt = envuo.py3dmodel.calculate.face_midpt(grid_occface)
+            midpt = envuo.py3dmodel.modify.move_pt(midpt,normal,0.8)
             sensor_pts.append(midpt)
             sensor_dirs.append(normal)
     face_cnt+=1
@@ -49,6 +50,7 @@ parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
 epweatherfile = os.path.join(parent_path, "punggol_case_study", "weatherfile", "SGP_Singapore.486980_IWEC.epw")
 rad.execute_epw2wea(epweatherfile)
 rad.execute_radfiles2daysim()
+
 #create sensor points
 rad.set_sensor_points(sensor_pts,sensor_dirs)
 rad.create_sensor_input_file()
@@ -56,5 +58,4 @@ rad.write_default_radiance_parameters()#the default settings are the complex sce
 rad.execute_gen_dc("w/m2")
 rad.execute_ds_illum()
 
-print display2dlist
-envuo.py3dmodel.construct.visualise(display2dlist, ["WHITE"])
+#envuo.py3dmodel.construct.visualise(display2dlist, ["WHITE"])

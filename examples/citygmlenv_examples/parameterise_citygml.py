@@ -5,7 +5,7 @@ import envuo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse24.gml")
+citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_citygml.gml")
 result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_variant.gml")
 
 time1 = time.clock()   

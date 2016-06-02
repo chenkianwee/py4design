@@ -164,7 +164,6 @@ class Evals(object):
         high_illum = []
         high_illum_faces = []
         illum_cnt = 0
-        print illum_ress
         for illum_res in illum_ress:
             if illum_res> daylight_threshold:
                 high_illum.append(illum_res)

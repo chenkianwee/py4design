@@ -256,7 +256,7 @@ def delaunay3d(pyptlist):
     return occtriangles
     
 def visualise(shape2dlist, colour_list):
-    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = "wx")
+    display, start_display, add_menu, add_function_to_menu = init_display()#init_display(backend_str = "wx")
     sc_cnt = 0
     for shape_list in shape2dlist:
         compound = make_compound(shape_list)

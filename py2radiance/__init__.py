@@ -90,7 +90,7 @@ class Rad(object):
         # need to automatically set the altituted longtitude and meridian from weatherfile
         # need to go to where the .cal file is to execute rtrace
     #=============================================================================================
-    def create_cumulative_sky_input_file(self, time, date, weatherfile_path):
+    def create_cumulative_sky_input_file(self, time, date, weatherfile_path, output = "irradiance"):
         #execute epw2wea 
         head,tail = ntpath.split(weatherfile_path)
         wfilename_no_extension = tail.replace(".epw", "")
@@ -103,11 +103,20 @@ class Rad(object):
         latitude = site_headers_list[1].split(" ")[1]
         longtitude = site_headers_list[2].split(" ")[1]
         meridian = site_headers_list[3].split(" ")[1]
-        #gencumulative sky command  
-        cumulative_cal_file_name = "input_cumulative_sky.cal"
-        cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
-        cumulative_sky_command = "GenCumulativeSky +s1 -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
-                                 time +" -date " + date + " " + weatherfile_path + " > " + cumulative_cal_file_path
+        if output == "irradiance":
+            #gencumulative sky command  
+            cumulative_cal_file_name = "input_cumulative_sky.cal"
+            cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
+            cumulative_sky_command = "GenCumulativeSky +s1 -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
+                                     time +" -date " + date + " " + weatherfile_path + " > " + cumulative_cal_file_path
+                                     
+        elif output == "illuminance":
+            #gencumulative sky command  
+            cumulative_cal_file_name = "input_cumulative_sky.cal"
+            cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
+            cumulative_sky_command = "GenCumulativeSky +s1 -l -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
+                                     time +" -date " + date + " " + weatherfile_path + " > " + cumulative_cal_file_path
+                                     
         f = open(self.command_file, "a")
         f.write(cumulative_sky_command)
         f.write("\n")
@@ -124,7 +133,10 @@ class Rad(object):
         cumulative_sky_file.close()
         self.cumulative_sky_file_path = cumulative_sky_file_path
 
-    def execute_cumulative_oconv(self, time, date, weatherfile_path): # time format = 0 24, date format = 1 1 12 31 (all in string)
+    def execute_cumulative_oconv(self, time, date, weatherfile_path): 
+        '''
+        time format = 0 24, date format = 1 1 12 31 (all in string)
+        '''
         self.create_cumulative_sky_input_file(time, date, weatherfile_path)
         self.create_rad_input_file() #what about interior??
         cumulative_oconv_file_path = os.path.join(self.data_folder_path, "cumulative_input.oconv")
@@ -138,9 +150,6 @@ class Rad(object):
         f.write(command2)
         f.write("\n")
         f.close()
-        #process = subprocess.Popen([command2], stdout=subprocess.PIPE)
-        #result = process.communicate()
-        #print type(result)
         os.system(command2) #EXECUTE!!
         os.chdir(cur_dir)
         self.cumulative_oconv_file_path = cumulative_oconv_file_path
@@ -497,6 +506,7 @@ class Rad(object):
         hea_file.write("\nradiance_source_files 2," +  radgeomfilepath + "," + radmaterialfile)
         hea_file.close()
         command1 = "radfiles2daysim" + " " + hea_filepath + " " + "-g" + " " + "-m" + " " + "-d"
+        print command1
         os.system(command1)
         
     def write_static_shading(self, hea_file):
@@ -525,7 +535,7 @@ class Rad(object):
         hea_file.close()
     
     def write_default_radiance_parameters(self): 
-        rad_ab = 5
+        rad_ab = 2
         rad_ad = 1000
         rad_as = 20
         rad_ar = 300
@@ -564,13 +574,31 @@ class Rad(object):
         #write analysis result file
         head,tail = ntpath.split(hea_filepath)
         tail = tail.replace(".hea", "")
-        hea_file.write("\nDDS_sensor_file" + " " + os.path.join("res", tail + ".dds"))
-        hea_file.write("\nDDS_file" + " " + os.path.join("res", tail + ".sen"))
+        #hea_file.write("\nDDS_sensor_file" + " " + os.path.join("res", tail + ".dds"))
+        #hea_file.write("\nDDS_file" + " " + os.path.join("res", tail + ".sen"))
         #write output unit
+        nsensors = len(self.sensor_positions)
+        sensor_str = ""
         if output_unit  == "w/m2":
             hea_file.write("\noutput_units" + " " + "1")
+            for scnt in range(nsensors):
+                #0 = lux, 2 = w/m2
+                if scnt == nsensors-1:
+                    sensor_str = sensor_str + "2"
+                else:
+                    sensor_str = sensor_str + "2 "
+            
         if output_unit  == "lux":
             hea_file.write("\noutput_units" + " " + "2")
+            for scnt in range(nsensors):
+                #0 = lux, 2 = w/m2
+                if scnt == nsensors-1:
+                    sensor_str = sensor_str + "0"
+                else:
+                    sensor_str = sensor_str + "0 "
+                    
+        hea_file.write("\nsensor_file_unit " + sensor_str)
+            
         hea_file.close()
         #copy the .hea file into the tmp directory
         hea_file_read = open(hea_filepath, "r")
@@ -583,13 +611,18 @@ class Rad(object):
         temp_hea_file.write(lines_modified)
         temp_hea_file.close()
         #execute gen_dc
-        command1 = "gen_dc" + " " + temp_hea_filepath + " " + "-dds"
+        command1 = "gen_dc" + " " + temp_hea_filepath + " " + "-dir"
+        command2 = "gen_dc" + " " + temp_hea_filepath + " " + "-dif"
+        command3 = "gen_dc" + " " + temp_hea_filepath + " " + "-paste"
         os.system(command1)
+        os.system(command2)
+        os.system(command3)
         
     def execute_ds_illum(self):
         hea_filepath = self.hea_file
         #execute ds_illum
-        command1 = "ds_illum" + " " + hea_filepath + " " + "-dds"
+        command1 = "ds_illum" + " " + hea_filepath
+        print command1
         os.system(command1)
         
     def eval_hea(self):
