@@ -29,13 +29,16 @@ factor of 1.5 means we expect 60% of the heat to be transmitted through the enve
 '''
 irrad_threshold = (50*8760*1.5)/1000.0
 topo_list, irrad_res, sgfai = evaluations.sgfai(irrad_threshold,weatherfilepath,xdim,ydim)
+print max(irrad_res), min(irrad_res)
 
 '''
 illum threshold (lux)
 '''
 illum_threshold = 15000
-topo_list, illum_res, dfai = evaluations.dfai(illum_threshold,weatherfilepath,xdim,ydim)
-print max(illum_res), min(illum_res)
+#evaluations.dfai(illum_threshold,weatherfilepath,xdim,ydim)
+evaluations.dfai(illum_threshold,weatherfilepath,xdim,ydim)
+#topo_list, illum_res, dfai = evaluations.dfai(illum_threshold,weatherfilepath,xdim,ydim)
+#print max(illum_res), min(illum_res), dfai
 #solar potential measures the potential energy that can be generated on the rooftop
 pv_potential = evaluations.rpvp(weatherfilepath,xdim,ydim)
           
@@ -45,9 +48,9 @@ print "MODEL EVALUATED!"
 
 print "VISUALISING RESULT"
 print "SOLAR GAIN FACADE AREA INDEX:" + str(sgfai)
-print "DAYLIGHT FACADE AREA INDEX:" + str(dfai)
+#print "DAYLIGHT FACADE AREA INDEX:" + str(dfai)
 print "ROOF PV POTENTIAL:" + str(pv_potential) + "kWh/yr"
-envuo.py3dmodel.construct.visualise_falsecolour_topo(illum_res, topo_list, falsecolour_file, image_file )
+envuo.py3dmodel.construct.visualise_falsecolour_topo(irrad_res, topo_list, falsecolour_file, image_file )
 time3 = time.clock()
 print "TIME TAKEN", (time3-time1)/60
 print "VISUALISED"

@@ -25,10 +25,12 @@ class Evals(object):
         self.rpvp_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'rpvp_data')
         self.solarxdim = None
         self.solarydim = None
+        self.rad = None
         #rad results 
         self.irrad_results = None
         self.illum_results = None
         self.facade_grid_srfs = None
+
         
     def initialise_occgeom(self):
         buildings = self.buildings
@@ -50,12 +52,7 @@ class Evals(object):
         self.footprint_occfaces = footprint_list
         
                 
-    def solar_analyse_facade(self, epweatherfile, xdim, ydim):
-        """
-        Solar Gain Facade Area Index (SGFAI) calculates the ratio of facade area that 
-        receives irradiation below a specified level over the net facade area. 
-        SGFAI is represented as an area ratio.
-        """
+    def initialise_solar_analyse_facade(self, epweatherfile, xdim, ydim):
         #check if the building surfaces has been identified
         if self.facade_occfaces == None:
             self.initialise_occgeom()
@@ -100,18 +97,8 @@ class Evals(object):
         rad.create_sensor_input_file()
         #create the geometry files
         rad.create_rad_input_file()
-        #execute cumulative oconv for the whole year
-        time = str(0) + " " + str(24)
-        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
-        rad.execute_cumulative_oconv(time, date, epweatherfile)
-        #execute cumulative_rtrace
-        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
-        #retrieve the results
-        irrad_ress, illum_ress = rad.eval_cumulative_rad()
-        self.irrad_results = irrad_ress
-        self.illum_results = illum_ress
+        self.rad = rad
         self.facade_grid_srfs = topo_list
-        
         
     def sgfai(self, irrad_threshold, epweatherfile, xdim, ydim):
         """
@@ -119,15 +106,25 @@ class Evals(object):
         receives irradiation below a specified level over the net facade area. 
         SGFAI is represented as an area ratio.
         """
-        if self.irrad_results == None:
-            self.solar_analyse_facade( epweatherfile, xdim, ydim)
+        
+        if self.rad == None:
+            self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim)
             
         elif (self.solarxdim, self.solarydim) != (xdim, ydim):
             self.solar_analyse_facade(epweatherfile, xdim, ydim)
         
+        #execute cumulative oconv for the whole year
+        rad = self.rad
+        time = str(0) + " " + str(24)
+        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
+        rad.execute_cumulative_oconv(time, date, epweatherfile)
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        irrad_ress = rad.eval_cumulative_rad()
         facade_list = self.facade_occfaces
-        irrad_ress = self.irrad_results
         topo_list = self.facade_grid_srfs
+        
         high_irrad = []
         high_irrad_faces = []
         
@@ -142,6 +139,8 @@ class Evals(object):
         total_area = gml3dmodel.faces_surface_area(facade_list)
         high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
         sgfai = (high_irrad_area/total_area) * 100
+        
+        self.irrad_results = irrad_ress
         return topo_list, irrad_ress, sgfai
         
     def dfai(self, daylight_threshold, epweatherfile, xdim, ydim):
@@ -152,14 +151,39 @@ class Evals(object):
         over the net facade area. 
         DFAI is represented as an area ratio.
         """
-        if self.illum_results == None:
-            self.solar_analyse_facade( epweatherfile, xdim, ydim)
+        if self.rad == None:
+            self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim)
             
         elif (self.solarxdim, self.solarydim) != (xdim, ydim):
             self.solar_analyse_facade(epweatherfile, xdim, ydim)
             
+        #execute cumulative oconv for the whole year
+        rad = self.rad
+        '''
+        #once the geometries are created initialise daysim
+        daysim_dir = self.dfai_folderpath
+        rad.initialise_daysim(daysim_dir)
+        #a 60min weatherfile is generated
+        rad.execute_epw2wea(epweatherfile)
+        rad.execute_radfiles2daysim()
+        
+        #create sensor points
+ 
+        rad.write_default_radiance_parameters()#the default settings are the complex scene 1 settings of daysimPS
+        rad.execute_gen_dc("w/m2")
+        rad.execute_ds_illum()
+        
+        '''
+        time = str(0) + " " + str(24)
+        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
+        
+        
+        rad.execute_cumulative_oconv(time, date, epweatherfile, output = "illuminance")
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        illum_ress = rad.eval_cumulative_rad(output = "illuminance")
         facade_list = self.facade_occfaces
-        illum_ress = self.illum_results
         topo_list = self.facade_grid_srfs
         high_illum = []
         high_illum_faces = []
@@ -174,7 +198,10 @@ class Evals(object):
         total_area = gml3dmodel.faces_surface_area(facade_list)
         high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
         dfai = (high_illum_area/total_area) * 100
-        return topo_list, illum_ress, dfai
+        
+        self.illum_results = illum_ress
+    
+        #return topo_list, illum_ress, dfai
     
     def rpvp(self, epweatherfile, xdim, ydim):
         '''
@@ -231,7 +258,7 @@ class Evals(object):
         #execute cumulative_rtrace
         rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
         #retrieve the results
-        irrad_ress, illum_ress = rad.eval_cumulative_rad()
+        irrad_ress = rad.eval_cumulative_rad()
         #get the avg irrad_res on the roof
         
         '''

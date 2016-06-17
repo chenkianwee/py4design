@@ -133,11 +133,15 @@ class Rad(object):
         cumulative_sky_file.close()
         self.cumulative_sky_file_path = cumulative_sky_file_path
 
-    def execute_cumulative_oconv(self, time, date, weatherfile_path): 
+    def execute_cumulative_oconv(self, time, date, weatherfile_path, output = "irradiance"): 
         '''
         time format = 0 24, date format = 1 1 12 31 (all in string)
         '''
-        self.create_cumulative_sky_input_file(time, date, weatherfile_path)
+        if output == "irradiance":
+            self.create_cumulative_sky_input_file(time, date, weatherfile_path)
+        if output == "illuminance":
+            self.create_cumulative_sky_input_file(time, date, weatherfile_path, output = "illuminance")
+            
         self.create_rad_input_file() #what about interior??
         cumulative_oconv_file_path = os.path.join(self.data_folder_path, "cumulative_input.oconv")
         #make sure the dir is at where the .cal file is
@@ -173,27 +177,28 @@ class Rad(object):
         os.chdir(cur_dir)
         self.cumulative_result_file_path = cumulative_result_file_path
 
-    def eval_cumulative_rad(self):
+    def eval_cumulative_rad(self, output = "irradiance"):
         if self.cumulative_result_file_path == None:
             raise Exception
         results = open(self.cumulative_result_file_path)
         results_read = results.read()
         lines = results_read.split("\n")
         del lines[-1]
-        irradiance_list = []    
-        illuminance_list = []
+        result_list = []    
         for line in lines:
             words  = line.split("\t")
             words.remove("")
             numbers = map(float, words)
             #IRRADIANCE RESULTS 
             irradiance = round((0.265 * numbers[0]) + (0.670 * numbers[1]) + (0.065 * numbers[2]), 1)
-            irradiance_list.append(irradiance)
-            #ILLUMINANCE RESULTS            
-            illuminance = irradiance * 179
-            illuminance_list.append(illuminance)
+            if output == "irradiance":
+                result_list.append(irradiance)
+            if output == "illuminance":
+                #ILLUMINANCE RESULTS            
+                illuminance = irradiance * 179
+                result_list.append(illuminance)
             
-        return irradiance_list, illuminance_list
+        return result_list
 
     #=============================================================================================
         #FOR GENCUMULATIVE SKY MODULE //END//
