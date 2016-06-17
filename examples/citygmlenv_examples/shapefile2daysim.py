@@ -81,6 +81,7 @@ def building_solar(building_solids, terrain_faces, weatherfilepath, latitude, lo
 #============================================================================================================================
 #main script
 #============================================================================================================================
+    #not for public
 time1 = time.clock()
 display2dlist = []
 colour_list = []
