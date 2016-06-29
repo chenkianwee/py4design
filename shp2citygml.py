@@ -236,7 +236,7 @@ def calc_residential_parking_area(total_build_up):
     plot_bike_pop = motorbike_ownership*(plot_pop_size/100)
     parking_lot_size = 2.4*4.8 #m2
     motorbike_lot_size = 1*2.5 #m2
-    total_carlot_size = num_of_hse*parking_lot_size #m2
+    total_carlot_size = num_of_hse*parking_lot_size #m2 minimum provision is one car for a house
     total_bikelot_size = plot_bike_pop*motorbike_lot_size #m2
     total_parklot_size = total_carlot_size + total_bikelot_size + (total_carlot_size*1) #(factoring in the aisle and ramps is in ratio 1:2 of the parking lot) #m2
     return total_parklot_size

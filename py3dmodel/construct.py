@@ -9,7 +9,7 @@ from OCCUtils import face, Construct, Topology
 from OCC.Display import OCCViewer
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
-from OCC.gp import gp_Pnt, gp_Vec, gp_Circ, gp_Ax2, gp_Dir
+from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeSolid
@@ -99,6 +99,10 @@ def make_vector(pypt1,pypt2):
     
 def make_gppnt(pypt):
     return gp_Pnt(pypt[0], pypt[1], pypt[2])
+    
+def make_line(pypt, pydir):
+    occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
+    return occ_line
     
 def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     #make shell

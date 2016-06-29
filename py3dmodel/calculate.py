@@ -1,8 +1,8 @@
 import math
 
-from OCCUtils import face, Common, Construct, Topology
+from OCCUtils import face, Common, Construct, Topology, edge
 from OCC import BRepFeat 
-from OCC.gp import gp_Pnt, gp_Vec
+from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Ax1, gp_Dir
 from OCC.TopAbs import TopAbs_IN, TopAbs_REVERSED 
 from OCC.BRepClass3d import BRepClass3d_SolidClassifier
 from OCC.GProp import GProp_GProps
@@ -11,6 +11,7 @@ from OCC.BOPInt import BOPInt_Context
 from OCC.BRepCheck import BRepCheck_Wire
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
+from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
 
 def get_bounding_box(occ_shape):
     return Common.get_boundingbox(occ_shape)
@@ -107,6 +108,39 @@ def project_edge_on_face(occface, occ_edge):
     projected_curve = fc.project_curve(occ_edge)
     return projected_curve
     
+def project_point_on_faceplane(occface, pypt):
+    gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
+    fc = face.Face(occface)
+    uv, projected_pt = fc.project_vertex(gp_pt)
+    return projected_pt
+    
+def intersect_edge_with_face(occ_edge, occ_face):
+    occutil_edge = edge.Edge(occ_edge)
+    interptlist = occutil_edge.Intersect.intersect(occ_face, 1e-2)
+    return interptlist
+    
+def project_point_on_infedge(occ_edge, pypt):
+    gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
+    occutil_edge = edge.Edge(occ_edge)
+    u, projpt = occutil_edge.project_vertex(gp_pt)
+    return projpt
+    
+def intersect_shape_with_ptdir(occ_shape, pypt, pydir):
+    occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
+    shape_inter = IntCurvesFace_ShapeIntersector()
+    shape_inter.Load(occ_shape, 1e-6)
+    shape_inter.PerformNearest(occ_line, 0.0, float("+inf"))
+    if shape_inter.IsDone():
+        npts = shape_inter.NbPnt()
+        if npts !=0:
+            return shape_inter.Pnt(1), shape_inter.Face(1)
+        else:
+            return None, None 
+    else:
+        return None, None 
+    
+#def shoot_point_2_faces(pypnt, occ_facelist):
+    
 def srf_nrml_facing_solid_inward(occ_face, occ_solid):
     #move the face in the direction of the normal
     #first offset the face so that vert will be within the solid 
@@ -138,5 +172,3 @@ def angle_bw_2_vecs(occvec1, occvec2):
     radangle = occvec1.Angle(occvec2)
     angle = radangle * (180.0/math.pi)
     return angle
-    
-    
