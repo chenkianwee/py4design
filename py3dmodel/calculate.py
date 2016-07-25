@@ -139,8 +139,6 @@ def intersect_shape_with_ptdir(occ_shape, pypt, pydir):
     else:
         return None, None 
     
-#def shoot_point_2_faces(pypnt, occ_facelist):
-    
 def srf_nrml_facing_solid_inward(occ_face, occ_solid):
     #move the face in the direction of the normal
     #first offset the face so that vert will be within the solid 

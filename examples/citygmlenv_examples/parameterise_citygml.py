@@ -5,7 +5,7 @@ import envuo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_citygml.gml")
+citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse24.gml")
 result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_variant.gml")
 
 time1 = time.clock()   
@@ -36,7 +36,7 @@ citygml_writer, newblist, plot_faces_list, b_attribs_list, bounding_list_list = 
 citygml_writer.write(result_citygml_filepath)
 #bounding list is for the generation of image for acadia paper, to show the construction of building from floor plates
 #solid list shows the original position of the buildings
-
+print newblist
 display_2dlist.append(newblist)
 display_2dlist.append(plot_faces_list)
 

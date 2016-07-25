@@ -1,2 +1,5 @@
-if (5,6) != (5,6):
-    print "execute"
+x = True
+y= True
+
+if x and y:
+    print "YES!!"

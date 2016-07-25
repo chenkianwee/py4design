@@ -21,7 +21,7 @@ if interss:
     pyinterpt = (interss[0].X(),interss[0].Y(),interss[0].Z())
     interss_occcircle = envuo.py3dmodel.construct.make_circle(pyinterpt, (0,0,1),3)
     displaylist1.append(interss_occcircle.Edge())
-    
+
 #specify a point and a direction and it will intersect anything thats along the path
 occ_interpt, occ_interface = envuo.py3dmodel.calculate.intersect_shape_with_ptdir(occ_face, pypt, (1,1,0))
 

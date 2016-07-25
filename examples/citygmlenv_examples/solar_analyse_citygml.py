@@ -5,7 +5,7 @@ import envuo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse5.gml")
+citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_citygml_asim.gml")
 
 #change the filepath to where you want to save the file to 
 image_file = "F:\\kianwee_work\\spyder_workspace\\envuo\\examples\\punggol_case_study\\citygml\\py2radiance_data\\result.png"

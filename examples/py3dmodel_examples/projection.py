@@ -11,6 +11,7 @@ pyptlist = [(50,100,0), (60,80,0), (60,80,50),(50,100,60)]#clockwise
 occ_face = envuo.py3dmodel.construct.make_polygon(pyptlist)
 
 projected_pt = envuo.py3dmodel.calculate.project_point_on_faceplane(occ_face, pypt)
+
 pyprojpt = (projected_pt.X(), projected_pt.Y(),projected_pt.Z())
 projpt_occcircle = envuo.py3dmodel.construct.make_circle(pyprojpt, (0,0,1),5)
 #create the edge between the origpt and the projpt

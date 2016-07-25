@@ -203,12 +203,18 @@ class Evals(object):
     
         #return topo_list, illum_ress, dfai
     
-    def rpvp(self, epweatherfile, xdim, ydim):
+    def pvrai(self, irrad_threshold, epweatherfile, xdim, ydim):
         '''
         Roof PV Potential (RPVP) calculates the potential electricity 
         that can be generated on the roof of buildings annually.
         RPVP is represented in kWh/yr.
+        
+        PV Roof Area Index (DFAI) calculates the ratio of roof area that 
+        receives irradiation above a specified level, 
+        receives irradiation above a specified level over the net roof area. 
+        PVRAI is represented as an area ratio.
         '''
+        
         #check if the building surfaces has been identified
         if self.facade_occfaces == None:
             self.initialise_occgeom()
@@ -274,10 +280,30 @@ class Evals(object):
         apv = gml3dmodel.faces_surface_area(roof_list)
         fpv = 0.8
         gt = (sum(irrad_ress))/(float(len(irrad_ress)))
+        print gt
         nmod = 0.12
         ninv = 0.9
         epv = apv*fpv*gt*nmod*ninv
-        return epv
+        
+        '''
+        pvrai
+        '''  
+        high_irrad = []
+        high_irrad_faces = []
+        
+        irrad_cnt = 0
+        for irrad_res in irrad_ress:
+            if irrad_res> irrad_threshold:
+                high_irrad.append(irrad_res)
+                #measure the area of the grid 
+                high_irrad_faces.append(topo_list[irrad_cnt])
+            irrad_cnt +=1
+            
+        total_area = gml3dmodel.faces_surface_area(roof_list)
+        high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
+        pvrai = (high_irrad_area/total_area) * 100
+        
+        return pvrai, epv, irrad_ress, topo_list
         
     def ptui(self):
         """

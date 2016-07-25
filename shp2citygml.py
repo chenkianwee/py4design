@@ -44,6 +44,9 @@ def map_osm2citygml_landuse_function(landuse):
     if landuse == "health":
         #special function area
         function = "1040"
+    else:
+        #special function area
+        function = "1040"
     return function
 
 def map_osm2citygml_building_class(landuse):
@@ -271,6 +274,8 @@ def get_buildings(shpfile):
         amenity_index = field_name_list.index("amenity")-1
         parking_index = field_name_list.index("parking")-1
         name_index = field_name_list.index("name")-1
+        building_l_index = field_name_list.index("building_l")-1
+        id_index = field_name_list.index("id")-1
         
         for rec in shapeRecs:
             poly_attribs=rec.record
@@ -278,61 +283,101 @@ def get_buildings(shpfile):
             building.strip()
             
             #if the polygon has a building attribute it is a building footprint
-            if building == "yes":
+            if not building.isspace():
                 building_dict = {}
-                
-                amenity = poly_attribs[amenity_index]
-                amenity.strip()
-                if not amenity.isspace():
-                    building_dict["amenity"] = amenity
-                    
-                parking = poly_attribs[parking_index]
-                parking.strip()
-                if not parking.isspace():
-                    building_dict["parking"] = parking
-                    
-                name = poly_attribs[name_index]
-                name.strip()
-                if not name.isspace():
-                    building_dict["name"] = name
-                
                 #get the geometry of the building footprint
                 geom = get_geometry(rec)
-                face_list = []
-                for pt_list2d in geom:
-                    pt_list3d = point_list2d_2_3d(pt_list2d, 0.0)
-                    face = py3dmodel.construct.make_polygon(pt_list3d)
-                    face_list.append(face)
-                building_dict["geometry"] = face_list
-                #building_dict["pt_list"] = pt_list3d
-                building_list.append(building_dict)
+                #only create a building if the records have geometry information
+                if geom:
+                    building_dict["building"] = building
+                    face_list = []
+                    for pt_list2d in geom:
+                        pt_list3d = point_list2d_2_3d(pt_list2d, 0.0)
+                        face = py3dmodel.construct.make_polygon(pt_list3d)
+                        face_list.append(face)
+                    building_dict["geometry"] = face_list
+                    
+                    amenity = poly_attribs[amenity_index]
+                    amenity.strip()
+                    if not amenity.isspace():
+                        building_dict["amenity"] = amenity
+                        
+                    parking = poly_attribs[parking_index]
+                    parking.strip()
+                    if not parking.isspace():
+                        building_dict["parking"] = parking
+                        
+                    name = poly_attribs[name_index]
+                    name.strip()
+                    if not name.isspace():
+                        building_dict["name"] = name
+                        
+                    building_l = poly_attribs[building_l_index]
+                    building_l.strip()
+                    if not building_l.isspace():
+                        building_dict["building_l"] = int(building_l)
+                    building_list.append(building_dict)
+                    
+                    id_ = poly_attribs[id_index]
+                    if id_:
+                        building_dict["id"] = id_
                 
     return building_list
+    
+def face_almost_inside(occ_face, occ_boundary_face):
+    '''
+    this functions measures if occ_face is almost inside the boundary face. 
+    Almost inside is define as 50% of the occ face is inside the boundary face
+    '''
+    #measure the srf area of the occ face
+    occ_face_area = py3dmodel.calculate.face_area(occ_face)
+    common = py3dmodel.construct.boolean_common(occ_face, occ_boundary_face)
+    shapetype = py3dmodel.fetch.shape2shapetype(common)
+    face_list = py3dmodel.fetch.geom_explorer(shapetype,"face")
+    
+    if face_list:
+        common_area = 0
+        for common_face in face_list:
+            acommon_area = py3dmodel.calculate.face_area(common_face)
+            common_area = common_area +  acommon_area
+            
+        common_ratio = common_area/occ_face_area
+        #print "COMMON RATIO:", common_ratio
+        if common_ratio >= 0.5:
+            return True
+        else:
+            return False
+    else:
+        return False
+    
 
 def buildings_on_plot(plot_rec, building_list):
     #building_list is a list of dictionary from method get_buildings(shpfile)
     #check which building belongs to this plot
     buildings_on_plot_list = []
     part_list = get_geometry(plot_rec)
-    for part in part_list:
-        part3d = point_list2d_2_3d(part,0.0)
-        luse_face = py3dmodel.construct.make_polygon(part3d)
-
-        for building in building_list:
-            geometry_list = building["geometry"]
-            for building_face in geometry_list:
-                if py3dmodel.calculate.face_is_inside(building_face, luse_face):
-                    buildings_on_plot_list.append(building)
+    if part_list:
+        for part in part_list:
+            part3d = point_list2d_2_3d(part,0.0)
+            luse_face = py3dmodel.construct.make_polygon(part3d)
+    
+            for building in building_list:
+                geometry_list = building["geometry"]
+                for building_face in geometry_list:
+                    face_inside = face_almost_inside(building_face, luse_face)
+                    if face_inside:
+                        buildings_on_plot_list.append(building)
                     
     return buildings_on_plot_list
 
 def get_plot_area(plot_rec):
     plot_area = 0
     part_list = get_geometry(plot_rec)
-    for part in part_list:
-        ptlist3d = point_list2d_2_3d(part,0.0)
-        luse_face = py3dmodel.construct.make_polygon(ptlist3d)
-        plot_area = plot_area + py3dmodel.calculate.face_area(luse_face)
+    if part_list:
+        for part in part_list:
+            ptlist3d = point_list2d_2_3d(part,0.0)
+            luse_face = py3dmodel.construct.make_polygon(ptlist3d)
+            plot_area = plot_area + py3dmodel.calculate.face_area(luse_face)
     return plot_area
 
 

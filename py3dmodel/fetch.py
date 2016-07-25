@@ -34,8 +34,25 @@ def shape2shapetype(occ_shape):
         orig_topo = topods_Vertex(occ_shape)
     return orig_topo
 
-def geom_explorer(geom2explore, shapetype2find_topABS):
+def geom_explorer(geom2explore, shapetype2find):
     geom_list = []
+    if shapetype2find == "compound":
+        shapetype2find_topABS = TopAbs_COMPOUND
+    if shapetype2find == "compsolid":
+        shapetype2find_topABS = TopAbs_COMPSOLID
+    if shapetype2find == "solid":
+        shapetype2find_topABS = TopAbs_SOLID
+    if shapetype2find == "shell":
+        shapetype2find_topABS = TopAbs_SHELL
+    if shapetype2find == "face":
+        shapetype2find_topABS = TopAbs_FACE
+    if shapetype2find == "wire":
+        shapetype2find_topABS = TopAbs_WIRE
+    if shapetype2find == "edge":
+        shapetype2find_topABS = TopAbs_EDGE
+    if shapetype2find == "vertex":
+        shapetype2find_topABS = TopAbs_VERTEX
+        
     ex = TopExp_Explorer(geom2explore, shapetype2find_topABS)
     while ex.More():
         if shapetype2find_topABS == 0:
@@ -62,31 +79,31 @@ def topos_frm_compound(occ_compound):
     topo_list = {}
     
     #find all the compsolids
-    compsolid_list = geom_explorer(occ_compound, TopAbs_COMPSOLID)
+    compsolid_list = geom_explorer(occ_compound, "compsolid")
     topo_list["compsolid"] = compsolid_list
 
     #find all the solids
-    solid_list = geom_explorer(occ_compound, TopAbs_SOLID)
+    solid_list = geom_explorer(occ_compound, "solid")
     topo_list["solid"] = solid_list
 
     #find all the shells
-    shell_list = geom_explorer(occ_compound, TopAbs_SHELL)
+    shell_list = geom_explorer(occ_compound, "shell")
     topo_list["shell"] = shell_list
 
     #find all the faces
-    face_list = geom_explorer(occ_compound, TopAbs_FACE)
+    face_list = geom_explorer(occ_compound, "face")
     topo_list["face"] = face_list
 
     #find all the wires
-    wire_list = geom_explorer(occ_compound, TopAbs_WIRE)
+    wire_list = geom_explorer(occ_compound, "wire")
     topo_list["wire"] = wire_list
 
     #find all the edges
-    edge_list = geom_explorer(occ_compound, TopAbs_EDGE)
+    edge_list = geom_explorer(occ_compound, "edge")
     topo_list["edge"] = edge_list
 
     #find all the vertices
-    vertex_list = geom_explorer(occ_compound, TopAbs_VERTEX)
+    vertex_list = geom_explorer(occ_compound, "vertex")
     topo_list["vertex"] = vertex_list
     
     return topo_list
