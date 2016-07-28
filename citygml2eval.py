@@ -141,7 +141,7 @@ class Evals(object):
         sgfai = (high_irrad_area/total_area) * 100
         
         self.irrad_results = irrad_ress
-        return topo_list, irrad_ress, sgfai
+        return sgfai, topo_list, irrad_ress 
         
     def dfai(self, daylight_threshold, epweatherfile, xdim, ydim):
         """
@@ -203,13 +203,13 @@ class Evals(object):
     
         #return topo_list, illum_ress, dfai
     
-    def pvrai(self, irrad_threshold, epweatherfile, xdim, ydim):
+    def pvai(self, irrad_threshold, epweatherfile, xdim, ydim):
         '''
         Roof PV Potential (RPVP) calculates the potential electricity 
         that can be generated on the roof of buildings annually.
         RPVP is represented in kWh/yr.
         
-        PV Roof Area Index (DFAI) calculates the ratio of roof area that 
+        PV Roof Area Index (PVAI) calculates the ratio of roof area that 
         receives irradiation above a specified level, 
         receives irradiation above a specified level over the net roof area. 
         PVRAI is represented as an area ratio.

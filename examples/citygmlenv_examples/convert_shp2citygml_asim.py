@@ -36,6 +36,18 @@ def findmedian(lst):
     else:
         return (sortedLst[index] + sortedLst[index + 1])/2.0
         
+def perror(building, num_storeys, perror_list, inacc_buildings):
+    if "building_l" in building:
+        orig_lvl = building["building_l"]
+        percentage_error = float(num_storeys)/float(orig_lvl)
+        perror_list.append(percentage_error)
+        if (percentage_error) > 1.2 or (percentage_error) < 0.8:
+            inacc_buildings.append(building)
+        
+def if_blevel(building, blevel_list):
+    if "building_l" in building:
+        blevel_list.append(building)
+            
 def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
     name_index = field_name_list.index("name")-1
     station_index = field_name_list.index("station")-1
@@ -230,6 +242,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                                 
                                 #write the carparks as buildings
                                 for parking in parking_list:
+                                    perror(parking, parking_storeys, perror_list, inacc_buildings)
                                     envuo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
                                             
                         #TODO: calculate for commercial buildings in terms of parking space too 
@@ -238,14 +251,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                             
                         
                         for not_parking in not_parking_list:
-                            if "building_l" in not_parking:
-                                orig_lvl = not_parking["building_l"]
-                                percentage_error = float(num_storeys)/float(orig_lvl)
-                                perror_list.append(percentage_error-1.0)
-                                if (percentage_error-1.0) > 0.2 or (percentage_error-1.0) < -0.2:
-                                    inacc_buildings.append(not_parking)
-                                    #print not_parking["building"], percentage_error-1.0,"PRE", num_storeys,"ORIG",orig_lvl,not_parking["id"]
-                                    
+                            perror(not_parking, num_storeys, perror_list, inacc_buildings)
                             envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                         
                     #================================================================================================================
@@ -266,6 +272,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                         
                         for not_parking in not_parking_list:
                             height = num_storeys*commercial_height
+                            perror(not_parking, num_storeys, perror_list, inacc_buildings)
                             envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             
     return total_build_up, perror_list, constr_buildings, inacc_buildings
@@ -280,6 +287,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
     name.strip()
     total_build_up = 0
     constr_buildings = []
+    blevel_list = []
     #=======================================================================================================
     #if the polygon has no building attrib and has a landuse attribute it is a landuse
     #=======================================================================================================               
@@ -366,6 +374,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                 #write the carparks as buildings
                                 for parking in parking_list:
                                     if "building_l" in parking:
+                                        blevel_list.append(parking)
                                         parking_storeys = parking["building_l"]
                                         parking_height = parking_storey_height*parking_storeys
                                         envuo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
@@ -379,6 +388,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                         
                         for not_parking in not_parking_list:
                             if "building_l" in not_parking:
+                                blevel_list.append(not_parking)
                                 num_storeys = not_parking["building_l"]
                                 if landuse == "residential":
                                     height = residential_height*num_storeys
@@ -406,6 +416,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                         
                         for not_parking in not_parking_list:
                             if "building_l" in not_parking:
+                                blevel_list.append(not_parking)
                                 num_storeys = not_parking["building_l"]
                                 height = commercial_height*num_storeys
                                 envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
@@ -413,7 +424,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                 height = num_storeys*commercial_height
                                 envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             
-    return total_build_up, constr_buildings
+    return total_build_up, constr_buildings, blevel_list
     
 def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list, origlvl=False):
     #the attributes are mainly base on the attributes from osm 
@@ -423,9 +434,9 @@ def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, buildi
     name_index = field_name_list.index("name")-1
     count_shapes = 0
     total_flr_area = 0
+    shp_constr_list = []
     if origlvl == False:
         shp_perror_list = []
-        shp_constr_list = []
         shp_inacc_buildings = []
         for rec in shapeRecs:
             build_footprint, perror_list,constr_list, inacc_buildings = convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
@@ -434,15 +445,18 @@ def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, buildi
             shp_inacc_buildings.extend(inacc_buildings)
             total_flr_area = total_flr_area + build_footprint
             count_shapes += 1
-        return shp_perror_list, shp_constr_list, shp_inacc_buildings
+        return shp_perror_list, shp_constr_list, shp_inacc_buildings, total_flr_area
         
     if origlvl == True:
+        shp_blevel_list = []
         for rec in shapeRecs:
-            build_footprint = convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
+            build_footprint, constr_list, blevel_list = convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
+            shp_constr_list.extend(constr_list)
+            shp_blevel_list.extend(blevel_list)
+            total_flr_area = total_flr_area + build_footprint                    
             count_shapes += 1
-        
-    print "TOTAL FLOOR AREA:", total_flr_area
-    
+        return shp_constr_list, total_flr_area, shp_blevel_list
+            
 
 def convert(shpfile_list, citygml):
     #get the building footprints
@@ -458,6 +472,7 @@ def convert(shpfile_list, citygml):
     total_constr_list = []
     total_trpst_bldg_list = []
     total_inacc_buildings = []
+    total_build_up_area = 0
     #read the shapefiles
     for shpfile in shpfile_list:
         sf = shapefile.Reader(shpfile)
@@ -478,7 +493,7 @@ def convert(shpfile_list, citygml):
             convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml)
             
         if shapetype == 5:
-            shp_perror_list, shp_constr_list, shp_inacc_buildings = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list)
+            shp_perror_list, shp_constr_list, shp_inacc_buildings, total_flr_area = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list)
             if shp_perror_list:
                 total_perror_list.extend(shp_perror_list)
             if shp_constr_list:
@@ -486,9 +501,12 @@ def convert(shpfile_list, citygml):
             if shp_inacc_buildings:
                 total_inacc_buildings.extend(shp_inacc_buildings)
                 
+            total_build_up_area = total_build_up_area + total_flr_area
+                
     print "NUMBER OF BUILDINGS IN CONSTRUCTION:", len(total_constr_list)
     print "NUMBER OF MRT/LRT STATIONS:", len(total_trpst_bldg_list)
     print "NUMBER OF BUILDINGS WITH LEVEL INFORMATION:", len(total_perror_list)
+    print "TOTAL BUILD UP AREA:", total_build_up_area
     print "MEAN:", (sum(total_perror_list))/(len(total_perror_list))
     print "MAX:", max(total_perror_list)
     print "MIN:", min(total_perror_list)
@@ -504,6 +522,9 @@ def convert_origlvl(shpfile_list, citygml):
             building_list.extend(buildings)
             
     total_constr_list = []
+    total_build_up_area = 0
+    total_trpst_bldg_list = []
+    total_blevel_list = []
     print "done with getting buildings"
     print "TOTAL NUMBER OF BUILDINGS:", len(building_list)
     #read the shapefiles
@@ -519,17 +540,24 @@ def convert_origlvl(shpfile_list, citygml):
         #shapetype 1 is point, 3 is polyline, shapetype 5 is polygon
         #if it is a point file it must be recording the location of the bus stops and subway stations
         if shapetype == 1:
-            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml)          
+            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml)
+            total_trpst_bldg_list.extend(trpst_bldg_list)
             
         if shapetype == 3:
             convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml)
             
         if shapetype == 5:
-            shp_constr_list  = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list, origlvl=True)
+            shp_constr_list, total_flr_area, shp_blevel_list  = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list, origlvl=True)
             if shp_constr_list:
                 total_constr_list.extend(shp_constr_list)
+            if shp_blevel_list:
+                total_blevel_list.extend(shp_blevel_list)
+            total_build_up_area = total_build_up_area + total_flr_area
                 
     print "NUMBER OF BUILDINGS IN CONSTRUCTION:", len(total_constr_list)
+    print "NUMBER OF MRT/LRT STATIONS:", len(total_trpst_bldg_list)
+    print "NUMBER OF BUILDINGS WITH LEVEL INFORMATION:", len(total_blevel_list)
+    print "TOTAL BUILD UP AREA:", total_build_up_area
 #=========================================================================================================================================
 #main SCRIPT
 #=========================================================================================================================================
