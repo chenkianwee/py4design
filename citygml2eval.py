@@ -203,7 +203,7 @@ class Evals(object):
     
         #return topo_list, illum_ress, dfai
     
-    def pvai(self, irrad_threshold, epweatherfile, xdim, ydim):
+    def pvai(self, irrad_threshold, epweatherfile, xdim, ydim, surface = "roof"):
         '''
         Roof PV Potential (RPVP) calculates the potential electricity 
         that can be generated on the roof of buildings annually.
@@ -219,18 +219,23 @@ class Evals(object):
         if self.facade_occfaces == None:
             self.initialise_occgeom()
             
-        #generate sensor points from the facades
-        roof_list = self.roof_occfaces
+        #generate sensor points from the surrfaces
+        if surface == "roof":
+            srf_list = self.roof_occfaces
+        if surface == "facade":
+            srf_list = self.facade_occfaces
+            
         topo_list = []
         sensor__ptlist = []
         sensor_dirlist = []
         
-        for roof in roof_list:
-            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
+        for srf in srf_list:
+            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(srf, xdim, ydim)
             sensor__ptlist.extend(sensor_pts)
             sensor_dirlist.extend(sensor_dirs)
             topo_list.extend(sensor_surfaces)
             
+        
         #initialise py2radiance 
         rad = py2radiance.Rad(self.rad_base_filepath, self.rpvp_folderpath)
         #get all the geometry of the buildings for shading in radiance
@@ -277,14 +282,12 @@ class Evals(object):
         nmod is the pv efficiency (12%)
         ninv is the avg inverter efficiency (90%)
         '''
-        apv = gml3dmodel.faces_surface_area(roof_list)
+        apv = gml3dmodel.faces_surface_area(srf_list)
         fpv = 0.8
         gt = (sum(irrad_ress))/(float(len(irrad_ress)))
-        print gt
         nmod = 0.12
         ninv = 0.9
         epv = apv*fpv*gt*nmod*ninv
-        
         '''
         pvrai
         '''  
@@ -293,17 +296,17 @@ class Evals(object):
         
         irrad_cnt = 0
         for irrad_res in irrad_ress:
-            if irrad_res> irrad_threshold:
+            if irrad_res>= irrad_threshold:
                 high_irrad.append(irrad_res)
                 #measure the area of the grid 
                 high_irrad_faces.append(topo_list[irrad_cnt])
             irrad_cnt +=1
             
-        total_area = gml3dmodel.faces_surface_area(roof_list)
+        total_area = gml3dmodel.faces_surface_area(srf_list)
         high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
-        pvrai = (high_irrad_area/total_area) * 100
+        pvai = (high_irrad_area/total_area) * 100
         
-        return pvrai, epv, irrad_ress, topo_list
+        return pvai, epv, irrad_ress, topo_list, high_irrad_area 
         
     def ptui(self):
         """
