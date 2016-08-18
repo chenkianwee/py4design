@@ -42,6 +42,8 @@ class Rad(object):
         self.daysimdir_tmp = None
         self.daysimdir_wea = None
         self.hea_file = None
+        self.hea_filename = None
+        self.sunuphrs = None
         
     def set_sensor_points(self, sensor_positions,sensor_normals):
         self.sensor_positions = sensor_positions
@@ -87,8 +89,6 @@ class Rad(object):
 
     #=============================================================================================
         #FOR GENCUMULATIVE SKY MODULE // START //
-        # need to automatically set the altituted longtitude and meridian from weatherfile
-        # need to go to where the .cal file is to execute rtrace
     #=============================================================================================
     def create_cumulative_sky_input_file(self, time, date, weatherfile_path, output = "irradiance"):
         #execute epw2wea 
@@ -477,6 +477,11 @@ class Rad(object):
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(daysimdir_wea, weaweatherfilename)
         command1 =  "epw2wea" + " " + epwweatherfile + " " + weaweatherfile
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.close()
+        
         proc = subprocess.Popen(command1, stdout=subprocess.PIPE)
         site_headers = proc.stdout.read()
         site_headers_list = site_headers.split("\r\n")
@@ -495,6 +500,22 @@ class Rad(object):
         hea_file.write("\nlower_direct_threshold" + " " + "2")
         hea_file.write("\nlower_diffuse_threshold" + " " + "2")
         hea_file.close()
+        #check for the sunuphours
+        results = open(weaweatherfile, "r")
+        result_lines = results.readlines()
+        result_lines = result_lines[6:]
+        sunuphrs = 0
+        for result in result_lines:
+            words = result.replace("\n", "")
+            words1  = words.split(" ")   
+            direct = float(words1[-1])
+            diffuse = float(words1[-2])
+            total = direct+diffuse
+            if total > 0:
+                sunuphrs = sunuphrs+1
+                
+        results.close()
+        self.sunuphrs = sunuphrs
         
     def execute_radfiles2daysim(self):
         hea_filepath = self.hea_file
@@ -511,13 +532,17 @@ class Rad(object):
         hea_file.write("\nradiance_source_files 2," +  radgeomfilepath + "," + radmaterialfile)
         hea_file.close()
         command1 = "radfiles2daysim" + " " + hea_filepath + " " + "-g" + " " + "-m" + " " + "-d"
-        print command1
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.close()
         os.system(command1)
         
     def write_static_shading(self, hea_file):
         hea_filepath = self.hea_file
         head,tail = ntpath.split(hea_filepath)
         tail = tail.replace(".hea", "")
+        self.hea_filename = tail
         dc_file = os.path.join("res",tail + ".dc")
         ill_file = os.path.join("res",tail + ".ill")
         hea_file.write("\nshading" + " " + "1" + " " + "static_system" + " " + dc_file + " " + ill_file)
@@ -619,6 +644,14 @@ class Rad(object):
         command1 = "gen_dc" + " " + temp_hea_filepath + " " + "-dir"
         command2 = "gen_dc" + " " + temp_hea_filepath + " " + "-dif"
         command3 = "gen_dc" + " " + temp_hea_filepath + " " + "-paste"
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.write(command2)
+        f.write("\n")
+        f.write(command3)
+        f.write("\n")
+        f.close()
         os.system(command1)
         os.system(command2)
         os.system(command3)
@@ -627,26 +660,32 @@ class Rad(object):
         hea_filepath = self.hea_file
         #execute ds_illum
         command1 = "ds_illum" + " " + hea_filepath
-        print command1
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.close()
         os.system(command1)
         
-    def eval_hea(self):
-        if self.hea_result == None or self.hea_filename == None :
-            raise Exception
-        da_path = os.path.join(self.hea_result,self.hea_filename + ".da")
-        da_results = open(da_path, "r")
-        da_result_stuff = da_results.readlines()
-        num_da_list = []
-        #daysim results processing average the DA
-        for line in range(len(da_result_stuff)-2): 
-            lines =  da_result_stuff[2+line][78:83] 
-            numbers_da = float(lines)
-            num_da_list.append(round(numbers_da, 1))
-        return num_da_list
-        
-#==========================================================================================================================
-#==========================================================================================================================
+    def eval_ill(self):
+        if self.hea_filename == None :
+            raise Exception("run ds_illum to simulate results")
+        ill_path = os.path.join(self.daysimdir_res,self.hea_filename + ".ill")
+        ill_file = open(ill_path, "r")
+        ill_results = ill_file.readlines()
+        result_dict = {}
+        for ill_result in ill_results:
+            ill_result = ill_result.replace("\n","")
+            ill_resultlist = ill_result.split(" ")
+            date = ill_resultlist[0] + " " + ill_resultlist[1] + " " + ill_resultlist[2]
+            resultlist = ill_resultlist[4:]
+            resultlist_f = []
+            for r in resultlist:
+                resultlist_f.append(float(r))
+            result_dict[date] = resultlist_f
 
+        return result_dict
+#==========================================================================================================================
+#==========================================================================================================================
 class Surface(object):
     def __init__(self, name, points, material):
         self.name = name

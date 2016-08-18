@@ -30,7 +30,7 @@ class Evals(object):
         self.irrad_results = None
         self.illum_results = None
         self.facade_grid_srfs = None
-
+        self.roof_grid_srfs = None
         
     def initialise_occgeom(self):
         buildings = self.buildings
@@ -64,6 +64,7 @@ class Evals(object):
         topo_list = []
         sensor__ptlist = []
         sensor_dirlist = []
+        
         
         for facade in facade_list:
             sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
@@ -159,30 +160,37 @@ class Evals(object):
             
         #execute cumulative oconv for the whole year
         rad = self.rad
-        '''
+ 
         #once the geometries are created initialise daysim
         daysim_dir = self.dfai_folderpath
         rad.initialise_daysim(daysim_dir)
         #a 60min weatherfile is generated
         rad.execute_epw2wea(epweatherfile)
         rad.execute_radfiles2daysim()
-        
         #create sensor points
- 
         rad.write_default_radiance_parameters()#the default settings are the complex scene 1 settings of daysimPS
-        rad.execute_gen_dc("w/m2")
+        rad.execute_gen_dc("lux")
         rad.execute_ds_illum()
+        res_dict = rad.eval_ill()
+        npts = len(res_dict.values()[0])
+        sensorptlist = []
+        for _ in range(npts):
+            sensorptlist.append([])
+            
+        for res in res_dict.values():
+            for rnum in range(npts):
+                sensorptlist[rnum].append(res[rnum])
+                
+        cumulative_list = []
+        sunuphrs = rad.sunuphrs
+        illum_ress = []
+        for sensorpt in sensorptlist:
+            cumulative_sensorpt = sum(sensorpt)
+            avg_illuminance = cumulative_sensorpt/sunuphrs
+            cumulative_list.append(cumulative_sensorpt)
+            illum_ress.append(avg_illuminance)
+
         
-        '''
-        time = str(0) + " " + str(24)
-        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
-        
-        
-        rad.execute_cumulative_oconv(time, date, epweatherfile, output = "illuminance")
-        #execute cumulative_rtrace
-        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
-        #retrieve the results
-        illum_ress = rad.eval_cumulative_rad(output = "illuminance")
         facade_list = self.facade_occfaces
         topo_list = self.facade_grid_srfs
         high_illum = []
@@ -200,8 +208,7 @@ class Evals(object):
         dfai = (high_illum_area/total_area) * 100
         
         self.illum_results = illum_ress
-    
-        #return topo_list, illum_ress, dfai
+        return dfai, topo_list, illum_ress 
     
     def pvai(self, irrad_threshold, epweatherfile, xdim, ydim, surface = "roof"):
         '''
