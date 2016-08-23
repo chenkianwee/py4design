@@ -53,7 +53,7 @@ class Parameterise(object):
         for landuse in landuses:
             lpolygon = citygml.get_polygons(landuse)[0]
             landuse_pts = citygml.polygon_2_pt_list(lpolygon)
-            buildings_on_landuse = gml3dmodel.buildings_on_landuse(citygml, landuse_pts, self.building_footprints)  
+            buildings_on_landuse = gml3dmodel.buildings_on_landuse(landuse_pts, self.building_footprints)  
             
             #build a dictionary the landuse is the key to the list of buildings 
             buildings2landuse_dict = {}

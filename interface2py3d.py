@@ -18,9 +18,9 @@ def pyptlist_frm_occface(occ_face):
     normal = py3dmodel.calculate.face_normal(occ_face)
     anticlockwise = py3dmodel.calculate.is_anticlockwise(pt_list, normal)
     if anticlockwise:
+        pt_list.reverse()
         return pt_list
     else:
-        pt_list.reverse()
         return pt_list
     
 def pyptlist_frm_occwire(occ_wire):

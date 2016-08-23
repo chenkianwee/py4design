@@ -6,3 +6,4 @@ from . import citygml2eval
 from . import gmlparameterise
 from . import shp2citygml
 from . import interface2py3d
+from . import urbanformeval

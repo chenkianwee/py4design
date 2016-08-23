@@ -7,12 +7,11 @@ from scipy.spatial import Delaunay
 from OCC.Display.SimpleGui import init_display
 from OCCUtils import face, Construct, Topology
 from OCC.Display import OCCViewer
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeSolid
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 
 from . import fetch
@@ -31,6 +30,11 @@ def make_polygon(pyptlist):
     wire = poly.Wire()
     occface = BRepBuilderAPI_MakeFace(wire)
     return occface.Face()
+
+def make_plane_w_dir(centre_pypt, normal_pydir):
+    plane_face = Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
+                         vec_normal = gp_Vec(normal_pydir[0], normal_pydir[1], normal_pydir[2]))
+    return plane_face
     
 def make_edge(pypt1, pypt2):
     gp_point1 = gp_Pnt(pypt1[0], pypt1[1], pypt1[2])

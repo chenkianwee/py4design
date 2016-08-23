@@ -10,7 +10,6 @@ citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "p
 #change the filepath to where you want to save the file to 
 image_file = "F:\\kianwee_work\\spyder_workspace\\envuo\\examples\\punggol_case_study\\citygml\\py2radiance_data\\result.png"
 falsecolour_file = "F:\\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\py2radiance_data\\falsecolour.png"
-print falsecolour_file
 
 evaluations = envuo.citygml2eval.Evals(citygml_filepath)
 xdim = 10

@@ -12,9 +12,14 @@ from OCC.BRepCheck import BRepCheck_Wire
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
 from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon
 
 def get_bounding_box(occ_shape):
     return Common.get_boundingbox(occ_shape)
+    
+def get_centre_bbox(occ_shape):
+    occ_midpt = Common.center_boundingbox(occ_shape)
+    return (occ_midpt.X(), occ_midpt.Y(), occ_midpt.Z())
     
 def point_in_solid(occ_solid, pypt):
     gp_pnt = gp_Pnt(pypt[0], pypt[1], pypt[2] )
@@ -114,6 +119,22 @@ def project_point_on_faceplane(occface, pypt):
     uv, projected_pt = fc.project_vertex(gp_pt)
     return projected_pt
     
+def project_face_on_faceplane(occface2projon, occface2proj):
+    wire_list =  list(Topology.Topo(occface2proj).wires())
+    occpt_list = []
+    for wire in wire_list:
+        occpts = Topology.WireExplorer(wire).ordered_vertices()
+        occpt_list.extend(occpts)
+    proj_ptlist = []
+    for occpt in occpt_list:
+        occ_pnt = BRep_Tool.Pnt(occpt)
+        pypt = (occ_pnt.X(), occ_pnt.Y(), occ_pnt.Z())
+        projected_pt = project_point_on_faceplane(occface2projon, pypt)
+        
+        proj_ptlist.append((projected_pt.X(), projected_pt.Y(), projected_pt.Z()))
+        
+    return proj_ptlist
+    
 def intersect_edge_with_face(occ_edge, occ_face):
     occutil_edge = edge.Edge(occ_edge)
     interptlist = occutil_edge.Intersect.intersect(occ_face, 1e-2)
@@ -166,7 +187,15 @@ def srf_nrml_facing_solid_inward(occ_face, occ_solid):
     else:
         return False
         
-def angle_bw_2_vecs(occvec1, occvec2):
-    radangle = occvec1.Angle(occvec2)
+def angle_bw_2_vecs(pyvec1, pyvec2):
+    vec1 = gp_Vec(pyvec1[0], pyvec1[1], pyvec1[2])
+    vec2 = gp_Vec(pyvec2[0], pyvec2[1], pyvec2[2])
+    radangle = vec1.Angle(vec2)
     angle = radangle * (180.0/math.pi)
     return angle
+    
+def distance_between_2_pts(pypt1, pypt2):
+    gp_pnt1 = gp_Pnt(pypt1[0], pypt1[1], pypt1[2])
+    gp_pnt2 = gp_Pnt(pypt2[0], pypt2[1], pypt2[2])
+    distance = gp_pnt1.Distance(gp_pnt2)
+    return distance

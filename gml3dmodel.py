@@ -1,6 +1,6 @@
 from . import py3dmodel
 from . import interface2py3d
- 
+
 #==============================================================================================================================
 #shp2citygml functions
 #==============================================================================================================================
@@ -57,12 +57,11 @@ def identify_building_surfaces(bsolid):
     roof_list = []
     facade_list = []
     footprint_list = []
-    vec1 = py3dmodel.construct.make_vector((0,0,0), (0,0,1))
+    vec1 = (0,0,1)
     for f in face_list:
         #get the normal of each face
         n = py3dmodel.calculate.face_normal(f)
-        vec2 = py3dmodel.construct.make_vector((0,0,0), n)
-        angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, vec2)
+        angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, n)
         #means its a facade
         if angle>45 and angle<135:
             facade_list.append(f)
@@ -228,7 +227,7 @@ def get_bulding_floor_area(building_solid, loc_pt, bounding_footprint, nstorey, 
         
     return flr_area #, intersection_list
     
-def buildings_on_landuse(citygml_reader, landuse_pts, buildings_footprints_dict_list):
+def buildings_on_landuse(landuse_pts, buildings_footprints_dict_list):
     lface = py3dmodel.construct.make_polygon(landuse_pts)
     buildings_on_plot_list = []
     

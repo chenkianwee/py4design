@@ -1,9 +1,11 @@
 import os
 
 from . import pycitygml
+from . import py3dmodel
 from . import py2radiance
 from . import gml3dmodel
 from . import interface2py3d
+from . import urbanformeval
 
 class Evals(object):
     def __init__(self, citygmlfile):
@@ -18,6 +20,9 @@ class Evals(object):
         self.roof_occfaces = None
         self.facade_occfaces = None
         self.footprint_occfaces = None
+        self.building_dictlist = None
+        self.buildings_on_plot_2dlist = None #2d list of building dictlist according to the plot they belong to 
+        self.landuse_pypolgons = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
         self.sfgai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'sgfai_data')
@@ -37,16 +42,24 @@ class Evals(object):
         roof_list = []
         facade_list = []
         footprint_list = []
+        building_dictlist = []
         for building in buildings:
+            building_dict ={}
             #get all the polygons from the building 
             pypolygonlist = self.citygml.get_pypolygon_list(building) 
             bsolid = interface2py3d.pypolygons2occsolid(pypolygonlist)
             #extract the polygons from the building and separate them into facade, roof, footprint
             facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
+            building_dict["facade"] = facades
+            building_dict["footprint"] = footprints[0]
+            building_dict["roof"] = roofs
+            building_dict["solid"] = bsolid
+            building_dictlist.append(building_dict)
             facade_list.extend(facades)
             roof_list.extend(roofs)
             footprint_list.extend(footprints)
             
+        self.building_dictlist = building_dictlist
         self.facade_occfaces = facade_list
         self.roof_occfaces = roof_list
         self.footprint_occfaces = footprint_list
@@ -314,6 +327,48 @@ class Evals(object):
         pvai = (high_irrad_area/total_area) * 100
         
         return pvai, epv, irrad_ress, topo_list, high_irrad_area 
+    
+    def initialise_fai(self):
+        landuses = self.landuses
+        building_dictlist = self.building_dictlist
+        landuse_pypolgons = []
+        buildings_on_plot_2dlist = []
+        
+        for landuse in landuses:
+            pypolygonlist = self.citygml.get_pypolygon_list(landuse)
+            for pypolygon in pypolygonlist:    
+                landuse_pypolgons.append(pypolygon)
+                buildings_on_plot = gml3dmodel.buildings_on_landuse(pypolygon, building_dictlist)
+                print buildings_on_plot
+                buildings_on_plot_2dlist.append(buildings_on_plot)
+                
+        self.buildings_on_plot_2dlist = buildings_on_plot_2dlist
+        self.landuse_pypolgons = landuse_pypolgons
+
+    def fai(self, wind_dir):
+        """
+        Frontal Area Index (FAI)
+        """
+        buidlings_on_plot_2dlist = self.buildings_on_plot_2dlist
+        landuse_pypolgons = self.landuse_pypolgons
+        
+        if buidlings_on_plot_2dlist == None:
+            self.initialise_fai()
+            
+        fai_list = []
+        for landuse_pypolgon in landuse_pypolgons:
+            facet_pypolygons = []
+            for buildings in buidlings_on_plot_2dlist:
+                for building in buildings:
+                    occfacades = building["facade"]
+                    for occfacade in occfacades:
+                        pyfacade = interface2py3d.pyptlist_frm_occface(occfacade)
+                        facet_pypolygons.append(pyfacade)
+                        
+            fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = urbanformeval.frontal_area_index(facet_pypolygons, landuse_pypolgon, wind_dir)
+            fai_list.append(fai)
+        
+        return fai_list
         
     def ptui(self):
         """
@@ -321,9 +376,5 @@ class Evals(object):
         """
         pass
 
-    def fai(self):
-        """
-        Frontal Area Index (FAI)
-        """
-        pass
+
 #===================================================================================================================================================
