@@ -62,13 +62,15 @@ def identify_building_surfaces(bsolid):
         #get the normal of each face
         n = py3dmodel.calculate.face_normal(f)
         angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, n)
+        pyf = interface2py3d.pyptlist_frm_occface(f)
         #means its a facade
         if angle>45 and angle<135:
-            facade_list.append(f)
+            facade_list.append(pyf)
         elif angle<=45:
-            roof_list.append(f)
+            
+            roof_list.append(pyf)
         elif angle>=135:
-            footprint_list.append(f)
+            footprint_list.append(pyf)
             
     return facade_list, roof_list, footprint_list
     

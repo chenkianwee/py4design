@@ -1,5 +1,1 @@
-x = True
-y= True
-
-if x and y:
-    print "YES!!"
+print range(0)

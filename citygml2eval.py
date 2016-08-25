@@ -329,19 +329,28 @@ class Evals(object):
         return pvai, epv, irrad_ress, topo_list, high_irrad_area 
     
     def initialise_fai(self):
+        
+        if self.building_dictlist == None:
+            self.initialise_occgeom()
+            
         landuses = self.landuses
         building_dictlist = self.building_dictlist
+        building_dictlist2 = building_dictlist[:]
         landuse_pypolgons = []
         buildings_on_plot_2dlist = []
         
         for landuse in landuses:
             pypolygonlist = self.citygml.get_pypolygon_list(landuse)
             for pypolygon in pypolygonlist:    
-                landuse_pypolgons.append(pypolygon)
-                buildings_on_plot = gml3dmodel.buildings_on_landuse(pypolygon, building_dictlist)
-                print buildings_on_plot
-                buildings_on_plot_2dlist.append(buildings_on_plot)
-                
+                if building_dictlist2:
+                    buildings_on_plot = gml3dmodel.buildings_on_landuse(pypolygon, building_dictlist2)
+                    
+                    if buildings_on_plot:
+                        buildings_on_plot_2dlist.append(buildings_on_plot)
+                        landuse_pypolgons.append(pypolygon)
+                        for abuilding in buildings_on_plot:
+                            building_dictlist2.remove(abuilding)
+        
         self.buildings_on_plot_2dlist = buildings_on_plot_2dlist
         self.landuse_pypolgons = landuse_pypolgons
 
@@ -349,26 +358,34 @@ class Evals(object):
         """
         Frontal Area Index (FAI)
         """
-        buidlings_on_plot_2dlist = self.buildings_on_plot_2dlist
-        landuse_pypolgons = self.landuse_pypolgons
-        
-        if buidlings_on_plot_2dlist == None:
+        if self.buildings_on_plot_2dlist == None:
             self.initialise_fai()
             
+        print "DONE WITH INITIALISATION"
+        landuse_pypolgons = self.landuse_pypolgons
+        buidlings_on_plot_2dlist = self.buildings_on_plot_2dlist
         fai_list = []
+        fuse_psrfs_list = []
+        surfaces_projected_list = []
+        
+        
+        lcnt = 0
         for landuse_pypolgon in landuse_pypolgons:
             facet_pypolygons = []
-            for buildings in buidlings_on_plot_2dlist:
-                for building in buildings:
-                    occfacades = building["facade"]
-                    for occfacade in occfacades:
-                        pyfacade = interface2py3d.pyptlist_frm_occface(occfacade)
-                        facet_pypolygons.append(pyfacade)
+            for building in buidlings_on_plot_2dlist[lcnt]:
+                
+                pyfacades = building["facade"]
+                for pyfacade in pyfacades:
+                    facet_pypolygons.append(pyfacade)
                         
             fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = urbanformeval.frontal_area_index(facet_pypolygons, landuse_pypolgon, wind_dir)
             fai_list.append(fai)
-        
-        return fai_list
+            fuse_psrfs_list.extend(fuse_psrfs)
+            surfaces_projected_list.extend(surfaces_projected)
+            lcnt+=1
+            
+        avg_fai = sum(fai_list)/float(len(fai_list))
+        return avg_fai, fuse_psrfs_list, surfaces_projected_list
         
     def ptui(self):
         """

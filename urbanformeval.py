@@ -13,8 +13,9 @@ def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
        facet_face = py3dmodel.construct.make_polygon(pypolgyon)
        facet_faces.append(facet_face)
        
+
     facet_faces_compound = py3dmodel.construct.make_compound(facet_faces)
-    
+     
     #create win dir plane
     #get the bounding box of the compound, so that the wind plane will be placed at the edge of the bounding box
     xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(facet_faces_compound)
@@ -41,15 +42,18 @@ def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
             if py3dmodel.calculate.face_area(projected_srf) >0:
                 projected_facet_faces.append(projected_srf)
          
-    
-    for psrf_cnt in range(len(projected_facet_faces)-1):
-        if psrf_cnt ==0:
-            fuse_shape = py3dmodel.construct.boolean_fuse(projected_facet_faces[psrf_cnt], projected_facet_faces[psrf_cnt+1])
-        else:
-            fuse_shape = py3dmodel.construct.boolean_fuse(fuse_shape, projected_facet_faces[psrf_cnt+1])
-            
-    fuse_compound = py3dmodel.fetch.shape2shapetype(fuse_shape) 
-    fuse_srfs = py3dmodel.fetch.geom_explorer(fuse_compound,"face")
+    npfaces = len(projected_facet_faces)
+    if npfaces == 1:
+        fuse_srfs = projected_facet_faces
+    else:
+        for psrf_cnt in range(npfaces-1):
+            if psrf_cnt ==0:
+                fuse_shape = py3dmodel.construct.boolean_fuse(projected_facet_faces[psrf_cnt], projected_facet_faces[psrf_cnt+1])
+            else:
+                fuse_shape = py3dmodel.construct.boolean_fuse(fuse_shape, projected_facet_faces[psrf_cnt+1])
+                
+        fuse_compound = py3dmodel.fetch.shape2shapetype(fuse_shape) 
+        fuse_srfs = py3dmodel.fetch.geom_explorer(fuse_compound,"face")
     
     #calculate the frontal area index
     facet_area = calculate_srfs_area(fuse_srfs)
@@ -58,3 +62,6 @@ def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
     fai = facet_area/plane_area
     
     return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
+    
+def public_transport_usability_index():
+    
