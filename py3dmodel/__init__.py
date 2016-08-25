@@ -1,4 +1,4 @@
-from . import fetch
-from . import calculate
-from . import modify
-from . import construct
+import fetch
+import calculate
+import modify
+import construct

@@ -2,10 +2,9 @@ import re
 import uuid
 import shapefile
 
-from . import pycitygml
-from . import py3dmodel
-from . import gml3dmodel
-from . import interface2py3d
+import pycitygml
+import py3dmodel
+import gml3dmodel
 
 #=========================================================================================================================================
 #map osm to citygml functions
@@ -409,7 +408,7 @@ def building2citygml(building, height, citygml, landuse, storey, epsg):
         face_list = gml3dmodel.extrude_building(bface, height)
         #get the surfaces from the solid 
         for face in face_list:
-            pt_list = interface2py3d.pyptlist_frm_occface(face)
+            pt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
             first_pt = pt_list[0]
             pt_list.append(first_pt)
             srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
@@ -510,7 +509,7 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
     terrainshell = py3dmodel.construct.make_shell_frm_faces(terrain_surface_list)
     terrain_z = []
     for ts in terrain_surface_list:
-        vertexes = interface2py3d.pyptlist_frm_occface(ts)
+        vertexes = py3dmodel.pyptlist_frm_occface(ts)
         for vert in vertexes:
             z = vert[2]
             terrain_z.append(z)

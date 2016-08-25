@@ -1,6 +1,6 @@
 import time
 import os
-import envuo
+import pylibudo
 
 #specify the citygml file
 current_path = os.path.dirname(__file__)
@@ -25,14 +25,14 @@ ydim = 3
 time1 = time.clock()
 print "EVALUATING MODEL ... ..."
 
-evaluations = envuo.citygml2eval.Evals(citygml_filepath)
+evaluations = pylibudo.citygml2eval.Evals(citygml_filepath)
 irrad_threshold = 1280 #kwh/m2
 pvai, pv_potential, irrad_res, topo_list,high_irrad_area = evaluations.pvai(irrad_threshold, weatherfilepath,xdim,ydim, surface = "roof")
 print "PVRAI:", pvai
 print "HIGH ROOF IRRAD AREA:", high_irrad_area
 print "ROOF PV POTENTIAL:", pv_potential
 
-evaluations2 = envuo.citygml2eval.Evals(citygml_filepath)
+evaluations2 = pylibudo.citygml2eval.Evals(citygml_filepath)
 irrad_threshold = 512 #kwh/m2
 pvai, pv_potential, irrad_res, topo_list,high_irrad_area = evaluations2.pvai(irrad_threshold, weatherfilepath,xdim,ydim, surface = "facade")
 print "PVFAI:", pvai

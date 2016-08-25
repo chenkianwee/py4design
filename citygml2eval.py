@@ -1,11 +1,11 @@
 import os
 
-from . import pycitygml
-from . import py3dmodel
-from . import py2radiance
-from . import gml3dmodel
-from . import interface2py3d
-from . import urbanformeval
+import pycitygml
+import py3dmodel
+import py2radiance
+import gml3dmodel
+import urbanformeval
+import threedmodel
 
 class Evals(object):
     def __init__(self, citygmlfile):
@@ -22,7 +22,7 @@ class Evals(object):
         self.footprint_occfaces = None
         self.building_dictlist = None
         self.buildings_on_plot_2dlist = None #2d list of building dictlist according to the plot they belong to 
-        self.landuse_pypolgons = None
+        self.landuse_occpolygons = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
         self.sfgai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'sgfai_data')
@@ -47,7 +47,7 @@ class Evals(object):
             building_dict ={}
             #get all the polygons from the building 
             pypolygonlist = self.citygml.get_pypolygon_list(building) 
-            bsolid = interface2py3d.pypolygons2occsolid(pypolygonlist)
+            bsolid = threedmodel.pypolygons2occsolid(pypolygonlist)
             #extract the polygons from the building and separate them into facade, roof, footprint
             facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
             building_dict["facade"] = facades
@@ -336,23 +336,24 @@ class Evals(object):
         landuses = self.landuses
         building_dictlist = self.building_dictlist
         building_dictlist2 = building_dictlist[:]
-        landuse_pypolgons = []
+        landuse_occpolygons = []
         buildings_on_plot_2dlist = []
         
         for landuse in landuses:
             pypolygonlist = self.citygml.get_pypolygon_list(landuse)
             for pypolygon in pypolygonlist:    
+                landuse_occpolygon = py3dmodel.construct.make_polygon(pypolygon)
                 if building_dictlist2:
-                    buildings_on_plot = gml3dmodel.buildings_on_landuse(pypolygon, building_dictlist2)
+                    buildings_on_plot = gml3dmodel.buildings_on_landuse(landuse_occpolygon, building_dictlist2)
                     
                     if buildings_on_plot:
                         buildings_on_plot_2dlist.append(buildings_on_plot)
-                        landuse_pypolgons.append(pypolygon)
+                        landuse_occpolygons.append(landuse_occpolygon)
                         for abuilding in buildings_on_plot:
                             building_dictlist2.remove(abuilding)
         
         self.buildings_on_plot_2dlist = buildings_on_plot_2dlist
-        self.landuse_pypolgons = landuse_pypolgons
+        self.landuse_occpolygons = landuse_occpolygons
 
     def fai(self, wind_dir):
         """
@@ -362,23 +363,19 @@ class Evals(object):
             self.initialise_fai()
             
         print "DONE WITH INITIALISATION"
-        landuse_pypolgons = self.landuse_pypolgons
+        landuse_occpolygons = self.landuse_occpolygons
         buidlings_on_plot_2dlist = self.buildings_on_plot_2dlist
         fai_list = []
         fuse_psrfs_list = []
         surfaces_projected_list = []
-        
-        
         lcnt = 0
-        for landuse_pypolgon in landuse_pypolgons:
-            facet_pypolygons = []
+        for landuse_occpolygon in landuse_occpolygons:
+            facade_occpolygons = []
             for building in buidlings_on_plot_2dlist[lcnt]:
-                
-                pyfacades = building["facade"]
-                for pyfacade in pyfacades:
-                    facet_pypolygons.append(pyfacade)
+                occfacades = building["facade"]
+                facade_occpolygons.extend(occfacades)
                         
-            fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = urbanformeval.frontal_area_index(facet_pypolygons, landuse_pypolgon, wind_dir)
+            fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = urbanformeval.frontal_area_index(facade_occpolygons, landuse_occpolygon, wind_dir)
             fai_list.append(fai)
             fuse_psrfs_list.extend(fuse_psrfs)
             surfaces_projected_list.extend(surfaces_projected)

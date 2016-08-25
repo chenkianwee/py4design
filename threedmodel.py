@@ -1,0 +1,26 @@
+import py3dmodel
+
+#==============================================================================================================================
+#general functions
+#==============================================================================================================================   
+def pypolygons2occsolid(pypolygon_list):
+    face_list = []
+    for polygon_pts in pypolygon_list:
+        face = py3dmodel.construct.make_polygon(polygon_pts)
+        face_list.append(face)
+
+    #make shell
+    shell = py3dmodel.construct.make_shell_frm_faces(face_list)
+    shell = py3dmodel.modify.fix_shell_orientation(shell)
+    
+    solid = py3dmodel.construct.make_solid(shell)
+    solid = py3dmodel.modify.fix_shape(solid)
+    return solid
+    
+#function to round the points
+def round_points(pyptlist):
+    rounded =  []
+    for point in pyptlist:
+        rounded_pt = (round(point[0],5), round(point[1],5), round(point[2],5))
+        rounded.append(rounded_pt)
+    return rounded

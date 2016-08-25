@@ -1,4 +1,4 @@
-from . import py3dmodel
+import py3dmodel
 
 def calculate_srfs_area(occ_srflist):
     area = 0
@@ -6,15 +6,37 @@ def calculate_srfs_area(occ_srflist):
         area = area + py3dmodel.calculate.face_area(srf)
     return area
     
-def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
-    #loop thru all the polygons and change them to pythonocc objects
-    facet_faces = []
-    for pypolgyon in facet_pypolygons:
-       facet_face = py3dmodel.construct.make_polygon(pypolgyon)
-       facet_faces.append(facet_face)
-       
-
-    facet_faces_compound = py3dmodel.construct.make_compound(facet_faces)
+def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
+    '''
+    Algorithm to calculate frontal area index
+    
+    PARAMETERS
+    ----------
+    :param facet_occpolygons : a list of occ faces of vertical facades 
+    :ptype: list(occface)
+    
+    :param plane_occpolygon: an occ face that is the horizontal plane of the vertical facades
+    :ptype: occface
+    
+    RETURNS
+    -------
+    :returns fai: frontal area index 
+    :rtype: float
+    
+    :returns fuse_srfs: the projected surfaces fused together
+    :rtype: list(occface)
+    
+    :returns projected_facet_faces: the projected surfaces not fuse together
+    :rtype: list(occface)
+    
+    :returns wind_plane: the plane representing the direction of the wind
+    :rtype: occface
+    
+    :returns surfaces_projected: the facade surfaces that are projected
+    :rtype: list(occface)
+    
+    '''
+    facet_faces_compound = py3dmodel.construct.make_compound(facet_occpolygons)
      
     #create win dir plane
     #get the bounding box of the compound, so that the wind plane will be placed at the edge of the bounding box
@@ -30,7 +52,7 @@ def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
     
     surfaces_projected = []
     projected_facet_faces = []
-    for facet_face in facet_faces:
+    for facet_face in facet_occpolygons:
         srf_dir = py3dmodel.calculate.face_normal(facet_face)
         #srf_midpt = py3dmodel.calculate.face_midpt(urb_face)
         angle = py3dmodel.calculate.angle_bw_2_vecs(wind_dir, srf_dir)
@@ -57,11 +79,10 @@ def frontal_area_index(facet_pypolygons, plane_pypolgon, wind_dir):
     
     #calculate the frontal area index
     facet_area = calculate_srfs_area(fuse_srfs)
-    plane_polygon = py3dmodel.construct.make_polygon(plane_pypolgon)
-    plane_area = py3dmodel.calculate.face_area(plane_polygon)
+    plane_area = py3dmodel.calculate.face_area(plane_occpolygon)
     fai = facet_area/plane_area
     
     return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
     
 def public_transport_usability_index():
-    
+    pass

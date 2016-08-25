@@ -4,7 +4,7 @@ from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf
 from OCC.ShapeFix import ShapeFix_Shell
 from OCC.BRepLib import breplib
 
-from . import fetch
+import fetch
 
 def move(orig_pt, location_pt, shape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())

@@ -15,13 +15,13 @@
  
 # This file contains the definitions of all materials in
 # the RADIANCE scene.
-# The scene geometry is stored in 'F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\dfai_data\rad\dfai_data_geometry.rad'.
+# The scene geometry is stored in 'F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\dfai_data\rad\dfai_data_geometry.rad'.
  
 
-# SOURCE FILE: F:\kianwee_work\spyder_workspace\envuo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad 
+# SOURCE FILE: F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad 
 
 
-# SOURCE FILE: F:\kianwee_work\spyder_workspace\envuo\py2radiance\base.rad 
+# SOURCE FILE: F:\kianwee_work\spyder_workspace\pylibudo\py2radiance\base.rad 
 
 void plastic RAL2012 0 0 5 0.2385 0.2385 0.2385 0.0000 0.0000 
 

@@ -3,9 +3,9 @@
 from lxml import etree
 from lxml.etree import ElementTree, Element
 
-from . import gmlgeometry
-from . import write_gmlgeometry
-from . import write_gml
+import gmlgeometry
+import write_gmlgeometry
+import write_gml
 
 
 class Writer(object):

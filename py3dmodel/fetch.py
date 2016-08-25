@@ -3,6 +3,35 @@ from OCC.BRep import BRep_Tool
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX
 from OCC.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
+import calculate
+
+def pyptlist_frm_occface(occ_face):
+    wire_list = wires_frm_face(occ_face)
+    occpt_list = []
+    pt_list = []
+    for wire in wire_list:
+        occpts = points_frm_wire(wire)
+        occpt_list.extend(occpts)
+        
+    for occpt in occpt_list:
+        pt = (occpt.X(), occpt.Y(), occpt.Z()) 
+        pt_list.append(pt)
+    
+    normal = calculate.face_normal(occ_face)
+    anticlockwise = calculate.is_anticlockwise(pt_list, normal)
+    if anticlockwise:
+        pt_list.reverse()
+        return pt_list
+    else:
+        return pt_list
+    
+def pyptlist_frm_occwire(occ_wire):
+    pt_list = []
+    occpt_list = points_frm_wire(occ_wire)
+    for occpt in occpt_list:
+        pt = (occpt.X(), occpt.Y(), occpt.Z()) 
+        pt_list.append(pt)
+    return pt_list
 
 def vertex2point(occ_vertex):
     occ_pnt = BRep_Tool.Pnt(occ_vertex)

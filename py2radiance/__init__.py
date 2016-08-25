@@ -8,7 +8,7 @@ import ntpath
 import subprocess
 import shutil
 
-from . import write_rad
+import write_rad
 
 class Rad(object):
     def __init__(self, base_file_path, data_folder_path):

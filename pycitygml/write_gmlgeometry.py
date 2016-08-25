@@ -1,7 +1,7 @@
 import uuid
 
 from lxml.etree import Element, SubElement
-from . import write_gml
+import write_gml
 
 def pos_list2text(pos_list):
     pos_text = ""

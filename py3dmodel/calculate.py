@@ -12,7 +12,6 @@ from OCC.BRepCheck import BRepCheck_Wire
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
 from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon
 
 def get_bounding_box(occ_shape):
     return Common.get_boundingbox(occ_shape)

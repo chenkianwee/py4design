@@ -14,8 +14,8 @@ from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 
-from . import fetch
-from . import calculate
+import fetch
+import calculate
 
 def make_polygon(pyptlist):   
     array = []

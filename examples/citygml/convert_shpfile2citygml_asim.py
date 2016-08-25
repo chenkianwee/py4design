@@ -6,7 +6,7 @@ import uuid
 import shapefile
 
 #non-built in packages
-import envuo
+import pylibudo
 
 #=========================================================================================================================================
 #SPECIFY ALL THE NECCESSARY INPUTS
@@ -67,19 +67,19 @@ def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
                 name = "bus_stop" + str(uuid.uuid1())
             generic_attrib_dict = {"highway":highway}
             #transform to the location of the bus stop
-            bus_stop_box = envuo.gml3dmodel.make_transit_stop_box(5,2,3)
+            bus_stop_box = pylibudo.gml3dmodel.make_transit_stop_box(5,2,3)
             shp_pts = rec.shape.points
             for pt in shp_pts:
                 geometry_list = []
-                pt3d = envuo.shp2citygml.point2d_2_3d(pt,0.0)
-                stopbox = envuo.gml3dmodel.create_transit_stop_geometry(bus_stop_box,pt3d)
-                face_list = envuo.py3dmodel.fetch.faces_frm_solid(envuo.py3dmodel.fetch.shape2shapetype(stopbox))
+                pt3d = pylibudo.shp2citygml.point2d_2_3d(pt,0.0)
+                stopbox = pylibudo.gml3dmodel.create_transit_stop_geometry(bus_stop_box,pt3d)
+                face_list = pylibudo.py3dmodel.fetch.faces_frm_solid(pylibudo.py3dmodel.fetch.shape2shapetype(stopbox))
                 #get the surfaces from the solid 
                 for face in face_list:
-                    pt_list = envuo.interface2py3d.pyptlist_frm_occface(face)
+                    pt_list = pylibudo.py3dmodel.fetch.pyptlist_frm_occface(face)
                     first_pt = pt_list[0]
                     pt_list.append(first_pt)
-                    srf = envuo.pycitygml.gmlgeometry.SurfaceMember(pt_list)
+                    srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(pt_list)
                     geometry_list.append(srf)
                     
             citygml.add_cityfurniture("lod1", name,"1000","1110", epsg_num, generic_attrib_dict, geometry_list)
@@ -94,19 +94,19 @@ def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
             storey_blw_grd = 0
             
             #transform to the location of the bus stop
-            transit_station_box = envuo.gml3dmodel.make_transit_stop_box(5,20,3)
+            transit_station_box = pylibudo.gml3dmodel.make_transit_stop_box(5,20,3)
             shp_pts = rec.shape.points
             geometry_list = []
             for pt in shp_pts:
-                pt3d = envuo.shp2citygml.point2d_2_3d(pt, 0.0)
-                stationbox = envuo.gml3dmodel.create_transit_stop_geometry(transit_station_box,pt3d)
-                face_list = envuo.py3dmodel.fetch.faces_frm_solid(envuo.py3dmodel.fetch.shape2shapetype(stationbox))
+                pt3d = pylibudo.shp2citygml.point2d_2_3d(pt, 0.0)
+                stationbox = pylibudo.gml3dmodel.create_transit_stop_geometry(transit_station_box,pt3d)
+                face_list = pylibudo.py3dmodel.fetch.faces_frm_solid(pylibudo.py3dmodel.fetch.shape2shapetype(stationbox))
                 #get the surfaces from the solid 
                 for face in face_list:
-                    pt_list = envuo.interface2py3d.pyptlist_frm_occface(face)
+                    pt_list = pylibudo.py3dmodel.fetch.pyptlist_frm_occface(face)
                     first_pt = pt_list[0]
                     pt_list.append(first_pt)
-                    srf = envuo.pycitygml.gmlgeometry.SurfaceMember(pt_list)
+                    srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(pt_list)
                     geometry_list.append(srf)
                     
             trpst_bldg_list.append(name)                
@@ -131,11 +131,11 @@ def convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml):
         
         if not railway.isspace():
             generic_attrib_dict = {"railway":railway}
-            envuo.shp2citygml.trpst2citygml("Railway", rec, name, railway, epsg_num, generic_attrib_dict, citygml)
+            pylibudo.shp2citygml.trpst2citygml("Railway", rec, name, railway, epsg_num, generic_attrib_dict, citygml)
             
         if not highway.isspace():
             generic_attrib_dict = {"highway":highway}
-            envuo.shp2citygml.trpst2citygml("Road", rec, name, highway, epsg_num, generic_attrib_dict, citygml)
+            pylibudo.shp2citygml.trpst2citygml("Road", rec, name, highway, epsg_num, generic_attrib_dict, citygml)
         
         count_shapes+=1
         
@@ -156,26 +156,26 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
     #=======================================================================================================               
     if building.isspace() and not landuse.isspace():
         #the geometry is stored in parts and points
-        surface_list = envuo.shp2citygml.get_geometry(rec)
+        surface_list = pylibudo.shp2citygml.get_geometry(rec)
         if surface_list:
             geometry_list = []
             for p_srf in surface_list:
-                luse_pts = envuo.shp2citygml.point_list2d_2_3d(p_srf,0.0)
-                luse_pts = envuo.gml3dmodel.landuse_surface_cclockwise(luse_pts)
-                srf = envuo.pycitygml.gmlgeometry.SurfaceMember(luse_pts)
+                luse_pts = pylibudo.shp2citygml.point_list2d_2_3d(p_srf,0.0)
+                luse_pts = pylibudo.gml3dmodel.landuse_surface_cclockwise(luse_pts)
+                srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(luse_pts)
                 geometry_list.append(srf)
                 
             if name.isspace():
                 name = "plot" + str(count_shapes)
             
-            function = envuo.shp2citygml.map_osm2citygml_landuse_function(landuse)
+            function = pylibudo.shp2citygml.map_osm2citygml_landuse_function(landuse)
             generic_attrib_dict = {"landuse":landuse}
             
             plot_ratio =  poly_attribs[plot_ratio_index]
             if plot_ratio != None:
                 generic_attrib_dict["plot_ratio"] = plot_ratio
 
-            plot_area = envuo.shp2citygml.get_plot_area(rec)
+            plot_area = pylibudo.shp2citygml.get_plot_area(rec)
             generic_attrib_dict["plot_area"] = plot_area
             
             citygml.add_landuse("lod1", name, function, epsg_num, generic_attrib_dict, geometry_list)
@@ -183,7 +183,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
             #=======================================================================================================
             #find the buildings that belong to this plot
             #=======================================================================================================
-            buildings_on_plot_list = envuo.shp2citygml.buildings_on_plot(rec, building_list)
+            buildings_on_plot_list = pylibudo.shp2citygml.buildings_on_plot(rec, building_list)
             
             #if count_shapes == 93:
             #    print "PLOT NO.:", count_shapes
@@ -212,14 +212,14 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                 for not_parking in not_parking_list:
                     bgeom_list = not_parking["geometry"]
                     for bgeom in bgeom_list:
-                        build_footprint = build_footprint + envuo.py3dmodel.calculate.face_area(bgeom)
+                        build_footprint = build_footprint + pylibudo.py3dmodel.calculate.face_area(bgeom)
                         
                 #then measure the total parking footprint on this plot
                 multi_parking_footprint = 0
                 for parking in parking_list:
                     bgeom_list = parking["geometry"]
                     for bgeom in bgeom_list:
-                        multi_parking_footprint = multi_parking_footprint + envuo.py3dmodel.calculate.face_area(bgeom)
+                        multi_parking_footprint = multi_parking_footprint + pylibudo.py3dmodel.calculate.face_area(bgeom)
     
                 #base on the footprints calculate how many storeys are the buildings
                 if build_footprint !=0:
@@ -235,7 +235,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                             
                             if multi_parking_footprint !=0:
                                 #base on the parking footprint estimate how high the multistorey carpark should be 
-                                total_parking_area = envuo.shp2citygml.calc_residential_parking_area(total_build_up)
+                                total_parking_area = pylibudo.shp2citygml.calc_residential_parking_area(total_build_up)
                                 parking_storeys = int(round(total_parking_area/multi_parking_footprint))
                                 parking_storey_height = 2.5
                                 parking_height = parking_storey_height*parking_storeys
@@ -243,7 +243,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                                 #write the carparks as buildings
                                 for parking in parking_list:
                                     perror(parking, parking_storeys, perror_list, inacc_buildings)
-                                    envuo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                    pylibudo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
                                             
                         #TODO: calculate for commercial buildings in terms of parking space too 
                         else:
@@ -252,7 +252,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                         
                         for not_parking in not_parking_list:
                             perror(not_parking, num_storeys, perror_list, inacc_buildings)
-                            envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                            pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                         
                     #================================================================================================================
                     #for those plots without plot ratio and might be educational or civic buildings
@@ -273,7 +273,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                         for not_parking in not_parking_list:
                             height = num_storeys*commercial_height
                             perror(not_parking, num_storeys, perror_list, inacc_buildings)
-                            envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                            pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             
     return total_build_up, perror_list, constr_buildings, inacc_buildings
                    
@@ -293,26 +293,26 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
     #=======================================================================================================               
     if building.isspace() and not landuse.isspace():
         #the geometry is stored in parts and points
-        surface_list = envuo.shp2citygml.get_geometry(rec)
+        surface_list = pylibudo.shp2citygml.get_geometry(rec)
         if surface_list:
             geometry_list = []
             for p_srf in surface_list:
-                luse_pts = envuo.shp2citygml.point_list2d_2_3d(p_srf,0.0)
-                luse_pts = envuo.gml3dmodel.landuse_surface_cclockwise(luse_pts)
-                srf = envuo.pycitygml.gmlgeometry.SurfaceMember(luse_pts)
+                luse_pts = pylibudo.shp2citygml.point_list2d_2_3d(p_srf,0.0)
+                luse_pts = pylibudo.gml3dmodel.landuse_surface_cclockwise(luse_pts)
+                srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(luse_pts)
                 geometry_list.append(srf)
                 
             if name.isspace():
                 name = "plot" + str(count_shapes)
             
-            function = envuo.shp2citygml.map_osm2citygml_landuse_function(landuse)
+            function = pylibudo.shp2citygml.map_osm2citygml_landuse_function(landuse)
             generic_attrib_dict = {"landuse":landuse}
             
             plot_ratio =  poly_attribs[plot_ratio_index]
             if plot_ratio != None:
                 generic_attrib_dict["plot_ratio"] = plot_ratio
 
-            plot_area = envuo.shp2citygml.get_plot_area(rec)
+            plot_area = pylibudo.shp2citygml.get_plot_area(rec)
             generic_attrib_dict["plot_area"] = plot_area
             
             citygml.add_landuse("lod1", name, function, epsg_num, generic_attrib_dict, geometry_list)
@@ -320,7 +320,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
             #=======================================================================================================
             #find the buildings that belong to this plot
             #=======================================================================================================
-            buildings_on_plot_list = envuo.shp2citygml.buildings_on_plot(rec, building_list)
+            buildings_on_plot_list = pylibudo.shp2citygml.buildings_on_plot(rec, building_list)
             in_construction = False
             #check if any of the buildings are under construction 
             for cbuilding in buildings_on_plot_list:
@@ -343,14 +343,14 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                 for not_parking in not_parking_list:
                     bgeom_list = not_parking["geometry"]
                     for bgeom in bgeom_list:
-                        build_footprint = build_footprint + envuo.py3dmodel.calculate.face_area(bgeom)
+                        build_footprint = build_footprint + pylibudo.py3dmodel.calculate.face_area(bgeom)
                         
                 #then measure the total parking footprint on this plot
                 multi_parking_footprint = 0
                 for parking in parking_list:
                     bgeom_list = parking["geometry"]
                     for bgeom in bgeom_list:
-                        multi_parking_footprint = multi_parking_footprint + envuo.py3dmodel.calculate.face_area(bgeom)
+                        multi_parking_footprint = multi_parking_footprint + pylibudo.py3dmodel.calculate.face_area(bgeom)
     
                 #base on the footprints calculate how many storeys are the buildings
                 if build_footprint !=0:
@@ -366,7 +366,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                             
                             if multi_parking_footprint !=0:
                                 #base on the parking footprint estimate how high the multistorey carpark should be 
-                                total_parking_area = envuo.shp2citygml.calc_residential_parking_area(total_build_up)
+                                total_parking_area = pylibudo.shp2citygml.calc_residential_parking_area(total_build_up)
                                 parking_storeys = int(round(total_parking_area/multi_parking_footprint))
                                 parking_storey_height = 2.5
                                 parking_height = parking_storey_height*parking_storeys
@@ -377,9 +377,9 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                         blevel_list.append(parking)
                                         parking_storeys = parking["building_l"]
                                         parking_height = parking_storey_height*parking_storeys
-                                        envuo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                        pylibudo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
                                     else:
-                                        envuo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                        pylibudo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
                                             
                         #TODO: calculate for commercial buildings in terms of parking space too 
                         else:
@@ -394,9 +394,9 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                     height = residential_height*num_storeys
                                 else:
                                     height = commercial_height*num_storeys
-                                envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             else:
-                                envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                         
                     #================================================================================================================
                     #for those plots without plot ratio and might be educational or civic buildings
@@ -419,10 +419,10 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                 blevel_list.append(not_parking)
                                 num_storeys = not_parking["building_l"]
                                 height = commercial_height*num_storeys
-                                envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             else:
                                 height = num_storeys*commercial_height
-                                envuo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pylibudo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
                             
     return total_build_up, constr_buildings, blevel_list
     
@@ -462,7 +462,7 @@ def convert(shpfile_list, citygml):
     #get the building footprints
     building_list = []
     for shpfile in shpfile_list:
-        buildings = envuo.shp2citygml.get_buildings(shpfile)
+        buildings = pylibudo.shp2citygml.get_buildings(shpfile)
         if buildings:
             building_list.extend(buildings)
             
@@ -480,8 +480,8 @@ def convert(shpfile_list, citygml):
         shapetype = shapeRecs[0].shape.shapeType
         
         #get the project CRS of the shapefile
-        epsg_num = "EPSG:" + envuo.shp2citygml.get_shpfile_epsg(shpfile)
-        field_name_list = envuo.shp2citygml.get_field_name_list(sf)
+        epsg_num = "EPSG:" + pylibudo.shp2citygml.get_shpfile_epsg(shpfile)
+        field_name_list = pylibudo.shp2citygml.get_field_name_list(sf)
         
         #shapetype 1 is point, 3 is polyline, shapetype 5 is polygon
         #if it is a point file it must be recording the location of the bus stops and subway stations
@@ -517,7 +517,7 @@ def convert_origlvl(shpfile_list, citygml):
     #get the building footprints
     building_list = []
     for shpfile in shpfile_list:
-        buildings = envuo.shp2citygml.get_buildings(shpfile)
+        buildings = pylibudo.shp2citygml.get_buildings(shpfile)
         if buildings:
             building_list.extend(buildings)
             
@@ -534,8 +534,8 @@ def convert_origlvl(shpfile_list, citygml):
         shapetype = shapeRecs[0].shape.shapeType
         
         #get the project CRS of the shapefile
-        epsg_num = "EPSG:" + envuo.shp2citygml.get_shpfile_epsg(shpfile)
-        field_name_list = envuo.shp2citygml.get_field_name_list(sf)
+        epsg_num = "EPSG:" + pylibudo.shp2citygml.get_shpfile_epsg(shpfile)
+        field_name_list = pylibudo.shp2citygml.get_field_name_list(sf)
         
         #shapetype 1 is point, 3 is polyline, shapetype 5 is polygon
         #if it is a point file it must be recording the location of the bus stops and subway stations
@@ -565,8 +565,8 @@ print "CONVERTING ... ..."
 time1 = time.clock()  
 
 #initialise the citygml writer
-citygml_writer = envuo.pycitygml.Writer()
-citygml_writer_origlvl = envuo.pycitygml.Writer()
+citygml_writer = pylibudo.pycitygml.Writer()
+citygml_writer_origlvl = pylibudo.pycitygml.Writer()
 #convert the shpfiles into 3d citygml using the citygmlenv library
 convert([shpfile1,shpfile2,shpfile3,shpfile4],citygml_writer)
 citygml_writer.write(citygml_filepath)

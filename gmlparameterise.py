@@ -1,9 +1,9 @@
 import random
 
-from . import pycitygml
-from . import py3dmodel
-from . import gml3dmodel
-from . import interface2py3d
+import pycitygml
+import py3dmodel
+import gml3dmodel
+import threedmodel
 
 class Parameterise(object):
     def __init__(self, citygmlfile):
@@ -25,7 +25,7 @@ class Parameterise(object):
             for building in buildings:
                 footprint_dict = {}
                 polygons = self.citygml.get_pypolygon_list(building)
-                solid = interface2py3d.pypolygons2occsolid(polygons)
+                solid = threedmodel.pypolygons2occsolid(polygons)
                 footprint = gml3dmodel.get_building_footprint(solid)
                 footprint_dict["footprint"] = footprint
                 footprint_dict["building"] = building
@@ -107,7 +107,7 @@ class Parameterise(object):
         pt_list_list = []
         
         for face in face_list:
-            pt_list = interface2py3d.pyptlist_frm_occface(face)
+            pt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
             first_pt = pt_list[0]
             pt_list.append(first_pt)
             pt_list_list.append(pt_list)

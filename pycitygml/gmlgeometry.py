@@ -1,4 +1,4 @@
-from . import write_gmlgeometry
+import write_gmlgeometry
 
 class SurfaceMember(object):
     def __init__(self, pos_list):
