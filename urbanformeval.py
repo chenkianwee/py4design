@@ -1,3 +1,23 @@
+# ==================================================================================================
+#
+#    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
+#
+#    This file is part of pylibudo
+#
+#    Pylibudo is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Pylibudo is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ==================================================================================================
 import py3dmodel
 
 def calculate_srfs_area(occ_srflist):
@@ -60,7 +80,7 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
         if angle<90:
             surfaces_projected.append(facet_face)
             projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facet_face)
-            projected_srf = py3dmodel.construct.make_polygon(projected_pts)
+            projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
             if py3dmodel.calculate.face_area(projected_srf) >0:
                 projected_facet_faces.append(projected_srf)
          

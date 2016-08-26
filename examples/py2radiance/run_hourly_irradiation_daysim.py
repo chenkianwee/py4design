@@ -1,5 +1,5 @@
 import os 
-import envuo
+import pylibudo
 
 #create all the relevant folders 
 current_path = os.path.dirname(__file__)
@@ -7,11 +7,11 @@ base_filepath = os.path.join(current_path, 'base.rad')
 data_folderpath = os.path.join(current_path, 'py2radiance_data')
 display2dlist = []
 #initialise py2radiance 
-rad = envuo.py2radiance.Rad(base_filepath, data_folderpath)
+rad = pylibudo.py2radiance.Rad(base_filepath, data_folderpath)
 
 #create a box 10x10x10m
-box = envuo.py3dmodel.construct.make_box(10,10,10)
-occfaces = envuo.py3dmodel.fetch.faces_frm_solid(box)
+box = pylibudo.py3dmodel.construct.make_box(10,10,10)
+occfaces = pylibudo.py3dmodel.fetch.faces_frm_solid(box)
 displaylist = []
 displaylist.append(box)
 #display2dlist.append(displaylist)
@@ -22,20 +22,20 @@ face_cnt = 0
 displaylist2 = []
 for occface in occfaces:
     radsrfname = "srf" + str(face_cnt)
-    rad_polygon = envuo.interface2py3d.pyptlist_frm_occface(occface)
+    rad_polygon = pylibudo.py3dmodel.fetch.pyptlist_frm_occface(occface)
     srfmat = "RAL9010_pur_white_paint"
-    envuo.py2radiance.RadSurface(radsrfname,rad_polygon,srfmat,rad)
+    pylibudo.py2radiance.RadSurface(radsrfname,rad_polygon,srfmat,rad)
     
     #get the surface that is pointing upwards, the roof
-    normal = envuo.py3dmodel.calculate.face_normal(occface)
+    normal = pylibudo.py3dmodel.calculate.face_normal(occface)
     if normal == (1,0,0):
         #generate the sensor points
-        grid_occfaces = envuo.py3dmodel.construct.grid_face(occface,3,3)
+        grid_occfaces = pylibudo.py3dmodel.construct.grid_face(occface,3,3)
         display2dlist.append(grid_occfaces)
         #calculate the midpt of each surface
         for grid_occface in grid_occfaces:
-            midpt = envuo.py3dmodel.calculate.face_midpt(grid_occface)
-            midpt = envuo.py3dmodel.modify.move_pt(midpt,normal,0.8)
+            midpt = pylibudo.py3dmodel.calculate.face_midpt(grid_occface)
+            midpt = pylibudo.py3dmodel.modify.move_pt(midpt,normal,0.8)
             sensor_pts.append(midpt)
             sensor_dirs.append(normal)
     face_cnt+=1
@@ -58,4 +58,5 @@ rad.write_default_radiance_parameters()#the default settings are the complex sce
 rad.execute_gen_dc("w/m2")
 rad.execute_ds_illum()
 
-#envuo.py3dmodel.construct.visualise(display2dlist, ["WHITE"])
+print "DONE"
+pylibudo.py3dmodel.construct.visualise(display2dlist, ["WHITE"])

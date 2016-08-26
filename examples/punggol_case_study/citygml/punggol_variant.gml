@@ -7,61 +7,61 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:58.594000</creationDate>
+      <creationDate>2016-08-26 16:35:13</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f480a21-3e8d-11e6-a343-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a8f680-6b68-11e6-9ab9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f483130-3e8d-11e6-87b7-b88687e81fce">
-                      <gml:posList srsDimension="3">10248689.1031 852170.558714 1e-06 10248689.1031 852170.558714 17.500001 10248649.8849 852140.601288 17.500001 10248649.8849 852140.601288 1e-06 10248689.1031 852170.558714 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a8f681-6b68-11e6-86c7-b88687e81fce">
+                      <gml:posList srsDimension="3">10248484.9537 852089.103164 1e-06 10248484.9537 852089.103164 17.500001 10248485.8176 852039.759851 17.500001 10248485.8176 852039.759851 1e-06 10248484.9537 852089.103164 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f483131-3e8d-11e6-a034-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a8f682-6b68-11e6-88f5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f483132-3e8d-11e6-9643-b88687e81fce">
-                      <gml:posList srsDimension="3">10248649.8849 852140.601288 1e-06 10248649.8849 852140.601288 17.500001 10248627.767 852169.153652 17.500001 10248627.767 852169.153652 1e-06 10248649.8849 852140.601288 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a8f683-6b68-11e6-a603-b88687e81fce">
+                      <gml:posList srsDimension="3">10248521.0601 852089.979847 1e-06 10248521.0601 852089.979847 17.500001 10248484.9537 852089.103164 17.500001 10248484.9537 852089.103164 1e-06 10248521.0601 852089.979847 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f483133-3e8d-11e6-9a2a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a91d8f-6b68-11e6-bddb-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f483134-3e8d-11e6-bf81-b88687e81fce">
-                      <gml:posList srsDimension="3">10248627.767 852169.153652 1e-06 10248627.767 852169.153652 17.500001 10248666.9963 852199.122431 17.500001 10248666.9963 852199.122431 1e-06 10248627.767 852169.153652 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a91d90-6b68-11e6-a1b4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248521.9265 852040.620827 1e-06 10248521.9265 852040.620827 17.500001 10248521.0601 852089.979847 17.500001 10248521.0601 852089.979847 1e-06 10248521.9265 852040.620827 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f483135-3e8d-11e6-a3a7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a91d91-6b68-11e6-bfdf-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f483136-3e8d-11e6-85d6-b88687e81fce">
-                      <gml:posList srsDimension="3">10248666.9963 852199.122431 1e-06 10248666.9963 852199.122431 17.500001 10248689.1031 852170.558714 17.500001 10248689.1031 852170.558714 1e-06 10248666.9963 852199.122431 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a91d92-6b68-11e6-90d5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248485.8176 852039.759851 1e-06 10248485.8176 852039.759851 17.500001 10248521.9265 852040.620827 17.500001 10248521.9265 852040.620827 1e-06 10248485.8176 852039.759851 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f483137-3e8d-11e6-82ae-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a91d93-6b68-11e6-a625-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f483138-3e8d-11e6-84fe-b88687e81fce">
-                      <gml:posList srsDimension="3">10248689.1031 852170.558714 1e-06 10248649.8849 852140.601288 1e-06 10248627.767 852169.153652 1e-06 10248666.9963 852199.122431 1e-06 10248689.1031 852170.558714 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a91d94-6b68-11e6-8a19-b88687e81fce">
+                      <gml:posList srsDimension="3">10248521.9265 852040.620827 1e-06 10248521.0601 852089.979847 1e-06 10248484.9537 852089.103164 1e-06 10248485.8176 852039.759851 1e-06 10248521.9265 852040.620827 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f483139-3e8d-11e6-a01a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a91d95-6b68-11e6-a617-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f48313a-3e8d-11e6-a7bb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248649.8849 852140.601288 17.500001 10248689.1031 852170.558714 17.500001 10248666.9963 852199.122431 17.500001 10248627.767 852169.153652 17.500001 10248649.8849 852140.601288 17.500001</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a91d96-6b68-11e6-9dac-b88687e81fce">
+                      <gml:posList srsDimension="3">10248521.0601 852089.979847 17.500001 10248521.9265 852040.620827 17.500001 10248485.8176 852039.759851 17.500001 10248484.9537 852089.103164 17.500001 10248521.0601 852089.979847 17.500001</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -96,61 +96,61 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:58.596000</creationDate>
+      <creationDate>2016-08-26 16:35:13.002000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f485840-3e8d-11e6-9687-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944a1-6b68-11e6-bd95-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f485841-3e8d-11e6-93e2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248563.2696 852168.896159 1e-06 10248563.2696 852168.896159 17.500001 10248603.333 852112.06597 17.500001 10248603.333 852112.06597 1e-06 10248563.2696 852168.896159 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944a2-6b68-11e6-b4b3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248501.4595 852112.769775 1e-06 10248501.4595 852112.769775 17.500001 10248548.8488 852061.887527 17.500001 10248548.8488 852061.887527 1e-06 10248501.4595 852112.769775 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f485842-3e8d-11e6-98f3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944a3-6b68-11e6-b91e-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f485843-3e8d-11e6-9484-b88687e81fce">
-                      <gml:posList srsDimension="3">10248603.333 852112.06597 1e-06 10248603.333 852112.06597 17.500001 10248573.6112 852090.827941 17.500001 10248573.6112 852090.827941 1e-06 10248603.333 852112.06597 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944a4-6b68-11e6-ad50-b88687e81fce">
+                      <gml:posList srsDimension="3">10248528.032 852137.836573 1e-06 10248528.032 852137.836573 17.500001 10248501.4595 852112.769775 17.500001 10248501.4595 852112.769775 1e-06 10248528.032 852137.836573 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f485844-3e8d-11e6-9630-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944a5-6b68-11e6-b49d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f485845-3e8d-11e6-b8b3-b88687e81fce">
-                      <gml:posList srsDimension="3">10248573.6112 852090.827941 1e-06 10248573.6112 852090.827941 17.500001 10248533.5478 852147.658142 17.500001 10248533.5478 852147.658142 1e-06 10248573.6112 852090.827941 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944a6-6b68-11e6-9c57-b88687e81fce">
+                      <gml:posList srsDimension="3">10248575.4213 852086.954311 1e-06 10248575.4213 852086.954311 17.500001 10248528.032 852137.836573 17.500001 10248528.032 852137.836573 1e-06 10248575.4213 852086.954311 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f485846-3e8d-11e6-83e3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944a7-6b68-11e6-a0db-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f485847-3e8d-11e6-a9ad-b88687e81fce">
-                      <gml:posList srsDimension="3">10248533.5478 852147.658142 1e-06 10248533.5478 852147.658142 17.500001 10248563.2696 852168.896159 17.500001 10248563.2696 852168.896159 1e-06 10248533.5478 852147.658142 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944a8-6b68-11e6-8881-b88687e81fce">
+                      <gml:posList srsDimension="3">10248548.8488 852061.887527 1e-06 10248548.8488 852061.887527 17.500001 10248575.4213 852086.954311 17.500001 10248575.4213 852086.954311 1e-06 10248548.8488 852061.887527 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f485848-3e8d-11e6-9e8a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944a9-6b68-11e6-a2eb-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f485849-3e8d-11e6-aabf-b88687e81fce">
-                      <gml:posList srsDimension="3">10248563.2696 852168.896159 1e-06 10248603.333 852112.06597 1e-06 10248573.6112 852090.827941 1e-06 10248533.5478 852147.658142 1e-06 10248563.2696 852168.896159 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944aa-6b68-11e6-8305-b88687e81fce">
+                      <gml:posList srsDimension="3">10248575.4213 852086.954311 1e-06 10248528.032 852137.836573 1e-06 10248501.4595 852112.769775 1e-06 10248548.8488 852061.887527 1e-06 10248575.4213 852086.954311 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f48584a-3e8d-11e6-8224-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01a944ab-6b68-11e6-87fe-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f48584b-3e8d-11e6-84a5-b88687e81fce">
-                      <gml:posList srsDimension="3">10248603.333 852112.06597 17.500001 10248563.2696 852168.896159 17.500001 10248533.5478 852147.658142 17.500001 10248573.6112 852090.827941 17.500001 10248603.333 852112.06597 17.500001</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01a944ac-6b68-11e6-85ab-b88687e81fce">
+                      <gml:posList srsDimension="3">10248528.032 852137.836573 17.500001 10248575.4213 852086.954311 17.500001 10248548.8488 852061.887527 17.500001 10248501.4595 852112.769775 17.500001 10248528.032 852137.836573 17.500001</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -185,232 +185,232 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:58.646000</creationDate>
+      <creationDate>2016-08-26 16:35:13.129000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f4ff95e-3e8d-11e6-94f2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bca58f-6b68-11e6-855d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f4ff95f-3e8d-11e6-9de8-b88687e81fce">
-                      <gml:posList srsDimension="3">10248619.0021 852093.269258 1e-06 10248630.1966 852109.81616 1e-06 10248630.1966 852109.81616 6.0 10248619.0021 852093.269258 6.0 10248619.0021 852093.269258 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bca590-6b68-11e6-9c33-b88687e81fce">
+                      <gml:posList srsDimension="3">10248638.2417 852154.920934 15.0 10248626.039 852139.1029 15.0 10248626.039 852139.1029 1e-06 10248638.2417 852154.920934 1e-06 10248638.2417 852154.920934 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f4ff960-3e8d-11e6-a074-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccca1-6b68-11e6-810a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f4ff961-3e8d-11e6-8097-b88687e81fce">
-                      <gml:posList srsDimension="3">10248630.1966 852109.81616 1e-06 10248635.6211 852106.206792 1e-06 10248635.6211 852106.206792 6.0 10248630.1966 852109.81616 6.0 10248630.1966 852109.81616 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bccca2-6b68-11e6-bf26-b88687e81fce">
+                      <gml:posList srsDimension="3">10248626.039 852139.1029 15.0 10248620.8496 852143.042911 15.0 10248620.8496 852143.042911 1e-06 10248626.039 852139.1029 1e-06 10248626.039 852139.1029 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f4ff962-3e8d-11e6-83ef-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccca3-6b68-11e6-b6c4-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f4ff963-3e8d-11e6-b0a2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248635.6211 852106.206792 1e-06 10248633.9523 852103.73255 1e-06 10248633.9523 852103.73255 6.0 10248635.6211 852106.206792 6.0 10248635.6211 852106.206792 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bccca4-6b68-11e6-b49c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248620.8496 852143.042911 15.0 10248622.6692 852145.408481 15.0 10248622.6692 852145.408481 1e-06 10248620.8496 852143.042911 1e-06 10248620.8496 852143.042911 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502070-3e8d-11e6-a778-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccca5-6b68-11e6-9f1a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502071-3e8d-11e6-a068-b88687e81fce">
-                      <gml:posList srsDimension="3">10248633.9523 852103.73255 1e-06 10248636.5146 852102.016557 1e-06 10248636.5146 852102.016557 6.0 10248633.9523 852103.73255 6.0 10248633.9523 852103.73255 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bccca6-6b68-11e6-835d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248622.6692 852145.408481 15.0 10248620.2187 852147.280635 15.0 10248620.2187 852147.280635 1e-06 10248622.6692 852145.408481 1e-06 10248622.6692 852145.408481 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502072-3e8d-11e6-86f7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccca7-6b68-11e6-9180-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502073-3e8d-11e6-98b3-b88687e81fce">
-                      <gml:posList srsDimension="3">10248636.5146 852102.016557 1e-06 10248646.9589 852103.499726 1e-06 10248646.9589 852103.499726 6.0 10248636.5146 852102.016557 6.0 10248636.5146 852102.016557 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bccca8-6b68-11e6-a816-b88687e81fce">
+                      <gml:posList srsDimension="3">10248620.2187 852147.280635 15.0 10248609.7023 852146.450432 15.0 10248609.7023 852146.450432 1e-06 10248620.2187 852147.280635 1e-06 10248620.2187 852147.280635 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502074-3e8d-11e6-bd34-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccca9-6b68-11e6-a2fc-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502075-3e8d-11e6-928b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248646.9589 852103.499726 1e-06 10248648.247 852105.403676 1e-06 10248648.247 852105.403676 6.0 10248646.9589 852103.499726 6.0 10248646.9589 852103.499726 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccaa-6b68-11e6-b451-b88687e81fce">
+                      <gml:posList srsDimension="3">10248609.7023 852146.450432 15.0 10248608.2982 852144.630349 15.0 10248608.2982 852144.630349 1e-06 10248609.7023 852146.450432 1e-06 10248609.7023 852146.450432 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502076-3e8d-11e6-a5dc-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccab-6b68-11e6-a849-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502077-3e8d-11e6-bc7f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248648.247 852105.403676 1e-06 10248645.0201 852107.557865 1e-06 10248645.0201 852107.557865 6.0 10248648.247 852105.403676 6.0 10248648.247 852105.403676 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccac-6b68-11e6-b27d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248608.2982 852144.630349 15.0 10248611.3848 852142.279481 15.0 10248611.3848 852142.279481 1e-06 10248608.2982 852144.630349 1e-06 10248608.2982 852144.630349 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502078-3e8d-11e6-95ca-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccad-6b68-11e6-bcac-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502079-3e8d-11e6-a7d7-b88687e81fce">
-                      <gml:posList srsDimension="3">10248645.0201 852107.557865 1e-06 10248650.8542 852116.203613 1e-06 10248650.8542 852116.203613 6.0 10248645.0201 852107.557865 6.0 10248645.0201 852107.557865 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccae-6b68-11e6-bb70-b88687e81fce">
+                      <gml:posList srsDimension="3">10248611.3848 852142.279481 15.0 10248605.0238 852134.013632 15.0 10248605.0238 852134.013632 1e-06 10248611.3848 852142.279481 1e-06 10248611.3848 852142.279481 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50207a-3e8d-11e6-b385-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccaf-6b68-11e6-a618-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50207b-3e8d-11e6-91eb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248650.8542 852116.203613 1e-06 10248655.3998 852113.169278 1e-06 10248655.3998 852113.169278 6.0 10248650.8542 852116.203613 6.0 10248650.8542 852116.203613 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccb0-6b68-11e6-9a9d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248605.0238 852134.013632 15.0 10248600.6759 852137.325017 15.0 10248600.6759 852137.325017 1e-06 10248605.0238 852134.013632 1e-06 10248605.0238 852134.013632 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50207c-3e8d-11e6-9b33-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccb1-6b68-11e6-bcd7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50207d-3e8d-11e6-8aa0-b88687e81fce">
-                      <gml:posList srsDimension="3">10248655.3998 852113.169278 1e-06 10248652.7058 852109.190231 1e-06 10248652.7058 852109.190231 6.0 10248655.3998 852113.169278 6.0 10248655.3998 852113.169278 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccb2-6b68-11e6-b0e2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248600.6759 852137.325017 15.0 10248603.6123 852141.128668 15.0 10248603.6123 852141.128668 1e-06 10248600.6759 852137.325017 1e-06 10248600.6759 852137.325017 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50207e-3e8d-11e6-b283-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccb3-6b68-11e6-9a95-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50207f-3e8d-11e6-bac2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248652.7058 852109.190231 1e-06 10248658.9882 852104.998416 1e-06 10248658.9882 852104.998416 6.0 10248652.7058 852109.190231 6.0 10248652.7058 852109.190231 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccb4-6b68-11e6-adc8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248603.6123 852141.128668 15.0 10248597.6031 852145.703391 15.0 10248597.6031 852145.703391 1e-06 10248603.6123 852141.128668 1e-06 10248603.6123 852141.128668 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502080-3e8d-11e6-a2d7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccb5-6b68-11e6-b638-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502081-3e8d-11e6-9973-b88687e81fce">
-                      <gml:posList srsDimension="3">10248658.9882 852104.998416 1e-06 10248661.3288 852108.463929 1e-06 10248661.3288 852108.463929 6.0 10248658.9882 852104.998416 6.0 10248658.9882 852104.998416 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccb6-6b68-11e6-93d4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248597.6031 852145.703391 15.0 10248595.0513 852142.390286 15.0 10248595.0513 852142.390286 1e-06 10248597.6031 852145.703391 1e-06 10248597.6031 852145.703391 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502082-3e8d-11e6-96b9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccb7-6b68-11e6-b975-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502083-3e8d-11e6-8560-b88687e81fce">
-                      <gml:posList srsDimension="3">10248661.3288 852108.463929 1e-06 10248667.0785 852104.638828 1e-06 10248667.0785 852104.638828 6.0 10248661.3288 852108.463929 6.0 10248661.3288 852108.463929 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccb8-6b68-11e6-8b82-b88687e81fce">
+                      <gml:posList srsDimension="3">10248595.0513 852142.390286 15.0 10248589.5508 852146.565851 15.0 10248589.5508 852146.565851 1e-06 10248595.0513 852142.390286 1e-06 10248595.0513 852142.390286 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502084-3e8d-11e6-8b73-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccb9-6b68-11e6-b2d8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502085-3e8d-11e6-94a7-b88687e81fce">
-                      <gml:posList srsDimension="3">10248667.0785 852104.638828 1e-06 10248652.6847 852083.357111 1e-06 10248652.6847 852083.357111 6.0 10248667.0785 852104.638828 6.0 10248667.0785 852104.638828 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccba-6b68-11e6-b703-b88687e81fce">
+                      <gml:posList srsDimension="3">10248589.5508 852146.565851 15.0 10248605.2414 852166.91038 15.0 10248605.2414 852166.91038 1e-06 10248589.5508 852146.565851 1e-06 10248589.5508 852146.565851 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502086-3e8d-11e6-aff6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccbb-6b68-11e6-8779-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502087-3e8d-11e6-ac9b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248652.6847 852083.357111 1e-06 10248646.2487 852087.64819 1e-06 10248646.2487 852087.64819 6.0 10248652.6847 852083.357111 6.0 10248652.6847 852083.357111 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccbc-6b68-11e6-83a9-b88687e81fce">
+                      <gml:posList srsDimension="3">10248605.2414 852166.91038 15.0 10248611.3978 852162.227026 15.0 10248611.3978 852162.227026 1e-06 10248605.2414 852166.91038 1e-06 10248605.2414 852166.91038 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502088-3e8d-11e6-8683-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccbd-6b68-11e6-88c1-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502089-3e8d-11e6-8234-b88687e81fce">
-                      <gml:posList srsDimension="3">10248646.2487 852087.64819 1e-06 10248651.3593 852095.213776 1e-06 10248651.3593 852095.213776 6.0 10248646.2487 852087.64819 6.0 10248646.2487 852087.64819 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccbe-6b68-11e6-93f4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248611.3978 852162.227026 15.0 10248605.8262 852154.99421 15.0 10248605.8262 852154.99421 1e-06 10248611.3978 852162.227026 1e-06 10248611.3978 852162.227026 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50208a-3e8d-11e6-a18b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccbf-6b68-11e6-9eab-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50208b-3e8d-11e6-956d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248651.3593 852095.213776 1e-06 10248638.8147 852093.628076 1e-06 10248638.8147 852093.628076 6.0 10248651.3593 852095.213776 6.0 10248651.3593 852095.213776 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccc0-6b68-11e6-8f87-b88687e81fce">
+                      <gml:posList srsDimension="3">10248605.8262 852154.99421 15.0 10248618.4451 852155.79602 15.0 10248618.4451 852155.79602 1e-06 10248605.8262 852154.99421 1e-06 10248605.8262 852154.99421 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50208c-3e8d-11e6-9e82-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccc1-6b68-11e6-9596-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50208d-3e8d-11e6-8e50-b88687e81fce">
-                      <gml:posList srsDimension="3">10248638.8147 852093.628076 1e-06 10248632.9041 852084.896408 1e-06 10248632.9041 852084.896408 6.0 10248638.8147 852093.628076 6.0 10248638.8147 852093.628076 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccc2-6b68-11e6-8528-b88687e81fce">
+                      <gml:posList srsDimension="3">10248618.4451 852155.79602 15.0 10248624.8878 852164.142857 15.0 10248624.8878 852164.142857 1e-06 10248618.4451 852155.79602 1e-06 10248618.4451 852155.79602 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50208e-3e8d-11e6-ad2f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccc3-6b68-11e6-8b08-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50208f-3e8d-11e6-8314-b88687e81fce">
-                      <gml:posList srsDimension="3">10248632.9041 852084.896408 1e-06 10248629.495 852087.163315 1e-06 10248629.495 852087.163315 6.0 10248632.9041 852084.896408 6.0 10248632.9041 852084.896408 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccc4-6b68-11e6-a038-b88687e81fce">
+                      <gml:posList srsDimension="3">10248624.8878 852164.142857 15.0 10248628.1492 852161.668152 15.0 10248628.1492 852161.668152 1e-06 10248624.8878 852164.142857 1e-06 10248624.8878 852164.142857 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502090-3e8d-11e6-9a73-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccc5-6b68-11e6-9315-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502091-3e8d-11e6-b8d1-b88687e81fce">
-                      <gml:posList srsDimension="3">10248629.495 852087.163315 1e-06 10248630.9214 852089.281027 1e-06 10248630.9214 852089.281027 6.0 10248629.495 852087.163315 6.0 10248629.495 852087.163315 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccc6-6b68-11e6-bd0e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248628.1492 852161.668152 15.0 10248626.5937 852159.643333 15.0 10248626.5937 852159.643333 1e-06 10248628.1492 852161.668152 1e-06 10248628.1492 852161.668152 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502092-3e8d-11e6-8bf9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccc7-6b68-11e6-9b54-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502093-3e8d-11e6-869c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248630.9214 852089.281027 1e-06 10248626.8118 852092.020729 1e-06 10248626.8118 852092.020729 6.0 10248630.9214 852089.281027 6.0 10248630.9214 852089.281027 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccc8-6b68-11e6-9072-b88687e81fce">
+                      <gml:posList srsDimension="3">10248626.5937 852159.643333 15.0 10248630.5248 852156.653149 15.0 10248630.5248 852156.653149 1e-06 10248626.5937 852159.643333 1e-06 10248626.5937 852159.643333 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502094-3e8d-11e6-90e6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcccc9-6b68-11e6-82e9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502095-3e8d-11e6-8f71-b88687e81fce">
-                      <gml:posList srsDimension="3">10248626.8118 852092.020729 1e-06 10248624.9698 852089.296838 1e-06 10248624.9698 852089.296838 6.0 10248626.8118 852092.020729 6.0 10248626.8118 852092.020729 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcccca-6b68-11e6-8709-b88687e81fce">
+                      <gml:posList srsDimension="3">10248630.5248 852156.653149 15.0 10248632.5328 852159.257103 15.0 10248632.5328 852159.257103 1e-06 10248630.5248 852156.653149 1e-06 10248630.5248 852156.653149 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502096-3e8d-11e6-9c68-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bccccb-6b68-11e6-b15b-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502097-3e8d-11e6-8ad4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248624.9698 852089.296838 1e-06 10248619.0021 852093.269258 1e-06 10248619.0021 852093.269258 6.0 10248624.9698 852089.296838 6.0 10248624.9698 852089.296838 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bccccc-6b68-11e6-a6fd-b88687e81fce">
+                      <gml:posList srsDimension="3">10248632.5328 852159.257103 15.0 10248638.2417 852154.920934 15.0 10248638.2417 852154.920934 1e-06 10248632.5328 852159.257103 1e-06 10248632.5328 852159.257103 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f502098-3e8d-11e6-b782-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcf3b0-6b68-11e6-a0cd-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f502099-3e8d-11e6-a153-b88687e81fce">
-                      <gml:posList srsDimension="3">10248619.0021 852093.269258 6.0 10248630.1966 852109.81616 6.0 10248635.6211 852106.206792 6.0 10248633.9523 852103.73255 6.0 10248636.5146 852102.016557 6.0 10248646.9589 852103.499726 6.0 10248648.247 852105.403676 6.0 10248645.0201 852107.557865 6.0 10248650.8542 852116.203613 6.0 10248655.3998 852113.169278 6.0 10248652.7058 852109.190231 6.0 10248658.9882 852104.998416 6.0 10248661.3288 852108.463929 6.0 10248667.0785 852104.638828 6.0 10248652.6847 852083.357111 6.0 10248646.2487 852087.64819 6.0 10248651.3593 852095.213776 6.0 10248638.8147 852093.628076 6.0 10248632.9041 852084.896408 6.0 10248629.495 852087.163315 6.0 10248630.9214 852089.281027 6.0 10248626.8118 852092.020729 6.0 10248624.9698 852089.296838 6.0 10248619.0021 852093.269258 6.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcf3b1-6b68-11e6-813f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248632.5328 852159.257103 15.0 10248630.5248 852156.653149 15.0 10248626.5937 852159.643333 15.0 10248628.1492 852161.668152 15.0 10248624.8878 852164.142857 15.0 10248618.4451 852155.79602 15.0 10248605.8262 852154.99421 15.0 10248611.3978 852162.227026 15.0 10248605.2414 852166.91038 15.0 10248589.5508 852146.565851 15.0 10248595.0513 852142.390286 15.0 10248597.6031 852145.703391 15.0 10248603.6123 852141.128668 15.0 10248600.6759 852137.325017 15.0 10248605.0238 852134.013632 15.0 10248611.3848 852142.279481 15.0 10248608.2982 852144.630349 15.0 10248609.7023 852146.450432 15.0 10248620.2187 852147.280635 15.0 10248622.6692 852145.408481 15.0 10248620.8496 852143.042911 15.0 10248626.039 852139.1029 15.0 10248638.2417 852154.920934 15.0 10248632.5328 852159.257103 15.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f50209a-3e8d-11e6-b4b5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01bcf3b2-6b68-11e6-8282-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f50209b-3e8d-11e6-8686-b88687e81fce">
-                      <gml:posList srsDimension="3">10248630.1966 852109.81616 1e-06 10248619.0021 852093.269258 1e-06 10248624.9698 852089.296838 1e-06 10248626.8118 852092.020729 1e-06 10248630.9214 852089.281027 1e-06 10248629.495 852087.163315 1e-06 10248632.9041 852084.896408 1e-06 10248638.8147 852093.628076 1e-06 10248651.3593 852095.213776 1e-06 10248646.2487 852087.64819 1e-06 10248652.6847 852083.357111 1e-06 10248667.0785 852104.638828 1e-06 10248661.3288 852108.463929 1e-06 10248658.9882 852104.998416 1e-06 10248652.7058 852109.190231 1e-06 10248655.3998 852113.169278 1e-06 10248650.8542 852116.203613 1e-06 10248645.0201 852107.557865 1e-06 10248648.247 852105.403676 1e-06 10248646.9589 852103.499726 1e-06 10248636.5146 852102.016557 1e-06 10248633.9523 852103.73255 1e-06 10248635.6211 852106.206792 1e-06 10248630.1966 852109.81616 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01bcf3b3-6b68-11e6-9274-b88687e81fce">
+                      <gml:posList srsDimension="3">10248620.8496 852143.042911 1e-06 10248622.6692 852145.408481 1e-06 10248620.2187 852147.280635 1e-06 10248609.7023 852146.450432 1e-06 10248608.2982 852144.630349 1e-06 10248611.3848 852142.279481 1e-06 10248605.0238 852134.013632 1e-06 10248600.6759 852137.325017 1e-06 10248603.6123 852141.128668 1e-06 10248597.6031 852145.703391 1e-06 10248595.0513 852142.390286 1e-06 10248589.5508 852146.565851 1e-06 10248605.2414 852166.91038 1e-06 10248611.3978 852162.227026 1e-06 10248605.8262 852154.99421 1e-06 10248618.4451 852155.79602 1e-06 10248624.8878 852164.142857 1e-06 10248628.1492 852161.668152 1e-06 10248626.5937 852159.643333 1e-06 10248630.5248 852156.653149 1e-06 10248632.5328 852159.257103 1e-06 10248638.2417 852154.920934 1e-06 10248626.039 852139.1029 1e-06 10248620.8496 852143.042911 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -424,8 +424,8 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">6.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>2</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">15.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>5</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>
@@ -439,232 +439,232 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:59.088000</creationDate>
+      <creationDate>2016-08-26 16:35:13.386000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b00-3e8d-11e6-99bd-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dc9e-6b68-11e6-8130-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b01-3e8d-11e6-a576-b88687e81fce">
-                      <gml:posList srsDimension="3">10248600.8507 852059.161488 1e-06 10248594.1399 852056.608138 1e-06 10248594.1399 852056.608138 72.0 10248600.8507 852059.161488 72.0 10248600.8507 852059.161488 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dc9f-6b68-11e6-b2a8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248599.9686 852041.327149 30.0 10248592.7925 852041.567824 30.0 10248592.7925 852041.567824 1e-06 10248599.9686 852041.327149 1e-06 10248599.9686 852041.327149 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b02-3e8d-11e6-a91f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dca0-6b68-11e6-80d0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b03-3e8d-11e6-8d40-b88687e81fce">
-                      <gml:posList srsDimension="3">10248594.1399 852056.608138 1e-06 10248592.9977 852059.689938 1e-06 10248592.9977 852059.689938 72.0 10248594.1399 852056.608138 72.0 10248594.1399 852056.608138 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dca1-6b68-11e6-a5f2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248592.7925 852041.567824 30.0 10248592.931 852044.851562 30.0 10248592.931 852044.851562 1e-06 10248592.7925 852041.567824 1e-06 10248592.7925 852041.567824 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b04-3e8d-11e6-91f9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dca2-6b68-11e6-830b-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b05-3e8d-11e6-848a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248592.9977 852059.689938 1e-06 10248588.3794 852057.93868 1e-06 10248588.3794 852057.93868 72.0 10248592.9977 852059.689938 72.0 10248592.9977 852059.689938 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dca3-6b68-11e6-9a5d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248592.931 852044.851562 30.0 10248587.9948 852045.022653 30.0 10248587.9948 852045.022653 1e-06 10248592.931 852044.851562 1e-06 10248592.931 852044.851562 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b06-3e8d-11e6-b2d0-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dca4-6b68-11e6-b647-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b07-3e8d-11e6-a817-b88687e81fce">
-                      <gml:posList srsDimension="3">10248588.3794 852057.93868 1e-06 10248589.2758 852055.552404 1e-06 10248589.2758 852055.552404 72.0 10248588.3794 852057.93868 72.0 10248588.3794 852057.93868 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dca5-6b68-11e6-b433-b88687e81fce">
+                      <gml:posList srsDimension="3">10248587.9948 852045.022653 30.0 10248587.8986 852042.475359 30.0 10248587.8986 852042.475359 1e-06 10248587.9948 852045.022653 1e-06 10248587.9948 852045.022653 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b08-3e8d-11e6-837b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dca6-6b68-11e6-85fa-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b09-3e8d-11e6-b4e2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248589.2758 852055.552404 1e-06 10248585.4431 852054.094384 1e-06 10248585.4431 852054.094384 72.0 10248589.2758 852055.552404 72.0 10248589.2758 852055.552404 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dca7-6b68-11e6-8eff-b88687e81fce">
+                      <gml:posList srsDimension="3">10248587.8986 852042.475359 30.0 10248583.8002 852042.613068 30.0 10248583.8002 852042.613068 1e-06 10248587.8986 852042.475359 1e-06 10248587.8986 852042.475359 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b0a-3e8d-11e6-9a24-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dca8-6b68-11e6-bf2c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b0b-3e8d-11e6-8296-b88687e81fce">
-                      <gml:posList srsDimension="3">10248585.4431 852054.094384 1e-06 10248581.7527 852063.970717 1e-06 10248581.7527 852063.970717 72.0 10248585.4431 852054.094384 72.0 10248585.4431 852054.094384 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dca9-6b68-11e6-979e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248583.8002 852042.613068 30.0 10248584.2165 852053.148134 30.0 10248584.2165 852053.148134 1e-06 10248583.8002 852042.613068 1e-06 10248583.8002 852042.613068 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b0c-3e8d-11e6-931d-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcaa-6b68-11e6-9e6f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b0d-3e8d-11e6-9566-b88687e81fce">
-                      <gml:posList srsDimension="3">10248581.7527 852063.970717 1e-06 10248569.9813 852068.35101 1e-06 10248569.9813 852068.35101 72.0 10248581.7527 852063.970717 72.0 10248581.7527 852063.970717 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcab-6b68-11e6-a0f1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248584.2165 852053.148134 30.0 10248575.0551 852061.740074 30.0 10248575.0551 852061.740074 1e-06 10248584.2165 852053.148134 1e-06 10248584.2165 852053.148134 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b0e-3e8d-11e6-95a2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcac-6b68-11e6-a6c3-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b0f-3e8d-11e6-8237-b88687e81fce">
-                      <gml:posList srsDimension="3">10248569.9813 852068.35101 1e-06 10248573.1729 852059.797999 1e-06 10248573.1729 852059.797999 72.0 10248569.9813 852068.35101 72.0 10248569.9813 852068.35101 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcad-6b68-11e6-9efb-b88687e81fce">
+                      <gml:posList srsDimension="3">10248575.0551 852061.740074 30.0 10248574.6906 852052.618231 30.0 10248574.6906 852052.618231 1e-06 10248575.0551 852061.740074 1e-06 10248575.0551 852061.740074 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b10-3e8d-11e6-9b9f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcae-6b68-11e6-8567-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b11-3e8d-11e6-a85c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248573.1729 852059.797999 1e-06 10248565.9358 852057.053722 1e-06 10248565.9358 852057.053722 72.0 10248573.1729 852059.797999 72.0 10248573.1729 852059.797999 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcaf-6b68-11e6-ad91-b88687e81fce">
+                      <gml:posList srsDimension="3">10248574.6906 852052.618231 30.0 10248566.9553 852052.886363 30.0 10248566.9553 852052.886363 1e-06 10248574.6906 852052.618231 1e-06 10248574.6906 852052.618231 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b12-3e8d-11e6-a47e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcb0-6b68-11e6-bd9d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b13-3e8d-11e6-a5ac-b88687e81fce">
-                      <gml:posList srsDimension="3">10248565.9358 852057.053722 1e-06 10248556.9606 852081.128892 1e-06 10248556.9606 852081.128892 72.0 10248565.9358 852057.053722 72.0 10248565.9358 852057.053722 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcb1-6b68-11e6-9c9b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.9553 852052.886363 30.0 10248567.9893 852078.559319 30.0 10248567.9893 852078.559319 1e-06 10248566.9553 852052.886363 1e-06 10248566.9553 852052.886363 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b14-3e8d-11e6-ad1c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcb2-6b68-11e6-9511-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b15-3e8d-11e6-9cef-b88687e81fce">
-                      <gml:posList srsDimension="3">10248556.9606 852081.128892 1e-06 10248563.4121 852083.57993 1e-06 10248563.4121 852083.57993 72.0 10248556.9606 852081.128892 72.0 10248556.9606 852081.128892 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcb3-6b68-11e6-b141-b88687e81fce">
+                      <gml:posList srsDimension="3">10248567.9893 852078.559319 30.0 10248574.8867 852078.324569 30.0 10248574.8867 852078.324569 1e-06 10248567.9893 852078.559319 1e-06 10248567.9893 852078.559319 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b16-3e8d-11e6-919f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e3dcb4-6b68-11e6-9b42-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b17-3e8d-11e6-a757-b88687e81fce">
-                      <gml:posList srsDimension="3">10248563.4121 852083.57993 1e-06 10248564.8743 852079.654192 1e-06 10248564.8743 852079.654192 72.0 10248563.4121 852083.57993 72.0 10248563.4121 852083.57993 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e3dcb5-6b68-11e6-91c5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248574.8867 852078.324569 30.0 10248574.7169 852074.138793 30.0 10248574.7169 852074.138793 1e-06 10248574.8867 852078.324569 1e-06 10248574.8867 852078.324569 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b18-3e8d-11e6-8e53-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403b0-6b68-11e6-bec3-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b19-3e8d-11e6-ba83-b88687e81fce">
-                      <gml:posList srsDimension="3">10248564.8743 852079.654192 1e-06 10248571.9344 852082.343056 1e-06 10248571.9344 852082.343056 72.0 10248564.8743 852079.654192 72.0 10248564.8743 852079.654192 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403b1-6b68-11e6-a236-b88687e81fce">
+                      <gml:posList srsDimension="3">10248574.7169 852074.138793 30.0 10248582.2675 852073.888025 30.0 10248582.2675 852073.888025 1e-06 10248574.7169 852074.138793 1e-06 10248574.7169 852074.138793 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b1a-3e8d-11e6-bb89-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403b2-6b68-11e6-ab9b-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b1b-3e8d-11e6-b33b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248571.9344 852082.343056 1e-06 10248570.2501 852086.841541 1e-06 10248570.2501 852086.841541 72.0 10248571.9344 852082.343056 72.0 10248571.9344 852082.343056 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403b3-6b68-11e6-8a51-b88687e81fce">
+                      <gml:posList srsDimension="3">10248582.2675 852073.888025 30.0 10248582.4541 852078.687855 30.0 10248582.4541 852078.687855 1e-06 10248582.2675 852073.888025 1e-06 10248582.2675 852073.888025 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b1c-3e8d-11e6-a47f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403b4-6b68-11e6-b5ff-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b1d-3e8d-11e6-9963-b88687e81fce">
-                      <gml:posList srsDimension="3">10248570.2501 852086.841541 1e-06 10248575.3488 852088.784836 1e-06 10248575.3488 852088.784836 72.0 10248570.2501 852086.841541 72.0 10248570.2501 852086.841541 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403b5-6b68-11e6-9ba5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248582.4541 852078.687855 30.0 10248587.9076 852078.508075 30.0 10248587.9076 852078.508075 1e-06 10248582.4541 852078.687855 1e-06 10248582.4541 852078.687855 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b1e-3e8d-11e6-9cef-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403b6-6b68-11e6-9d18-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b1f-3e8d-11e6-8fb0-b88687e81fce">
-                      <gml:posList srsDimension="3">10248575.3488 852088.784836 1e-06 10248578.9988 852079.012684 1e-06 10248578.9988 852079.012684 72.0 10248575.3488 852088.784836 72.0 10248575.3488 852088.784836 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403b7-6b68-11e6-b980-b88687e81fce">
+                      <gml:posList srsDimension="3">10248587.9076 852078.508075 30.0 10248587.4943 852068.084709 30.0 10248587.4943 852068.084709 1e-06 10248587.9076 852078.508075 1e-06 10248587.9076 852078.508075 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f936b20-3e8d-11e6-a26a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403b8-6b68-11e6-b20d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f936b21-3e8d-11e6-8381-b88687e81fce">
-                      <gml:posList srsDimension="3">10248578.9988 852079.012684 1e-06 10248575.3704 852077.62588 1e-06 10248575.3704 852077.62588 72.0 10248578.9988 852079.012684 72.0 10248578.9988 852079.012684 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403b9-6b68-11e6-b6ec-b88687e81fce">
+                      <gml:posList srsDimension="3">10248587.4943 852068.084709 30.0 10248583.6118 852068.209065 30.0 10248583.6118 852068.209065 1e-06 10248587.4943 852068.084709 1e-06 10248587.4943 852068.084709 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f93920f-3e8d-11e6-b6b5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403ba-6b68-11e6-9ca6-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f939210-3e8d-11e6-b61c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248575.3704 852077.62588 1e-06 10248576.1707 852075.475367 1e-06 10248576.1707 852075.475367 72.0 10248575.3704 852077.62588 72.0 10248575.3704 852077.62588 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403bb-6b68-11e6-a30c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248583.6118 852068.209065 30.0 10248583.5182 852065.916385 30.0 10248583.5182 852065.916385 1e-06 10248583.6118 852068.209065 1e-06 10248583.6118 852068.209065 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f939211-3e8d-11e6-ba84-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403bc-6b68-11e6-a78f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f939212-3e8d-11e6-88da-b88687e81fce">
-                      <gml:posList srsDimension="3">10248576.1707 852075.475367 1e-06 10248585.933 852071.675563 1e-06 10248585.933 852071.675563 72.0 10248576.1707 852075.475367 72.0 10248576.1707 852075.475367 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403bd-6b68-11e6-90d8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248583.5182 852065.916385 30.0 10248591.0513 852058.636783 30.0 10248591.0513 852058.636783 1e-06 10248583.5182 852065.916385 1e-06 10248583.5182 852065.916385 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f939213-3e8d-11e6-bae9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403be-6b68-11e6-a1c2-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f939214-3e8d-11e6-9175-b88687e81fce">
-                      <gml:posList srsDimension="3">10248585.933 852071.675563 1e-06 10248588.811 852072.770978 1e-06 10248588.811 852072.770978 72.0 10248585.933 852071.675563 72.0 10248585.933 852071.675563 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403bf-6b68-11e6-aea0-b88687e81fce">
+                      <gml:posList srsDimension="3">10248591.0513 852058.636783 30.0 10248594.129 852058.533915 30.0 10248594.129 852058.533915 1e-06 10248591.0513 852058.636783 1e-06 10248591.0513 852058.636783 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f939215-3e8d-11e6-af27-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403c0-6b68-11e6-868b-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f939216-3e8d-11e6-b758-b88687e81fce">
-                      <gml:posList srsDimension="3">10248588.811 852072.770978 1e-06 10248587.7714 852075.557151 1e-06 10248587.7714 852075.557151 72.0 10248588.811 852072.770978 72.0 10248588.811 852072.770978 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403c1-6b68-11e6-b30f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248594.129 852058.533915 30.0 10248594.2479 852061.505331 30.0 10248594.2479 852061.505331 1e-06 10248594.129 852058.533915 1e-06 10248594.129 852058.533915 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f939217-3e8d-11e6-b9d9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403c2-6b68-11e6-aafe-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f939218-3e8d-11e6-b3d1-b88687e81fce">
-                      <gml:posList srsDimension="3">10248587.7714 852075.557151 1e-06 10248593.863 852077.875636 1e-06 10248593.863 852077.875636 72.0 10248587.7714 852075.557151 72.0 10248587.7714 852075.557151 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403c3-6b68-11e6-ad7f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248594.2479 852061.505331 30.0 10248600.7621 852061.287548 30.0 10248600.7621 852061.287548 1e-06 10248594.2479 852061.505331 1e-06 10248594.2479 852061.505331 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f939219-3e8d-11e6-abab-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403c4-6b68-11e6-a378-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f93921a-3e8d-11e6-8ac8-b88687e81fce">
-                      <gml:posList srsDimension="3">10248593.863 852077.875636 1e-06 10248600.8507 852059.161488 1e-06 10248600.8507 852059.161488 72.0 10248593.863 852077.875636 72.0 10248593.863 852077.875636 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403c5-6b68-11e6-ac4d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248600.7621 852061.287548 30.0 10248599.9686 852041.327149 30.0 10248599.9686 852041.327149 1e-06 10248600.7621 852061.287548 1e-06 10248600.7621 852061.287548 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f93921b-3e8d-11e6-b584-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403c6-6b68-11e6-a252-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f93921c-3e8d-11e6-8a9b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248600.8507 852059.161488 72.0 10248594.1399 852056.608138 72.0 10248592.9977 852059.689938 72.0 10248588.3794 852057.93868 72.0 10248589.2758 852055.552404 72.0 10248585.4431 852054.094384 72.0 10248581.7527 852063.970717 72.0 10248569.9813 852068.35101 72.0 10248573.1729 852059.797999 72.0 10248565.9358 852057.053722 72.0 10248556.9606 852081.128892 72.0 10248563.4121 852083.57993 72.0 10248564.8743 852079.654192 72.0 10248571.9344 852082.343056 72.0 10248570.2501 852086.841541 72.0 10248575.3488 852088.784836 72.0 10248578.9988 852079.012684 72.0 10248575.3704 852077.62588 72.0 10248576.1707 852075.475367 72.0 10248585.933 852071.675563 72.0 10248588.811 852072.770978 72.0 10248587.7714 852075.557151 72.0 10248593.863 852077.875636 72.0 10248600.8507 852059.161488 72.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403c7-6b68-11e6-8546-b88687e81fce">
+                      <gml:posList srsDimension="3">10248600.7621 852061.287548 30.0 10248594.2479 852061.505331 30.0 10248594.129 852058.533915 30.0 10248591.0513 852058.636783 30.0 10248583.5182 852065.916385 30.0 10248583.6118 852068.209065 30.0 10248587.4943 852068.084709 30.0 10248587.9076 852078.508075 30.0 10248582.4541 852078.687855 30.0 10248582.2675 852073.888025 30.0 10248574.7169 852074.138793 30.0 10248574.8867 852078.324569 30.0 10248567.9893 852078.559319 30.0 10248566.9553 852052.886363 30.0 10248574.6906 852052.618231 30.0 10248575.0551 852061.740074 30.0 10248584.2165 852053.148134 30.0 10248583.8002 852042.613068 30.0 10248587.8986 852042.475359 30.0 10248587.9948 852045.022653 30.0 10248592.931 852044.851562 30.0 10248592.7925 852041.567824 30.0 10248599.9686 852041.327149 30.0 10248600.7621 852061.287548 30.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f93921d-3e8d-11e6-84c3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_01e403c8-6b68-11e6-8d3f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f93921e-3e8d-11e6-88e8-b88687e81fce">
-                      <gml:posList srsDimension="3">10248594.1399 852056.608138 1e-06 10248600.8507 852059.161488 1e-06 10248593.863 852077.875636 1e-06 10248587.7714 852075.557151 1e-06 10248588.811 852072.770978 1e-06 10248585.933 852071.675563 1e-06 10248576.1707 852075.475367 1e-06 10248575.3704 852077.62588 1e-06 10248578.9988 852079.012684 1e-06 10248575.3488 852088.784836 1e-06 10248570.2501 852086.841541 1e-06 10248571.9344 852082.343056 1e-06 10248564.8743 852079.654192 1e-06 10248563.4121 852083.57993 1e-06 10248556.9606 852081.128892 1e-06 10248565.9358 852057.053722 1e-06 10248573.1729 852059.797999 1e-06 10248569.9813 852068.35101 1e-06 10248581.7527 852063.970717 1e-06 10248585.4431 852054.094384 1e-06 10248589.2758 852055.552404 1e-06 10248588.3794 852057.93868 1e-06 10248592.9977 852059.689938 1e-06 10248594.1399 852056.608138 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_01e403c9-6b68-11e6-9c3e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248592.931 852044.851562 1e-06 10248587.9948 852045.022653 1e-06 10248587.8986 852042.475359 1e-06 10248583.8002 852042.613068 1e-06 10248584.2165 852053.148134 1e-06 10248575.0551 852061.740074 1e-06 10248574.6906 852052.618231 1e-06 10248566.9553 852052.886363 1e-06 10248567.9893 852078.559319 1e-06 10248574.8867 852078.324569 1e-06 10248574.7169 852074.138793 1e-06 10248582.2675 852073.888025 1e-06 10248582.4541 852078.687855 1e-06 10248587.9076 852078.508075 1e-06 10248587.4943 852068.084709 1e-06 10248583.6118 852068.209065 1e-06 10248583.5182 852065.916385 1e-06 10248591.0513 852058.636783 1e-06 10248594.129 852058.533915 1e-06 10248594.2479 852061.505331 1e-06 10248600.7621 852061.287548 1e-06 10248599.9686 852041.327149 1e-06 10248592.7925 852041.567824 1e-06 10248592.931 852044.851562 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -678,8 +678,8 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">72.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>24</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">30.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>10</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>
@@ -693,740 +693,232 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:59.142000</creationDate>
+      <creationDate>2016-08-26 16:35:13.775000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba85e-3e8d-11e6-aba6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f37f0-6b68-11e6-99a5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba85f-3e8d-11e6-80c4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248570.1225 852203.774085 1e-06 10248587.398 852193.709372 1e-06 10248587.398 852193.709372 6.0 10248570.1225 852203.774085 6.0 10248570.1225 852203.774085 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f37f1-6b68-11e6-a40b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248535.2537 852134.695986 48.0 10248543.9337 852152.707019 48.0 10248543.9337 852152.707019 1e-06 10248535.2537 852134.695986 1e-06 10248535.2537 852134.695986 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba860-3e8d-11e6-b8c9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f00-6b68-11e6-a9da-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba861-3e8d-11e6-8167-b88687e81fce">
-                      <gml:posList srsDimension="3">10248587.398 852193.709372 1e-06 10248584.151 852188.055765 1e-06 10248584.151 852188.055765 6.0 10248587.398 852193.709372 6.0 10248587.398 852193.709372 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f01-6b68-11e6-bc7c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248543.9337 852152.707019 48.0 10248549.8244 852149.91302 48.0 10248549.8244 852149.91302 1e-06 10248543.9337 852152.707019 1e-06 10248543.9337 852152.707019 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba862-3e8d-11e6-8e5c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f02-6b68-11e6-baa2-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba863-3e8d-11e6-aca9-b88687e81fce">
-                      <gml:posList srsDimension="3">10248584.151 852188.055765 1e-06 10248581.5727 852189.564278 1e-06 10248581.5727 852189.564278 6.0 10248584.151 852188.055765 6.0 10248584.151 852188.055765 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f03-6b68-11e6-a2f4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248549.8244 852149.91302 48.0 10248548.5226 852147.224444 48.0 10248548.5226 852147.224444 1e-06 10248549.8244 852149.91302 1e-06 10248549.8244 852149.91302 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba864-3e8d-11e6-b0af-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f04-6b68-11e6-88d3-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba865-3e8d-11e6-989b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248581.5727 852189.564278 1e-06 10248580.0425 852186.8888 1e-06 10248580.0425 852186.8888 6.0 10248581.5727 852189.564278 6.0 10248581.5727 852189.564278 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f05-6b68-11e6-bd48-b88687e81fce">
+                      <gml:posList srsDimension="3">10248548.5226 852147.224444 48.0 10248551.3097 852145.908577 48.0 10248551.3097 852145.908577 1e-06 10248548.5226 852147.224444 1e-06 10248548.5226 852147.224444 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba866-3e8d-11e6-ba9a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f06-6b68-11e6-9df0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba867-3e8d-11e6-885c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248580.0425 852186.8888 1e-06 10248582.2183 852176.579497 1e-06 10248582.2183 852176.579497 6.0 10248580.0425 852186.8888 6.0 10248580.0425 852186.8888 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f07-6b68-11e6-ab6b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248551.3097 852145.908577 48.0 10248561.4168 852148.885597 48.0 10248561.4168 852148.885597 1e-06 10248551.3097 852145.908577 1e-06 10248551.3097 852145.908577 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba868-3e8d-11e6-b225-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f08-6b68-11e6-bfe3-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba869-3e8d-11e6-a793-b88687e81fce">
-                      <gml:posList srsDimension="3">10248582.2183 852176.579497 1e-06 10248584.2068 852175.418611 1e-06 10248584.2068 852175.418611 6.0 10248582.2183 852176.579497 6.0 10248582.2183 852176.579497 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f09-6b68-11e6-bb8c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248561.4168 852148.885597 48.0 10248562.4183 852150.95887 48.0 10248562.4183 852150.95887 1e-06 10248561.4168 852148.885597 1e-06 10248561.4168 852148.885597 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba86a-3e8d-11e6-86d0-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f0a-6b68-11e6-b158-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba86b-3e8d-11e6-b9cc-b88687e81fce">
-                      <gml:posList srsDimension="3">10248584.2068 852175.418611 1e-06 10248586.1408 852178.78898 1e-06 10248586.1408 852178.78898 6.0 10248584.2068 852175.418611 6.0 10248584.2068 852175.418611 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f0b-6b68-11e6-ba1b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248562.4183 852150.95887 48.0 10248558.9068 852152.62282 48.0 10248558.9068 852152.62282 1e-06 10248562.4183 852150.95887 1e-06 10248562.4183 852150.95887 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba86c-3e8d-11e6-868c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f0c-6b68-11e6-a15a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba86d-3e8d-11e6-a91c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248586.1408 852178.78898 1e-06 10248595.1603 852173.531654 1e-06 10248595.1603 852173.531654 6.0 10248586.1408 852178.78898 6.0 10248586.1408 852178.78898 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f0d-6b68-11e6-83e4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248558.9068 852152.62282 48.0 10248563.4411 852162.026586 48.0 10248563.4411 852162.026586 1e-06 10248558.9068 852152.62282 1e-06 10248558.9068 852152.62282 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba86e-3e8d-11e6-a74b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f0e-6b68-11e6-a619-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba86f-3e8d-11e6-8846-b88687e81fce">
-                      <gml:posList srsDimension="3">10248595.1603 852173.531654 1e-06 10248592.4386 852168.806335 1e-06 10248592.4386 852168.806335 6.0 10248595.1603 852173.531654 6.0 10248595.1603 852173.531654 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f0f-6b68-11e6-8a25-b88687e81fce">
+                      <gml:posList srsDimension="3">10248563.4411 852162.026586 48.0 10248568.3652 852159.683572 48.0 10248568.3652 852159.683572 1e-06 10248563.4411 852162.026586 1e-06 10248563.4411 852162.026586 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba870-3e8d-11e6-84e1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f10-6b68-11e6-adb7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba871-3e8d-11e6-bae9-b88687e81fce">
-                      <gml:posList srsDimension="3">10248592.4386 852168.806335 1e-06 10248588.2833 852171.215379 1e-06 10248588.2833 852171.215379 6.0 10248592.4386 852168.806335 6.0 10248592.4386 852168.806335 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f11-6b68-11e6-b1a8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248568.3652 852159.683572 48.0 10248566.2892 852155.352263 48.0 10248566.2892 852155.352263 1e-06 10248568.3652 852159.683572 1e-06 10248568.3652 852159.683572 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba872-3e8d-11e6-bb36-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f12-6b68-11e6-a755-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba873-3e8d-11e6-9034-b88687e81fce">
-                      <gml:posList srsDimension="3">10248588.2833 852171.215379 1e-06 10248584.5263 852164.678282 1e-06 10248584.5263 852164.678282 6.0 10248588.2833 852171.215379 6.0 10248588.2833 852171.215379 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f13-6b68-11e6-9899-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.2892 852155.352263 48.0 10248573.1006 852152.119058 48.0 10248573.1006 852152.119058 1e-06 10248566.2892 852155.352263 1e-06 10248566.2892 852155.352263 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba874-3e8d-11e6-85b9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f14-6b68-11e6-8604-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba875-3e8d-11e6-97e5-b88687e81fce">
-                      <gml:posList srsDimension="3">10248584.5263 852164.678282 1e-06 10248588.151 852162.571148 1e-06 10248588.151 852162.571148 6.0 10248584.5263 852164.678282 6.0 10248584.5263 852164.678282 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f15-6b68-11e6-aa1e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248573.1006 852152.119058 48.0 10248574.9172 852155.897692 48.0 10248574.9172 852155.897692 1e-06 10248573.1006 852152.119058 1e-06 10248573.1006 852152.119058 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba876-3e8d-11e6-b0c4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f16-6b68-11e6-b98a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba877-3e8d-11e6-8a7a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248588.151 852162.571148 1e-06 10248584.7071 852156.585048 1e-06 10248584.7071 852156.585048 6.0 10248588.151 852162.571148 6.0 10248588.151 852162.571148 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f17-6b68-11e6-9a32-b88687e81fce">
+                      <gml:posList srsDimension="3">10248574.9172 852155.897692 48.0 10248581.1548 852152.933514 48.0 10248581.1548 852152.933514 1e-06 10248574.9172 852155.897692 1e-06 10248574.9172 852155.897692 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba878-3e8d-11e6-ab72-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f18-6b68-11e6-92d0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba879-3e8d-11e6-ac86-b88687e81fce">
-                      <gml:posList srsDimension="3">10248584.7071 852156.585048 1e-06 10248562.4978 852169.513941 1e-06 10248562.4978 852169.513941 6.0 10248584.7071 852156.585048 6.0 10248584.7071 852156.585048 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f19-6b68-11e6-a54c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248581.1548 852152.933514 48.0 10248570.006 852129.77938 48.0 10248570.006 852129.77938 1e-06 10248581.1548 852152.933514 1e-06 10248581.1548 852152.933514 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba87a-3e8d-11e6-8363-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f1a-6b68-11e6-b7c8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba87b-3e8d-11e6-b8c4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248562.4978 852169.513941 1e-06 10248566.3558 852176.224749 1e-06 10248566.3558 852176.224749 6.0 10248562.4978 852169.513941 6.0 10248562.4978 852169.513941 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f1b-6b68-11e6-9a58-b88687e81fce">
+                      <gml:posList srsDimension="3">10248570.006 852129.77938 48.0 10248563.0135 852133.099655 48.0 10248563.0135 852133.099655 1e-06 10248570.006 852129.77938 1e-06 10248570.006 852129.77938 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba87c-3e8d-11e6-ad87-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f1c-6b68-11e6-b8c8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba87d-3e8d-11e6-8e94-b88687e81fce">
-                      <gml:posList srsDimension="3">10248566.3558 852176.224749 1e-06 10248574.2498 852171.627068 1e-06 10248574.2498 852171.627068 6.0 10248566.3558 852176.224749 6.0 10248566.3558 852176.224749 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f1d-6b68-11e6-9a0d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248563.0135 852133.099655 48.0 10248566.9784 852141.329631 48.0 10248566.9784 852141.329631 1e-06 10248563.0135 852133.099655 1e-06 10248563.0135 852133.099655 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9ba87e-3e8d-11e6-93ab-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f1e-6b68-11e6-80c0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9ba87f-3e8d-11e6-9462-b88687e81fce">
-                      <gml:posList srsDimension="3">10248574.2498 852171.627068 1e-06 10248571.8163 852184.039958 1e-06 10248571.8163 852184.039958 6.0 10248574.2498 852171.627068 6.0 10248574.2498 852171.627068 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f1f-6b68-11e6-a976-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.9784 852141.329631 48.0 10248554.7944 852137.930975 48.0 10248554.7944 852137.930975 1e-06 10248566.9784 852141.329631 1e-06 10248566.9784 852141.329631 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf6e-3e8d-11e6-901b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f20-6b68-11e6-ac86-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf6f-3e8d-11e6-b0ca-b88687e81fce">
-                      <gml:posList srsDimension="3">10248571.8163 852184.039958 1e-06 10248562.6976 852189.348556 1e-06 10248562.6976 852189.348556 6.0 10248571.8163 852184.039958 6.0 10248571.8163 852184.039958 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f21-6b68-11e6-9017-b88687e81fce">
+                      <gml:posList srsDimension="3">10248554.7944 852137.930975 48.0 10248550.2167 852128.424323 48.0 10248550.2167 852128.424323 1e-06 10248554.7944 852137.930975 1e-06 10248554.7944 852137.930975 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf70-3e8d-11e6-a4ed-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f22-6b68-11e6-bf9e-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf71-3e8d-11e6-9451-b88687e81fce">
-                      <gml:posList srsDimension="3">10248562.6976 852189.348556 1e-06 10248564.7427 852192.897481 1e-06 10248564.7427 852192.897481 6.0 10248562.6976 852189.348556 6.0 10248562.6976 852189.348556 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f23-6b68-11e6-b1cb-b88687e81fce">
+                      <gml:posList srsDimension="3">10248550.2167 852128.424323 48.0 10248546.5184 852130.185016 48.0 10248546.5184 852130.185016 1e-06 10248550.2167 852128.424323 1e-06 10248550.2167 852128.424323 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf72-3e8d-11e6-a000-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f24-6b68-11e6-bc01-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf73-3e8d-11e6-b80a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248564.7427 852192.897481 1e-06 10248566.9393 852191.613922 1e-06 10248566.9393 852191.613922 6.0 10248564.7427 852192.897481 6.0 10248564.7427 852192.897481 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f25-6b68-11e6-a9aa-b88687e81fce">
+                      <gml:posList srsDimension="3">10248546.5184 852130.185016 48.0 10248547.6259 852132.475392 48.0 10248547.6259 852132.475392 1e-06 10248546.5184 852130.185016 1e-06 10248546.5184 852130.185016 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf74-3e8d-11e6-a8ea-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f26-6b68-11e6-8520-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf75-3e8d-11e6-86fa-b88687e81fce">
-                      <gml:posList srsDimension="3">10248566.9393 852191.613922 1e-06 10248569.4035 852195.902504 1e-06 10248569.4035 852195.902504 6.0 10248566.9393 852191.613922 6.0 10248566.9393 852191.613922 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f27-6b68-11e6-bc96-b88687e81fce">
+                      <gml:posList srsDimension="3">10248547.6259 852132.475392 48.0 10248543.1574 852134.596041 48.0 10248543.1574 852134.596041 1e-06 10248547.6259 852132.475392 1e-06 10248547.6259 852132.475392 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf76-3e8d-11e6-8f95-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f28-6b68-11e6-b126-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf77-3e8d-11e6-b810-b88687e81fce">
-                      <gml:posList srsDimension="3">10248569.4035 852195.902504 1e-06 10248566.5573 852197.554526 1e-06 10248566.5573 852197.554526 6.0 10248569.4035 852195.902504 6.0 10248569.4035 852195.902504 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f5f29-6b68-11e6-b6e1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248543.1574 852134.596041 48.0 10248541.7335 852131.629099 48.0 10248541.7335 852131.629099 1e-06 10248543.1574 852134.596041 1e-06 10248543.1574 852134.596041 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf78-3e8d-11e6-afda-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f5f2a-6b68-11e6-b41a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf79-3e8d-11e6-8c3b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248566.5573 852197.554526 1e-06 10248570.1225 852203.774085 1e-06 10248570.1225 852203.774085 6.0 10248566.5573 852197.554526 6.0 10248566.5573 852197.554526 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f860f-6b68-11e6-8c8c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248541.7335 852131.629099 48.0 10248535.2537 852134.695986 48.0 10248535.2537 852134.695986 1e-06 10248541.7335 852131.629099 1e-06 10248541.7335 852131.629099 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf7a-3e8d-11e6-b076-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f8610-6b68-11e6-809c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf7b-3e8d-11e6-9ecb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248570.1225 852203.774085 6.0 10248587.398 852193.709372 6.0 10248584.151 852188.055765 6.0 10248581.5727 852189.564278 6.0 10248580.0425 852186.8888 6.0 10248582.2183 852176.579497 6.0 10248584.2068 852175.418611 6.0 10248586.1408 852178.78898 6.0 10248595.1603 852173.531654 6.0 10248592.4386 852168.806335 6.0 10248588.2833 852171.215379 6.0 10248584.5263 852164.678282 6.0 10248588.151 852162.571148 6.0 10248584.7071 852156.585048 6.0 10248562.4978 852169.513941 6.0 10248566.3558 852176.224749 6.0 10248574.2498 852171.627068 6.0 10248571.8163 852184.039958 6.0 10248562.6976 852189.348556 6.0 10248564.7427 852192.897481 6.0 10248566.9393 852191.613922 6.0 10248569.4035 852195.902504 6.0 10248566.5573 852197.554526 6.0 10248570.1225 852203.774085 6.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f8611-6b68-11e6-96e6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248541.7335 852131.629099 48.0 10248543.1574 852134.596041 48.0 10248547.6259 852132.475392 48.0 10248546.5184 852130.185016 48.0 10248550.2167 852128.424323 48.0 10248554.7944 852137.930975 48.0 10248566.9784 852141.329631 48.0 10248563.0135 852133.099655 48.0 10248570.006 852129.77938 48.0 10248581.1548 852152.933514 48.0 10248574.9172 852155.897692 48.0 10248573.1006 852152.119058 48.0 10248566.2892 852155.352263 48.0 10248568.3652 852159.683572 48.0 10248563.4411 852162.026586 48.0 10248558.9068 852152.62282 48.0 10248562.4183 852150.95887 48.0 10248561.4168 852148.885597 48.0 10248551.3097 852145.908577 48.0 10248548.5226 852147.224444 48.0 10248549.8244 852149.91302 48.0 10248543.9337 852152.707019 48.0 10248535.2537 852134.695986 48.0 10248541.7335 852131.629099 48.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2f9bcf7c-3e8d-11e6-9a09-b88687e81fce">
+                <gml:Polygon gml:id="UUID_021f8612-6b68-11e6-adc4-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2f9bcf7d-3e8d-11e6-897e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248587.398 852193.709372 1e-06 10248570.1225 852203.774085 1e-06 10248566.5573 852197.554526 1e-06 10248569.4035 852195.902504 1e-06 10248566.9393 852191.613922 1e-06 10248564.7427 852192.897481 1e-06 10248562.6976 852189.348556 1e-06 10248571.8163 852184.039958 1e-06 10248574.2498 852171.627068 1e-06 10248566.3558 852176.224749 1e-06 10248562.4978 852169.513941 1e-06 10248584.7071 852156.585048 1e-06 10248588.151 852162.571148 1e-06 10248584.5263 852164.678282 1e-06 10248588.2833 852171.215379 1e-06 10248592.4386 852168.806335 1e-06 10248595.1603 852173.531654 1e-06 10248586.1408 852178.78898 1e-06 10248584.2068 852175.418611 1e-06 10248582.2183 852176.579497 1e-06 10248580.0425 852186.8888 1e-06 10248581.5727 852189.564278 1e-06 10248584.151 852188.055765 1e-06 10248587.398 852193.709372 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-            </gml:CompositeSurface>
-          </gml:exterior>
-        </gml:Solid>
-      </bldg:lod1Solid>
-      <bldg:class>1000</bldg:class>
-      <bldg:function>1000</bldg:function>
-      <bldg:usage>1000</bldg:usage>
-      <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
-      <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">6.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>2</bldg:storeysAboveGround>
-      <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
-      <gen:stringAttribute name="landuse">
-        <gen:value>residential</gen:value>
-      </gen:stringAttribute>
-    </bldg:Building>
-  </cityObjectMember>
-  <cityObjectMember>
-    <bldg:Building gml:id="Blk 602A">
-      <gml:boundedBy>
-        <gml:Envelope srsName="EPSG:21781">
-          <gml:pos/>
-        </gml:Envelope>
-      </gml:boundedBy>
-      <creationDate>2016-06-30 14:37:59.631000</creationDate>
-      <bldg:lod1Solid>
-        <gml:Solid>
-          <gml:exterior>
-            <gml:CompositeSurface>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645f0-3e8d-11e6-bb86-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645f1-3e8d-11e6-bc23-b88687e81fce">
-                      <gml:posList srsDimension="3">10248594.7682 852125.897471 1e-06 10248604.349 852143.435596 1e-06 10248604.349 852143.435596 99.0 10248594.7682 852125.897471 99.0 10248594.7682 852125.897471 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645f2-3e8d-11e6-a4cf-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645f3-3e8d-11e6-8e8b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248604.349 852143.435596 1e-06 10248610.0867 852140.346606 1e-06 10248610.0867 852140.346606 99.0 10248604.349 852143.435596 99.0 10248604.349 852143.435596 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645f4-3e8d-11e6-b720-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645f5-3e8d-11e6-bd2a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248610.0867 852140.346606 1e-06 10248608.6594 852137.722334 1e-06 10248608.6594 852137.722334 99.0 10248610.0867 852140.346606 99.0 10248610.0867 852140.346606 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645f6-3e8d-11e6-95a0-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645f7-3e8d-11e6-af3e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248608.6594 852137.722334 1e-06 10248611.3616 852136.266053 1e-06 10248611.3616 852136.266053 99.0 10248608.6594 852137.722334 99.0 10248608.6594 852137.722334 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645f8-3e8d-11e6-acee-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645f9-3e8d-11e6-ab66-b88687e81fce">
-                      <gml:posList srsDimension="3">10248611.3616 852136.266053 1e-06 10248621.6186 852138.723685 1e-06 10248621.6186 852138.723685 99.0 10248611.3616 852136.266053 99.0 10248611.3616 852136.266053 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645fa-3e8d-11e6-9402-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645fb-3e8d-11e6-a812-b88687e81fce">
-                      <gml:posList srsDimension="3">10248621.6186 852138.723685 1e-06 10248622.7168 852140.747312 1e-06 10248622.7168 852140.747312 99.0 10248621.6186 852138.723685 99.0 10248621.6186 852138.723685 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645fc-3e8d-11e6-adf7-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645fd-3e8d-11e6-aef3-b88687e81fce">
-                      <gml:posList srsDimension="3">10248622.7168 852140.747312 1e-06 10248619.3075 852142.585555 1e-06 10248619.3075 852142.585555 99.0 10248622.7168 852140.747312 99.0 10248622.7168 852140.747312 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe645fe-3e8d-11e6-bcb7-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe645ff-3e8d-11e6-9ada-b88687e81fce">
-                      <gml:posList srsDimension="3">10248619.3075 852142.585555 1e-06 10248624.3058 852151.740628 1e-06 10248624.3058 852151.740628 99.0 10248619.3075 852142.585555 99.0 10248619.3075 852142.585555 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe64600-3e8d-11e6-ad89-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe64601-3e8d-11e6-b54f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248624.3058 852151.740628 1e-06 10248629.1092 852149.152873 1e-06 10248629.1092 852149.152873 99.0 10248624.3058 852151.740628 99.0 10248624.3058 852151.740628 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe64602-3e8d-11e6-8208-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d00-3e8d-11e6-9dd0-b88687e81fce">
-                      <gml:posList srsDimension="3">10248629.1092 852149.152873 1e-06 10248626.801 852144.933564 1e-06 10248626.801 852144.933564 99.0 10248629.1092 852149.152873 99.0 10248629.1092 852149.152873 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d01-3e8d-11e6-918e-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d02-3e8d-11e6-8f03-b88687e81fce">
-                      <gml:posList srsDimension="3">10248626.801 852144.933564 1e-06 10248633.4527 852141.357751 1e-06 10248633.4527 852141.357751 99.0 10248626.801 852144.933564 99.0 10248626.801 852144.933564 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d03-3e8d-11e6-a38f-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d04-3e8d-11e6-99c3-b88687e81fce">
-                      <gml:posList srsDimension="3">10248633.4527 852141.357751 1e-06 10248635.4559 852145.026826 1e-06 10248635.4559 852145.026826 99.0 10248633.4527 852141.357751 99.0 10248633.4527 852141.357751 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d05-3e8d-11e6-a7e8-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d06-3e8d-11e6-972a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248635.4559 852145.026826 1e-06 10248641.542 852141.75664 1e-06 10248641.542 852141.75664 99.0 10248635.4559 852145.026826 99.0 10248635.4559 852145.026826 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d07-3e8d-11e6-97d5-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d08-3e8d-11e6-b626-b88687e81fce">
-                      <gml:posList srsDimension="3">10248641.542 852141.75664 1e-06 10248629.2125 852119.201687 1e-06 10248629.2125 852119.201687 99.0 10248641.542 852141.75664 99.0 10248641.542 852141.75664 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d09-3e8d-11e6-a7fe-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d0a-3e8d-11e6-bfd6-b88687e81fce">
-                      <gml:posList srsDimension="3">10248629.2125 852119.201687 1e-06 10248622.399 852122.86834 1e-06 10248622.399 852122.86834 99.0 10248629.2125 852119.201687 99.0 10248629.2125 852119.201687 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d0b-3e8d-11e6-b3f3-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d0c-3e8d-11e6-8e0d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248622.399 852122.86834 1e-06 10248626.778 852130.892874 1e-06 10248626.778 852130.892874 99.0 10248622.399 852122.86834 99.0 10248622.399 852122.86834 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d0d-3e8d-11e6-a610-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d0e-3e8d-11e6-9b15-b88687e81fce">
-                      <gml:posList srsDimension="3">10248626.778 852130.892874 1e-06 10248614.4463 852128.122551 1e-06 10248614.4463 852128.122551 99.0 10248626.778 852130.892874 99.0 10248626.778 852130.892874 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d0f-3e8d-11e6-832a-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d10-3e8d-11e6-b71e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248614.4463 852128.122551 1e-06 10248609.3899 852118.861497 1e-06 10248609.3899 852118.861497 99.0 10248614.4463 852128.122551 99.0 10248614.4463 852128.122551 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d11-3e8d-11e6-932a-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d12-3e8d-11e6-8509-b88687e81fce">
-                      <gml:posList srsDimension="3">10248609.3899 852118.861497 1e-06 10248605.7736 852120.804507 1e-06 10248605.7736 852120.804507 99.0 10248609.3899 852118.861497 99.0 10248609.3899 852118.861497 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d13-3e8d-11e6-a39b-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d14-3e8d-11e6-b246-b88687e81fce">
-                      <gml:posList srsDimension="3">10248605.7736 852120.804507 1e-06 10248606.9978 852123.045346 1e-06 10248606.9978 852123.045346 99.0 10248605.7736 852120.804507 99.0 10248605.7736 852120.804507 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d15-3e8d-11e6-81be-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d16-3e8d-11e6-96f9-b88687e81fce">
-                      <gml:posList srsDimension="3">10248606.9978 852123.045346 1e-06 10248602.6541 852125.384822 1e-06 10248602.6541 852125.384822 99.0 10248606.9978 852123.045346 99.0 10248606.9978 852123.045346 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d17-3e8d-11e6-b8c3-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d18-3e8d-11e6-acab-b88687e81fce">
-                      <gml:posList srsDimension="3">10248602.6541 852125.384822 1e-06 10248601.0768 852122.493024 1e-06 10248601.0768 852122.493024 99.0 10248602.6541 852125.384822 99.0 10248602.6541 852125.384822 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d19-3e8d-11e6-8918-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d1a-3e8d-11e6-b29b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248601.0768 852122.493024 1e-06 10248594.7682 852125.897471 1e-06 10248594.7682 852125.897471 99.0 10248601.0768 852122.493024 99.0 10248601.0768 852122.493024 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d1b-3e8d-11e6-bda1-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d1c-3e8d-11e6-ad0e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248604.349 852143.435596 99.0 10248610.0867 852140.346606 99.0 10248608.6594 852137.722334 99.0 10248611.3616 852136.266053 99.0 10248621.6186 852138.723685 99.0 10248622.7168 852140.747312 99.0 10248619.3075 852142.585555 99.0 10248624.3058 852151.740628 99.0 10248629.1092 852149.152873 99.0 10248626.801 852144.933564 99.0 10248633.4527 852141.357751 99.0 10248635.4559 852145.026826 99.0 10248641.542 852141.75664 99.0 10248629.2125 852119.201687 99.0 10248622.399 852122.86834 99.0 10248626.778 852130.892874 99.0 10248614.4463 852128.122551 99.0 10248609.3899 852118.861497 99.0 10248605.7736 852120.804507 99.0 10248606.9978 852123.045346 99.0 10248602.6541 852125.384822 99.0 10248601.0768 852122.493024 99.0 10248594.7682 852125.897471 99.0 10248604.349 852143.435596 99.0</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_2fe66d1d-3e8d-11e6-940a-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_2fe66d1e-3e8d-11e6-8869-b88687e81fce">
-                      <gml:posList srsDimension="3">10248604.349 852143.435596 1e-06 10248594.7682 852125.897471 1e-06 10248601.0768 852122.493024 1e-06 10248602.6541 852125.384822 1e-06 10248606.9978 852123.045346 1e-06 10248605.7736 852120.804507 1e-06 10248609.3899 852118.861497 1e-06 10248614.4463 852128.122551 1e-06 10248626.778 852130.892874 1e-06 10248622.399 852122.86834 1e-06 10248629.2125 852119.201687 1e-06 10248641.542 852141.75664 1e-06 10248635.4559 852145.026826 1e-06 10248633.4527 852141.357751 1e-06 10248626.801 852144.933564 1e-06 10248629.1092 852149.152873 1e-06 10248624.3058 852151.740628 1e-06 10248619.3075 852142.585555 1e-06 10248622.7168 852140.747312 1e-06 10248621.6186 852138.723685 1e-06 10248611.3616 852136.266053 1e-06 10248608.6594 852137.722334 1e-06 10248610.0867 852140.346606 1e-06 10248604.349 852143.435596 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-            </gml:CompositeSurface>
-          </gml:exterior>
-        </gml:Solid>
-      </bldg:lod1Solid>
-      <bldg:class>1000</bldg:class>
-      <bldg:function>1000</bldg:function>
-      <bldg:usage>1000</bldg:usage>
-      <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
-      <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">99.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>33</bldg:storeysAboveGround>
-      <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
-      <gen:stringAttribute name="landuse">
-        <gen:value>residential</gen:value>
-      </gen:stringAttribute>
-    </bldg:Building>
-  </cityObjectMember>
-  <cityObjectMember>
-    <bldg:Building gml:id="Blk 602B">
-      <gml:boundedBy>
-        <gml:Envelope srsName="EPSG:21781">
-          <gml:pos/>
-        </gml:Envelope>
-      </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:00.039000</creationDate>
-      <bldg:lod1Solid>
-        <gml:Solid>
-          <gml:exterior>
-            <gml:CompositeSurface>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30248770-3e8d-11e6-9c68-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae80-3e8d-11e6-86c4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248559.9072 852171.437334 1e-06 10248540.1376 852168.467785 1e-06 10248540.1376 852168.467785 48.0 10248559.9072 852171.437334 48.0 10248559.9072 852171.437334 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae81-3e8d-11e6-9809-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae82-3e8d-11e6-ba62-b88687e81fce">
-                      <gml:posList srsDimension="3">10248540.1376 852168.467785 1e-06 10248539.1342 852174.906252 1e-06 10248539.1342 852174.906252 48.0 10248540.1376 852168.467785 48.0 10248540.1376 852168.467785 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae83-3e8d-11e6-ba26-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae84-3e8d-11e6-abf8-b88687e81fce">
-                      <gml:posList srsDimension="3">10248539.1342 852174.906252 1e-06 10248542.0859 852175.347074 1e-06 10248542.0859 852175.347074 48.0 10248539.1342 852174.906252 48.0 10248539.1342 852174.906252 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae85-3e8d-11e6-9e97-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae86-3e8d-11e6-9d2e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248542.0859 852175.347074 1e-06 10248541.605 852178.39747 1e-06 10248541.605 852178.39747 48.0 10248542.0859 852175.347074 48.0 10248542.0859 852175.347074 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae87-3e8d-11e6-ace4-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae88-3e8d-11e6-b56d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248541.605 852178.39747 1e-06 10248533.4492 852185.068643 1e-06 10248533.4492 852185.068643 48.0 10248541.605 852178.39747 48.0 10248541.605 852178.39747 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae89-3e8d-11e6-9910-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae8a-3e8d-11e6-9505-b88687e81fce">
-                      <gml:posList srsDimension="3">10248533.4492 852185.068643 1e-06 10248531.1698 852184.722434 1e-06 10248531.1698 852184.722434 48.0 10248533.4492 852185.068643 48.0 10248533.4492 852185.068643 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae8b-3e8d-11e6-af9a-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae8c-3e8d-11e6-9c15-b88687e81fce">
-                      <gml:posList srsDimension="3">10248531.1698 852184.722434 1e-06 10248531.7726 852180.893248 1e-06 10248531.7726 852180.893248 48.0 10248531.1698 852184.722434 48.0 10248531.1698 852184.722434 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae8d-3e8d-11e6-a905-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae8e-3e8d-11e6-b12e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248531.7726 852180.893248 1e-06 10248521.455 852179.338415 1e-06 10248521.455 852179.338415 48.0 10248531.7726 852180.893248 48.0 10248531.7726 852180.893248 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae8f-3e8d-11e6-ade2-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae90-3e8d-11e6-9436-b88687e81fce">
-                      <gml:posList srsDimension="3">10248521.455 852179.338415 1e-06 10248520.6127 852184.735166 1e-06 10248520.6127 852184.735166 48.0 10248521.455 852179.338415 48.0 10248521.455 852179.338415 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae91-3e8d-11e6-9fb0-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae92-3e8d-11e6-9ff7-b88687e81fce">
-                      <gml:posList srsDimension="3">10248520.6127 852184.735166 1e-06 10248525.3661 852185.448335 1e-06 10248525.3661 852185.448335 48.0 10248520.6127 852184.735166 48.0 10248520.6127 852184.735166 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae93-3e8d-11e6-b421-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae94-3e8d-11e6-b5ed-b88687e81fce">
-                      <gml:posList srsDimension="3">10248525.3661 852185.448335 1e-06 10248524.2024 852192.903612 1e-06 10248524.2024 852192.903612 48.0 10248525.3661 852185.448335 48.0 10248525.3661 852185.448335 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae95-3e8d-11e6-94a9-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae96-3e8d-11e6-aa93-b88687e81fce">
-                      <gml:posList srsDimension="3">10248524.2024 852192.903612 1e-06 10248520.0565 852192.278137 1e-06 10248520.0565 852192.278137 48.0 10248524.2024 852192.903612 48.0 10248524.2024 852192.903612 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae97-3e8d-11e6-9c2a-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae98-3e8d-11e6-83a5-b88687e81fce">
-                      <gml:posList srsDimension="3">10248520.0565 852192.278137 1e-06 10248518.9848 852199.103281 1e-06 10248518.9848 852199.103281 48.0 10248520.0565 852192.278137 48.0 10248520.0565 852192.278137 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae99-3e8d-11e6-9fa0-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae9a-3e8d-11e6-a25a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.9848 852199.103281 1e-06 10248544.4086 852202.922178 1e-06 10248544.4086 852202.922178 48.0 10248518.9848 852199.103281 48.0 10248518.9848 852199.103281 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae9b-3e8d-11e6-a2a1-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae9c-3e8d-11e6-9cb6-b88687e81fce">
-                      <gml:posList srsDimension="3">10248544.4086 852202.922178 1e-06 10248545.6087 852195.278611 1e-06 10248545.6087 852195.278611 48.0 10248544.4086 852202.922178 48.0 10248544.4086 852202.922178 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae9d-3e8d-11e6-8aae-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024ae9e-3e8d-11e6-8c55-b88687e81fce">
-                      <gml:posList srsDimension="3">10248545.6087 852195.278611 1e-06 10248536.565 852193.920776 1e-06 10248536.565 852193.920776 48.0 10248545.6087 852195.278611 48.0 10248545.6087 852195.278611 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024ae9f-3e8d-11e6-b910-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aea0-3e8d-11e6-b30e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248536.565 852193.920776 1e-06 10248546.233 852185.769328 1e-06 10248546.233 852185.769328 48.0 10248536.565 852193.920776 48.0 10248536.565 852193.920776 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aea1-3e8d-11e6-a001-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aea2-3e8d-11e6-a918-b88687e81fce">
-                      <gml:posList srsDimension="3">10248546.233 852185.769328 1e-06 10248556.6654 852187.33253 1e-06 10248556.6654 852187.33253 48.0 10248546.233 852185.769328 48.0 10248546.233 852185.769328 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aea3-3e8d-11e6-bc93-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aea4-3e8d-11e6-9f55-b88687e81fce">
-                      <gml:posList srsDimension="3">10248556.6654 852187.33253 1e-06 10248557.301 852183.280088 1e-06 10248557.301 852183.280088 48.0 10248556.6654 852187.33253 48.0 10248556.6654 852187.33253 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aea5-3e8d-11e6-8b64-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aea6-3e8d-11e6-9326-b88687e81fce">
-                      <gml:posList srsDimension="3">10248557.301 852183.280088 1e-06 10248554.7772 852182.911715 1e-06 10248554.7772 852182.911715 48.0 10248557.301 852183.280088 48.0 10248557.301 852183.280088 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aea7-3e8d-11e6-8c78-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aea8-3e8d-11e6-a52a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248554.7772 852182.911715 1e-06 10248555.5466 852178.026046 1e-06 10248555.5466 852178.026046 48.0 10248554.7772 852182.911715 48.0 10248554.7772 852182.911715 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aea9-3e8d-11e6-95a9-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aeaa-3e8d-11e6-8d38-b88687e81fce">
-                      <gml:posList srsDimension="3">10248555.5466 852178.026046 1e-06 10248558.7917 852178.515346 1e-06 10248558.7917 852178.515346 48.0 10248555.5466 852178.026046 48.0 10248555.5466 852178.026046 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024aeab-3e8d-11e6-9ca8-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024aeac-3e8d-11e6-b40f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248558.7917 852178.515346 1e-06 10248559.9072 852171.437334 1e-06 10248559.9072 852171.437334 48.0 10248558.7917 852178.515346 48.0 10248558.7917 852178.515346 1e-06</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024d58f-3e8d-11e6-8819-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024d590-3e8d-11e6-a797-b88687e81fce">
-                      <gml:posList srsDimension="3">10248559.9072 852171.437334 48.0 10248540.1376 852168.467785 48.0 10248539.1342 852174.906252 48.0 10248542.0859 852175.347074 48.0 10248541.605 852178.39747 48.0 10248533.4492 852185.068643 48.0 10248531.1698 852184.722434 48.0 10248531.7726 852180.893248 48.0 10248521.455 852179.338415 48.0 10248520.6127 852184.735166 48.0 10248525.3661 852185.448335 48.0 10248524.2024 852192.903612 48.0 10248520.0565 852192.278137 48.0 10248518.9848 852199.103281 48.0 10248544.4086 852202.922178 48.0 10248545.6087 852195.278611 48.0 10248536.565 852193.920776 48.0 10248546.233 852185.769328 48.0 10248556.6654 852187.33253 48.0 10248557.301 852183.280088 48.0 10248554.7772 852182.911715 48.0 10248555.5466 852178.026046 48.0 10248558.7917 852178.515346 48.0 10248559.9072 852171.437334 48.0</gml:posList>
-                    </gml:LinearRing>
-                  </gml:exterior>
-                </gml:Polygon>
-              </gml:surfaceMember>
-              <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3024d591-3e8d-11e6-9f99-b88687e81fce">
-                  <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3024d592-3e8d-11e6-8c16-b88687e81fce">
-                      <gml:posList srsDimension="3">10248540.1376 852168.467785 1e-06 10248559.9072 852171.437334 1e-06 10248558.7917 852178.515346 1e-06 10248555.5466 852178.026046 1e-06 10248554.7772 852182.911715 1e-06 10248557.301 852183.280088 1e-06 10248556.6654 852187.33253 1e-06 10248546.233 852185.769328 1e-06 10248536.565 852193.920776 1e-06 10248545.6087 852195.278611 1e-06 10248544.4086 852202.922178 1e-06 10248518.9848 852199.103281 1e-06 10248520.0565 852192.278137 1e-06 10248524.2024 852192.903612 1e-06 10248525.3661 852185.448335 1e-06 10248520.6127 852184.735166 1e-06 10248521.455 852179.338415 1e-06 10248531.7726 852180.893248 1e-06 10248531.1698 852184.722434 1e-06 10248533.4492 852185.068643 1e-06 10248541.605 852178.39747 1e-06 10248542.0859 852175.347074 1e-06 10248539.1342 852174.906252 1e-06 10248540.1376 852168.467785 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_021f8613-6b68-11e6-8eec-b88687e81fce">
+                      <gml:posList srsDimension="3">10248549.8244 852149.91302 1e-06 10248548.5226 852147.224444 1e-06 10248551.3097 852145.908577 1e-06 10248561.4168 852148.885597 1e-06 10248562.4183 852150.95887 1e-06 10248558.9068 852152.62282 1e-06 10248563.4411 852162.026586 1e-06 10248568.3652 852159.683572 1e-06 10248566.2892 852155.352263 1e-06 10248573.1006 852152.119058 1e-06 10248574.9172 852155.897692 1e-06 10248581.1548 852152.933514 1e-06 10248570.006 852129.77938 1e-06 10248563.0135 852133.099655 1e-06 10248566.9784 852141.329631 1e-06 10248554.7944 852137.930975 1e-06 10248550.2167 852128.424323 1e-06 10248546.5184 852130.185016 1e-06 10248547.6259 852132.475392 1e-06 10248543.1574 852134.596041 1e-06 10248541.7335 852131.629099 1e-06 10248535.2537 852134.695986 1e-06 10248543.9337 852152.707019 1e-06 10248549.8244 852149.91302 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -1449,238 +941,238 @@
     </bldg:Building>
   </cityObjectMember>
   <cityObjectMember>
-    <bldg:Building gml:id="Blk 602C">
+    <bldg:Building gml:id="Blk 602A">
       <gml:boundedBy>
         <gml:Envelope srsName="EPSG:21781">
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:00.229000</creationDate>
+      <creationDate>2016-08-26 16:35:14.228000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30418551-3e8d-11e6-941b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645740-6b68-11e6-9c25-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30418552-3e8d-11e6-9a5b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248538.4969 852049.744617 1e-06 10248518.612 852048.154114 1e-06 10248518.612 852048.154114 21.0 10248538.4969 852049.744617 21.0 10248538.4969 852049.744617 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645741-6b68-11e6-a428-b88687e81fce">
+                      <gml:posList srsDimension="3">10248653.3635 852195.476336 90.0 10248649.447 852175.879439 90.0 10248649.447 852175.879439 1e-06 10248653.3635 852195.476336 1e-06 10248653.3635 852195.476336 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30418553-3e8d-11e6-81f8-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645742-6b68-11e6-a395-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30418554-3e8d-11e6-b774-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.612 852048.154114 1e-06 10248518.1297 852054.669694 1e-06 10248518.1297 852054.669694 21.0 10248518.612 852048.154114 21.0 10248518.612 852048.154114 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645743-6b68-11e6-b2c9-b88687e81fce">
+                      <gml:posList srsDimension="3">10248649.447 852175.879439 90.0 10248643.0494 852177.117389 90.0 10248643.0494 852177.117389 1e-06 10248649.447 852175.879439 1e-06 10248649.447 852175.879439 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30418555-3e8d-11e6-acb4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645744-6b68-11e6-a243-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30418556-3e8d-11e6-a2e5-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.1297 852054.669694 1e-06 10248521.101 852054.898596 1e-06 10248521.101 852054.898596 21.0 10248518.1297 852054.669694 21.0 10248518.1297 852054.669694 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645745-6b68-11e6-b000-b88687e81fce">
+                      <gml:posList srsDimension="3">10248643.0494 852177.117389 90.0 10248643.6293 852180.047825 90.0 10248643.6293 852180.047825 1e-06 10248643.0494 852177.117389 1e-06 10248643.0494 852177.117389 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30418557-3e8d-11e6-b909-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645746-6b68-11e6-8126-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac61-3e8d-11e6-9319-b88687e81fce">
-                      <gml:posList srsDimension="3">10248521.101 852054.898596 1e-06 10248520.8757 852057.983298 1e-06 10248520.8757 852057.983298 21.0 10248521.101 852054.898596 21.0 10248521.101 852054.898596 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645747-6b68-11e6-8daa-b88687e81fce">
+                      <gml:posList srsDimension="3">10248643.6293 852180.047825 90.0 10248640.6159 852180.632285 90.0 10248640.6159 852180.632285 1e-06 10248643.6293 852180.047825 1e-06 10248643.6293 852180.047825 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac62-3e8d-11e6-9262-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645748-6b68-11e6-869d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac63-3e8d-11e6-979b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248520.8757 852057.983298 1e-06 10248513.3151 852065.232446 1e-06 10248513.3151 852065.232446 21.0 10248520.8757 852057.983298 21.0 10248520.8757 852057.983298 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645749-6b68-11e6-b744-b88687e81fce">
+                      <gml:posList srsDimension="3">10248640.6159 852180.632285 90.0 10248631.558 852175.2285 90.0 10248631.558 852175.2285 1e-06 10248640.6159 852180.632285 1e-06 10248640.6159 852180.632285 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac64-3e8d-11e6-b531-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0264574a-6b68-11e6-99c6-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac65-3e8d-11e6-8e85-b88687e81fce">
-                      <gml:posList srsDimension="3">10248513.3151 852065.232446 1e-06 10248511.0152 852065.04454 1e-06 10248511.0152 852065.04454 21.0 10248513.3151 852065.232446 21.0 10248513.3151 852065.232446 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0264574b-6b68-11e6-be17-b88687e81fce">
+                      <gml:posList srsDimension="3">10248631.558 852175.2285 90.0 10248631.113 852172.969502 90.0 10248631.113 852172.969502 1e-06 10248631.558 852175.2285 1e-06 10248631.558 852175.2285 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac66-3e8d-11e6-bda7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0264574c-6b68-11e6-b702-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac67-3e8d-11e6-88f4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248511.0152 852065.04454 1e-06 10248511.3012 852061.171406 1e-06 10248511.3012 852061.171406 21.0 10248511.0152 852065.04454 21.0 10248511.0152 852065.04454 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0264574d-6b68-11e6-b283-b88687e81fce">
+                      <gml:posList srsDimension="3">10248631.113 852172.969502 90.0 10248634.9154 852172.23127 90.0 10248634.9154 852172.23127 1e-06 10248631.113 852172.969502 1e-06 10248631.113 852172.969502 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac68-3e8d-11e6-9244-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0264574e-6b68-11e6-bef6-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac69-3e8d-11e6-af25-b88687e81fce">
-                      <gml:posList srsDimension="3">10248511.3012 852061.171406 1e-06 10248500.926 852060.337691 1e-06 10248500.926 852060.337691 21.0 10248511.3012 852061.171406 21.0 10248511.3012 852061.171406 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0264574f-6b68-11e6-bfa3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248634.9154 852172.23127 90.0 10248632.8737 852162.002361 90.0 10248632.8737 852162.002361 1e-06 10248634.9154 852172.23127 1e-06 10248634.9154 852172.23127 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac6a-3e8d-11e6-a99a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645750-6b68-11e6-b0ce-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac6b-3e8d-11e6-8feb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248500.926 852060.337691 1e-06 10248500.5186 852065.787692 1e-06 10248500.5186 852065.787692 21.0 10248500.926 852060.337691 21.0 10248500.926 852060.337691 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645751-6b68-11e6-93e0-b88687e81fce">
+                      <gml:posList srsDimension="3">10248632.8737 852162.002361 90.0 10248627.5173 852163.040431 90.0 10248627.5173 852163.040431 1e-06 10248632.8737 852162.002361 1e-06 10248632.8737 852162.002361 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac6c-3e8d-11e6-8a4b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645752-6b68-11e6-a23a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac6d-3e8d-11e6-b324-b88687e81fce">
-                      <gml:posList srsDimension="3">10248500.5186 852065.787692 1e-06 10248505.3013 852066.166201 1e-06 10248505.3013 852066.166201 21.0 10248500.5186 852065.787692 21.0 10248500.5186 852065.787692 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645753-6b68-11e6-a18c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248627.5173 852163.040431 90.0 10248628.4626 852167.756011 90.0 10248628.4626 852167.756011 1e-06 10248627.5173 852163.040431 1e-06 10248627.5173 852163.040431 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac6e-3e8d-11e6-8ef0-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645754-6b68-11e6-8789-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac6f-3e8d-11e6-996c-b88687e81fce">
-                      <gml:posList srsDimension="3">10248505.3013 852066.166201 1e-06 10248504.7573 852073.70916 1e-06 10248504.7573 852073.70916 21.0 10248505.3013 852066.166201 21.0 10248505.3013 852066.166201 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645755-6b68-11e6-8eb7-b88687e81fce">
+                      <gml:posList srsDimension="3">10248628.4626 852167.756011 90.0 10248621.0473 852169.186136 90.0 10248621.0473 852169.186136 1e-06 10248628.4626 852167.756011 1e-06 10248628.4626 852167.756011 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac70-3e8d-11e6-afa4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645756-6b68-11e6-b8c0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac71-3e8d-11e6-913a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248504.7573 852073.70916 1e-06 10248500.5813 852073.378392 1e-06 10248500.5813 852073.378392 21.0 10248504.7573 852073.70916 21.0 10248504.7573 852073.70916 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645757-6b68-11e6-bc38-b88687e81fce">
+                      <gml:posList srsDimension="3">10248621.0473 852169.186136 90.0 10248620.2291 852165.086694 90.0 10248620.2291 852165.086694 1e-06 10248621.0473 852169.186136 1e-06 10248621.0473 852169.186136 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac72-3e8d-11e6-9798-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02645758-6b68-11e6-b3c0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac73-3e8d-11e6-acb2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248500.5813 852073.378392 1e-06 10248500.0787 852080.273579 1e-06 10248500.0787 852080.273579 21.0 10248500.5813 852073.378392 21.0 10248500.5813 852073.378392 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02645759-6b68-11e6-9fe2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248620.2291 852165.086694 90.0 10248613.4448 852166.393741 90.0 10248613.4448 852166.393741 1e-06 10248620.2291 852165.086694 1e-06 10248620.2291 852165.086694 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac74-3e8d-11e6-b9d1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0264575a-6b68-11e6-a92e-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac75-3e8d-11e6-9a57-b88687e81fce">
-                      <gml:posList srsDimension="3">10248500.0787 852080.273579 1e-06 10248525.6587 852082.32623 1e-06 10248525.6587 852082.32623 21.0 10248500.0787 852080.273579 21.0 10248500.0787 852080.273579 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e51-6b68-11e6-b06f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248613.4448 852166.393741 90.0 10248618.4893 852191.598791 90.0 10248618.4893 852191.598791 1e-06 10248613.4448 852166.393741 1e-06 10248613.4448 852166.393741 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac76-3e8d-11e6-91df-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e52-6b68-11e6-8543-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac77-3e8d-11e6-ba21-b88687e81fce">
-                      <gml:posList srsDimension="3">10248525.6587 852082.32623 1e-06 10248526.2218 852074.586641 1e-06 10248526.2218 852074.586641 21.0 10248525.6587 852082.32623 21.0 10248525.6587 852082.32623 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e53-6b68-11e6-80f3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248618.4893 852191.598791 90.0 10248626.0861 852190.130165 90.0 10248626.0861 852190.130165 1e-06 10248618.4893 852191.598791 1e-06 10248618.4893 852191.598791 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac78-3e8d-11e6-a75a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e54-6b68-11e6-ad59-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac79-3e8d-11e6-bf4a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248526.2218 852074.586641 1e-06 10248517.1293 852073.866012 1e-06 10248517.1293 852073.866012 21.0 10248526.2218 852074.586641 21.0 10248526.2218 852074.586641 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e55-6b68-11e6-ab33-b88687e81fce">
+                      <gml:posList srsDimension="3">10248626.0861 852190.130165 90.0 10248624.2986 852181.165053 90.0 10248624.2986 852181.165053 1e-06 10248626.0861 852190.130165 1e-06 10248626.0861 852190.130165 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac7a-3e8d-11e6-b279-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e56-6b68-11e6-9299-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac7b-3e8d-11e6-8052-b88687e81fce">
-                      <gml:posList srsDimension="3">10248517.1293 852073.866012 1e-06 10248526.0711 852065.030156 1e-06 10248526.0711 852065.030156 21.0 10248517.1293 852073.866012 21.0 10248517.1293 852073.866012 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e57-6b68-11e6-8f06-b88687e81fce">
+                      <gml:posList srsDimension="3">10248624.2986 852181.165053 90.0 10248635.2436 852187.485831 90.0 10248635.2436 852187.485831 1e-06 10248624.2986 852181.165053 1e-06 10248624.2986 852181.165053 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac7c-3e8d-11e6-9fc6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e58-6b68-11e6-9f7c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac7d-3e8d-11e6-9376-b88687e81fce">
-                      <gml:posList srsDimension="3">10248526.0711 852065.030156 1e-06 10248536.5645 852065.872919 1e-06 10248536.5645 852065.872919 21.0 10248526.0711 852065.030156 21.0 10248526.0711 852065.030156 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e59-6b68-11e6-8ff2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248635.2436 852187.485831 90.0 10248637.3091 852197.833211 90.0 10248637.3091 852197.833211 1e-06 10248635.2436 852187.485831 1e-06 10248635.2436 852187.485831 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac7e-3e8d-11e6-a8b3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e5a-6b68-11e6-9c59-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac7f-3e8d-11e6-be5b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248536.5645 852065.872919 1e-06 10248536.865 852061.778607 1e-06 10248536.865 852061.778607 21.0 10248536.5645 852065.872919 21.0 10248536.5645 852065.872919 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e5b-6b68-11e6-b6f7-b88687e81fce">
+                      <gml:posList srsDimension="3">10248637.3091 852197.833211 90.0 10248641.3402 852197.056676 90.0 10248641.3402 852197.056676 1e-06 10248637.3091 852197.833211 1e-06 10248637.3091 852197.833211 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac80-3e8d-11e6-9de2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e5c-6b68-11e6-8d5f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac81-3e8d-11e6-bf0b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248536.865 852061.778607 1e-06 10248534.3354 852061.581489 1e-06 10248534.3354 852061.581489 21.0 10248536.865 852061.778607 21.0 10248536.865 852061.778607 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e5d-6b68-11e6-8afc-b88687e81fce">
+                      <gml:posList srsDimension="3">10248641.3402 852197.056676 90.0 10248640.8397 852194.552764 90.0 10248640.8397 852194.552764 1e-06 10248641.3402 852197.056676 1e-06 10248641.3402 852197.056676 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac82-3e8d-11e6-b54f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e5e-6b68-11e6-976f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac83-3e8d-11e6-8a02-b88687e81fce">
-                      <gml:posList srsDimension="3">10248534.3354 852061.581489 1e-06 10248534.6963 852056.642874 1e-06 10248534.6963 852056.642874 21.0 10248534.3354 852061.581489 21.0 10248534.3354 852061.581489 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e5f-6b68-11e6-8f4e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248640.8397 852194.552764 90.0 10248645.6834 852193.614652 90.0 10248645.6834 852193.614652 1e-06 10248640.8397 852194.552764 1e-06 10248640.8397 852194.552764 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac84-3e8d-11e6-ab3d-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e60-6b68-11e6-8651-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac85-3e8d-11e6-8ef2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248534.6963 852056.642874 1e-06 10248537.9733 852056.90787 1e-06 10248537.9733 852056.90787 21.0 10248534.6963 852056.642874 21.0 10248534.6963 852056.642874 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e61-6b68-11e6-aecf-b88687e81fce">
+                      <gml:posList srsDimension="3">10248645.6834 852193.614652 90.0 10248646.3269 852196.845202 90.0 10248646.3269 852196.845202 1e-06 10248645.6834 852193.614652 1e-06 10248645.6834 852193.614652 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac86-3e8d-11e6-bef3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e62-6b68-11e6-9085-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac87-3e8d-11e6-b4a9-b88687e81fce">
-                      <gml:posList srsDimension="3">10248537.9733 852056.90787 1e-06 10248538.4969 852049.744617 1e-06 10248538.4969 852049.744617 21.0 10248537.9733 852056.90787 21.0 10248537.9733 852056.90787 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e63-6b68-11e6-bb0f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248646.3269 852196.845202 90.0 10248653.3635 852195.476336 90.0 10248653.3635 852195.476336 1e-06 10248646.3269 852196.845202 1e-06 10248646.3269 852196.845202 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac88-3e8d-11e6-8ea6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e64-6b68-11e6-ae67-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac89-3e8d-11e6-9580-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.612 852048.154114 21.0 10248518.1297 852054.669694 21.0 10248521.101 852054.898596 21.0 10248520.8757 852057.983298 21.0 10248513.3151 852065.232446 21.0 10248511.0152 852065.04454 21.0 10248511.3012 852061.171406 21.0 10248500.926 852060.337691 21.0 10248500.5186 852065.787692 21.0 10248505.3013 852066.166201 21.0 10248504.7573 852073.70916 21.0 10248500.5813 852073.378392 21.0 10248500.0787 852080.273579 21.0 10248525.6587 852082.32623 21.0 10248526.2218 852074.586641 21.0 10248517.1293 852073.866012 21.0 10248526.0711 852065.030156 21.0 10248536.5645 852065.872919 21.0 10248536.865 852061.778607 21.0 10248534.3354 852061.581489 21.0 10248534.6963 852056.642874 21.0 10248537.9733 852056.90787 21.0 10248538.4969 852049.744617 21.0 10248518.612 852048.154114 21.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e65-6b68-11e6-85fd-b88687e81fce">
+                      <gml:posList srsDimension="3">10248653.3635 852195.476336 90.0 10248646.3269 852196.845202 90.0 10248645.6834 852193.614652 90.0 10248640.8397 852194.552764 90.0 10248641.3402 852197.056676 90.0 10248637.3091 852197.833211 90.0 10248635.2436 852187.485831 90.0 10248624.2986 852181.165053 90.0 10248626.0861 852190.130165 90.0 10248618.4893 852191.598791 90.0 10248613.4448 852166.393741 90.0 10248620.2291 852165.086694 90.0 10248621.0473 852169.186136 90.0 10248628.4626 852167.756011 90.0 10248627.5173 852163.040431 90.0 10248632.8737 852162.002361 90.0 10248634.9154 852172.23127 90.0 10248631.113 852172.969502 90.0 10248631.558 852175.2285 90.0 10248640.6159 852180.632285 90.0 10248643.6293 852180.047825 90.0 10248643.0494 852177.117389 90.0 10248649.447 852175.879439 90.0 10248653.3635 852195.476336 90.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_3041ac8a-3e8d-11e6-8c72-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02647e66-6b68-11e6-a1a8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3041ac8b-3e8d-11e6-8f0a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.612 852048.154114 1e-06 10248538.4969 852049.744617 1e-06 10248537.9733 852056.90787 1e-06 10248534.6963 852056.642874 1e-06 10248534.3354 852061.581489 1e-06 10248536.865 852061.778607 1e-06 10248536.5645 852065.872919 1e-06 10248526.0711 852065.030156 1e-06 10248517.1293 852073.866012 1e-06 10248526.2218 852074.586641 1e-06 10248525.6587 852082.32623 1e-06 10248500.0787 852080.273579 1e-06 10248500.5813 852073.378392 1e-06 10248504.7573 852073.70916 1e-06 10248505.3013 852066.166201 1e-06 10248500.5186 852065.787692 1e-06 10248500.926 852060.337691 1e-06 10248511.3012 852061.171406 1e-06 10248511.0152 852065.04454 1e-06 10248513.3151 852065.232446 1e-06 10248520.8757 852057.983298 1e-06 10248521.101 852054.898596 1e-06 10248518.1297 852054.669694 1e-06 10248518.612 852048.154114 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02647e67-6b68-11e6-b3c5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248643.0494 852177.117389 1e-06 10248643.6293 852180.047825 1e-06 10248640.6159 852180.632285 1e-06 10248631.558 852175.2285 1e-06 10248631.113 852172.969502 1e-06 10248634.9154 852172.23127 1e-06 10248632.8737 852162.002361 1e-06 10248627.5173 852163.040431 1e-06 10248628.4626 852167.756011 1e-06 10248621.0473 852169.186136 1e-06 10248620.2291 852165.086694 1e-06 10248613.4448 852166.393741 1e-06 10248618.4893 852191.598791 1e-06 10248626.0861 852190.130165 1e-06 10248624.2986 852181.165053 1e-06 10248635.2436 852187.485831 1e-06 10248637.3091 852197.833211 1e-06 10248641.3402 852197.056676 1e-06 10248640.8397 852194.552764 1e-06 10248645.6834 852193.614652 1e-06 10248646.3269 852196.845202 1e-06 10248653.3635 852195.476336 1e-06 10248649.447 852175.879439 1e-06 10248643.0494 852177.117389 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -1694,8 +1186,8 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">21.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>7</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">90.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>30</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>
@@ -1703,148 +1195,238 @@
     </bldg:Building>
   </cityObjectMember>
   <cityObjectMember>
-    <bldg:Building gml:id="Blk 603A">
+    <bldg:Building gml:id="Blk 602B">
       <gml:boundedBy>
         <gml:Envelope srsName="EPSG:21781">
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:00.377000</creationDate>
+      <creationDate>2016-08-26 16:35:14.459000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a91-3e8d-11e6-91cd-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796b0-6b68-11e6-9b92-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a92-3e8d-11e6-8bc9-b88687e81fce">
-                      <gml:posList srsDimension="3">10248619.0586 852056.902322 1e-06 10248639.0975 852051.611796 1e-06 10248639.0975 852051.611796 27.0 10248619.0586 852056.902322 27.0 10248619.0586 852056.902322 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796b1-6b68-11e6-81c5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248505.631 852180.852025 27.0 10248524.9558 852185.971371 27.0 10248524.9558 852185.971371 1e-06 10248505.631 852180.852025 1e-06 10248505.631 852180.852025 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a93-3e8d-11e6-8613-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796b2-6b68-11e6-892c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a94-3e8d-11e6-acb2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248639.0975 852051.611796 1e-06 10248634.0368 852031.965609 1e-06 10248634.0368 852031.965609 27.0 10248639.0975 852051.611796 27.0 10248639.0975 852051.611796 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796b3-6b68-11e6-8c31-b88687e81fce">
+                      <gml:posList srsDimension="3">10248524.9558 852185.971371 27.0 10248526.6591 852179.681741 27.0 10248526.6591 852179.681741 1e-06 10248524.9558 852185.971371 1e-06 10248524.9558 852185.971371 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a95-3e8d-11e6-a4e3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796b4-6b68-11e6-8b9a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a96-3e8d-11e6-93dc-b88687e81fce">
-                      <gml:posList srsDimension="3">10248634.0368 852031.965609 1e-06 10248624.0679 852034.596058 1e-06 10248624.0679 852034.596058 27.0 10248634.0368 852031.965609 27.0 10248634.0368 852031.965609 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796b5-6b68-11e6-9fcc-b88687e81fce">
+                      <gml:posList srsDimension="3">10248526.6591 852179.681741 27.0 10248523.7736 852178.919932 27.0 10248523.7736 852178.919932 1e-06 10248526.6591 852179.681741 1e-06 10248526.6591 852179.681741 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a97-3e8d-11e6-8f8e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796b6-6b68-11e6-b6d0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a98-3e8d-11e6-b9cc-b88687e81fce">
-                      <gml:posList srsDimension="3">10248624.0679 852034.596058 1e-06 10248626.2963 852043.247239 1e-06 10248626.2963 852043.247239 27.0 10248624.0679 852034.596058 27.0 10248624.0679 852034.596058 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796b7-6b68-11e6-a25d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248523.7736 852178.919932 27.0 10248524.586 852175.940656 27.0 10248524.586 852175.940656 1e-06 10248523.7736 852178.919932 1e-06 10248523.7736 852178.919932 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a99-3e8d-11e6-afa1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796b8-6b68-11e6-83ba-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a9a-3e8d-11e6-a647-b88687e81fce">
-                      <gml:posList srsDimension="3">10248626.2963 852043.247239 1e-06 10248615.2551 852035.451564 1e-06 10248615.2551 852035.451564 27.0 10248626.2963 852043.247239 27.0 10248626.2963 852043.247239 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796b9-6b68-11e6-87f6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248524.586 852175.940656 27.0 10248533.4242 852170.203981 27.0 10248533.4242 852170.203981 1e-06 10248524.586 852175.940656 1e-06 10248524.586 852175.940656 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a9b-3e8d-11e6-9da0-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796ba-6b68-11e6-b1d4-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a9c-3e8d-11e6-8e68-b88687e81fce">
-                      <gml:posList srsDimension="3">10248615.2551 852035.451564 1e-06 10248621.9425 852033.684967 1e-06 10248621.9425 852033.684967 27.0 10248615.2551 852035.451564 27.0 10248615.2551 852035.451564 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796bb-6b68-11e6-b1da-b88687e81fce">
+                      <gml:posList srsDimension="3">10248533.4242 852170.203981 27.0 10248535.6519 852170.798032 27.0 10248535.6519 852170.798032 1e-06 10248533.4242 852170.203981 1e-06 10248533.4242 852170.203981 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a9d-3e8d-11e6-b5d0-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796bc-6b68-11e6-99b1-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581a9e-3e8d-11e6-8250-b88687e81fce">
-                      <gml:posList srsDimension="3">10248621.9425 852033.684967 1e-06 10248619.139 852022.791022 1e-06 10248619.139 852022.791022 27.0 10248621.9425 852033.684967 27.0 10248621.9425 852033.684967 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_028796bd-6b68-11e6-a503-b88687e81fce">
+                      <gml:posList srsDimension="3">10248535.6519 852170.798032 27.0 10248534.6328 852174.538034 27.0 10248534.6328 852174.538034 1e-06 10248535.6519 852170.798032 1e-06 10248535.6519 852170.798032 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581a9f-3e8d-11e6-a935-b88687e81fce">
+                <gml:Polygon gml:id="UUID_028796be-6b68-11e6-aa73-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aa0-3e8d-11e6-96ae-b88687e81fce">
-                      <gml:posList srsDimension="3">10248619.139 852022.791022 1e-06 10248597.7906 852028.426913 1e-06 10248597.7906 852028.426913 27.0 10248619.139 852022.791022 27.0 10248619.139 852022.791022 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdc0-6b68-11e6-b648-b88687e81fce">
+                      <gml:posList srsDimension="3">10248534.6328 852174.538034 27.0 10248544.7178 852177.214803 27.0 10248544.7178 852177.214803 1e-06 10248534.6328 852174.538034 1e-06 10248534.6328 852174.538034 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581aa1-3e8d-11e6-99c2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdc1-6b68-11e6-b9d7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aa2-3e8d-11e6-8cb8-b88687e81fce">
-                      <gml:posList srsDimension="3">10248597.7906 852028.426913 1e-06 10248600.0992 852037.405377 1e-06 10248600.0992 852037.405377 27.0 10248597.7906 852028.426913 27.0 10248597.7906 852028.426913 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdc2-6b68-11e6-a34d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248544.7178 852177.214803 27.0 10248546.1467 852171.942944 27.0 10248546.1467 852171.942944 1e-06 10248544.7178 852177.214803 1e-06 10248544.7178 852177.214803 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581aa3-3e8d-11e6-bfd3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdc3-6b68-11e6-b208-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aa4-3e8d-11e6-9083-b88687e81fce">
-                      <gml:posList srsDimension="3">10248600.0992 852037.405377 1e-06 10248604.0972 852036.341519 1e-06 10248604.0972 852036.341519 27.0 10248600.0992 852037.405377 27.0 10248600.0992 852037.405377 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdc4-6b68-11e6-870a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248546.1467 852171.942944 27.0 10248541.5002 852170.712878 27.0 10248541.5002 852170.712878 1e-06 10248546.1467 852171.942944 1e-06 10248546.1467 852171.942944 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581aa5-3e8d-11e6-9917-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdc5-6b68-11e6-86d1-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aa6-3e8d-11e6-8270-b88687e81fce">
-                      <gml:posList srsDimension="3">10248604.0972 852036.341519 1e-06 10248607.4741 852049.446701 1e-06 10248607.4741 852049.446701 27.0 10248604.0972 852036.341519 27.0 10248604.0972 852036.341519 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdc6-6b68-11e6-8474-b88687e81fce">
+                      <gml:posList srsDimension="3">10248541.5002 852170.712878 27.0 10248543.4743 852163.430142 27.0 10248543.4743 852163.430142 1e-06 10248541.5002 852170.712878 1e-06 10248541.5002 852170.712878 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581aa7-3e8d-11e6-97c6-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdc7-6b68-11e6-9230-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aa8-3e8d-11e6-8c75-b88687e81fce">
-                      <gml:posList srsDimension="3">10248607.4741 852049.446701 1e-06 10248616.5233 852047.059761 1e-06 10248616.5233 852047.059761 27.0 10248607.4741 852049.446701 27.0 10248607.4741 852049.446701 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdc8-6b68-11e6-a151-b88687e81fce">
+                      <gml:posList srsDimension="3">10248543.4743 852163.430142 27.0 10248547.5266 852164.506439 27.0 10248547.5266 852164.506439 1e-06 10248543.4743 852163.430142 1e-06 10248543.4743 852163.430142 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30581aa9-3e8d-11e6-a7f7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdc9-6b68-11e6-bdf9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30581aaa-3e8d-11e6-9b2b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248616.5233 852047.059761 1e-06 10248619.0586 852056.902322 1e-06 10248619.0586 852056.902322 27.0 10248616.5233 852047.059761 27.0 10248616.5233 852047.059761 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdca-6b68-11e6-8edd-b88687e81fce">
+                      <gml:posList srsDimension="3">10248547.5266 852164.506439 27.0 10248549.3403 852157.839962 27.0 10248549.3403 852157.839962 1e-06 10248547.5266 852164.506439 1e-06 10248547.5266 852164.506439 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_305841a1-3e8d-11e6-8546-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdcb-6b68-11e6-aa2b-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_305841a2-3e8d-11e6-8bd2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248639.0975 852051.611796 27.0 10248634.0368 852031.965609 27.0 10248624.0679 852034.596058 27.0 10248626.2963 852043.247239 27.0 10248615.2551 852035.451564 27.0 10248621.9425 852033.684967 27.0 10248619.139 852022.791022 27.0 10248597.7906 852028.426913 27.0 10248600.0992 852037.405377 27.0 10248604.0972 852036.341519 27.0 10248607.4741 852049.446701 27.0 10248616.5233 852047.059761 27.0 10248619.0586 852056.902322 27.0 10248639.0975 852051.611796 27.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdcc-6b68-11e6-bf8c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248549.3403 852157.839962 27.0 10248524.4885 852151.256417 27.0 10248524.4885 852151.256417 1e-06 10248549.3403 852157.839962 1e-06 10248549.3403 852157.839962 27.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_305841a3-3e8d-11e6-88d2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0287bdcd-6b68-11e6-9c0d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_305841a4-3e8d-11e6-af42-b88687e81fce">
-                      <gml:posList srsDimension="3">10248639.0975 852051.611796 1e-06 10248619.0586 852056.902322 1e-06 10248616.5233 852047.059761 1e-06 10248607.4741 852049.446701 1e-06 10248604.0972 852036.341519 1e-06 10248600.0992 852037.405377 1e-06 10248597.7906 852028.426913 1e-06 10248619.139 852022.791022 1e-06 10248621.9425 852033.684967 1e-06 10248615.2551 852035.451564 1e-06 10248626.2963 852043.247239 1e-06 10248624.0679 852034.596058 1e-06 10248634.0368 852031.965609 1e-06 10248639.0975 852051.611796 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0287bdce-6b68-11e6-9b60-b88687e81fce">
+                      <gml:posList srsDimension="3">10248524.4885 852151.256417 27.0 10248522.4575 852158.722305 27.0 10248522.4575 852158.722305 1e-06 10248524.4885 852151.256417 1e-06 10248524.4885 852151.256417 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdcf-6b68-11e6-9b81-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdd0-6b68-11e6-8bb8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248522.4575 852158.722305 27.0 10248531.2977 852161.063575 27.0 10248531.2977 852161.063575 1e-06 10248522.4575 852158.722305 1e-06 10248522.4575 852158.722305 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdd1-6b68-11e6-93e0-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdd2-6b68-11e6-9b9f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248531.2977 852161.063575 27.0 10248520.7943 852168.105802 27.0 10248520.7943 852168.105802 1e-06 10248531.2977 852161.063575 1e-06 10248531.2977 852161.063575 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdd3-6b68-11e6-89f6-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdd4-6b68-11e6-9d0b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248520.7943 852168.105802 27.0 10248510.5962 852165.408129 27.0 10248510.5962 852165.408129 1e-06 10248520.7943 852168.105802 1e-06 10248520.7943 852168.105802 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdd5-6b68-11e6-b99c-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdd6-6b68-11e6-a0ea-b88687e81fce">
+                      <gml:posList srsDimension="3">10248510.5962 852165.408129 27.0 10248509.5201 852169.366445 27.0 10248509.5201 852169.366445 1e-06 10248510.5962 852165.408129 1e-06 10248510.5962 852165.408129 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdd7-6b68-11e6-9610-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdd8-6b68-11e6-982d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248509.5201 852169.366445 27.0 10248511.9883 852170.009327 27.0 10248511.9883 852170.009327 1e-06 10248509.5201 852169.366445 1e-06 10248509.5201 852169.366445 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bdd9-6b68-11e6-82a2-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdda-6b68-11e6-bdf0-b88687e81fce">
+                      <gml:posList srsDimension="3">10248511.9883 852170.009327 27.0 10248510.6877 852174.781168 27.0 10248510.6877 852174.781168 1e-06 10248511.9883 852170.009327 1e-06 10248511.9883 852170.009327 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bddb-6b68-11e6-862f-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bddc-6b68-11e6-9fd8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248510.6877 852174.781168 27.0 10248507.5159 852173.938999 27.0 10248507.5159 852173.938999 1e-06 10248510.6877 852174.781168 1e-06 10248510.6877 852174.781168 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bddd-6b68-11e6-b647-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bdde-6b68-11e6-aa2e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248507.5159 852173.938999 27.0 10248505.631 852180.852025 27.0 10248505.631 852180.852025 1e-06 10248507.5159 852173.938999 1e-06 10248507.5159 852173.938999 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bddf-6b68-11e6-b4aa-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bde0-6b68-11e6-ba09-b88687e81fce">
+                      <gml:posList srsDimension="3">10248507.5159 852173.938999 27.0 10248510.6877 852174.781168 27.0 10248511.9883 852170.009327 27.0 10248509.5201 852169.366445 27.0 10248510.5962 852165.408129 27.0 10248520.7943 852168.105802 27.0 10248531.2977 852161.063575 27.0 10248522.4575 852158.722305 27.0 10248524.4885 852151.256417 27.0 10248549.3403 852157.839962 27.0 10248547.5266 852164.506439 27.0 10248543.4743 852163.430142 27.0 10248541.5002 852170.712878 27.0 10248546.1467 852171.942944 27.0 10248544.7178 852177.214803 27.0 10248534.6328 852174.538034 27.0 10248535.6519 852170.798032 27.0 10248533.4242 852170.203981 27.0 10248524.586 852175.940656 27.0 10248523.7736 852178.919932 27.0 10248526.6591 852179.681741 27.0 10248524.9558 852185.971371 27.0 10248505.631 852180.852025 27.0 10248507.5159 852173.938999 27.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0287bde1-6b68-11e6-bd7e-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0287bde2-6b68-11e6-9b89-b88687e81fce">
+                      <gml:posList srsDimension="3">10248526.6591 852179.681741 1e-06 10248523.7736 852178.919932 1e-06 10248524.586 852175.940656 1e-06 10248533.4242 852170.203981 1e-06 10248535.6519 852170.798032 1e-06 10248534.6328 852174.538034 1e-06 10248544.7178 852177.214803 1e-06 10248546.1467 852171.942944 1e-06 10248541.5002 852170.712878 1e-06 10248543.4743 852163.430142 1e-06 10248547.5266 852164.506439 1e-06 10248549.3403 852157.839962 1e-06 10248524.4885 852151.256417 1e-06 10248522.4575 852158.722305 1e-06 10248531.2977 852161.063575 1e-06 10248520.7943 852168.105802 1e-06 10248510.5962 852165.408129 1e-06 10248509.5201 852169.366445 1e-06 10248511.9883 852170.009327 1e-06 10248510.6877 852174.781168 1e-06 10248507.5159 852173.938999 1e-06 10248505.631 852180.852025 1e-06 10248524.9558 852185.971371 1e-06 10248526.6591 852179.681741 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -1867,148 +1449,238 @@
     </bldg:Building>
   </cityObjectMember>
   <cityObjectMember>
-    <bldg:Building gml:id="Blk 603B">
+    <bldg:Building gml:id="Blk 602C">
       <gml:boundedBy>
         <gml:Envelope srsName="EPSG:21781">
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:00.622000</creationDate>
+      <creationDate>2016-08-26 16:35:14.852000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cde-3e8d-11e6-97c1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e40-6b68-11e6-94a4-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7cdf-3e8d-11e6-9bde-b88687e81fce">
-                      <gml:posList srsDimension="3">10248503.4875 852116.872818 1e-06 10248523.6981 852112.541865 1e-06 10248523.6981 852112.541865 45.0 10248503.4875 852116.872818 45.0 10248503.4875 852116.872818 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e41-6b68-11e6-98a2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248667.6418 852121.051771 45.0 10248664.7676 852101.311529 45.0 10248664.7676 852101.311529 1e-06 10248667.6418 852121.051771 1e-06 10248667.6418 852121.051771 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7ce0-3e8d-11e6-b990-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e42-6b68-11e6-a0d0-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ce1-3e8d-11e6-bb2f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248523.6981 852112.541865 1e-06 10248519.3095 852092.683526 1e-06 10248519.3095 852092.683526 45.0 10248523.6981 852112.541865 45.0 10248523.6981 852112.541865 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e43-6b68-11e6-84b8-b88687e81fce">
+                      <gml:posList srsDimension="3">10248664.7676 852101.311529 45.0 10248658.3081 852102.291159 45.0 10248658.3081 852102.291159 1e-06 10248664.7676 852101.311529 1e-06 10248664.7676 852101.311529 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7ce2-3e8d-11e6-a9db-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e44-6b68-11e6-8bbd-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ce3-3e8d-11e6-b102-b88687e81fce">
-                      <gml:posList srsDimension="3">10248519.3095 852092.683526 1e-06 10248509.2432 852094.839379 1e-06 10248509.2432 852094.839379 45.0 10248519.3095 852092.683526 45.0 10248519.3095 852092.683526 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e45-6b68-11e6-91dc-b88687e81fce">
+                      <gml:posList srsDimension="3">10248658.3081 852102.291159 45.0 10248658.7461 852105.238917 45.0 10248658.7461 852105.238917 1e-06 10248658.3081 852102.291159 1e-06 10248658.3081 852102.291159 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7ce4-3e8d-11e6-ac73-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e46-6b68-11e6-a421-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ce5-3e8d-11e6-a6d4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248509.2432 852094.839379 1e-06 10248511.1837 852103.5911 1e-06 10248511.1837 852103.5911 45.0 10248509.2432 852094.839379 45.0 10248509.2432 852094.839379 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e47-6b68-11e6-9cc7-b88687e81fce">
+                      <gml:posList srsDimension="3">10248658.7461 852105.238917 45.0 10248655.6886 852105.70567 45.0 10248655.6886 852105.70567 1e-06 10248658.7461 852105.238917 1e-06 10248658.7461 852105.238917 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7ce6-3e8d-11e6-950e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e48-6b68-11e6-ad49-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ce7-3e8d-11e6-ba24-b88687e81fce">
-                      <gml:posList srsDimension="3">10248511.1837 852103.5911 1e-06 10248500.4166 852095.281111 1e-06 10248500.4166 852095.281111 45.0 10248511.1837 852103.5911 45.0 10248511.1837 852103.5911 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e49-6b68-11e6-aa35-b88687e81fce">
+                      <gml:posList srsDimension="3">10248655.6886 852105.70567 45.0 10248646.9388 852099.947712 45.0 10248646.9388 852099.947712 1e-06 10248655.6886 852105.70567 1e-06 10248655.6886 852105.70567 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7ce8-3e8d-11e6-9b2c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e4a-6b68-11e6-beb9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ce9-3e8d-11e6-ae2a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248500.4166 852095.281111 1e-06 10248507.1613 852093.834502 1e-06 10248507.1613 852093.834502 45.0 10248500.4166 852095.281111 45.0 10248500.4166 852095.281111 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e4b-6b68-11e6-a6f3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248646.9388 852099.947712 45.0 10248646.6102 852097.663628 45.0 10248646.6102 852097.663628 1e-06 10248646.9388 852099.947712 1e-06 10248646.9388 852099.947712 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cea-3e8d-11e6-8302-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e4c-6b68-11e6-b70f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ceb-3e8d-11e6-b347-b88687e81fce">
-                      <gml:posList srsDimension="3">10248507.1613 852093.834502 1e-06 10248504.7263 852082.829989 1e-06 10248504.7263 852082.829989 45.0 10248507.1613 852093.834502 45.0 10248507.1613 852093.834502 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e4d-6b68-11e6-af42-b88687e81fce">
+                      <gml:posList srsDimension="3">10248646.6102 852097.663628 45.0 10248650.4499 852097.080603 45.0 10248650.4499 852097.080603 1e-06 10248646.6102 852097.663628 1e-06 10248646.6102 852097.663628 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cec-3e8d-11e6-aa9e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e4e-6b68-11e6-accb-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7ced-3e8d-11e6-8ff4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248504.7263 852082.829989 1e-06 10248483.1869 852087.441502 1e-06 10248483.1869 852087.441502 45.0 10248504.7263 852082.829989 45.0 10248504.7263 852082.829989 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e4f-6b68-11e6-9b45-b88687e81fce">
+                      <gml:posList srsDimension="3">10248650.4499 852097.080603 45.0 10248648.954 852086.779992 45.0 10248648.954 852086.779992 1e-06 10248650.4499 852097.080603 1e-06 10248650.4499 852097.080603 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cee-3e8d-11e6-b9f4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e50-6b68-11e6-881d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7cef-3e8d-11e6-8d0a-b88687e81fce">
-                      <gml:posList srsDimension="3">10248483.1869 852087.441502 1e-06 10248485.1991 852096.51392 1e-06 10248485.1991 852096.51392 45.0 10248483.1869 852087.441502 45.0 10248483.1869 852087.441502 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e51-6b68-11e6-868b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248648.954 852086.779992 45.0 10248643.55 852087.595564 45.0 10248643.55 852087.595564 1e-06 10248648.954 852086.779992 1e-06 10248648.954 852086.779992 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cf0-3e8d-11e6-a95a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e52-6b68-11e6-afcd-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7cf1-3e8d-11e6-85e0-b88687e81fce">
-                      <gml:posList srsDimension="3">10248485.1991 852096.51392 1e-06 10248489.2238 852095.646927 1e-06 10248489.2238 852095.646927 45.0 10248485.1991 852096.51392 45.0 10248485.1991 852096.51392 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e53-6b68-11e6-8081-b88687e81fce">
+                      <gml:posList srsDimension="3">10248643.55 852087.595564 45.0 10248644.2452 852092.342563 45.0 10248644.2452 852092.342563 1e-06 10248643.55 852087.595564 1e-06 10248643.55 852087.595564 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307d7cf2-3e8d-11e6-bf50-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e54-6b68-11e6-870f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307d7cf3-3e8d-11e6-aa33-b88687e81fce">
-                      <gml:posList srsDimension="3">10248489.2238 852095.646927 1e-06 10248492.1523 852108.888343 1e-06 10248492.1523 852108.888343 45.0 10248489.2238 852095.646927 45.0 10248489.2238 852095.646927 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e55-6b68-11e6-b684-b88687e81fce">
+                      <gml:posList srsDimension="3">10248644.2452 852092.342563 45.0 10248636.7704 852093.490647 45.0 10248636.7704 852093.490647 1e-06 10248644.2452 852092.342563 1e-06 10248644.2452 852092.342563 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307da3ee-3e8d-11e6-977e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e56-6b68-11e6-8c95-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307da3ef-3e8d-11e6-9740-b88687e81fce">
-                      <gml:posList srsDimension="3">10248492.1523 852108.888343 1e-06 10248501.2965 852106.931644 1e-06 10248501.2965 852106.931644 45.0 10248492.1523 852108.888343 45.0 10248492.1523 852108.888343 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e57-6b68-11e6-b79c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248636.7704 852093.490647 45.0 10248636.1636 852089.345791 45.0 10248636.1636 852089.345791 1e-06 10248636.7704 852093.490647 1e-06 10248636.7704 852093.490647 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307da3f0-3e8d-11e6-961f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e58-6b68-11e6-8d4a-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307da3f1-3e8d-11e6-adac-b88687e81fce">
-                      <gml:posList srsDimension="3">10248501.2965 852106.931644 1e-06 10248503.4875 852116.872818 1e-06 10248503.4875 852116.872818 45.0 10248501.2965 852106.931644 45.0 10248501.2965 852106.931644 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e59-6b68-11e6-bb0d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248636.1636 852089.345791 45.0 10248629.3294 852090.390033 45.0 10248629.3294 852090.390033 1e-06 10248636.1636 852089.345791 1e-06 10248636.1636 852089.345791 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307da3f2-3e8d-11e6-945f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e5a-6b68-11e6-9d8d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307da3f3-3e8d-11e6-ab5f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248503.4875 852116.872818 45.0 10248523.6981 852112.541865 45.0 10248519.3095 852092.683526 45.0 10248509.2432 852094.839379 45.0 10248511.1837 852103.5911 45.0 10248500.4166 852095.281111 45.0 10248507.1613 852093.834502 45.0 10248504.7263 852082.829989 45.0 10248483.1869 852087.441502 45.0 10248485.1991 852096.51392 45.0 10248489.2238 852095.646927 45.0 10248492.1523 852108.888343 45.0 10248501.2965 852106.931644 45.0 10248503.4875 852116.872818 45.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e5b-6b68-11e6-b1a3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248629.3294 852090.390033 45.0 10248633.0203 852115.785446 45.0 10248633.0203 852115.785446 1e-06 10248629.3294 852090.390033 1e-06 10248629.3294 852090.390033 45.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_307da3f4-3e8d-11e6-8c5e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02c38e5c-6b68-11e6-8fb5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_307da3f5-3e8d-11e6-986d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248523.6981 852112.541865 1e-06 10248503.4875 852116.872818 1e-06 10248501.2965 852106.931644 1e-06 10248492.1523 852108.888343 1e-06 10248489.2238 852095.646927 1e-06 10248485.1991 852096.51392 1e-06 10248483.1869 852087.441502 1e-06 10248504.7263 852082.829989 1e-06 10248507.1613 852093.834502 1e-06 10248500.4166 852095.281111 1e-06 10248511.1837 852103.5911 1e-06 10248509.2432 852094.839379 1e-06 10248519.3095 852092.683526 1e-06 10248523.6981 852112.541865 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02c38e5d-6b68-11e6-ae33-b88687e81fce">
+                      <gml:posList srsDimension="3">10248633.0203 852115.785446 45.0 10248640.6911 852114.612221 45.0 10248640.6911 852114.612221 1e-06 10248633.0203 852115.785446 1e-06 10248633.0203 852115.785446 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c38e5e-6b68-11e6-9060-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b54f-6b68-11e6-8cd1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248640.6911 852114.612221 45.0 10248639.3704 852105.587352 45.0 10248639.3704 852105.587352 1e-06 10248640.6911 852114.612221 1e-06 10248640.6911 852114.612221 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b550-6b68-11e6-aaf4-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b551-6b68-11e6-949f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248639.3704 852105.587352 45.0 10248649.9745 852112.338818 45.0 10248649.9745 852112.338818 1e-06 10248639.3704 852105.587352 1e-06 10248639.3704 852105.587352 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b552-6b68-11e6-bb4c-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b553-6b68-11e6-8e3d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248649.9745 852112.338818 45.0 10248651.4878 852122.756713 45.0 10248651.4878 852122.756713 1e-06 10248649.9745 852112.338818 1e-06 10248649.9745 852112.338818 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b554-6b68-11e6-9714-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b555-6b68-11e6-84e4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248651.4878 852122.756713 45.0 10248655.5464 852122.13861 45.0 10248655.5464 852122.13861 1e-06 10248651.4878 852122.756713 1e-06 10248651.4878 852122.756713 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b556-6b68-11e6-8f8a-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b557-6b68-11e6-8927-b88687e81fce">
+                      <gml:posList srsDimension="3">10248655.5464 852122.13861 45.0 10248655.1756 852119.628518 45.0 10248655.1756 852119.628518 1e-06 10248655.5464 852122.13861 1e-06 10248655.5464 852122.13861 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b558-6b68-11e6-8ee0-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b559-6b68-11e6-b09e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248655.1756 852119.628518 45.0 10248660.0707 852118.88144 45.0 10248660.0707 852118.88144 1e-06 10248655.1756 852119.628518 1e-06 10248655.1756 852119.628518 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b55a-6b68-11e6-bd84-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b55b-6b68-11e6-85ee-b88687e81fce">
+                      <gml:posList srsDimension="3">10248660.0707 852118.88144 45.0 10248660.5416 852122.135236 45.0 10248660.5416 852122.135236 1e-06 10248660.0707 852118.88144 1e-06 10248660.0707 852118.88144 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b55c-6b68-11e6-8d2f-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b55d-6b68-11e6-b7af-b88687e81fce">
+                      <gml:posList srsDimension="3">10248660.5416 852122.135236 45.0 10248667.6418 852121.051771 45.0 10248667.6418 852121.051771 1e-06 10248660.5416 852122.135236 1e-06 10248660.5416 852122.135236 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b55e-6b68-11e6-8d3d-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b55f-6b68-11e6-9f7a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248667.6418 852121.051771 45.0 10248660.5416 852122.135236 45.0 10248660.0707 852118.88144 45.0 10248655.1756 852119.628518 45.0 10248655.5464 852122.13861 45.0 10248651.4878 852122.756713 45.0 10248649.9745 852112.338818 45.0 10248639.3704 852105.587352 45.0 10248640.6911 852114.612221 45.0 10248633.0203 852115.785446 45.0 10248629.3294 852090.390033 45.0 10248636.1636 852089.345791 45.0 10248636.7704 852093.490647 45.0 10248644.2452 852092.342563 45.0 10248643.55 852087.595564 45.0 10248648.954 852086.779992 45.0 10248650.4499 852097.080603 45.0 10248646.6102 852097.663628 45.0 10248646.9388 852099.947712 45.0 10248655.6886 852105.70567 45.0 10248658.7461 852105.238917 45.0 10248658.3081 852102.291159 45.0 10248664.7676 852101.311529 45.0 10248667.6418 852121.051771 45.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_02c3b560-6b68-11e6-9387-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_02c3b561-6b68-11e6-9209-b88687e81fce">
+                      <gml:posList srsDimension="3">10248658.3081 852102.291159 1e-06 10248658.7461 852105.238917 1e-06 10248655.6886 852105.70567 1e-06 10248646.9388 852099.947712 1e-06 10248646.6102 852097.663628 1e-06 10248650.4499 852097.080603 1e-06 10248648.954 852086.779992 1e-06 10248643.55 852087.595564 1e-06 10248644.2452 852092.342563 1e-06 10248636.7704 852093.490647 1e-06 10248636.1636 852089.345791 1e-06 10248629.3294 852090.390033 1e-06 10248633.0203 852115.785446 1e-06 10248640.6911 852114.612221 1e-06 10248639.3704 852105.587352 1e-06 10248649.9745 852112.338818 1e-06 10248651.4878 852122.756713 1e-06 10248655.5464 852122.13861 1e-06 10248655.1756 852119.628518 1e-06 10248660.0707 852118.88144 1e-06 10248660.5416 852122.135236 1e-06 10248667.6418 852121.051771 1e-06 10248664.7676 852101.311529 1e-06 10248658.3081 852102.291159 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -2031,148 +1703,148 @@
     </bldg:Building>
   </cityObjectMember>
   <cityObjectMember>
-    <bldg:Building gml:id="Blk 603C">
+    <bldg:Building gml:id="Blk 603A">
       <gml:boundedBy>
         <gml:Envelope srsName="EPSG:21781">
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:00.900000</creationDate>
+      <creationDate>2016-08-26 16:35:15.023000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e840-3e8d-11e6-907c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5f0-6b68-11e6-8adc-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e841-3e8d-11e6-8937-b88687e81fce">
-                      <gml:posList srsDimension="3">10248565.0821 852023.17533 1e-06 10248546.1701 852031.622302 1e-06 10248546.1701 852031.622302 84.0 10248565.0821 852023.17533 84.0 10248565.0821 852023.17533 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5f1-6b68-11e6-b531-b88687e81fce">
+                      <gml:posList srsDimension="3">10248540.563 852197.870533 33.0 10248523.1026 852186.704298 33.0 10248523.1026 852186.704298 1e-06 10248540.563 852197.870533 1e-06 10248540.563 852197.870533 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e842-3e8d-11e6-868e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5f2-6b68-11e6-aa0d-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e843-3e8d-11e6-9cfd-b88687e81fce">
-                      <gml:posList srsDimension="3">10248546.1701 852031.622302 1e-06 10248554.3209 852050.209719 1e-06 10248554.3209 852050.209719 84.0 10248546.1701 852031.622302 84.0 10248546.1701 852031.622302 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5f3-6b68-11e6-b5f6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248523.1026 852186.704298 33.0 10248512.0698 852203.729604 33.0 10248512.0698 852203.729604 1e-06 10248523.1026 852186.704298 1e-06 10248523.1026 852186.704298 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e844-3e8d-11e6-adf5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5f4-6b68-11e6-8530-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e845-3e8d-11e6-a38f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248554.3209 852050.209719 1e-06 10248563.7333 852046.006389 1e-06 10248563.7333 852046.006389 84.0 10248554.3209 852050.209719 84.0 10248554.3209 852050.209719 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5f5-6b68-11e6-9797-b88687e81fce">
+                      <gml:posList srsDimension="3">10248512.0698 852203.729604 33.0 10248520.7549 852209.285535 33.0 10248520.7549 852209.285535 1e-06 10248512.0698 852203.729604 1e-06 10248512.0698 852203.729604 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e846-3e8d-11e6-bff4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5f6-6b68-11e6-b635-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e847-3e8d-11e6-8f3d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248563.7333 852046.006389 1e-06 10248560.1457 852037.818433 1e-06 10248560.1457 852037.818433 84.0 10248563.7333 852046.006389 84.0 10248563.7333 852046.006389 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5f7-6b68-11e6-a965-b88687e81fce">
+                      <gml:posList srsDimension="3">10248520.7549 852209.285535 33.0 10248525.6132 852201.788508 33.0 10248525.6132 852201.788508 1e-06 10248520.7549 852209.285535 1e-06 10248520.7549 852209.285535 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e848-3e8d-11e6-99d7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5f8-6b68-11e6-8e99-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e849-3e8d-11e6-9bcb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248560.1457 852037.818433 1e-06 10248572.2914 852043.73944 1e-06 10248572.2914 852043.73944 84.0 10248560.1457 852037.818433 84.0 10248560.1457 852037.818433 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5f9-6b68-11e6-be6f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248525.6132 852201.788508 33.0 10248527.3509 852215.192299 33.0 10248527.3509 852215.192299 1e-06 10248525.6132 852201.788508 1e-06 10248525.6132 852201.788508 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e84a-3e8d-11e6-8eed-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5fa-6b68-11e6-bc62-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e84b-3e8d-11e6-adea-b88687e81fce">
-                      <gml:posList srsDimension="3">10248572.2914 852043.73944 1e-06 10248565.9806 852046.559707 1e-06 10248565.9806 852046.559707 84.0 10248572.2914 852043.73944 84.0 10248572.2914 852043.73944 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5fb-6b68-11e6-ae65-b88687e81fce">
+                      <gml:posList srsDimension="3">10248527.3509 852215.192299 33.0 10248521.5233 852211.466623 33.0 10248521.5233 852211.466623 1e-06 10248527.3509 852215.192299 1e-06 10248527.3509 852215.192299 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a7e84c-3e8d-11e6-a083-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5fc-6b68-11e6-96f8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a7e84d-3e8d-11e6-be15-b88687e81fce">
-                      <gml:posList srsDimension="3">10248565.9806 852046.559707 1e-06 10248570.4999 852056.856662 1e-06 10248570.4999 852056.856662 84.0 10248565.9806 852046.559707 84.0 10248565.9806 852046.559707 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5fd-6b68-11e6-a1ec-b88687e81fce">
+                      <gml:posList srsDimension="3">10248521.5233 852211.466623 33.0 10248515.4037 852220.905236 33.0 10248515.4037 852220.905236 1e-06 10248521.5233 852211.466623 1e-06 10248521.5233 852211.466623 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f4f-3e8d-11e6-843b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda5fe-6b68-11e6-8052-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f50-3e8d-11e6-9f3f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248570.4999 852056.856662 1e-06 10248590.6525 852047.856463 1e-06 10248590.6525 852047.856463 84.0 10248570.4999 852056.856662 84.0 10248570.4999 852056.856662 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda5ff-6b68-11e6-a24a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248515.4037 852220.905236 33.0 10248534.0048 852232.801398 33.0 10248534.0048 852232.801398 1e-06 10248515.4037 852220.905236 1e-06 10248515.4037 852220.905236 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f51-3e8d-11e6-a678-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda600-6b68-11e6-9a89-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f52-3e8d-11e6-95b1-b88687e81fce">
-                      <gml:posList srsDimension="3">10248590.6525 852047.856463 1e-06 10248586.9281 852039.370601 1e-06 10248586.9281 852039.370601 84.0 10248590.6525 852047.856463 84.0 10248590.6525 852047.856463 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda601-6b68-11e6-ab4a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248534.0048 852232.801398 33.0 10248539.0497 852225.023798 33.0 10248539.0497 852225.023798 1e-06 10248534.0048 852232.801398 1e-06 10248534.0048 852232.801398 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f53-3e8d-11e6-98b1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda602-6b68-11e6-b694-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f54-3e8d-11e6-8ef2-b88687e81fce">
-                      <gml:posList srsDimension="3">10248586.9281 852039.370601 1e-06 10248583.1551 852041.052501 1e-06 10248583.1551 852041.052501 84.0 10248586.9281 852039.370601 84.0 10248586.9281 852039.370601 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda603-6b68-11e6-974b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248539.0497 852225.023798 33.0 10248535.56 852222.801612 33.0 10248535.56 852222.801612 1e-06 10248539.0497 852225.023798 1e-06 10248539.0497 852225.023798 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f55-3e8d-11e6-bf92-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda604-6b68-11e6-a012-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f56-3e8d-11e6-adfb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248583.1551 852041.052501 1e-06 10248577.7175 852028.667361 1e-06 10248577.7175 852028.667361 84.0 10248583.1551 852041.052501 84.0 10248583.1551 852041.052501 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda605-6b68-11e6-88c9-b88687e81fce">
+                      <gml:posList srsDimension="3">10248535.56 852222.801612 33.0 10248542.9188 852211.44396 33.0 10248542.9188 852211.44396 1e-06 10248535.56 852222.801612 1e-06 10248535.56 852222.801612 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f57-3e8d-11e6-a96b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02dda606-6b68-11e6-b806-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f58-3e8d-11e6-892f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248577.7175 852028.667361 1e-06 10248569.1664 852032.487044 1e-06 10248569.1664 852032.487044 84.0 10248577.7175 852028.667361 84.0 10248577.7175 852028.667361 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02dda607-6b68-11e6-aa68-b88687e81fce">
+                      <gml:posList srsDimension="3">10248542.9188 852211.44396 33.0 10248535.0356 852206.400014 33.0 10248535.0356 852206.400014 1e-06 10248542.9188 852211.44396 1e-06 10248542.9188 852211.44396 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f59-3e8d-11e6-ba6f-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02ddcd00-6b68-11e6-a9d7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f5a-3e8d-11e6-8385-b88687e81fce">
-                      <gml:posList srsDimension="3">10248569.1664 852032.487044 1e-06 10248565.0821 852023.17533 1e-06 10248565.0821 852023.17533 84.0 10248569.1664 852032.487044 84.0 10248569.1664 852032.487044 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02ddcd01-6b68-11e6-9d22-b88687e81fce">
+                      <gml:posList srsDimension="3">10248535.0356 852206.400014 33.0 10248540.563 852197.870533 33.0 10248540.563 852197.870533 1e-06 10248535.0356 852206.400014 1e-06 10248535.0356 852206.400014 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f5b-3e8d-11e6-9b8e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02ddcd02-6b68-11e6-90a3-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f5c-3e8d-11e6-b334-b88687e81fce">
-                      <gml:posList srsDimension="3">10248546.1701 852031.622302 84.0 10248554.3209 852050.209719 84.0 10248563.7333 852046.006389 84.0 10248560.1457 852037.818433 84.0 10248572.2914 852043.73944 84.0 10248565.9806 852046.559707 84.0 10248570.4999 852056.856662 84.0 10248590.6525 852047.856463 84.0 10248586.9281 852039.370601 84.0 10248583.1551 852041.052501 84.0 10248577.7175 852028.667361 84.0 10248569.1664 852032.487044 84.0 10248565.0821 852023.17533 84.0 10248546.1701 852031.622302 84.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02ddcd03-6b68-11e6-b3e2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248540.563 852197.870533 33.0 10248535.0356 852206.400014 33.0 10248542.9188 852211.44396 33.0 10248535.56 852222.801612 33.0 10248539.0497 852225.023798 33.0 10248534.0048 852232.801398 33.0 10248515.4037 852220.905236 33.0 10248521.5233 852211.466623 33.0 10248527.3509 852215.192299 33.0 10248525.6132 852201.788508 33.0 10248520.7549 852209.285535 33.0 10248512.0698 852203.729604 33.0 10248523.1026 852186.704298 33.0 10248540.563 852197.870533 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30a80f5d-3e8d-11e6-970c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_02ddcd04-6b68-11e6-9684-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30a80f5e-3e8d-11e6-9994-b88687e81fce">
-                      <gml:posList srsDimension="3">10248546.1701 852031.622302 1e-06 10248565.0821 852023.17533 1e-06 10248569.1664 852032.487044 1e-06 10248577.7175 852028.667361 1e-06 10248583.1551 852041.052501 1e-06 10248586.9281 852039.370601 1e-06 10248590.6525 852047.856463 1e-06 10248570.4999 852056.856662 1e-06 10248565.9806 852046.559707 1e-06 10248572.2914 852043.73944 1e-06 10248560.1457 852037.818433 1e-06 10248563.7333 852046.006389 1e-06 10248554.3209 852050.209719 1e-06 10248546.1701 852031.622302 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_02ddcd05-6b68-11e6-88fa-b88687e81fce">
+                      <gml:posList srsDimension="3">10248512.0698 852203.729604 1e-06 10248520.7549 852209.285535 1e-06 10248525.6132 852201.788508 1e-06 10248527.3509 852215.192299 1e-06 10248521.5233 852211.466623 1e-06 10248515.4037 852220.905236 1e-06 10248534.0048 852232.801398 1e-06 10248539.0497 852225.023798 1e-06 10248535.56 852222.801612 1e-06 10248542.9188 852211.44396 1e-06 10248535.0356 852206.400014 1e-06 10248540.563 852197.870533 1e-06 10248523.1026 852186.704298 1e-06 10248512.0698 852203.729604 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -2186,8 +1858,336 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">84.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>28</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">33.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>11</bldg:storeysAboveGround>
+      <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
+      <gen:stringAttribute name="landuse">
+        <gen:value>residential</gen:value>
+      </gen:stringAttribute>
+    </bldg:Building>
+  </cityObjectMember>
+  <cityObjectMember>
+    <bldg:Building gml:id="Blk 603B">
+      <gml:boundedBy>
+        <gml:Envelope srsName="EPSG:21781">
+          <gml:pos/>
+        </gml:Envelope>
+      </gml:boundedBy>
+      <creationDate>2016-08-26 16:35:15.277000</creationDate>
+      <bldg:lod1Solid>
+        <gml:Solid>
+          <gml:exterior>
+            <gml:CompositeSurface>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_030467cf-6b68-11e6-8e57-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_030467d0-6b68-11e6-a1b7-b88687e81fce">
+                      <gml:posList srsDimension="3">10248542.0641 852189.46495 75.0 10248551.6516 852207.776328 75.0 10248551.6516 852207.776328 1e-06 10248542.0641 852189.46495 1e-06 10248542.0641 852189.46495 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_030467d1-6b68-11e6-b7c8-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_030467d2-6b68-11e6-a254-b88687e81fce">
+                      <gml:posList srsDimension="3">10248551.6516 852207.776328 75.0 10248569.6081 852198.227669 75.0 10248569.6081 852198.227669 1e-06 10248551.6516 852207.776328 1e-06 10248551.6516 852207.776328 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_030467d3-6b68-11e6-8ceb-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_030467d4-6b68-11e6-846a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248569.6081 852198.227669 75.0 10248564.8341 852189.106987 75.0 10248564.8341 852189.106987 1e-06 10248569.6081 852198.227669 1e-06 10248569.6081 852198.227669 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_030467d5-6b68-11e6-ad33-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ee1-6b68-11e6-a550-b88687e81fce">
+                      <gml:posList srsDimension="3">10248564.8341 852189.106987 75.0 10248556.9223 852193.321382 75.0 10248556.9223 852193.321382 1e-06 10248564.8341 852189.106987 1e-06 10248564.8341 852189.106987 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ee2-6b68-11e6-ab47-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ee3-6b68-11e6-b76e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248556.9223 852193.321382 75.0 10248562.0437 852180.721494 75.0 10248562.0437 852180.721494 1e-06 10248556.9223 852193.321382 1e-06 10248556.9223 852193.321382 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ee4-6b68-11e6-889a-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ee5-6b68-11e6-9f15-b88687e81fce">
+                      <gml:posList srsDimension="3">10248562.0437 852180.721494 75.0 10248565.2445 852186.831961 75.0 10248565.2445 852186.831961 1e-06 10248562.0437 852180.721494 1e-06 10248562.0437 852180.721494 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ee6-6b68-11e6-aab6-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ee7-6b68-11e6-a580-b88687e81fce">
+                      <gml:posList srsDimension="3">10248565.2445 852186.831961 75.0 10248575.1943 852181.537693 75.0 10248575.1943 852181.537693 1e-06 10248565.2445 852186.831961 1e-06 10248565.2445 852186.831961 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ee8-6b68-11e6-8e79-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ee9-6b68-11e6-a6b2-b88687e81fce">
+                      <gml:posList srsDimension="3">10248575.1943 852181.537693 75.0 10248564.9805 852162.021225 75.0 10248564.9805 852162.021225 1e-06 10248575.1943 852181.537693 1e-06 10248575.1943 852181.537693 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048eea-6b68-11e6-b165-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048eeb-6b68-11e6-90ed-b88687e81fce">
+                      <gml:posList srsDimension="3">10248564.9805 852162.021225 75.0 10248556.7789 852166.390615 75.0 10248556.7789 852166.390615 1e-06 10248564.9805 852162.021225 1e-06 10248564.9805 852162.021225 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048eec-6b68-11e6-9e66-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048eed-6b68-11e6-bfe1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248556.7789 852166.390615 75.0 10248558.6925 852170.035891 75.0 10248558.6925 852170.035891 1e-06 10248556.7789 852166.390615 1e-06 10248556.7789 852166.390615 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048eee-6b68-11e6-a351-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048eef-6b68-11e6-aeff-b88687e81fce">
+                      <gml:posList srsDimension="3">10248558.6925 852170.035891 75.0 10248546.7198 852176.405002 75.0 10248546.7198 852176.405002 1e-06 10248558.6925 852170.035891 1e-06 10248558.6925 852170.035891 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ef0-6b68-11e6-9698-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ef1-6b68-11e6-a046-b88687e81fce">
+                      <gml:posList srsDimension="3">10248546.7198 852176.405002 75.0 10248551.0549 852184.690618 75.0 10248551.0549 852184.690618 1e-06 10248546.7198 852176.405002 1e-06 10248546.7198 852176.405002 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ef2-6b68-11e6-b078-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ef3-6b68-11e6-8451-b88687e81fce">
+                      <gml:posList srsDimension="3">10248551.0549 852184.690618 75.0 10248542.0641 852189.46495 75.0 10248542.0641 852189.46495 1e-06 10248551.0549 852184.690618 1e-06 10248551.0549 852184.690618 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ef4-6b68-11e6-88b3-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ef5-6b68-11e6-98cd-b88687e81fce">
+                      <gml:posList srsDimension="3">10248551.0549 852184.690618 75.0 10248546.7198 852176.405002 75.0 10248558.6925 852170.035891 75.0 10248556.7789 852166.390615 75.0 10248564.9805 852162.021225 75.0 10248575.1943 852181.537693 75.0 10248565.2445 852186.831961 75.0 10248562.0437 852180.721494 75.0 10248556.9223 852193.321382 75.0 10248564.8341 852189.106987 75.0 10248569.6081 852198.227669 75.0 10248551.6516 852207.776328 75.0 10248542.0641 852189.46495 75.0 10248551.0549 852184.690618 75.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_03048ef6-6b68-11e6-a736-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_03048ef7-6b68-11e6-8968-b88687e81fce">
+                      <gml:posList srsDimension="3">10248569.6081 852198.227669 1e-06 10248564.8341 852189.106987 1e-06 10248556.9223 852193.321382 1e-06 10248562.0437 852180.721494 1e-06 10248565.2445 852186.831961 1e-06 10248575.1943 852181.537693 1e-06 10248564.9805 852162.021225 1e-06 10248556.7789 852166.390615 1e-06 10248558.6925 852170.035891 1e-06 10248546.7198 852176.405002 1e-06 10248551.0549 852184.690618 1e-06 10248542.0641 852189.46495 1e-06 10248551.6516 852207.776328 1e-06 10248569.6081 852198.227669 1e-06</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+            </gml:CompositeSurface>
+          </gml:exterior>
+        </gml:Solid>
+      </bldg:lod1Solid>
+      <bldg:class>1000</bldg:class>
+      <bldg:function>1000</bldg:function>
+      <bldg:usage>1000</bldg:usage>
+      <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
+      <bldg:roofType>1000</bldg:roofType>
+      <bldg:measuredHeight uom="m">75.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>25</bldg:storeysAboveGround>
+      <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
+      <gen:stringAttribute name="landuse">
+        <gen:value>residential</gen:value>
+      </gen:stringAttribute>
+    </bldg:Building>
+  </cityObjectMember>
+  <cityObjectMember>
+    <bldg:Building gml:id="Blk 603C">
+      <gml:boundedBy>
+        <gml:Envelope srsName="EPSG:21781">
+          <gml:pos/>
+        </gml:Envelope>
+      </gml:boundedBy>
+      <creationDate>2016-08-26 16:35:15.515000</creationDate>
+      <bldg:lod1Solid>
+        <gml:Solid>
+          <gml:exterior>
+            <gml:CompositeSurface>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8b0-6b68-11e6-b452-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8b1-6b68-11e6-9ebb-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.9204 852127.392592 48.0 10248584.8752 852137.719281 48.0 10248584.8752 852137.719281 1e-06 10248566.9204 852127.392592 1e-06 10248566.9204 852127.392592 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8b2-6b68-11e6-9d65-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8b3-6b68-11e6-b5c5-b88687e81fce">
+                      <gml:posList srsDimension="3">10248584.8752 852137.719281 48.0 10248595.1136 852120.194954 48.0 10248595.1136 852120.194954 1e-06 10248584.8752 852137.719281 1e-06 10248584.8752 852137.719281 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8b4-6b68-11e6-8783-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8b5-6b68-11e6-8c2f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248595.1136 852120.194954 48.0 10248586.1782 852115.055037 48.0 10248586.1782 852115.055037 1e-06 10248595.1136 852120.194954 1e-06 10248595.1136 852120.194954 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8b6-6b68-11e6-9e25-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8b7-6b68-11e6-af96-b88687e81fce">
+                      <gml:posList srsDimension="3">10248586.1782 852115.055037 48.0 10248581.6663 852122.77228 48.0 10248581.6663 852122.77228 1e-06 10248586.1782 852115.055037 1e-06 10248586.1782 852115.055037 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8b8-6b68-11e6-a64f-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8b9-6b68-11e6-9a1c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248581.6663 852122.77228 48.0 10248579.3112 852109.467019 48.0 10248579.3112 852109.467019 1e-06 10248581.6663 852122.77228 1e-06 10248581.6663 852122.77228 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8ba-6b68-11e6-b7c5-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8bb-6b68-11e6-b70a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248579.3112 852109.467019 48.0 10248585.3038 852112.912081 48.0 10248585.3038 852112.912081 1e-06 10248579.3112 852109.467019 1e-06 10248579.3112 852109.467019 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8bc-6b68-11e6-84bc-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8bd-6b68-11e6-b6c3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248585.3038 852112.912081 48.0 10248590.9733 852103.200814 48.0 10248590.9733 852103.200814 1e-06 10248585.3038 852112.912081 1e-06 10248585.3038 852112.912081 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8be-6b68-11e6-91d3-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8bf-6b68-11e6-92df-b88687e81fce">
+                      <gml:posList srsDimension="3">10248590.9733 852103.200814 48.0 10248571.8414 852092.196151 48.0 10248571.8414 852092.196151 1e-06 10248590.9733 852103.200814 1e-06 10248590.9733 852103.200814 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8c0-6b68-11e6-9595-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8c1-6b68-11e6-a847-b88687e81fce">
+                      <gml:posList srsDimension="3">10248571.8414 852092.196151 48.0 10248567.1691 852100.199336 48.0 10248567.1691 852100.199336 1e-06 10248571.8414 852092.196151 1e-06 10248571.8414 852092.196151 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8c2-6b68-11e6-b037-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8c3-6b68-11e6-a2fa-b88687e81fce">
+                      <gml:posList srsDimension="3">10248567.1691 852100.199336 48.0 10248570.7485 852102.261475 48.0 10248570.7485 852102.261475 1e-06 10248567.1691 852100.199336 1e-06 10248567.1691 852100.199336 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8c4-6b68-11e6-a3c5-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8c5-6b68-11e6-a615-b88687e81fce">
+                      <gml:posList srsDimension="3">10248570.7485 852102.261475 48.0 10248563.9303 852113.943552 48.0 10248563.9303 852113.943552 1e-06 10248570.7485 852102.261475 1e-06 10248570.7485 852102.261475 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8c6-6b68-11e6-b672-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8c7-6b68-11e6-8b47-b88687e81fce">
+                      <gml:posList srsDimension="3">10248563.9303 852113.943552 48.0 10248572.0489 852118.612604 48.0 10248572.0489 852118.612604 1e-06 10248563.9303 852113.943552 1e-06 10248563.9303 852113.943552 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8c8-6b68-11e6-a3d2-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8c9-6b68-11e6-8249-b88687e81fce">
+                      <gml:posList srsDimension="3">10248572.0489 852118.612604 48.0 10248566.9204 852127.392592 48.0 10248566.9204 852127.392592 1e-06 10248572.0489 852118.612604 1e-06 10248572.0489 852118.612604 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8ca-6b68-11e6-b84b-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8cb-6b68-11e6-bf47-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.9204 852127.392592 48.0 10248572.0489 852118.612604 48.0 10248563.9303 852113.943552 48.0 10248570.7485 852102.261475 48.0 10248567.1691 852100.199336 48.0 10248571.8414 852092.196151 48.0 10248590.9733 852103.200814 48.0 10248585.3038 852112.912081 48.0 10248579.3112 852109.467019 48.0 10248581.6663 852122.77228 48.0 10248586.1782 852115.055037 48.0 10248595.1136 852120.194954 48.0 10248584.8752 852137.719281 48.0 10248566.9204 852127.392592 48.0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+              <gml:surfaceMember>
+                <gml:Polygon gml:id="UUID_0328b8cc-6b68-11e6-ad4e-b88687e81fce">
+                  <gml:exterior>
+                    <gml:LinearRing gml:id="UUID_0328b8cd-6b68-11e6-be01-b88687e81fce">
+                      <gml:posList srsDimension="3">10248595.1136 852120.194954 1e-06 10248586.1782 852115.055037 1e-06 10248581.6663 852122.77228 1e-06 10248579.3112 852109.467019 1e-06 10248585.3038 852112.912081 1e-06 10248590.9733 852103.200814 1e-06 10248571.8414 852092.196151 1e-06 10248567.1691 852100.199336 1e-06 10248570.7485 852102.261475 1e-06 10248563.9303 852113.943552 1e-06 10248572.0489 852118.612604 1e-06 10248566.9204 852127.392592 1e-06 10248584.8752 852137.719281 1e-06 10248595.1136 852120.194954 1e-06</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMember>
+            </gml:CompositeSurface>
+          </gml:exterior>
+        </gml:Solid>
+      </bldg:lod1Solid>
+      <bldg:class>1000</bldg:class>
+      <bldg:function>1000</bldg:function>
+      <bldg:usage>1000</bldg:usage>
+      <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
+      <bldg:roofType>1000</bldg:roofType>
+      <bldg:measuredHeight uom="m">48.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>16</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>
@@ -2201,142 +2201,142 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:01.078000</creationDate>
+      <creationDate>2016-08-26 16:35:15.681000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c31161-3e8d-11e6-b72c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03420d0f-6b68-11e6-bb02-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c31162-3e8d-11e6-8b4b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248534.1025 852143.15854 1e-06 10248547.1967 852127.176214 1e-06 10248547.1967 852127.176214 33.0 10248534.1025 852143.15854 33.0 10248534.1025 852143.15854 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03420d10-6b68-11e6-ae88-b88687e81fce">
+                      <gml:posList srsDimension="3">10248566.5037 852186.7664 33.0 10248573.0127 852206.37575 33.0 10248573.0127 852206.37575 1e-06 10248566.5037 852186.7664 1e-06 10248566.5037 852186.7664 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c31163-3e8d-11e6-a0f7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03420d11-6b68-11e6-a02f-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c31164-3e8d-11e6-a65f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248547.1967 852127.176214 1e-06 10248531.3773 852114.373095 1e-06 10248531.3773 852114.373095 33.0 10248547.1967 852127.176214 33.0 10248547.1967 852127.176214 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0342341e-6b68-11e6-aefc-b88687e81fce">
+                      <gml:posList srsDimension="3">10248573.0127 852206.37575 33.0 10248592.289 852199.848885 33.0 10248592.289 852199.848885 1e-06 10248573.0127 852206.37575 1e-06 10248573.0127 852206.37575 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c31165-3e8d-11e6-b03b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0342341f-6b68-11e6-9f20-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c31166-3e8d-11e6-a406-b88687e81fce">
-                      <gml:posList srsDimension="3">10248531.3773 852114.373095 1e-06 10248524.8559 852122.333405 1e-06 10248524.8559 852122.333405 33.0 10248531.3773 852114.373095 33.0 10248531.3773 852114.373095 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423420-6b68-11e6-bd16-b88687e81fce">
+                      <gml:posList srsDimension="3">10248592.289 852199.848885 33.0 10248589.0468 852190.082426 33.0 10248589.0468 852190.082426 1e-06 10248592.289 852199.848885 1e-06 10248592.289 852199.848885 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c31167-3e8d-11e6-801e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423421-6b68-11e6-9383-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c31168-3e8d-11e6-8ace-b88687e81fce">
-                      <gml:posList srsDimension="3">10248524.8559 852122.333405 1e-06 10248531.8247 852127.968917 1e-06 10248531.8247 852127.968917 33.0 10248524.8559 852122.333405 33.0 10248524.8559 852122.333405 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423422-6b68-11e6-b4ec-b88687e81fce">
+                      <gml:posList srsDimension="3">10248589.0468 852190.082426 33.0 10248580.559 852192.960116 33.0 10248580.559 852192.960116 1e-06 10248589.0468 852190.082426 1e-06 10248589.0468 852190.082426 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c31169-3e8d-11e6-aa9e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423423-6b68-11e6-82b8-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c3116a-3e8d-11e6-9f37-b88687e81fce">
-                      <gml:posList srsDimension="3">10248531.8247 852127.968917 1e-06 10248518.2319 852128.192524 1e-06 10248518.2319 852128.192524 33.0 10248531.8247 852127.968917 33.0 10248531.8247 852127.968917 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423424-6b68-11e6-b8e3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248580.559 852192.960116 33.0 10248587.6354 852181.352349 33.0 10248587.6354 852181.352349 1e-06 10248580.559 852192.960116 1e-06 10248580.559 852192.960116 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33870-3e8d-11e6-8bf5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423425-6b68-11e6-9047-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33871-3e8d-11e6-8800-b88687e81fce">
-                      <gml:posList srsDimension="3">10248518.2319 852128.192524 1e-06 10248522.5978 852122.854024 1e-06 10248522.5978 852122.854024 33.0 10248518.2319 852128.192524 33.0 10248518.2319 852128.192524 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423426-6b68-11e6-9fc3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248587.6354 852181.352349 33.0 10248589.8138 852187.895664 33.0 10248589.8138 852187.895664 1e-06 10248587.6354 852181.352349 1e-06 10248587.6354 852181.352349 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33872-3e8d-11e6-a0b4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423427-6b68-11e6-ad27-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33873-3e8d-11e6-89ff-b88687e81fce">
-                      <gml:posList srsDimension="3">10248522.5978 852122.854024 1e-06 10248513.8296 852115.761872 1e-06 10248513.8296 852115.761872 33.0 10248522.5978 852122.854024 33.0 10248522.5978 852122.854024 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423428-6b68-11e6-9b4b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248589.8138 852187.895664 33.0 10248600.4944 852184.275815 33.0 10248600.4944 852184.275815 1e-06 10248589.8138 852187.895664 1e-06 10248589.8138 852187.895664 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33874-3e8d-11e6-96b2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423429-6b68-11e6-b443-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33875-3e8d-11e6-a868-b88687e81fce">
-                      <gml:posList srsDimension="3">10248513.8296 852115.761872 1e-06 10248499.875 852132.797583 1e-06 10248499.875 852132.797583 33.0 10248513.8296 852115.761872 33.0 10248513.8296 852115.761872 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0342342a-6b68-11e6-9280-b88687e81fce">
+                      <gml:posList srsDimension="3">10248600.4944 852184.275815 33.0 10248593.555 852163.376215 33.0 10248593.555 852163.376215 1e-06 10248600.4944 852184.275815 1e-06 10248600.4944 852184.275815 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33876-3e8d-11e6-a4d7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0342342b-6b68-11e6-aeea-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33877-3e8d-11e6-a96e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248499.875 852132.797583 1e-06 10248507.1044 852138.638347 1e-06 10248507.1044 852138.638347 33.0 10248499.875 852132.797583 33.0 10248499.875 852132.797583 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0342342c-6b68-11e6-b384-b88687e81fce">
+                      <gml:posList srsDimension="3">10248593.555 852163.376215 33.0 10248584.7545 852166.364407 33.0 10248584.7545 852166.364407 1e-06 10248593.555 852163.376215 1e-06 10248593.555 852163.376215 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33878-3e8d-11e6-9bdc-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0342342d-6b68-11e6-a317-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33879-3e8d-11e6-8a96-b88687e81fce">
-                      <gml:posList srsDimension="3">10248507.1044 852138.638347 1e-06 10248509.7114 852135.447436 1e-06 10248509.7114 852135.447436 33.0 10248507.1044 852138.638347 33.0 10248507.1044 852138.638347 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0342342e-6b68-11e6-a28e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248584.7545 852166.364407 33.0 10248586.0579 852170.273354 33.0 10248586.0579 852170.273354 1e-06 10248584.7545 852166.364407 1e-06 10248584.7545 852166.364407 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c3387a-3e8d-11e6-9819-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0342342f-6b68-11e6-b177-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c3387b-3e8d-11e6-9430-b88687e81fce">
-                      <gml:posList srsDimension="3">10248509.7114 852135.447436 1e-06 10248520.2576 852143.982768 1e-06 10248520.2576 852143.982768 33.0 10248509.7114 852135.447436 33.0 10248509.7114 852135.447436 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423430-6b68-11e6-a4c3-b88687e81fce">
+                      <gml:posList srsDimension="3">10248586.0579 852170.273354 33.0 10248573.2072 852174.624592 33.0 10248573.2072 852174.624592 1e-06 10248586.0579 852170.273354 1e-06 10248586.0579 852170.273354 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c3387c-3e8d-11e6-8be7-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423431-6b68-11e6-879e-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c3387d-3e8d-11e6-b6b6-b88687e81fce">
-                      <gml:posList srsDimension="3">10248520.2576 852143.982768 1e-06 10248526.1761 852136.755363 1e-06 10248526.1761 852136.755363 33.0 10248520.2576 852143.982768 33.0 10248520.2576 852143.982768 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423432-6b68-11e6-af25-b88687e81fce">
+                      <gml:posList srsDimension="3">10248573.2072 852174.624592 33.0 10248576.1521 852183.489756 33.0 10248576.1521 852183.489756 1e-06 10248573.2072 852174.624592 1e-06 10248573.2072 852174.624592 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c3387e-3e8d-11e6-9d3a-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423433-6b68-11e6-aa5c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c3387f-3e8d-11e6-85c0-b88687e81fce">
-                      <gml:posList srsDimension="3">10248526.1761 852136.755363 1e-06 10248534.1025 852143.15854 1e-06 10248534.1025 852143.15854 33.0 10248526.1761 852136.755363 33.0 10248526.1761 852136.755363 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423434-6b68-11e6-b7c0-b88687e81fce">
+                      <gml:posList srsDimension="3">10248576.1521 852183.489756 33.0 10248566.5037 852186.7664 33.0 10248566.5037 852186.7664 1e-06 10248576.1521 852183.489756 1e-06 10248576.1521 852183.489756 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33880-3e8d-11e6-8bd4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423435-6b68-11e6-ac57-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33881-3e8d-11e6-9fef-b88687e81fce">
-                      <gml:posList srsDimension="3">10248534.1025 852143.15854 33.0 10248547.1967 852127.176214 33.0 10248531.3773 852114.373095 33.0 10248524.8559 852122.333405 33.0 10248531.8247 852127.968917 33.0 10248518.2319 852128.192524 33.0 10248522.5978 852122.854024 33.0 10248513.8296 852115.761872 33.0 10248499.875 852132.797583 33.0 10248507.1044 852138.638347 33.0 10248509.7114 852135.447436 33.0 10248520.2576 852143.982768 33.0 10248526.1761 852136.755363 33.0 10248534.1025 852143.15854 33.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423436-6b68-11e6-ae60-b88687e81fce">
+                      <gml:posList srsDimension="3">10248576.1521 852183.489756 33.0 10248573.2072 852174.624592 33.0 10248586.0579 852170.273354 33.0 10248584.7545 852166.364407 33.0 10248593.555 852163.376215 33.0 10248600.4944 852184.275815 33.0 10248589.8138 852187.895664 33.0 10248587.6354 852181.352349 33.0 10248580.559 852192.960116 33.0 10248589.0468 852190.082426 33.0 10248592.289 852199.848885 33.0 10248573.0127 852206.37575 33.0 10248566.5037 852186.7664 33.0 10248576.1521 852183.489756 33.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30c33882-3e8d-11e6-b556-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03423437-6b68-11e6-a325-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30c33883-3e8d-11e6-ba3e-b88687e81fce">
-                      <gml:posList srsDimension="3">10248547.1967 852127.176214 1e-06 10248534.1025 852143.15854 1e-06 10248526.1761 852136.755363 1e-06 10248520.2576 852143.982768 1e-06 10248509.7114 852135.447436 1e-06 10248507.1044 852138.638347 1e-06 10248499.875 852132.797583 1e-06 10248513.8296 852115.761872 1e-06 10248522.5978 852122.854024 1e-06 10248518.2319 852128.192524 1e-06 10248531.8247 852127.968917 1e-06 10248524.8559 852122.333405 1e-06 10248531.3773 852114.373095 1e-06 10248547.1967 852127.176214 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03423438-6b68-11e6-b7e4-b88687e81fce">
+                      <gml:posList srsDimension="3">10248592.289 852199.848885 1e-06 10248589.0468 852190.082426 1e-06 10248580.559 852192.960116 1e-06 10248587.6354 852181.352349 1e-06 10248589.8138 852187.895664 1e-06 10248600.4944 852184.275815 1e-06 10248593.555 852163.376215 1e-06 10248584.7545 852166.364407 1e-06 10248586.0579 852170.273354 1e-06 10248573.2072 852174.624592 1e-06 10248576.1521 852183.489756 1e-06 10248566.5037 852186.7664 1e-06 10248573.0127 852206.37575 1e-06 10248592.289 852199.848885 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -2365,142 +2365,142 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:01.310000</creationDate>
+      <creationDate>2016-08-26 16:35:15.926000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677de-3e8d-11e6-824b-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03676f61-6b68-11e6-82c9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677df-3e8d-11e6-990d-b88687e81fce">
-                      <gml:posList srsDimension="3">10248603.1093 852173.735062 1e-06 10248585.35 852184.387404 1e-06 10248585.35 852184.387404 42.0 10248603.1093 852173.735062 42.0 10248603.1093 852173.735062 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03676f62-6b68-11e6-bf2c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248598.078 852098.320185 60.0 10248616.8573 852107.049711 60.0 10248616.8573 852107.049711 1e-06 10248598.078 852098.320185 1e-06 10248598.078 852098.320185 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677e0-3e8d-11e6-8582-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03676f63-6b68-11e6-b6f5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677e1-3e8d-11e6-b242-b88687e81fce">
-                      <gml:posList srsDimension="3">10248585.35 852184.387404 1e-06 10248595.6881 852201.862532 1e-06 10248595.6881 852201.862532 42.0 10248585.35 852184.387404 42.0 10248585.35 852184.387404 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03676f64-6b68-11e6-b57e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248616.8573 852107.049711 60.0 10248625.5278 852088.690006 60.0 10248625.5278 852088.690006 1e-06 10248616.8573 852107.049711 1e-06 10248616.8573 852107.049711 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677e2-3e8d-11e6-9833-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679670-6b68-11e6-b474-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677e3-3e8d-11e6-9fbd-b88687e81fce">
-                      <gml:posList srsDimension="3">10248595.6881 852201.862532 1e-06 10248604.516 852196.56545 1e-06 10248604.516 852196.56545 42.0 10248595.6881 852201.862532 42.0 10248595.6881 852201.862532 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679671-6b68-11e6-81e6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248625.5278 852088.690006 60.0 10248616.1913 852084.351814 60.0 10248616.1913 852084.351814 1e-06 10248625.5278 852088.690006 1e-06 10248625.5278 852088.690006 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677e4-3e8d-11e6-a74c-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679672-6b68-11e6-93dc-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677e5-3e8d-11e6-8ccf-b88687e81fce">
-                      <gml:posList srsDimension="3">10248604.516 852196.56545 1e-06 10248599.9687 852188.864508 1e-06 10248599.9687 852188.864508 42.0 10248604.516 852196.56545 42.0 10248604.516 852196.56545 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679673-6b68-11e6-950c-b88687e81fce">
+                      <gml:posList srsDimension="3">10248616.1913 852084.351814 60.0 10248612.3656 852092.43554 60.0 10248612.3656 852092.43554 1e-06 10248616.1913 852084.351814 1e-06 10248616.1913 852084.351814 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677e6-3e8d-11e6-bde3-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679674-6b68-11e6-b855-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677e7-3e8d-11e6-8c2f-b88687e81fce">
-                      <gml:posList srsDimension="3">10248599.9687 852188.864508 1e-06 10248612.7402 852193.287609 1e-06 10248612.7402 852193.287609 42.0 10248599.9687 852188.864508 42.0 10248599.9687 852188.864508 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679675-6b68-11e6-b72e-b88687e81fce">
+                      <gml:posList srsDimension="3">10248612.3656 852092.43554 60.0 10248608.8651 852079.380983 60.0 10248608.8651 852079.380983 1e-06 10248612.3656 852092.43554 1e-06 10248612.3656 852092.43554 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677e8-3e8d-11e6-96db-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679676-6b68-11e6-ae47-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677e9-3e8d-11e6-8af3-b88687e81fce">
-                      <gml:posList srsDimension="3">10248612.7402 852193.287609 1e-06 10248606.8119 852196.851202 1e-06 10248606.8119 852196.851202 42.0 10248612.7402 852193.287609 42.0 10248612.7402 852193.287609 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679677-6b68-11e6-a6c1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248608.8651 852079.380983 60.0 10248615.1403 852082.290703 60.0 10248615.1403 852082.290703 1e-06 10248608.8651 852079.380983 1e-06 10248608.8651 852079.380983 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677ea-3e8d-11e6-9e53-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679678-6b68-11e6-9dfe-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677eb-3e8d-11e6-8f18-b88687e81fce">
-                      <gml:posList srsDimension="3">10248606.8119 852196.851202 1e-06 10248612.531 852206.528454 1e-06 10248612.531 852206.528454 42.0 10248606.8119 852196.851202 42.0 10248606.8119 852196.851202 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679679-6b68-11e6-95bd-b88687e81fce">
+                      <gml:posList srsDimension="3">10248615.1403 852082.290703 60.0 10248619.9451 852072.128451 60.0 10248619.9451 852072.128451 1e-06 10248615.1403 852082.290703 1e-06 10248615.1403 852082.290703 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677ec-3e8d-11e6-92c2-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0367967a-6b68-11e6-9cbc-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677ed-3e8d-11e6-b257-b88687e81fce">
-                      <gml:posList srsDimension="3">10248612.531 852206.528454 1e-06 10248631.4614 852195.177301 1e-06 10248631.4614 852195.177301 42.0 10248612.531 852206.528454 42.0 10248612.531 852206.528454 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0367967b-6b68-11e6-9079-b88687e81fce">
+                      <gml:posList srsDimension="3">10248619.9451 852072.128451 60.0 10248599.9304 852062.821167 60.0 10248599.9304 852062.821167 1e-06 10248619.9451 852072.128451 1e-06 10248619.9451 852072.128451 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677ee-3e8d-11e6-beea-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0367967c-6b68-11e6-97ea-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677ef-3e8d-11e6-adae-b88687e81fce">
-                      <gml:posList srsDimension="3">10248631.4614 852195.177301 1e-06 10248626.7411 852187.200481 1e-06 10248626.7411 852187.200481 42.0 10248631.4614 852195.177301 42.0 10248631.4614 852195.177301 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0367967d-6b68-11e6-a87f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248599.9304 852062.821167 60.0 10248595.9734 852071.2029 60.0 10248595.9734 852071.2029 1e-06 10248599.9304 852062.821167 1e-06 10248599.9304 852062.821167 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677f0-3e8d-11e6-af31-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0367967e-6b68-11e6-99a4-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677f1-3e8d-11e6-9853-b88687e81fce">
-                      <gml:posList srsDimension="3">10248626.7411 852187.200481 1e-06 10248623.1951 852189.321148 1e-06 10248623.1951 852189.321148 42.0 10248626.7411 852187.200481 42.0 10248626.7411 852187.200481 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0367967f-6b68-11e6-bb59-b88687e81fce">
+                      <gml:posList srsDimension="3">10248595.9734 852071.2029 60.0 10248599.7178 852072.949433 60.0 10248599.7178 852072.949433 1e-06 10248595.9734 852071.2029 1e-06 10248595.9734 852071.2029 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677f2-3e8d-11e6-8ff9-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679680-6b68-11e6-85cd-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677f3-3e8d-11e6-9748-b88687e81fce">
-                      <gml:posList srsDimension="3">10248623.1951 852189.321148 1e-06 10248616.3043 852177.667543 1e-06 10248616.3043 852177.667543 42.0 10248623.1951 852189.321148 42.0 10248623.1951 852189.321148 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679681-6b68-11e6-a813-b88687e81fce">
+                      <gml:posList srsDimension="3">10248599.7178 852072.949433 60.0 10248593.9339 852085.190161 60.0 10248593.9339 852085.190161 1e-06 10248599.7178 852072.949433 1e-06 10248599.7178 852072.949433 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677f4-3e8d-11e6-8bf4-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679682-6b68-11e6-9cc7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677f5-3e8d-11e6-9290-b88687e81fce">
-                      <gml:posList srsDimension="3">10248616.3043 852177.667543 1e-06 10248608.2764 852182.477926 1e-06 10248608.2764 852182.477926 42.0 10248616.3043 852177.667543 42.0 10248616.3043 852177.667543 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679683-6b68-11e6-b09a-b88687e81fce">
+                      <gml:posList srsDimension="3">10248593.9339 852085.190161 60.0 10248602.4188 852089.138973 60.0 10248602.4188 852089.138973 1e-06 10248593.9339 852085.190161 1e-06 10248593.9339 852085.190161 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677f6-3e8d-11e6-8ccc-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679684-6b68-11e6-963e-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677f7-3e8d-11e6-8bae-b88687e81fce">
-                      <gml:posList srsDimension="3">10248608.2764 852182.477926 1e-06 10248603.1093 852173.735062 1e-06 10248603.1093 852173.735062 42.0 10248608.2764 852182.477926 42.0 10248608.2764 852182.477926 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679685-6b68-11e6-9ca0-b88687e81fce">
+                      <gml:posList srsDimension="3">10248602.4188 852089.138973 60.0 10248598.078 852098.320185 60.0 10248598.078 852098.320185 1e-06 10248602.4188 852089.138973 1e-06 10248602.4188 852089.138973 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677f8-3e8d-11e6-9899-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679686-6b68-11e6-b336-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677f9-3e8d-11e6-a605-b88687e81fce">
-                      <gml:posList srsDimension="3">10248585.35 852184.387404 42.0 10248595.6881 852201.862532 42.0 10248604.516 852196.56545 42.0 10248599.9687 852188.864508 42.0 10248612.7402 852193.287609 42.0 10248606.8119 852196.851202 42.0 10248612.531 852206.528454 42.0 10248631.4614 852195.177301 42.0 10248626.7411 852187.200481 42.0 10248623.1951 852189.321148 42.0 10248616.3043 852177.667543 42.0 10248608.2764 852182.477926 42.0 10248603.1093 852173.735062 42.0 10248585.35 852184.387404 42.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679687-6b68-11e6-b624-b88687e81fce">
+                      <gml:posList srsDimension="3">10248598.078 852098.320185 60.0 10248602.4188 852089.138973 60.0 10248593.9339 852085.190161 60.0 10248599.7178 852072.949433 60.0 10248595.9734 852071.2029 60.0 10248599.9304 852062.821167 60.0 10248619.9451 852072.128451 60.0 10248615.1403 852082.290703 60.0 10248608.8651 852079.380983 60.0 10248612.3656 852092.43554 60.0 10248616.1913 852084.351814 60.0 10248625.5278 852088.690006 60.0 10248616.8573 852107.049711 60.0 10248598.078 852098.320185 60.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_30e677fa-3e8d-11e6-a389-b88687e81fce">
+                <gml:Polygon gml:id="UUID_03679688-6b68-11e6-ac56-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_30e677fb-3e8d-11e6-89cb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248585.35 852184.387404 1e-06 10248603.1093 852173.735062 1e-06 10248608.2764 852182.477926 1e-06 10248616.3043 852177.667543 1e-06 10248623.1951 852189.321148 1e-06 10248626.7411 852187.200481 1e-06 10248631.4614 852195.177301 1e-06 10248612.531 852206.528454 1e-06 10248606.8119 852196.851202 1e-06 10248612.7402 852193.287609 1e-06 10248599.9687 852188.864508 1e-06 10248604.516 852196.56545 1e-06 10248595.6881 852201.862532 1e-06 10248585.35 852184.387404 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_03679689-6b68-11e6-891b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248625.5278 852088.690006 1e-06 10248616.1913 852084.351814 1e-06 10248612.3656 852092.43554 1e-06 10248608.8651 852079.380983 1e-06 10248615.1403 852082.290703 1e-06 10248619.9451 852072.128451 1e-06 10248599.9304 852062.821167 1e-06 10248595.9734 852071.2029 1e-06 10248599.7178 852072.949433 1e-06 10248593.9339 852085.190161 1e-06 10248602.4188 852089.138973 1e-06 10248598.078 852098.320185 1e-06 10248616.8573 852107.049711 1e-06 10248625.5278 852088.690006 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -2514,8 +2514,8 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">42.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>14</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">60.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>20</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>
@@ -2529,142 +2529,142 @@
           <gml:pos/>
         </gml:Envelope>
       </gml:boundedBy>
-      <creationDate>2016-06-30 14:38:01.524000</creationDate>
+      <creationDate>2016-08-26 16:35:16.033000</creationDate>
       <bldg:lod1Solid>
         <gml:Solid>
           <gml:exterior>
             <gml:CompositeSurface>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f40-3e8d-11e6-b176-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377c30f-6b68-11e6-a32c-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f41-3e8d-11e6-a714-b88687e81fce">
-                      <gml:posList srsDimension="3">10248456.6397 852067.552256 1e-06 10248464.0583 852086.844501 1e-06 10248464.0583 852086.844501 39.0 10248456.6397 852067.552256 39.0 10248456.6397 852067.552256 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377c310-6b68-11e6-b125-b88687e81fce">
+                      <gml:posList srsDimension="3">10248601.7038 852042.9255 21.0 10248609.5499 852062.047861 21.0 10248609.5499 852062.047861 1e-06 10248601.7038 852042.9255 1e-06 10248601.7038 852042.9255 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f42-3e8d-11e6-8096-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377c311-6b68-11e6-84f5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f43-3e8d-11e6-b89b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248464.0583 852086.844501 1e-06 10248482.9998 852079.414321 1e-06 10248482.9998 852079.414321 39.0 10248464.0583 852086.844501 39.0 10248464.0583 852086.844501 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377c312-6b68-11e6-a827-b88687e81fce">
+                      <gml:posList srsDimension="3">10248609.5499 852062.047861 21.0 10248628.3213 852054.197966 21.0 10248628.3213 852054.197966 1e-06 10248609.5499 852062.047861 1e-06 10248609.5499 852062.047861 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f44-3e8d-11e6-a189-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377c313-6b68-11e6-8b59-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f45-3e8d-11e6-a193-b88687e81fce">
-                      <gml:posList srsDimension="3">10248482.9998 852079.414321 1e-06 10248479.3 852069.814586 1e-06 10248479.3 852069.814586 39.0 10248482.9998 852079.414321 39.0 10248482.9998 852079.414321 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377c314-6b68-11e6-bec6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248628.3213 852054.197966 21.0 10248624.4087 852044.68295 21.0 10248624.4087 852044.68295 1e-06 10248628.3213 852054.197966 1e-06 10248628.3213 852054.197966 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f46-3e8d-11e6-ab26-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377c315-6b68-11e6-9dca-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f47-3e8d-11e6-b23b-b88687e81fce">
-                      <gml:posList srsDimension="3">10248479.3 852069.814586 1e-06 10248470.962 852073.082054 1e-06 10248470.962 852073.082054 39.0 10248479.3 852069.814586 39.0 10248479.3 852069.814586 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377c316-6b68-11e6-ab1b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248624.4087 852044.68295 21.0 10248616.1456 852048.135176 21.0 10248616.1456 852048.135176 1e-06 10248624.4087 852044.68295 1e-06 10248624.4087 852044.68295 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f48-3e8d-11e6-8f68-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea1e-6b68-11e6-a5d5-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f49-3e8d-11e6-bb61-b88687e81fce">
-                      <gml:posList srsDimension="3">10248470.962 852073.082054 1e-06 10248477.489 852061.148423 1e-06 10248477.489 852061.148423 39.0 10248470.962 852073.082054 39.0 10248470.962 852073.082054 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea1f-6b68-11e6-9409-b88687e81fce">
+                      <gml:posList srsDimension="3">10248616.1456 852048.135176 21.0 10248622.4054 852036.059238 21.0 10248622.4054 852036.059238 1e-06 10248616.1456 852048.135176 1e-06 10248616.1456 852048.135176 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f4a-3e8d-11e6-af0e-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea20-6b68-11e6-9092-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f4b-3e8d-11e6-8603-b88687e81fce">
-                      <gml:posList srsDimension="3">10248477.489 852061.148423 1e-06 10248479.9753 852067.592481 1e-06 10248479.9753 852067.592481 39.0 10248477.489 852061.148423 39.0 10248477.489 852061.148423 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea21-6b68-11e6-a0cb-b88687e81fce">
+                      <gml:posList srsDimension="3">10248622.4054 852036.059238 21.0 10248625.0344 852042.446367 21.0 10248625.0344 852042.446367 1e-06 10248622.4054 852036.059238 1e-06 10248622.4054 852036.059238 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f4c-3e8d-11e6-bfc1-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea22-6b68-11e6-85d6-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f4d-3e8d-11e6-bd62-b88687e81fce">
-                      <gml:posList srsDimension="3">10248479.9753 852067.592481 1e-06 10248490.4678 852063.477283 1e-06 10248490.4678 852063.477283 39.0 10248479.9753 852067.592481 39.0 10248479.9753 852067.592481 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea23-6b68-11e6-904d-b88687e81fce">
+                      <gml:posList srsDimension="3">10248625.0344 852042.446367 21.0 10248635.4328 852038.098669 21.0 10248635.4328 852038.098669 1e-06 10248625.0344 852042.446367 1e-06 10248625.0344 852042.446367 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f4e-3e8d-11e6-8f55-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea24-6b68-11e6-99c9-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f4f-3e8d-11e6-8e15-b88687e81fce">
-                      <gml:posList srsDimension="3">10248490.4678 852063.477283 1e-06 10248482.5594 852042.925291 1e-06 10248482.5594 852042.925291 39.0 10248490.4678 852063.477283 39.0 10248490.4678 852063.477283 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea25-6b68-11e6-9b7b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248635.4328 852038.098669 21.0 10248627.069 852017.727774 21.0 10248627.069 852017.727774 1e-06 10248635.4328 852038.098669 1e-06 10248635.4328 852038.098669 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f50-3e8d-11e6-8aea-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea26-6b68-11e6-8102-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f51-3e8d-11e6-8246-b88687e81fce">
-                      <gml:posList srsDimension="3">10248482.5594 852042.925291 1e-06 10248473.9068 852046.307266 1e-06 10248473.9068 852046.307266 39.0 10248482.5594 852042.925291 39.0 10248482.5594 852042.925291 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea27-6b68-11e6-808f-b88687e81fce">
+                      <gml:posList srsDimension="3">10248627.069 852017.727774 21.0 10248618.4937 852021.301483 21.0 10248618.4937 852021.301483 1e-06 10248627.069 852017.727774 1e-06 10248627.069 852017.727774 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31071f52-3e8d-11e6-9ced-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea28-6b68-11e6-89a1-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31071f53-3e8d-11e6-a494-b88687e81fce">
-                      <gml:posList srsDimension="3">10248473.9068 852046.307266 1e-06 10248475.3917 852050.163855 1e-06 10248475.3917 852050.163855 39.0 10248473.9068 852046.307266 39.0 10248473.9068 852046.307266 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea29-6b68-11e6-8cab-b88687e81fce">
+                      <gml:posList srsDimension="3">10248618.4937 852021.301483 21.0 10248620.0641 852025.124069 21.0 10248620.0641 852025.124069 1e-06 10248618.4937 852021.301483 1e-06 10248618.4937 852021.301483 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31074651-3e8d-11e6-b060-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea2a-6b68-11e6-a8f6-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31074652-3e8d-11e6-bafa-b88687e81fce">
-                      <gml:posList srsDimension="3">10248475.3917 852050.163855 1e-06 10248462.7661 852055.114189 1e-06 10248462.7661 852055.114189 39.0 10248475.3917 852050.163855 39.0 10248475.3917 852050.163855 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea2b-6b68-11e6-80b6-b88687e81fce">
+                      <gml:posList srsDimension="3">10248620.0641 852025.124069 21.0 10248607.5518 852030.354169 21.0 10248607.5518 852030.354169 1e-06 10248620.0641 852025.124069 1e-06 10248620.0641 852025.124069 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31074653-3e8d-11e6-add5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea2c-6b68-11e6-a8e2-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31074654-3e8d-11e6-8956-b88687e81fce">
-                      <gml:posList srsDimension="3">10248462.7661 852055.114189 1e-06 10248466.1166 852063.827819 1e-06 10248466.1166 852063.827819 39.0 10248462.7661 852055.114189 39.0 10248462.7661 852055.114189 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea2d-6b68-11e6-9b3b-b88687e81fce">
+                      <gml:posList srsDimension="3">10248607.5518 852030.354169 21.0 10248611.0954 852038.991072 21.0 10248611.0954 852038.991072 1e-06 10248607.5518 852030.354169 1e-06 10248607.5518 852030.354169 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31074655-3e8d-11e6-b858-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea2e-6b68-11e6-bec7-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31074656-3e8d-11e6-9159-b88687e81fce">
-                      <gml:posList srsDimension="3">10248466.1166 852063.827819 1e-06 10248456.6397 852067.552256 1e-06 10248456.6397 852067.552256 39.0 10248466.1166 852063.827819 39.0 10248466.1166 852063.827819 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea2f-6b68-11e6-a8d1-b88687e81fce">
+                      <gml:posList srsDimension="3">10248611.0954 852038.991072 21.0 10248601.7038 852042.9255 21.0 10248601.7038 852042.9255 1e-06 10248611.0954 852038.991072 1e-06 10248611.0954 852038.991072 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31074657-3e8d-11e6-bbf5-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea30-6b68-11e6-8795-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_31074658-3e8d-11e6-87c4-b88687e81fce">
-                      <gml:posList srsDimension="3">10248456.6397 852067.552256 39.0 10248464.0583 852086.844501 39.0 10248482.9998 852079.414321 39.0 10248479.3 852069.814586 39.0 10248470.962 852073.082054 39.0 10248477.489 852061.148423 39.0 10248479.9753 852067.592481 39.0 10248490.4678 852063.477283 39.0 10248482.5594 852042.925291 39.0 10248473.9068 852046.307266 39.0 10248475.3917 852050.163855 39.0 10248462.7661 852055.114189 39.0 10248466.1166 852063.827819 39.0 10248456.6397 852067.552256 39.0</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea31-6b68-11e6-bd32-b88687e81fce">
+                      <gml:posList srsDimension="3">10248611.0954 852038.991072 21.0 10248607.5518 852030.354169 21.0 10248620.0641 852025.124069 21.0 10248618.4937 852021.301483 21.0 10248627.069 852017.727774 21.0 10248635.4328 852038.098669 21.0 10248625.0344 852042.446367 21.0 10248622.4054 852036.059238 21.0 10248616.1456 852048.135176 21.0 10248624.4087 852044.68295 21.0 10248628.3213 852054.197966 21.0 10248609.5499 852062.047861 21.0 10248601.7038 852042.9255 21.0 10248611.0954 852038.991072 21.0</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
               </gml:surfaceMember>
               <gml:surfaceMember>
-                <gml:Polygon gml:id="UUID_31074659-3e8d-11e6-8846-b88687e81fce">
+                <gml:Polygon gml:id="UUID_0377ea32-6b68-11e6-bbed-b88687e81fce">
                   <gml:exterior>
-                    <gml:LinearRing gml:id="UUID_3107465a-3e8d-11e6-8bdb-b88687e81fce">
-                      <gml:posList srsDimension="3">10248464.0583 852086.844501 1e-06 10248456.6397 852067.552256 1e-06 10248466.1166 852063.827819 1e-06 10248462.7661 852055.114189 1e-06 10248475.3917 852050.163855 1e-06 10248473.9068 852046.307266 1e-06 10248482.5594 852042.925291 1e-06 10248490.4678 852063.477283 1e-06 10248479.9753 852067.592481 1e-06 10248477.489 852061.148423 1e-06 10248470.962 852073.082054 1e-06 10248479.3 852069.814586 1e-06 10248482.9998 852079.414321 1e-06 10248464.0583 852086.844501 1e-06</gml:posList>
+                    <gml:LinearRing gml:id="UUID_0377ea33-6b68-11e6-8957-b88687e81fce">
+                      <gml:posList srsDimension="3">10248628.3213 852054.197966 1e-06 10248624.4087 852044.68295 1e-06 10248616.1456 852048.135176 1e-06 10248622.4054 852036.059238 1e-06 10248625.0344 852042.446367 1e-06 10248635.4328 852038.098669 1e-06 10248627.069 852017.727774 1e-06 10248618.4937 852021.301483 1e-06 10248620.0641 852025.124069 1e-06 10248607.5518 852030.354169 1e-06 10248611.0954 852038.991072 1e-06 10248601.7038 852042.9255 1e-06 10248609.5499 852062.047861 1e-06 10248628.3213 852054.197966 1e-06</gml:posList>
                     </gml:LinearRing>
                   </gml:exterior>
                 </gml:Polygon>
@@ -2678,8 +2678,8 @@
       <bldg:usage>1000</bldg:usage>
       <bldg:yearOfConstruction>0</bldg:yearOfConstruction>
       <bldg:roofType>1000</bldg:roofType>
-      <bldg:measuredHeight uom="m">39.0</bldg:measuredHeight>
-      <bldg:storeysAboveGround>13</bldg:storeysAboveGround>
+      <bldg:measuredHeight uom="m">21.0</bldg:measuredHeight>
+      <bldg:storeysAboveGround>7</bldg:storeysAboveGround>
       <bldg:storeysBelowGround>0</bldg:storeysBelowGround>
       <gen:stringAttribute name="landuse">
         <gen:value>residential</gen:value>

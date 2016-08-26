@@ -1,3 +1,23 @@
+# ==================================================================================================
+#
+#    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
+#
+#    This file is part of pylibudo
+#
+#    Pylibudo is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Pylibudo is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ==================================================================================================
 import py3dmodel
 import threedmodel
 
@@ -89,7 +109,7 @@ def get_building_footprint(building_solid):
     for face in face_list:
         normal = py3dmodel.calculate.face_normal(face)
         if normal == (0,0,-1):
-            fpt_list = threedmodel.pyptlist_frm_occface(face)
+            fpt_list = face
             return fpt_list
             
 def get_building_solid(building, citygml_reader):
@@ -123,8 +143,7 @@ def construct_building_through_floorplates(building_solid, build_area, storey_he
     while build_area > 0:
         if scnt == 0:
             #get the building footprint 
-            building_footprint_pts = get_building_footprint(building_solid)
-            building_footprint_face = py3dmodel.construct.make_polygon(building_footprint_pts)
+            building_footprint_face = get_building_footprint(building_solid)
             flr_area = py3dmodel.calculate.face_area(building_footprint_face)
             build_area = build_area - flr_area
             intersection_list.append(building_footprint_face)

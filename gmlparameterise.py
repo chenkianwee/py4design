@@ -1,3 +1,23 @@
+# ==================================================================================================
+#
+#    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
+#
+#    This file is part of pylibudo
+#
+#    Pylibudo is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Pylibudo is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ==================================================================================================
 import random
 
 import pycitygml
@@ -53,7 +73,8 @@ class Parameterise(object):
         for landuse in landuses:
             lpolygon = citygml.get_polygons(landuse)[0]
             landuse_pts = citygml.polygon_2_pt_list(lpolygon)
-            buildings_on_landuse = gml3dmodel.buildings_on_landuse(landuse_pts, self.building_footprints)  
+            landuse_occpolygon = py3dmodel.construct.make_polygon(landuse_pts)
+            buildings_on_landuse = gml3dmodel.buildings_on_landuse(landuse_occpolygon, self.building_footprints)  
             
             #build a dictionary the landuse is the key to the list of buildings 
             buildings2landuse_dict = {}
@@ -208,7 +229,7 @@ class Parameterise(object):
                 b_attribs["height"] = height
                 b_attribs["nstorey"] = nstorey
                 b_attribs["storey_height"] = storey_height
-                building_footprint = py3dmodel.construct.make_polygon(building_footprint_dict["footprint"])
+                building_footprint = building_footprint_dict["footprint"]
                 b_attribs["building_footprint"] = building_footprint
                 b_attribs_list.append(b_attribs)
                 

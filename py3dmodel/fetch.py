@@ -1,3 +1,23 @@
+# ==================================================================================================
+#
+#    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
+#
+#    This file is part of pylibudo
+#
+#    Pylibudo is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Pylibudo is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ==================================================================================================
 from OCCUtils import Topology
 from OCC.BRep import BRep_Tool
 from OCC.TopExp import TopExp_Explorer
@@ -32,6 +52,17 @@ def pyptlist_frm_occwire(occ_wire):
         pt = (occpt.X(), occpt.Y(), occpt.Z()) 
         pt_list.append(pt)
     return pt_list
+    
+def occpt2pypt(occpt):
+    pypt = (occpt.X(), occpt.Y(), occpt.Z())
+    return pypt
+
+def occptlist2pyptlist(occptlist):
+    pyptlist = []
+    for occpt in occptlist:
+        pypt = occpt2pypt(occpt)
+        pyptlist.append(pypt)
+    return pyptlist
 
 def vertex2point(occ_vertex):
     occ_pnt = BRep_Tool.Pnt(occ_vertex)
@@ -141,37 +172,37 @@ def is_compound_null(occ_compound):
     isnull = True
     
     #find all the compsolids
-    compsolid_list = geom_explorer(occ_compound, TopAbs_COMPSOLID)
+    compsolid_list = geom_explorer(occ_compound, "compsolid")
     if compsolid_list:
         isnull = False
 
     #find all the solids
-    solid_list = geom_explorer(occ_compound, TopAbs_SOLID)
+    solid_list = geom_explorer(occ_compound, "solid")
     if solid_list:
         isnull = False
 
     #find all the shells
-    shell_list = geom_explorer(occ_compound, TopAbs_SHELL)
+    shell_list = geom_explorer(occ_compound, "shell")
     if shell_list:
         isnull = False
 
     #find all the faces
-    face_list = geom_explorer(occ_compound, TopAbs_FACE)
+    face_list = geom_explorer(occ_compound, "face")
     if face_list:
         isnull = False
 
     #find all the wires
-    wire_list = geom_explorer(occ_compound, TopAbs_WIRE)
+    wire_list = geom_explorer(occ_compound, "wire")
     if wire_list:
         isnull =False
 
     #find all the edges
-    edge_list = geom_explorer(occ_compound, TopAbs_EDGE)
+    edge_list = geom_explorer(occ_compound, "edge")
     if edge_list:
         isnull= False
 
     #find all the vertices
-    vertex_list = geom_explorer(occ_compound, TopAbs_VERTEX)
+    vertex_list = geom_explorer(occ_compound, "vertex")
     if vertex_list:
         isnull = False
     

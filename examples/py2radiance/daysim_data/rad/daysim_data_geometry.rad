@@ -15,56 +15,56 @@
  
 # This file contains the geometry description of 
 # the RADIANCE scene.
-# All materials are defined in 'F:/kianwee_work/spyder_workspace/envuo/examples/py2radiance_example\daysim_data\rad\daysim_data_material.rad'.
+# All materials are defined in 'F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\daysim_data\rad\daysim_data_material.rad'.
  
  
 
-# SOURCE FILE: F:/kianwee_work/spyder_workspace/envuo/examples/py2radiance_example\py2radiance_data\geometry.rad 
+# SOURCE FILE: F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\py2radiance_data\geometry.rad 
 
 
 RAL9010_pur_white_paint polygon srf0
-0 0 12 	0.000000 0.000000 0.000000
-	0.000000 0.000000 10.000000
+0 0 12 	0.000000 10.000000 0.000000
 	0.000000 10.000000 10.000000
-	0.000000 10.000000 0.000000
+	0.000000 0.000000 10.000000
+	0.000000 0.000000 0.000000
 
 
 RAL9010_pur_white_paint polygon srf1
-0 0 12 	10.000000 0.000000 10.000000
-	10.000000 0.000000 0.000000
+0 0 12 	10.000000 10.000000 10.000000
 	10.000000 10.000000 0.000000
-	10.000000 10.000000 10.000000
+	10.000000 0.000000 0.000000
+	10.000000 0.000000 10.000000
 
 
 RAL9010_pur_white_paint polygon srf2
-0 0 12 	0.000000 0.000000 0.000000
-	10.000000 0.000000 0.000000
+0 0 12 	0.000000 0.000000 10.000000
 	10.000000 0.000000 10.000000
-	0.000000 0.000000 10.000000
+	10.000000 0.000000 0.000000
+	0.000000 0.000000 0.000000
 
 
 RAL9010_pur_white_paint polygon srf3
-0 0 12 	10.000000 10.000000 0.000000
-	0.000000 10.000000 0.000000
+0 0 12 	10.000000 10.000000 10.000000
 	0.000000 10.000000 10.000000
-	10.000000 10.000000 10.000000
+	0.000000 10.000000 0.000000
+	10.000000 10.000000 0.000000
 
 
 RAL9010_pur_white_paint polygon srf4
-0 0 12 	0.000000 0.000000 0.000000
-	0.000000 10.000000 0.000000
+0 0 12 	10.000000 0.000000 0.000000
 	10.000000 10.000000 0.000000
-	10.000000 0.000000 0.000000
+	0.000000 10.000000 0.000000
+	0.000000 0.000000 0.000000
 
 
 RAL9010_pur_white_paint polygon srf5
-0 0 12 	0.000000 10.000000 10.000000
-	0.000000 0.000000 10.000000
+0 0 12 	10.000000 10.000000 10.000000
 	10.000000 0.000000 10.000000
-	10.000000 10.000000 10.000000
+	0.000000 0.000000 10.000000
+	0.000000 10.000000 10.000000
 
   
-# SOURCE FILE: F:/kianwee_work/spyder_workspace/envuo/examples/py2radiance_example\base.rad 
+# SOURCE FILE: F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\base.rad 
 
 
 ##########################################################
