@@ -1,6 +1,6 @@
 import time
 import os
-import pylibudo
+import pyliburo
 
 #specify the citygml file
 current_path = os.path.dirname(__file__)
@@ -8,10 +8,10 @@ parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
 citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse5.gml")
 
 #change the filepath to where you want to save the file to 
-image_file = "F:\\kianwee_work\\spyder_workspace\\pylibudo\\examples\\punggol_case_study\\citygml\\py2radiance_data\\result.png"
-falsecolour_file = "F:\\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\py2radiance_data\\falsecolour.png"
+image_file = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\py2radiance_data\\result.png"
+falsecolour_file = "F:\\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\py2radiance_data\\falsecolour.png"
 
-evaluations = pylibudo.citygml2eval.Evals(citygml_filepath)
+evaluations = pyliburo.citygml2eval.Evals(citygml_filepath)
 xdim = 10
 ydim = 10
 weatherfilepath = os.path.join(parent_path, "punggol_case_study", "weatherfile", "SGP_Singapore.486980_IWEC.epw")
@@ -56,7 +56,7 @@ print "SOLAR GAIN FACADE AREA INDEX:", sgfai
 print "DAYLIGHT FACADE AREA INDEX:", dfai
 print "PV ROOF AREA INDEX :", pvrai
 print "PV FACADE AREA INDEX :", pvfai
-pylibudo.py3dmodel.construct.visualise_falsecolour_topo(irrad_res, topo_list, falsecolour_file, image_file )
+pyliburo.py3dmodel.construct.visualise_falsecolour_topo(irrad_res, topo_list, falsecolour_file, image_file )
 time3 = time.clock()
 print "TIME TAKEN", (time3-time1)/60
 print "VISUALISED"

@@ -38,6 +38,9 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     :param plane_occpolygon: an occ face that is the horizontal plane of the vertical facades
     :ptype: occface
     
+    :param wind_dir: a 3d tuple specifying the direction of the wind
+    :ptype: tuple
+    
     RETURNS
     -------
     :returns fai: frontal area index 

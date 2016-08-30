@@ -1,7 +1,7 @@
 project_name dfai_data
-project_directory F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\dfai_data\
+project_directory F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\dfai_data\
 bin_directory c:/daysim\bin\
-tmp_directory F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\dfai_data\tmp\
+tmp_directory F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\dfai_data\tmp\
 material_directory c:/daysim\
 ies_directory c:/daysim\
 
@@ -12,7 +12,7 @@ time_zone -120
 site_elevation 16.0
 weather_data_file_units 1
 ground_reflectance 0.2
-wea_data_file F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\weatherfile\SGP_Singapore.486980_IWEC_60min.wea
+wea_data_file F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\weatherfile\SGP_Singapore.486980_IWEC_60min.wea
 time_step 60
 wea_data_short_file wea\SGP_Singapore.486980_IWEC_60min.wea
 wea_data_short_file_units 1
@@ -20,7 +20,7 @@ lower_direct_threshold 2
 lower_diffuse_threshold 2
 material_file rad\dfai_data_material.rad
 geometry_file rad\dfai_data_geometry.rad
-radiance_source_files 2,F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad,F:\kianwee_work\spyder_workspace\pylibudo\py2radiance\base.rad
+radiance_source_files 2,F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad,F:\kianwee_work\spyder_workspace\pyliburo\py2radiance\base.rad
 ab 2
 ad 1000
 as 20

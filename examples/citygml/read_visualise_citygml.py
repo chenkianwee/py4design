@@ -1,5 +1,5 @@
 import time
-import pylibudo
+import pyliburo
 
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
@@ -16,7 +16,7 @@ display_2dlist = []
 #===================================================================================================
 #read the citygml file 
 #===================================================================================================
-read_citygml = pylibudo.pycitygml.Reader(citygml_filepath)
+read_citygml = pyliburo.pycitygml.Reader(citygml_filepath)
 buildings = read_citygml.get_buildings()
 landuses = read_citygml.get_landuses()
 stops = read_citygml.get_bus_stops()
@@ -51,7 +51,7 @@ bdisplay_list = []
 building_footprints = []
 for building in buildings:
     pypolgon_list = read_citygml.get_pypolygon_list(building)
-    solid = pylibudo.threedmodel.pypolygons2occsolid(pypolgon_list)
+    solid = pyliburo.threedmodel.pypolygons2occsolid(pypolgon_list)
     bdisplay_list.append(solid)
 
     
@@ -63,7 +63,7 @@ for landuse in landuses:
     if lpolygons:
         lpolygon = read_citygml.get_polygons(landuse)[0]
         landuse_pts = read_citygml.polygon_2_pt_list(lpolygon)
-        lface = pylibudo.py3dmodel.construct.make_polygon(landuse_pts)
+        lface = pyliburo.py3dmodel.construct.make_polygon(landuse_pts)
         ldisplay_list.append(lface)
     
 time2 = time.clock()   
@@ -74,4 +74,4 @@ print "VISUALISING"
 display_2dlist.append(ldisplay_list)
 display_2dlist.append(bdisplay_list)
 colour_list = ["WHITE", "WHITE"]
-pylibudo.py3dmodel.construct.visualise(display_2dlist, colour_list)
+pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)

@@ -1,6 +1,6 @@
 import os
 import time
-import pylibudo
+import pyliburo
 
 #specify the citygml file
 current_path = os.path.dirname(__file__)
@@ -12,7 +12,7 @@ time1 = time.clock()
 #===================================================================================================
 #read the citygml file 
 #===================================================================================================
-read_citygml = pylibudo.pycitygml.Reader(citygml_filepath)
+read_citygml = pyliburo.pycitygml.Reader(citygml_filepath)
 buildings = read_citygml.get_buildings()
 landuses = read_citygml.get_landuses()
 stops = read_citygml.get_bus_stops()
@@ -53,12 +53,12 @@ building_footprints = []
 for building in buildings:
     footprint_dict = {}
     pypolygon_list = read_citygml.get_pypolygon_list(building)
-    solid = pylibudo.threedmodel.pypolygons2occsolid(pypolygon_list)
-    face_list = pylibudo.py3dmodel.fetch.faces_frm_solid(solid)
+    solid = pyliburo.threedmodel.pypolygons2occsolid(pypolygon_list)
+    face_list = pyliburo.py3dmodel.fetch.faces_frm_solid(solid)
     for face in face_list:
-        normal = pylibudo.py3dmodel.calculate.face_normal(face)
+        normal = pyliburo.py3dmodel.calculate.face_normal(face)
         if normal == (0,0,-1):
-            fpt_list = pylibudo.py3dmodel.fetch.pyptlist_frm_occface(face)
+            fpt_list = pyliburo.py3dmodel.fetch.pyptlist_frm_occface(face)
             
     footprint_dict["footprint"] = fpt_list
     footprint_dict["building"] = building
@@ -70,7 +70,7 @@ for landuse in landuses:
     lpolygon = read_citygml.get_polygons(landuse)[0]
     landuse_pts = read_citygml.polygon_2_pt_list(lpolygon)
     
-    lface = pylibudo.py3dmodel.construct.make_polygon(landuse_pts)
+    lface = pyliburo.py3dmodel.construct.make_polygon(landuse_pts)
     pylanduse_polygons.append(landuse_pts)
     
     buildings_on_plot_list = []
@@ -78,14 +78,14 @@ for landuse in landuses:
     for bf in building_footprints:
         fp = bf["footprint"]
         cbuilding = bf["building"]
-        fface = pylibudo.py3dmodel.construct.make_polygon(fp)
-        if pylibudo.py3dmodel.calculate.face_is_inside(fface, lface):
+        fface = pyliburo.py3dmodel.construct.make_polygon(fp)
+        if pyliburo.py3dmodel.calculate.face_is_inside(fface, lface):
             buildings_on_plot_list.append(cbuilding)
             
     #get the solid of each building on the plot
     for building in buildings_on_plot_list:
         pypolgon_list = read_citygml.get_pypolygon_list(building)
-        solid = pylibudo.threedmodel.pypolygons2occsolid(pypolgon_list)
+        solid = pyliburo.threedmodel.pypolygons2occsolid(pypolgon_list)
         pybuilding_polygons.append(pypolgon_list)
         buildings2write.append(building)
         
@@ -95,7 +95,7 @@ for landuse in landuses:
 #===================================================================================================
 print "WRITING CITYGML FILE ... ..."
 result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "punggol_luse5.gml")
-citygml_writer = pylibudo.pycitygml.Writer()
+citygml_writer = pyliburo.pycitygml.Writer()
 luse_cnt = 0
 for luse in landuses:
     luse_lod = "lod1"
@@ -106,7 +106,7 @@ for luse in landuses:
     luse_geometry_list = []
     
     for pypoly in pylanduse_polygons:
-        gml_srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
+        gml_srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
         luse_geometry_list.append(gml_srf)
     
     citygml_writer.add_landuse(luse_lod, luse_name, luse_function, luse_epsg, luse_generic_attrib_dict, luse_geometry_list)
@@ -128,7 +128,7 @@ for building in buildings2write:
     bldg_generic_attrib_dict = read_citygml.get_generic_attribs(building)
     bldg_geometry_list = []
     for pypoly in pybuilding_polygons[bldg_cnt]:
-        gml_srf = pylibudo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
+        gml_srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
         bldg_geometry_list.append(gml_srf)
     
     citygml_writer.add_building(bldg_lod, bldg_name, bldg_class, bldg_function, bldg_usage,bldg_yr_construct,bldg_rooftype,str(bldg_height),str(bldg_str_abv_grd),

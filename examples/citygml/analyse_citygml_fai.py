@@ -1,6 +1,6 @@
 import time
 import os
-import pylibudo
+import pyliburo
 
 #specify the citygml file
 current_path = os.path.dirname(__file__)
@@ -9,7 +9,7 @@ citygml_filepath = os.path.join(parent_path, "punggol_case_study", "citygml", "p
 
 displaylist = []
 displaylist2 = []
-evaluations = pylibudo.citygml2eval.Evals(citygml_filepath)
+evaluations = pyliburo.citygml2eval.Evals(citygml_filepath)
 
 time1 = time.clock()
 print "EVALUATING MODEL ... ..."
@@ -28,4 +28,4 @@ display2dlist.append(displaylist)
 display2dlist.append(displaylist2)
 colour_list = ["BLUE", "RED"]
 
-pylibudo.py3dmodel.construct.visualise(display2dlist, colour_list)
+pyliburo.py3dmodel.construct.visualise(display2dlist, colour_list)

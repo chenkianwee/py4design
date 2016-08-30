@@ -15,11 +15,11 @@
  
 # This file contains the geometry description of 
 # the RADIANCE scene.
-# All materials are defined in 'F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\dfai_data\rad\dfai_data_material.rad'.
+# All materials are defined in 'F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\dfai_data\rad\dfai_data_material.rad'.
  
  
 
-# SOURCE FILE: F:\kianwee_work\spyder_workspace\pylibudo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad 
+# SOURCE FILE: F:\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\sgfai_data\geometry.rad 
 
 
 RAL9010_pur_white_paint polygon UUID_30e1e424-6b68-11e6-8cb0-b88687e81fce
@@ -217,7 +217,7 @@ RAL9010_pur_white_paint polygon UUID_30e20b44-6b68-11e6-afa6-b88687e81fce
 	10247400.633300 851852.691995 16.000000
 
   
-# SOURCE FILE: F:\kianwee_work\spyder_workspace\pylibudo\py2radiance\base.rad 
+# SOURCE FILE: F:\kianwee_work\spyder_workspace\pyliburo\py2radiance\base.rad 
 
 
 ##########################################################

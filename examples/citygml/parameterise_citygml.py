@@ -1,6 +1,6 @@
 import time
 import os
-import pylibudo
+import pyliburo
 
 #specify the citygml file
 current_path = os.path.dirname(__file__)
@@ -11,7 +11,7 @@ result_citygml_filepath = os.path.join(parent_path, "punggol_case_study", "cityg
 time1 = time.clock()   
 display_2dlist = []
 
-parameterise = pylibudo.gmlparameterise.Parameterise(citygml_filepath)
+parameterise = pyliburo.gmlparameterise.Parameterise(citygml_filepath)
 parameterise.define_nparameters()
 parameters = parameterise.generate_random_parameters()
 
@@ -45,4 +45,4 @@ print "TIME TAKEN", (time2-time1)/60.0
 
 print "VISUALISING"  
 colour_list = ["WHITE", "WHITE"]
-pylibudo.py3dmodel.construct.visualise(display_2dlist, colour_list)
+pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)
