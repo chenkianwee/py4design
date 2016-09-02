@@ -11,8 +11,9 @@ instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.htm
     e.) conda install wxpython (version 3.0) (for python-occ visualisation) (GNU LGPL)
     f.) conda install numpy (1.11.0) (BSD accepted license)
     g.) conda install scipy (0.17.0) (BSD accepted license)
+    h.) easy_install pycollada 0.4 (BSD)
 
 3.) install Daysim from http://daysim.ning.com/ for the daylighting analysis
     a.) if c:/daysim/radiance/bin on env path, delete it
 	
-3.) conda install spyder (2.3.8) (for editing the scripts)
+5.) conda install spyder (2.3.8) (for editing the scripts)
