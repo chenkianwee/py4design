@@ -2,14 +2,14 @@
 #
 #    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
 #
-#    This file is part of pylibudo
+#    This file is part of pyliburo
 #
-#    Pylibudo is free software: you can redistribute it and/or modify
+#    pyliburo is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Pylibudo is distributed in the hope that it will be useful,
+#    pyliburo is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
@@ -28,7 +28,7 @@ from OCC.BRepClass3d import BRepClass3d_SolidClassifier
 from OCC.GProp import GProp_GProps
 from OCC.BRepGProp import brepgprop_VolumeProperties
 from OCC.BOPInt import BOPInt_Context
-from OCC.BRepCheck import BRepCheck_Wire
+from OCC.BRepCheck import BRepCheck_Wire, BRepCheck_Shell, BRepCheck_NoError
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
 from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
@@ -123,9 +123,13 @@ def check_solid_inward(occ_solid):
     else:
         return False 
         
-def check_wire_closed(occ_wire):
+def is_wire_closed(occ_wire):
     wire_checker = BRepCheck_Wire(occ_wire)
-    return wire_checker.Closed()
+    is_closed = wire_checker.Closed()
+    if is_closed == BRepCheck_NoError:
+        return True 
+    else:
+        return False 
      
 def project_edge_on_face(occface, occ_edge):
     fc = face.Face(occface)
@@ -217,3 +221,11 @@ def distance_between_2_pts(pypt1, pypt2):
     gp_pnt2 = gp_Pnt(pypt2[0], pypt2[1], pypt2[2])
     distance = gp_pnt1.Distance(gp_pnt2)
     return distance
+    
+def is_shell_closed(occshell):
+    shell_checker = BRepCheck_Shell(occshell)
+    is_closed = shell_checker.Closed()
+    if is_closed == BRepCheck_NoError:
+        return True 
+    else:
+        return False 
