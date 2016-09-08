@@ -138,8 +138,8 @@ def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     sewing.Perform()
     sewing_shape = fetch.shape2shapetype(sewing.SewedShape())
     topo_dict = fetch.topos_frm_compound(sewing_shape)
-    shell = topo_dict["shell"][0]
-    return shell
+    shell_list = topo_dict["shell"]
+    return shell_list
     
 def make_solid(occ_shell):
     ms = BRepBuilderAPI_MakeSolid()

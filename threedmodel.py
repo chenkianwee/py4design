@@ -41,6 +41,10 @@ def pypolygons2occsolid(pypolygon_list):
 def round_points(pyptlist):
     rounded =  []
     for point in pyptlist:
-        rounded_pt = (round(point[0],5), round(point[1],5), round(point[2],5))
+        rounded_pt = round_pt(point, 5)
         rounded.append(rounded_pt)
     return rounded
+    
+def round_pt(pypt, ndecimal):
+    rounded_pt = (round(pypt[0],ndecimal) + 0, round(pypt[1],ndecimal)+0, round(pypt[2],ndecimal)+0)
+    return rounded_pt

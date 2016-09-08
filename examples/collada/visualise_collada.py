@@ -4,7 +4,7 @@ from collada import *
 display2dlist = []
 displaylist = []
 
-dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\terrain2.dae"
+dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\plot_n_3buildings_terrain.dae"
 mesh = Collada(dae_file)
 unit = mesh.assetInfo.unitmeter or 1
 geoms = mesh.scene.objects('geometry')
@@ -20,8 +20,6 @@ for geom in geoms:
             for prim in primlist:
                 if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
                     pyptlist = prim.vertices.tolist()
-                    #if g_cnt == 0:
-                    #    print pyptlist
                     occpolygon = pyliburo.py3dmodel.construct.make_polygon(pyptlist)
                     displaylist.append(occpolygon)
                     g_cnt +=1

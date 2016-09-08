@@ -27,3 +27,4 @@ import gmlparameterise
 import shp2citygml
 import threedmodel
 import urbanformeval
+import collada2citygml

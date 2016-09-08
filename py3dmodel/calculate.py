@@ -229,3 +229,16 @@ def is_shell_closed(occshell):
         return True 
     else:
         return False 
+        
+def grp_faces_acc2normals(occfacelist):
+    normal_face_dict = {}
+    for occface in occfacelist:
+        n = face_normal(occface)
+        n = (round(n[0],6), round(n[1],6), round(n[2],6))
+        keys = normal_face_dict.keys()
+        if n not in keys:
+            normal_face_dict[n] = [occface]
+        elif n in keys:
+            normal_face_dict[n].append(occface)
+            
+    return normal_face_dict
