@@ -209,6 +209,10 @@ def boolean_fuse(occshape1, occshape2):
     fused = Construct.boolean_fuse(occshape1, occshape2)
     return fused
 
+def boolean_difference(occshape1, occshape2):
+    difference = Construct.boolean_cut(occshape1, occshape2)
+    return difference
+
 def wire_frm_loose_edges(occedge_list):
     edges = TopTools_HSequenceOfShape()
     edges_handle = Handle_TopTools_HSequenceOfShape(edges)

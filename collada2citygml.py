@@ -46,70 +46,121 @@ def daeedges2occedges(daeedgelist):
             
     return occedgelist
 
-def identify_city_objects(meshlist):
+def identify_city_objects(geomlist):
     '''
     identify the various city objects, terrain, landuse, roads and buildings
     '''
     #faces_frm_edges = py3dmodel.construct.wire_frm_loose_edges(occedgelist)
-    
     building_solidlist = []
     plots_shelllist = []
     terrain_shelllist = []
+    terrain_dictlist = []
     roads_edgelist =[]
     
-    biggest_boundary_area = 0    
-    mesh_cnt = 0
-    boundarylist = []
-    for mesh_d in meshlist:
-        if "solidorshell" in mesh_d.keys():
-            boundary_d = {}
-            solidorshell = mesh_d["solidorshell"]
+    sslist = []
+    edge2dlist = []    
+    for geom_d in geomlist:
+        if "solidorshell" in geom_d.keys():
+            solidorshell = geom_d["solidorshell"]
             xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(solidorshell)
             boundary_pyptlist = [[xmin,ymin,0], [xmax,ymin,0], [xmax,ymax,0], [xmin,ymax,0]]
             boundary_face = py3dmodel.construct.make_polygon(boundary_pyptlist)
-            boundary_d["boundary"] = boundary_face
-            boundary_d["meshcnt"] = mesh_cnt
-            boundarylist.append(boundary_d)
-        mesh_cnt+=1
+            geom_d["boundary"] = boundary_face
+            sslist.append(geom_d)
+        else:
+            edge2dlist.append(geom_d)
     
-    nboundary = len(boundarylist)
-    boundarycntlist = range(nboundary)
-    for bcnt in boundarycntlist:
-        cur_boundary = boundarylist[bcnt] 
-        boundarycntlist2 = boundarycntlist[:]
-        boundarycntlist2.remove(bcnt)
+    nss = len(sslist)
+    nsscntlist = range(nss)
+    for nsscnt in nsscntlist:
+        cur_boundary = sslist[nsscnt] 
+        nsscntlist2 = nsscntlist[:]
+        nsscntlist2.remove(nsscnt)
         faces_inside = []
-        for bcnt2 in boundarycntlist2:
-            cur_boundary2 = boundarylist[bcnt2]
+        for nsscnt2 in nsscntlist2:
+            cur_boundary2 = sslist[nsscnt2]
             is_inside = py3dmodel.calculate.face_is_inside(cur_boundary2["boundary"], cur_boundary["boundary"])
             if is_inside:
-                faces_inside.append(cur_boundary2)
-                cur_boundary2["is_inside"] = cur_boundary
+                cur_boundary_area = py3dmodel.calculate.face_area(cur_boundary["boundary"])
+                cur_boundary_area2 = py3dmodel.calculate.face_area(cur_boundary2["boundary"])
+                if cur_boundary_area == cur_boundary_area2:
+                    difference = py3dmodel.construct.boolean_difference(cur_boundary["boundary"], cur_boundary2["boundary"])
+                    if py3dmodel.fetch.is_compound_null(py3dmodel.fetch.shape2shapetype(difference)):
+                        if "is_same_as" in cur_boundary.keys():
+                            cur_boundary["is_same_as"].append(nsscnt2)
+                        else:
+                            cur_boundary["is_same_as"] = [nsscnt2]
+                    else:
+                        faces_inside.append(nsscnt2)
+                        if "is_inside" in cur_boundary2.keys():
+                            cur_boundary2["is_inside_indices"].append(nsscnt)
+                        else:
+                            cur_boundary2["is_inside_indices"] = [nsscnt]
+                else:
+                    faces_inside.append(nsscnt2)
+                    if "is_inside" in cur_boundary2.keys():
+                        cur_boundary2["is_inside_indices"].append(nsscnt)
+                    else:
+                        cur_boundary2["is_inside_indices"] = [nsscnt]
                 
-        cur_boundary["contain_faces"] = faces_inside
+        cur_boundary["contain_faces_indices"] = faces_inside
     
-    return meshlist[boundarylist[0]["is_inside"]["meshcnt"]]["solidorshell"]
+    #identify the various city objects base on the size and position of the geometry
+    sscnt = 0
+    for ss in sslist:
+        keys = ss.keys()
+        print keys
+        ncontainface = len(ss["contain_faces_indices"])
+        #if the geom only contain faces and is not inside any other faces
+        if ncontainface > 0 and "is_inside_indices" not in keys: 
+            #do not append repeeat geometries
+            if "is_same_as" in keys:
+                samecntlist = ss["is_same_as"]
+                samecntlist.append(sscnt)
+                min_index = samecntlist.index(min(samecntlist))
+                if min_index == len(samecntlist)-1:
+                    terrain_shelllist.append(ss["solidorshell"])
+                    terrain_dictlist.append(ss)
+            else:
+                terrain_shelllist.append(ss["solidorshell"])
+                terrain_dictlist.append(ss)
+                
+        #if the geom is inside other geom and do not contain anything it is a building 
+        if ncontainface == 0 and "is_inside_indices" in keys:
+            building_solidlist.append((ss["solidorshell"]))
             
-    #return faces_frm_edges
+        sscnt+=1
+    
+    for ts in terrain_dictlist:
+        meshcnt = ts["meshcnt"]
+        #for edge_d in edge2dlist:
+            
+            
+    displaylist = []
+    #displaylist.append(ssdict["solidorshell"])
+    displaylist.extend(terrain_shelllist)
+    displaylist.extend(building_solidlist)
+    return displaylist
 
 def convert(collada_file):
     dae = Collada(collada_file)
     meshs = list(dae.scene.objects('geometry'))
     displaylist = []    
     
-    meshlist = []
+    geomlist = []
+    meshcnt = 0
     for mesh in meshs:
         prim2dlist = list(mesh.primitives())
-        mesh_dictionary = {}
         for primlist in prim2dlist:     
             print primlist
             if primlist:
+                geom_dict = {}
+                geom_dict["meshcnt"] = meshcnt
                 if type(primlist) == triangleset.BoundTriangleSet or type(primlist) == polylist.BoundPolylist:
                     #need to check if the triangleset is a close solid 
                     occfacelist = daesrfs2occsrfs(primlist)
                     occshell = py3dmodel.construct.make_shell_frm_faces(occfacelist)[0]
                     shell_closed = py3dmodel.calculate.is_shell_closed(occshell)
-                    
                     if shell_closed:#solids are possibly building massings
                         merged_fullfacelist = []
                         #group the faces according to their normals
@@ -121,21 +172,21 @@ def convert(collada_file):
                             merged_fullfacelist.extend(merged_facelist)
                         shell = py3dmodel.construct.make_shell_frm_faces(merged_fullfacelist)[0]
                         solid = py3dmodel.construct.make_solid(shell)
-                        mesh_dictionary["solidorshell"] = solid
-
-                        
+                        geom_dict["solidorshell"] = solid
+                            
                     elif not shell_closed: #open shells are possibly terrains and plots
-                        mesh_dictionary["solidorshell"] = occshell
+                        geom_dict["solidorshell"] = occshell
 
                 elif type(primlist) == lineset.BoundLineSet: 
                     occedgelist = daeedges2occedges(primlist)
-                    mesh_dictionary["edgelist"] = occedgelist
+                    geom_dict["edgelist"] = occedgelist
                     
-        meshlist.append(mesh_dictionary)
-             
+                geomlist.append(geom_dict)
+                
+        meshcnt +=1
     #first find which of the open shell is a terrain
-    faces_frm_edges = identify_city_objects(meshlist)
-    displaylist.append(faces_frm_edges)
+    faces_frm_edges = identify_city_objects(geomlist)
+    displaylist.extend(faces_frm_edges)
     #terrain_shelllist.append(faces_frm_edges)
     
     return displaylist
