@@ -100,7 +100,7 @@ def make_rectangle(xdim, ydim):
 def make_circle(pycentre_pt, pydirection, radius):
     circle = gp_Circ(gp_Ax2(gp_Pnt(pycentre_pt[0], pycentre_pt[1], pycentre_pt[2]), gp_Dir(pydirection[0], pydirection[1], pydirection[2])), radius)
     circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
-    return circle_edge
+    return circle_edge.Edge()
     
 def make_box(length, width, height):
     box = fetch.shape2shapetype(BRepPrimAPI_MakeBox(length,width,height).Shape())
@@ -214,6 +214,9 @@ def boolean_difference(occshape1, occshape2):
     return difference
 
 def wire_frm_loose_edges(occedge_list):
+    '''
+    the edges need to be able to form a close face. IT does not work with a group of open edges
+    '''
     edges = TopTools_HSequenceOfShape()
     edges_handle = Handle_TopTools_HSequenceOfShape(edges)
     
@@ -224,7 +227,7 @@ def wire_frm_loose_edges(occedge_list):
     for edge in occedge_list: edges.Append(edge)
                 
     # A wire is formed by connecting the edges
-    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-5, True, wires_handle)
+    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-20, True, wires_handle)
     wires = wires_handle.GetObject()
         
     # From each wire a face is created
@@ -233,7 +236,8 @@ def wire_frm_loose_edges(occedge_list):
         wire_shape = wires.Value(i+1)
         wire = fetch.shape2shapetype(wire_shape)
         face = BRepBuilderAPI_MakeFace(wire).Face()
-        face_list.append(face)
+        if not face.IsNull():
+            face_list.append(face)
         
     return face_list
         

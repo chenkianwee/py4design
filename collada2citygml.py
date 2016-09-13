@@ -20,7 +20,6 @@
 # ==================================================================================================
 
 import py3dmodel
-import threedmodel
 from collada import *
 
 '''
@@ -45,7 +44,31 @@ def daeedges2occedges(daeedgelist):
         occedgelist.append(occedge)
             
     return occedgelist
-
+    
+def edges3d22d(occedgelist):
+    occedge2d_list = []
+    for edge in occedgelist:
+        occptlist = py3dmodel.fetch.points_from_edge(edge)
+        pyptlist = py3dmodel.fetch.occptlist2pyptlist(occptlist)
+        pyptlist2d = []
+        for pypt in pyptlist:
+            pypt2d = (pypt[0], pypt[1],0)
+            pyptlist2d.append(pypt2d)
+        occedge2d = py3dmodel.construct.make_edge(pyptlist2d[0], pyptlist2d[1])
+        occedge2d_list.append(occedge2d)
+    return occedge2d_list
+    
+def sphere2edge_pts(occedgelist, radius):
+    circlelist = []
+    for edge in occedgelist:
+        occptlist = py3dmodel.fetch.points_from_edge(edge)
+        pyptlist = py3dmodel.fetch.occptlist2pyptlist(occptlist)
+        for pypt in pyptlist:
+            occcircle = py3dmodel.construct.make_circle(pypt, (0,0,1), radius)
+            circlelist.append(occcircle)
+    return circlelist
+    
+        
 def identify_city_objects(geomlist):
     '''
     identify the various city objects, terrain, landuse, roads and buildings
@@ -109,7 +132,6 @@ def identify_city_objects(geomlist):
     sscnt = 0
     for ss in sslist:
         keys = ss.keys()
-        print keys
         ncontainface = len(ss["contain_faces_indices"])
         #if the geom only contain faces and is not inside any other faces
         if ncontainface > 0 and "is_inside_indices" not in keys: 
@@ -131,15 +153,29 @@ def identify_city_objects(geomlist):
             
         sscnt+=1
     
+    plot_fulllist = []
     for ts in terrain_dictlist:
         meshcnt = ts["meshcnt"]
-        #for edge_d in edge2dlist:
-            
-            
+        #search for edges that has the same meshcnt as the terrain geometries
+        for edge_d in edge2dlist:
+            edge_meshcnt = edge_d["meshcnt"]
+            if edge_meshcnt == meshcnt:
+                #it is touching the terrain geometries
+                edgelist = edge_d["edgelist"]
+                #rearrange the edges, edges that are open are roads, closed edges are plots
+                #first flatten all the edges so that its easier to arrange the edges
+                occedge2d_list = edges3d22d(edgelist)
+                close_wires, open_wires = py3dmodel.calculate.identify_open_close_wires_frm_loose_edges(occedge2d_list)
+                #print len(plot_list)
+                #print py3dmodel.fetch.pyptlist_frm_occface(plot_list[0])
+                #plot_fulllist.extend(plot_list)
+                
     displaylist = []
-    #displaylist.append(ssdict["solidorshell"])
-    displaylist.extend(terrain_shelllist)
-    displaylist.extend(building_solidlist)
+    displaylist.append(building_solidlist)
+    displaylist.append(close_wires[0])
+    displaylist.append(open_wires[0])
+    displaylist.append(open_wires[1])
+    displaylist.append(open_wires[2])
     return displaylist
 
 def convert(collada_file):
@@ -152,7 +188,6 @@ def convert(collada_file):
     for mesh in meshs:
         prim2dlist = list(mesh.primitives())
         for primlist in prim2dlist:     
-            print primlist
             if primlist:
                 geom_dict = {}
                 geom_dict["meshcnt"] = meshcnt
@@ -186,7 +221,7 @@ def convert(collada_file):
         meshcnt +=1
     #first find which of the open shell is a terrain
     faces_frm_edges = identify_city_objects(geomlist)
-    displaylist.extend(faces_frm_edges)
+    #displaylist.extend(faces_frm_edges)
     #terrain_shelllist.append(faces_frm_edges)
     
-    return displaylist
+    return faces_frm_edges
