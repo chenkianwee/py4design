@@ -286,10 +286,9 @@ def identify_open_close_wires_frm_loose_edges(occedgelist):
     cur_wire = [cur_edge]
     
     while len(occedgelist)>0:
-        print 'NOCCEDGELIST', len(occedgelist)
+        
         occedgelist2.remove(cur_edge)
         noccedgelist2 = len(occedgelist2)
-        print 'NOCCEDGELIST2', noccedgelist2
         
         if noccedgelist2 == 0:
             open_wires.append(cur_wire)
@@ -298,18 +297,14 @@ def identify_open_close_wires_frm_loose_edges(occedgelist):
         
         ecnt = 0
         for occedge in occedgelist2:
-            print 'ecnt', ecnt
             #make sure the 2 edges are not the same edge
             if are_same_edges(cur_edge, occedge):
-                print "it is the same edge"
                 occedgelist.remove(occedge)
             elif edge_common_vertex(cur_edge, occedge):
-                print "I have the same points"
                 cur_wire.append(occedge)
                 cur_edge = occedge
                 #needs to check if this edge connects to any other previous edges
                 ncur_wire = len(cur_wire)
-                print 'curwire', ncur_wire
                 if ncur_wire>=3:
                     cur_wire_cntlist = range(ncur_wire+1)
                     #start counting from the back -2,-3 ...
@@ -326,43 +321,37 @@ def identify_open_close_wires_frm_loose_edges(occedgelist):
                         prev_edge = cur_wire[negcnt]
                         #if it is common with previous edge means its a close wire
                         if edge_common_vertex(occedge, prev_edge):
-                            print "I have the same point again"
                             close_cur_wire = cur_wire[negcnt:]
                             close_wires.append(close_cur_wire)
                             #remove all the edges in cur_wire from occedgelist
                             for rmvedge in close_cur_wire:
                                 occedgelist.remove(rmvedge)
                                 
-                            occedgelist2 = occedgelist[:]
-                            cur_edge = occedgelist2[0]
-                            cur_wire = [cur_edge]
+                            if len(occedgelist) > 0:
+                                occedgelist2 = occedgelist[:]
+                                cur_edge = occedgelist2[0]
+                                cur_wire = [cur_edge]
                             break
-
-                    #cur_wire.append(occedge)
-                    #cur_edge = occedge
                     break
                             
                 else:
-                    #cur_wire.append(occedge)
-                    #cur_edge = occedge
                     break 
                 
             #if you have loop through the whole edge list and still did not 
             #find any edge that share a common edge, it means this is the 
             # last edge of an open wire
             elif ecnt == noccedgelist2-1:
-                print "I am at the last of the edges"
                 open_wires.append(cur_wire)
                 #remove all the edge in cur_wire from occedgelist
                 for rmvedge in cur_wire:
                     occedgelist.remove(rmvedge)
                     
-                occedgelist2 = occedgelist[:]
-                cur_edge = occedge
-                cur_wire = [cur_edge]
+                if len(occedgelist) > 0:
+                    occedgelist2 = occedgelist[:]
+                    cur_edge = occedge
+                    cur_wire = [cur_edge]
                 break
                 
             ecnt+=1
             
-    print len(close_wires), len(open_wires)
     return close_wires, open_wires

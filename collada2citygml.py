@@ -57,6 +57,16 @@ def edges3d22d(occedgelist):
         occedge2d = py3dmodel.construct.make_edge(pyptlist2d[0], pyptlist2d[1])
         occedge2d_list.append(occedge2d)
     return occedge2d_list
+
+def wire3d22d(occwire):
+    pyptlist2d = []
+    pyptlist = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(occwire))
+    for pypt in pyptlist:
+        pypt2d = [pypt[0],pypt[1],0]
+        pyptlist2d.append(pypt2d)
+        
+    occwire2d = py3dmodel.construct.make_wire(pyptlist2d)
+    return occwire2d
     
 def sphere2edge_pts(occedgelist, radius):
     circlelist = []
@@ -73,12 +83,12 @@ def identify_city_objects(geomlist):
     '''
     identify the various city objects, terrain, landuse, roads and buildings
     '''
-    #faces_frm_edges = py3dmodel.construct.wire_frm_loose_edges(occedgelist)
     building_solidlist = []
-    plots_shelllist = []
+    plot_wirelist = []
+    plot_shelllist = []
     terrain_shelllist = []
     terrain_dictlist = []
-    roads_edgelist =[]
+    road_wirelist =[]
     
     sslist = []
     edge2dlist = []    
@@ -153,7 +163,6 @@ def identify_city_objects(geomlist):
             
         sscnt+=1
     
-    plot_fulllist = []
     for ts in terrain_dictlist:
         meshcnt = ts["meshcnt"]
         #search for edges that has the same meshcnt as the terrain geometries
@@ -163,25 +172,54 @@ def identify_city_objects(geomlist):
                 #it is touching the terrain geometries
                 edgelist = edge_d["edgelist"]
                 #rearrange the edges, edges that are open are roads, closed edges are plots
-                #first flatten all the edges so that its easier to arrange the edges
-                occedge2d_list = edges3d22d(edgelist)
-                close_wires, open_wires = py3dmodel.calculate.identify_open_close_wires_frm_loose_edges(occedge2d_list)
-                #print len(plot_list)
-                #print py3dmodel.fetch.pyptlist_frm_occface(plot_list[0])
-                #plot_fulllist.extend(plot_list)
+                close_wire_edge2dlist, open_wire_edge2dlist = py3dmodel.calculate.identify_open_close_wires_frm_loose_edges(edgelist)
                 
-    displaylist = []
-    displaylist.append(building_solidlist)
-    displaylist.append(close_wires[0])
-    displaylist.append(open_wires[0])
-    displaylist.append(open_wires[1])
-    displaylist.append(open_wires[2])
-    return displaylist
+                for open_wire_edgelist in open_wire_edge2dlist:
+                    open_wire = py3dmodel.construct.make_wire_frm_edges(open_wire_edgelist)
+                    road_wirelist.append(open_wire)
+                for close_wire_edgelist in close_wire_edge2dlist:
+                    close_wire = py3dmodel.construct.make_wire_frm_edges(close_wire_edgelist)
+                    plot_wirelist.append(close_wire)
+               
+    for plot_wire in plot_wirelist:
+        plot_wire2d = wire3d22d(plot_wire)
+        #need to check if the touches any of the roads 
+        #only if it doesnt touch any roads it is a plot
+        this_is_a_plot = True
+        for road_wire in road_wirelist:
+            #first flatten the road 
+            road_wire2d = wire3d22d(road_wire)
+            min_dist = py3dmodel.calculate.minimum_distance(plot_wire2d, road_wire2d)
+            if min_dist == 0: #means it is touching, this is not a plot and prob a roundabout 
+                this_is_a_plot = False
+                road_wirelist.append(plot_wire)
+                plot_wirelist.remove(plot_wire)
+                break
+            
+        if this_is_a_plot:
+            wire_pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(plot_wire2d))
+            plot_face = py3dmodel.construct.make_polygon(wire_pts)
+            origpt = wire_pts[0]
+            locpt = py3dmodel.modify.move_pt(origpt, (0,0,-1),500000)
+            plot_face_moved = py3dmodel.modify.move(origpt, locpt, plot_face)
+            
+            extrude_plot = py3dmodel.construct.extrude(plot_face_moved, (0,0,1), 1000000)
+            for terrain in terrain_shelllist:
+                common_compound =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(extrude_plot, terrain))
+                is_compound_null = py3dmodel.fetch.is_compound_null(common_compound)
+                if not is_compound_null:
+                    face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
+                    terrain_shell = py3dmodel.construct.make_shell_frm_faces(face_list)[0]
+                    plot_shelllist.append(terrain_shell)
+        
+    cityobject_dict = {"terrain":terrain_shelllist, "plot":plot_shelllist, 
+    "building":building_solidlist, "road":road_wirelist}
+    
+    return cityobject_dict
 
 def convert(collada_file):
     dae = Collada(collada_file)
-    meshs = list(dae.scene.objects('geometry'))
-    displaylist = []    
+    meshs = list(dae.scene.objects('geometry')) 
     
     geomlist = []
     meshcnt = 0
@@ -219,9 +257,8 @@ def convert(collada_file):
                 geomlist.append(geom_dict)
                 
         meshcnt +=1
+        
     #first find which of the open shell is a terrain
-    faces_frm_edges = identify_city_objects(geomlist)
-    #displaylist.extend(faces_frm_edges)
-    #terrain_shelllist.append(faces_frm_edges)
+    cityobject_dict = identify_city_objects(geomlist)
     
-    return faces_frm_edges
+    return cityobject_dict
