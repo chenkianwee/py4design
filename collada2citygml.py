@@ -219,11 +219,27 @@ def identify_city_objects(geomlist):
 
 def convert(collada_file):
     dae = Collada(collada_file)
-    meshs = list(dae.scene.objects('geometry')) 
+    nodes = dae.scene.nodes
     
+    #this loops thru the visual scene 
+    for node in nodes:
+        name = node.xmlnode.get('name')
+        children_nodes = node.children
+        if children_nodes:
+            for node2 in children_nodes:
+                name2 = node2.xmlnode.get('name')
+                print 'name2', name2
+                children_node2 = node2.children
+                if type(children_node2[0]) == scene.NodeNode:
+                    print children_node2[0].children
+
+    #loop thru the library nodes
+    meshs = list(dae.scene.objects('geometry')) 
+    #print meshs
     geomlist = []
     meshcnt = 0
     for mesh in meshs:
+        print mesh.original.id
         prim2dlist = list(mesh.primitives())
         for primlist in prim2dlist:     
             if primlist:
