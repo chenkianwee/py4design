@@ -35,7 +35,7 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     :param facet_occpolygons : a list of occ faces of vertical facades 
     :ptype: list(occface)
     
-    :param plane_occpolygon: an occ face that is the horizontal plane of the vertical facades
+    :param plane_occpolygon: an occ face that is the horizontal plane buildings are sitting on 
     :ptype: occface
     
     :param wind_dir: a 3d tuple specifying the direction of the wind
@@ -107,5 +107,72 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     
     return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
     
-def public_transport_usability_index():
-    pass
+def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstructions_occshapelist = None, route_directness_threshold = 1.6):
+    import networkx as nx
+    '''
+    Algorithm for Route Directness Test  
+    Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
+    urban design international 17, 228-238
+    
+    A test that measures the connectivity of street network in a neighbourhood
+    measuring route directness for each parcel to each of a series
+    of points around the periphery of the study area,
+    and identifying the percentage of parcels for which
+    any of these measures exceed 1.6. Urban area is 1.3, suburban is 1.6
+    
+    PARAMETERS
+    ----------
+    :param network_occedgelist : a list of occedges that is the network to be analysed
+    :ptype: list(occedge)
+    
+    :param plot_occfacelist: a list of occfaces that is the land use plots
+    :ptype: list(occface)
+    
+    :param boundary_occface: occface that is the boundary of the area
+    :ptype: occface
+    
+    :param route_directness_threshold: a float specifying the route directness threshold, default value 1.6
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns route_directness_measure: route_directness_measure
+    :rtype: float
+    
+    :returns failed_plots: plots that fail the route directness measure
+    :rtype: list(occface)
+    
+    :returns successful_plots: plots that pass the route directness measure
+    :rtype: list(occface)
+    
+    :returns peripheral_pts: peripheral pts
+    :rtype: list(occpts)
+    
+    '''
+    #calculate the peripheral points
+    #get all the intersection points 
+    #extract the wire from the face and convert it to a bspline curve
+    displaylist = []
+    boundary_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(boundary_occface)
+    boundary_pyptlist.append(boundary_pyptlist[0])
+    bedge = py3dmodel.construct.make_bspline_edge(boundary_pyptlist, degree=1)
+    boundary_occwire = py3dmodel.fetch.wires_frm_face(boundary_occface)[0]
+    boundary_occedgelist = py3dmodel.fetch.edges_frm_wire(boundary_occwire)
+    interptlist = []
+    for network_occedge in network_occedgelist:
+        intersect_pts = py3dmodel.calculate.intersect_edge_with_edge(bedge, network_occedge, tolerance=1e-02)
+        if intersect_pts!=None:
+            interptlist.extend(intersect_pts)
+            
+        circles = []
+        for interpt in interptlist:
+            circle = py3dmodel.construct.make_circle((interpt.X(),interpt.Y(),interpt.Z()), (0,0,1), 1000)
+            circles.append(circle)
+        
+    print len(circles)
+    displaylist.append(bedge)
+    displaylist.extend(circles)
+    displaylist.extend(network_occedgelist)
+    return displaylist
+    
+    #construct a network with the edges 

@@ -33,6 +33,8 @@ from OCC.BRepCheck import BRepCheck_Wire, BRepCheck_Shell, BRepCheck_NoError
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
 from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
+from OCC.BRepIntCurveSurface import BRepIntCurveSurface_Inter
+from OCC.BRepExtrema import BRepExtrema_DistShapeShape
 
 def get_bounding_box(occ_shape):
     return Common.get_boundingbox(occ_shape)
@@ -133,9 +135,16 @@ def is_wire_closed(occ_wire):
         return False 
      
 def project_edge_on_face(occface, occ_edge):
+    #TODO: figure out if it is a faceplane or just the face
     fc = face.Face(occface)
     projected_curve = fc.project_curve(occ_edge)
     return projected_curve
+    
+def project_point_on_infedge(occ_edge, pypt):
+    gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
+    occutil_edge = edge.Edge(occ_edge)
+    u, projpt = occutil_edge.project_vertex(gp_pt)
+    return projpt
     
 def project_point_on_faceplane(occface, pypt):
     gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
@@ -158,16 +167,39 @@ def project_face_on_faceplane(occface2projon, occface2proj):
         
     return proj_ptlist
     
+def intersect_edge_with_edge(occedge1, occedge2, tolerance = 1e-03):
+    intergppts = []
+    dss = BRepExtrema_DistShapeShape(occedge1, occedge2)
+    dss.SetDeflection(tolerance)
+    dss.Perform()
+    min_dist = dss.Value()
+    print min_dist
+    
+    if min_dist < tolerance:
+        npts = dss.NbSolution()
+        
+        for i in range(npts):
+            gppt = dss.PointOnShape1(i+1)
+            #print dss.ParOnEdgeS1(i)
+            intergppts.append(gppt)
+    return intergppts
+        
+    '''
+    face_curve_intersect = BRepIntCurveSurface_Inter()
+    occutil_edge = edge.Edge(occedge)
+    face_curve_intersect.Init(occshape, occutil_edge.adaptor.Curve(), 1e-2)
+    pnts = []
+    print face_curve_intersect.More()
+    while face_curve_intersect.More():
+        next(face_curve_intersect)
+        pnts.append(face_curve_intersect.Point())
+    return pnts    
+    '''
+    
 def intersect_edge_with_face(occ_edge, occ_face):
     occutil_edge = edge.Edge(occ_edge)
     interptlist = occutil_edge.Intersect.intersect(occ_face, 1e-2)
     return interptlist
-    
-def project_point_on_infedge(occ_edge, pypt):
-    gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
-    occutil_edge = edge.Edge(occ_edge)
-    u, projpt = occutil_edge.project_vertex(gp_pt)
-    return projpt
     
 def intersect_shape_with_ptdir(occ_shape, pypt, pydir):
     occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
@@ -284,74 +316,76 @@ def identify_open_close_wires_frm_loose_edges(occedgelist):
     occedgelist2 = occedgelist[:]
     cur_edge = occedgelist2[0]
     cur_wire = [cur_edge]
-    
-    while len(occedgelist)>0:
-        
-        occedgelist2.remove(cur_edge)
-        noccedgelist2 = len(occedgelist2)
-        
-        if noccedgelist2 == 0:
-            open_wires.append(cur_wire)
-            for rmvedge in cur_wire:
-                occedgelist.remove(rmvedge)
-        
-        ecnt = 0
-        for occedge in occedgelist2:
-            #make sure the 2 edges are not the same edge
-            if are_same_edges(cur_edge, occedge):
-                occedgelist.remove(occedge)
-            elif edge_common_vertex(cur_edge, occedge):
-                cur_wire.append(occedge)
-                cur_edge = occedge
-                #needs to check if this edge connects to any other previous edges
-                ncur_wire = len(cur_wire)
-                if ncur_wire>=3:
-                    cur_wire_cntlist = range(ncur_wire+1)
-                    #start counting from the back -2,-3 ...
-                    #do not include -0
-                    cur_wire_cntlist.remove(0)
-                    #do not include -1, the last edge is 
-                    #the same edge as occedge
-                    cur_wire_cntlist.remove(1)
-                    #do not include -2, the second last edge will 
-                    #definitely share a common vertex
-                    cur_wire_cntlist.remove(2)
-                    for cwcnt in cur_wire_cntlist:
-                        negcnt = cwcnt*-1
-                        prev_edge = cur_wire[negcnt]
-                        #if it is common with previous edge means its a close wire
-                        if edge_common_vertex(occedge, prev_edge):
-                            close_cur_wire = cur_wire[negcnt:]
-                            close_wires.append(close_cur_wire)
-                            #remove all the edges in cur_wire from occedgelist
-                            for rmvedge in close_cur_wire:
-                                occedgelist.remove(rmvedge)
-                                
-                            if len(occedgelist) > 0:
-                                occedgelist2 = occedgelist[:]
-                                cur_edge = occedgelist2[0]
-                                cur_wire = [cur_edge]
-                            break
-                    break
-                            
-                else:
-                    break 
-                
-            #if you have loop through the whole edge list and still did not 
-            #find any edge that share a common edge, it means this is the 
-            # last edge of an open wire
-            elif ecnt == noccedgelist2-1:
+    if len(occedgelist) == 1:
+        open_wires.append(occedgelist)
+    else:
+        while len(occedgelist)>0:
+            
+            occedgelist2.remove(cur_edge)
+            noccedgelist2 = len(occedgelist2)
+            
+            if noccedgelist2 == 0:
                 open_wires.append(cur_wire)
-                #remove all the edge in cur_wire from occedgelist
                 for rmvedge in cur_wire:
                     occedgelist.remove(rmvedge)
-                    
-                if len(occedgelist) > 0:
-                    occedgelist2 = occedgelist[:]
+            
+            ecnt = 0
+            for occedge in occedgelist2:
+                #make sure the 2 edges are not the same edge
+                if are_same_edges(cur_edge, occedge):
+                    occedgelist.remove(occedge)
+                elif edge_common_vertex(cur_edge, occedge):
+                    cur_wire.append(occedge)
                     cur_edge = occedge
-                    cur_wire = [cur_edge]
-                break
-                
-            ecnt+=1
+                    #needs to check if this edge connects to any other previous edges
+                    ncur_wire = len(cur_wire)
+                    if ncur_wire>=3:
+                        cur_wire_cntlist = range(ncur_wire+1)
+                        #start counting from the back -2,-3 ...
+                        #do not include -0
+                        cur_wire_cntlist.remove(0)
+                        #do not include -1, the last edge is 
+                        #the same edge as occedge
+                        cur_wire_cntlist.remove(1)
+                        #do not include -2, the second last edge will 
+                        #definitely share a common vertex
+                        cur_wire_cntlist.remove(2)
+                        for cwcnt in cur_wire_cntlist:
+                            negcnt = cwcnt*-1
+                            prev_edge = cur_wire[negcnt]
+                            #if it is common with previous edge means its a close wire
+                            if edge_common_vertex(occedge, prev_edge):
+                                close_cur_wire = cur_wire[negcnt:]
+                                close_wires.append(close_cur_wire)
+                                #remove all the edges in cur_wire from occedgelist
+                                for rmvedge in close_cur_wire:
+                                    occedgelist.remove(rmvedge)
+                                    
+                                if len(occedgelist) > 0:
+                                    occedgelist2 = occedgelist[:]
+                                    cur_edge = occedgelist2[0]
+                                    cur_wire = [cur_edge]
+                                break
+                        break
+                                
+                    else:
+                        break 
+                    
+                #if you have loop through the whole edge list and still did not 
+                #find any edge that share a common edge, it means this is the 
+                # last edge of an open wire
+                elif ecnt == noccedgelist2-1:
+                    open_wires.append(cur_wire)
+                    #remove all the edge in cur_wire from occedgelist
+                    for rmvedge in cur_wire:
+                        occedgelist.remove(rmvedge)
+                        
+                    if len(occedgelist) > 0:
+                        occedgelist2 = occedgelist[:]
+                        cur_edge = occedge
+                        cur_wire = [cur_edge]
+                    break
+                    
+                ecnt+=1
             
     return close_wires, open_wires

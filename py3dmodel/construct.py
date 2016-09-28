@@ -33,6 +33,8 @@ from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
+from OCC.GeomAPI import GeomAPI_PointsToBSpline
+from OCC.TColgp import TColgp_Array1OfPnt
 
 import fetch
 import calculate
@@ -63,7 +65,22 @@ def make_edge(pypt1, pypt2):
     make_edge = BRepBuilderAPI_MakeEdge(gp_point1, gp_point2)
     return make_edge.Edge()
     
+def make_bspline_edge(pyptlist, degree=3):
+    array = TColgp_Array1OfPnt(1, len(pyptlist))
+    pcnt = 1
+    for pypt in pyptlist:
+        gppt = make_gppnt(pypt)
+        array.SetValue(pcnt, gppt)
+        pcnt+=1
+        
+    bcurve =GeomAPI_PointsToBSpline(array,degree,degree).Curve()
+    curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
+    return curve_edge.Edge()
+    
 def make_wire(pyptlist):
+    '''
+    if you want a close wire, make sure the pts the first pts too
+    '''
     array = []
     for pt in pyptlist:
         array.append(gp_Pnt(pt[0],pt[1],pt[2]))
@@ -209,13 +226,19 @@ def boolean_fuse(occshape1, occshape2):
     fused = Construct.boolean_fuse(occshape1, occshape2)
     return fused
 
-def boolean_difference(occshape1, occshape2):
-    difference = Construct.boolean_cut(occshape1, occshape2)
+def boolean_difference(occshape2cutfrm, occ_cuttingshape):
+    difference = Construct.boolean_cut(occshape2cutfrm, occ_cuttingshape)
     return difference
+    
+def make_face_frm_wire(occwire):
+    occface = BRepBuilderAPI_MakeFace(occwire).Face()
+    if not occface.IsNull():    
+        return occface
 
 def wire_frm_loose_edges(occedge_list):
     '''
     the edges need to be able to form a close face. IT does not work with a group of open edges
+    need to change name to face from loose edges
     '''
     edges = TopTools_HSequenceOfShape()
     edges_handle = Handle_TopTools_HSequenceOfShape(edges)
