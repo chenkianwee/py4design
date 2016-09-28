@@ -24,6 +24,7 @@ from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX
 from OCC.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
 import calculate
+import construct
 
 def pyptlist_frm_occface(occ_face):
     wire_list = wires_frm_face(occ_face)
@@ -73,6 +74,13 @@ def vertex_list_2_point_list(occ_vertex_list):
     for vert in occ_vertex_list:
         point_list.append(BRep_Tool.Pnt(vert))
     return point_list
+    
+def pyptlist2vertlist(pyptlist):
+    vertlist = []
+    for pypt in pyptlist:
+        vert = construct.make_vertex(pypt)
+        vertlist.append(vert)
+    return vertlist
 
 def shape2shapetype(occ_shape):
     shapetype = occ_shape.ShapeType()

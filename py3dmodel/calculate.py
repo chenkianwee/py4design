@@ -20,6 +20,7 @@
 # ==================================================================================================
 import math
 import fetch
+import construct
 
 from OCCUtils import face, Common, Construct, Topology, edge
 from OCC import BRepFeat 
@@ -71,6 +72,11 @@ def face_midpt(occface):
     centre_uv,gpcentre_pt = fc.mid_point()
     centre_pt = (gpcentre_pt.X(), gpcentre_pt.Y(), gpcentre_pt.Z())
     return centre_pt
+    
+def edge_midpt(occedge):
+    occutil_edge = edge.Edge(occedge)
+    mid_parm, midpt = occutil_edge.mid_point()
+    return (midpt.X(), midpt.Y(), midpt.Z())
     
 def is_anticlockwise(pyptlist, pyref_vec):
     total = [0,0,0]    
@@ -167,34 +173,20 @@ def project_face_on_faceplane(occface2projon, occface2proj):
         
     return proj_ptlist
     
-def intersect_edge_with_edge(occedge1, occedge2, tolerance = 1e-03):
-    intergppts = []
+def intersect_edge_with_edge(occedge1, occedge2, tolerance = 1e-06):
+    interpyptlist = []
     dss = BRepExtrema_DistShapeShape(occedge1, occedge2)
     dss.SetDeflection(tolerance)
     dss.Perform()
     min_dist = dss.Value()
-    print min_dist
-    
     if min_dist < tolerance:
         npts = dss.NbSolution()
-        
         for i in range(npts):
             gppt = dss.PointOnShape1(i+1)
-            #print dss.ParOnEdgeS1(i)
-            intergppts.append(gppt)
-    return intergppts
-        
-    '''
-    face_curve_intersect = BRepIntCurveSurface_Inter()
-    occutil_edge = edge.Edge(occedge)
-    face_curve_intersect.Init(occshape, occutil_edge.adaptor.Curve(), 1e-2)
-    pnts = []
-    print face_curve_intersect.More()
-    while face_curve_intersect.More():
-        next(face_curve_intersect)
-        pnts.append(face_curve_intersect.Point())
-    return pnts    
-    '''
+            pypt = (gppt.X(), gppt.Y(), gppt.Z())
+            interpyptlist.append(pypt)
+            
+    return interpyptlist
     
 def intersect_edge_with_face(occ_edge, occ_face):
     occutil_edge = edge.Edge(occ_edge)
@@ -275,6 +267,28 @@ def grp_faces_acc2normals(occfacelist):
             normal_face_dict[n].append(occface)
             
     return normal_face_dict
+    
+def pt2edgeparameter(pypt, occedge):
+    occutil_edge = edge.Edge(occedge)
+    gppt = construct.make_gppnt(pypt)
+    parameter, nearest_gppt = occutil_edge.project_vertex(gppt)
+    return parameter
+    
+def edgelength(lbound, ubound, occedge):
+    '''
+    lbound: lower bound of the parameterise edge
+    type: float
+    
+    ubound: upper bound of the parameterise edge
+    type: float
+    
+    occedge: the edge to be measured
+    type: occedge
+    '''
+    occutil_edge = edge.Edge(occedge)
+    length = occutil_edge.length(lbound, ubound)
+    return length
+    
     
 def edge_common_vertex(occedge1, occedge2):
     pyptlist_all = []

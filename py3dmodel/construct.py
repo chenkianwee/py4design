@@ -52,6 +52,11 @@ def make_polygon(pyptlist):
     wire = poly.Wire()
     occface = BRepBuilderAPI_MakeFace(wire)
     return occface.Face()
+    
+def make_vertex(pypt):
+    gppt = make_gppnt(pypt)
+    vert = Construct.make_vertex(gppt)
+    return vert
 
 def make_plane_w_dir(centre_pypt, normal_pydir):
     plane_face = Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
@@ -119,6 +124,13 @@ def make_circle(pycentre_pt, pydirection, radius):
     circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
     return circle_edge.Edge()
     
+def circles_frm_pyptlist(pyptlist, radius):
+    circlelist = []
+    for pypt in pyptlist:
+        circle = make_circle((pypt.X(),pypt.Y(),pypt.Z()), (0,0,1))
+        circlelist.append(circle)
+    return circlelist
+            
 def make_box(length, width, height):
     box = fetch.shape2shapetype(BRepPrimAPI_MakeBox(length,width,height).Shape())
     return box

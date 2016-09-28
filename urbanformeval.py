@@ -24,7 +24,16 @@ def calculate_srfs_area(occ_srflist):
     area = 0
     for srf in occ_srflist:
         area = area + py3dmodel.calculate.face_area(srf)
+        
     return area
+    
+def pyptlist2vertlist(pyptlist):
+    vertlist = []
+    for pypt in pyptlist:
+        vert = py3dmodel.construct.make_vertex(pypt)
+        vertlist.append(vert)
+    return vertlist
+    
     
 def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     '''
@@ -164,15 +173,22 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
         if intersect_pts!=None:
             interptlist.extend(intersect_pts)
             
-        circles = []
-        for interpt in interptlist:
-            circle = py3dmodel.construct.make_circle((interpt.X(),interpt.Y(),interpt.Z()), (0,0,1), 1000)
-            circles.append(circle)
-        
-    print len(circles)
-    displaylist.append(bedge)
-    displaylist.extend(circles)
+    fused_interptlist = py3dmodel.modify.fuse_pts(interptlist)
+    ulist = []
+    for fused_interpt in fused_interptlist:
+        parmu = py3dmodel.calculate.pt2edgeparameter(fused_interpt,bedge)
+        ulist.append(parmu)
+    
+    ulist = sorted(ulist)
+    print ulist
+    length = py3dmodel.calculate.edgelength(ulist[0],ulist[1], bedge)
+    trimmed_edge = py3dmodel.modify.trimedge(ulist[8], ulist[9], bedge)
+    tmid = py3dmodel.calculate.edge_midpt(trimmed_edge)
+    fused_interptlist.append(tmid)
+
+    displaylist.append(trimmed_edge)
     displaylist.extend(network_occedgelist)
+    displaylist.extend(py3dmodel.fetch.pyptlist2vertlist(fused_interptlist))
     return displaylist
     
     #construct a network with the edges 

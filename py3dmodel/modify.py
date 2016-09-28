@@ -18,7 +18,7 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Construct
+from OCCUtils import Construct, edge
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf
 from OCC.ShapeFix import ShapeFix_Shell
@@ -74,3 +74,32 @@ def fix_shape(occ_shape):
 def fix_face(occ_face):
     fixed_face = Construct.fix_face(occ_face)
     return fixed_face
+    
+def fuse_pts(pyptlist, roundndigit = 2):
+    '''
+    fuse all pts in the list within a certain tolerance
+    '''
+    upyptlist = set(pyptlist)
+    round_pyptlist = []
+    for pypt in upyptlist:
+        round_pypt = (round(pypt[0],2), round(pypt[1],2), round(pypt[2],2))
+        if round_pypt not in round_pyptlist:
+            round_pyptlist.append(round_pypt)
+            
+    return round_pyptlist
+    
+def trimedge(lbound, ubound, occedge):
+    '''
+    lbound: lower bound of the parameterise edge
+    type: float
+    
+    ubound: upper bound of the parameterise edge
+    type: float
+    
+    occedge: the edge to be trimmed
+    type: occedge
+    '''
+    occutil_edge = edge.Edge(occedge)
+    trimmed_edge = occutil_edge.trim(lbound, ubound)
+    
+    return trimmed_edge
