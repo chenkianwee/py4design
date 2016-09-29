@@ -18,6 +18,7 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
+import math
 import py3dmodel
 
 def calculate_srfs_area(occ_srflist):
@@ -131,7 +132,8 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     
     PARAMETERS
     ----------
-    :param network_occedgelist : a list of occedges that is the network to be analysed
+    :param network_occedgelist : a list of occedges that is the network to be analysed, clearly define network with
+        nodes and edges
     :ptype: list(occedge)
     
     :param plot_occfacelist: a list of occfaces that is the land use plots
@@ -158,37 +160,136 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     :rtype: list(occpts)
     
     '''
-    #calculate the peripheral points
-    #get all the intersection points 
-    #extract the wire from the face and convert it to a bspline curve
     displaylist = []
+    #======================================================================
+    #designate peripheral points
+    #======================================================================
+    peripheral_ptlist = []
+    peripheral_parmlist = []
     boundary_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(boundary_occface)
     boundary_pyptlist.append(boundary_pyptlist[0])
+    #extract the wire from the face and convert it to a bspline curve
     bedge = py3dmodel.construct.make_bspline_edge(boundary_pyptlist, degree=1)
-    boundary_occwire = py3dmodel.fetch.wires_frm_face(boundary_occface)[0]
-    boundary_occedgelist = py3dmodel.fetch.edges_frm_wire(boundary_occwire)
+    bwire = py3dmodel.construct.make_wire_frm_edges([bedge])
+    print py3dmodel.fetch.points_frm_wire(bwire)
+    #get all the intersection points 
     interptlist = []
     for network_occedge in network_occedgelist:
         intersect_pts = py3dmodel.calculate.intersect_edge_with_edge(bedge, network_occedge, tolerance=1e-02)
         if intersect_pts!=None:
             interptlist.extend(intersect_pts)
             
-    fused_interptlist = py3dmodel.modify.fuse_pts(interptlist)
+    #remove all duplicate points    
+    fused_interptlist = py3dmodel.modify.rmv_duplicated_pts(interptlist)
+    
+    #translate all the points to parameter
     ulist = []
     for fused_interpt in fused_interptlist:
         parmu = py3dmodel.calculate.pt2edgeparameter(fused_interpt,bedge)
         ulist.append(parmu)
     
     ulist = sorted(ulist)
-    print ulist
-    length = py3dmodel.calculate.edgelength(ulist[0],ulist[1], bedge)
-    trimmed_edge = py3dmodel.modify.trimedge(ulist[8], ulist[9], bedge)
-    tmid = py3dmodel.calculate.edge_midpt(trimmed_edge)
-    fused_interptlist.append(tmid)
+    nulist = len(ulist)
+    
+    #place a marker at the midpt between thiese intersection
+    midptlist = []
+    mulist = []
+    bedge_lbound, bedge_ubound = py3dmodel.calculate.edge_domain(bedge)
+    for ucnt in range(nulist):
+        curparm = ulist[ucnt]
+        if ucnt == nulist-1:
+            if curparm == 1 and ulist[0] != 0:
+                terange = ulist[0]-0
+                temidparm = terange/2
+                
+            elif curparm !=1 and ulist[0] != 0:
+                terange1 = 1-curparm
+                terange2 =  ulist[0]-0
+                terange3 = terange1+terange2
+                temidparm = curparm + (terange3/2)
+                if temidparm > 1:
+                    temidparm = temidparm-1
+                
+            elif curparm !=1 and ulist[0] == 0:
+                terange = 1-curparm
+                temidparm = terange/2
 
-    displaylist.append(trimmed_edge)
-    displaylist.extend(network_occedgelist)
-    displaylist.extend(py3dmodel.fetch.pyptlist2vertlist(fused_interptlist))
+        else:
+            terange = ulist[ucnt+1]-curparm
+            temidparm = curparm + (terange/2)
+        
+        temid = py3dmodel.calculate.edgeparameter2pt(temidparm, bedge)            
+        midptlist.append(temid)
+        mulist.append(temidparm)
+    
+    #check the spacing of all the points to ensure they are not more than 106m (350')
+    #if they are divide them as accordingly
+    umulist = sorted(mulist + ulist)
+    numulist = len(umulist)
+    for mcnt in range(numulist):
+        mcurparm = umulist[mcnt]
+        if mcnt == numulist-1:
+            if mcurparm == 1 and umulist[0] != 0:
+                mcurparm = 0
+                mnextparm = umulist[0]
+                mrange = mnextparm - mcurparm
+                mlength = py3dmodel.calculate.edgelength(mcurparm,mnextparm, bedge)
+                
+            elif mcurparm !=1 and umulist[0] != 0:
+                mlength1 = py3dmodel.calculate.edgelength(mcurparm,1, bedge)
+                mlength2 = py3dmodel.calculate.edgelength(0,umulist[0], bedge)
+                mrange1 = 1-mcurparm
+                mrange2 = umulist[0]-0
+                mrange = mrange1+mrange2
+                mlength = mlength1+mlength2
+        else:
+            mnextparm = umulist[mcnt+1]
+            mrange = mnextparm - mcurparm
+            mlength = py3dmodel.calculate.edgelength(mcurparm,mnextparm, bedge)
+            
+        #TODO solve the unit problem 
+        if (mlength*0.0254) > 106:
+            #divide the segment into 106m segments
+            nsegments = math.ceil((mlength*0.0254)/106.0)
+            segment = mrange/nsegments
+            for scnt in range(int(nsegments)-1):
+                divparm = mcurparm + ((scnt+1)*segment)
+                if divparm >1:
+                    divparm = divparm - 1
+                
+                peripheral_parmlist.append(divparm)
+                
+    peripheral_parmlist.extend(mulist)
+    peripheral_parmlist = sorted(peripheral_parmlist)
+    for eparm in peripheral_parmlist:
+        peripheral_pt = py3dmodel.calculate.edgeparameter2pt(eparm, bedge)
+        peripheral_ptlist.append(peripheral_pt)
+        
+    #======================================================================
+    #identify parcels with limited connectivity
+    #======================================================================
+    #set up the network with networkx
+    #first enter all the nodes into networkx
+    G = nx.Graph()
+    #get all the edges for the boundary
+    nb_edgelist = []
+    nb_pyptlist = []
+    boundary_occwire = py3dmodel.fetch.wires_frm_face(boundary_occface)[0]
+    boundary_occedgelist = py3dmodel.fetch.edges_frm_wire(boundary_occwire)
+    nb_edgelist.extend(boundary_occedgelist)
+    nb_edgelist.extend(network_occedgelist)
+    
+    for nb_edge in nb_edgelist:
+        pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(nb_edge))
+        for pt in pts:
+            if pt not in nb_pyptlist:
+                nb_pyptlist.append(pt)
+                G.add_node(pt)
+        
+    #remove all the duplicated pts 
+    displaylist.append(bwire)
+    #displaylist.extend(network_occedgelist)
+    #displaylist.extend(py3dmodel.fetch.pyptlist2vertlist(peripheral_ptlist))
     return displaylist
     
     #construct a network with the edges 

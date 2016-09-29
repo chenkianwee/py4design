@@ -75,7 +75,7 @@ def fix_face(occ_face):
     fixed_face = Construct.fix_face(occ_face)
     return fixed_face
     
-def fuse_pts(pyptlist, roundndigit = 2):
+def rmv_duplicated_pts(pyptlist, roundndigit = 2):
     '''
     fuse all pts in the list within a certain tolerance
     '''

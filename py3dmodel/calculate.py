@@ -289,6 +289,22 @@ def edgelength(lbound, ubound, occedge):
     length = occutil_edge.length(lbound, ubound)
     return length
     
+def edgeparameter2pt(u, occedge):
+    '''
+    u: u parameter of the parameterise edge
+    type: float
+    
+    occedge: the edge to be measured
+    type: occedge
+    '''
+    occutil_edge = edge.Edge(occedge)
+    gppt = occutil_edge.parameter_to_point(u)
+    return (gppt.X(),gppt.Y(), gppt.Z())
+    
+def edge_domain(occedge):
+    occutil_edge = edge.Edge(occedge)
+    lbound, ubound = occutil_edge.domain()
+    return lbound, ubound
     
 def edge_common_vertex(occedge1, occedge2):
     pyptlist_all = []

@@ -9,6 +9,7 @@ display2dlist = []
 dae_file = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\collada\\simple_case_connectivity.dae"
 mesh = Collada(dae_file)
 unit = mesh.assetInfo.unitmeter or 1
+print unit
 geoms = mesh.scene.objects('geometry')
 geoms = list(geoms)
 g_cnt = 0
@@ -43,7 +44,7 @@ displayitem = pyliburo.urbanformeval.route_directness(network_occedgelist, plots
 
 #DISPLAY & VISUALISE
 display2dlist.append(displayitem)
-#display2dlist.append(plots_occfacelist)
+display2dlist.append(plots_occfacelist)
 #display2dlist.append(network_occedgelist)
 
 colourlist = ["WHITE", "RED"]
