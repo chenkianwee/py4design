@@ -27,7 +27,7 @@ from scipy.spatial import Delaunay
 from OCC.Display.SimpleGui import init_display
 from OCCUtils import face, Construct, Topology
 from OCC.Display import OCCViewer
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
@@ -70,7 +70,7 @@ def make_edge(pypt1, pypt2):
     make_edge = BRepBuilderAPI_MakeEdge(gp_point1, gp_point2)
     return make_edge.Edge()
     
-def make_bspline_edge(pyptlist, degree=3):
+def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
     array = TColgp_Array1OfPnt(1, len(pyptlist))
     pcnt = 1
     for pypt in pyptlist:
@@ -78,9 +78,12 @@ def make_bspline_edge(pyptlist, degree=3):
         array.SetValue(pcnt, gppt)
         pcnt+=1
         
-    bcurve =GeomAPI_PointsToBSpline(array,degree,degree).Curve()
+    bcurve =GeomAPI_PointsToBSpline(array,mindegree,maxdegree).Curve()
     curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
     return curve_edge.Edge()
+    
+def make_parameterisedpolyline_edge():
+    pass
     
 def make_wire(pyptlist):
     '''
@@ -127,7 +130,7 @@ def make_circle(pycentre_pt, pydirection, radius):
 def circles_frm_pyptlist(pyptlist, radius):
     circlelist = []
     for pypt in pyptlist:
-        circle = make_circle((pypt.X(),pypt.Y(),pypt.Z()), (0,0,1))
+        circle = make_circle((pypt.X(),pypt.Y(),pypt.Z()), (0,0,1), radius)
         circlelist.append(circle)
     return circlelist
             
@@ -152,6 +155,12 @@ def make_vector(pypt1,pypt2):
     
 def make_gppnt(pypt):
     return gp_Pnt(pypt[0], pypt[1], pypt[2])
+    
+def make_gppntlist(pyptlist):
+    gpptlist = []
+    for pypt in pyptlist:
+        gpptlist.append(make_gppnt(pypt))
+    return gpptlist
     
 def make_line(pypt, pydir):
     occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))

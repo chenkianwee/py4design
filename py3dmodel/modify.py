@@ -19,11 +19,13 @@
 #
 # ==================================================================================================
 from OCCUtils import Construct, edge
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge
 from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf
 from OCC.ShapeFix import ShapeFix_Shell
 from OCC.BRepLib import breplib
-
+from OCC.Geom import Geom_TrimmedCurve, Handle_Geom_Curve, Geom_Curve
+from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
+from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
 import fetch
 
 def move(orig_pt, location_pt, shape):
@@ -75,17 +77,31 @@ def fix_face(occ_face):
     fixed_face = Construct.fix_face(occ_face)
     return fixed_face
     
-def rmv_duplicated_pts(pyptlist, roundndigit = 2):
+def rmv_duplicated_pts(pyptlist, roundndigit = None):
     '''
     fuse all pts in the list within a certain tolerance
     '''
-    upyptlist = set(pyptlist)
-    round_pyptlist = []
-    for pypt in upyptlist:
-        round_pypt = (round(pypt[0],2), round(pypt[1],2), round(pypt[2],2))
-        if round_pypt not in round_pyptlist:
-            round_pyptlist.append(round_pypt)
+    
+    if roundndigit == None:
+        upyptlist = set(pyptlist)
+        return list(upyptlist)
+        
+    else:
+        upyptlist = set(pyptlist)
+        round_pyptlist = []
+        for pypt in upyptlist:
+            round_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
+            if round_pypt not in round_pyptlist:
+                round_pyptlist.append(round_pypt)
             
+    return round_pyptlist
+    
+def round_pyptlist(pyptlist, roundndigit):
+    round_pyptlist = []
+    for pypt in pyptlist:
+        round_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
+        round_pyptlist.append(round_pypt)
+        
     return round_pyptlist
     
 def trimedge(lbound, ubound, occedge):
@@ -98,8 +114,17 @@ def trimedge(lbound, ubound, occedge):
     
     occedge: the edge to be trimmed
     type: occedge
-    '''
-    occutil_edge = edge.Edge(occedge)
-    trimmed_edge = occutil_edge.trim(lbound, ubound)
     
-    return trimmed_edge
+    doesnt work if the input is already a trimmed edge
+    '''
+    adaptor = BRepAdaptor_Curve(occedge)
+    #print adaptor.Trim(adaptor.FirstParameter(), adaptor.LastParameter(), adaptor.Tolerance()).GetObject().NbPoles().Curve()
+    tr = Geom_TrimmedCurve(adaptor.Curve().Curve(), lbound, ubound)
+    tr.SetTrim(lbound, ubound)
+    bspline_handle = geomconvert_CurveToBSplineCurve(tr.GetHandle())
+    #print tr.GetHandle()
+    tr_edge = BRepBuilderAPI_MakeEdge(bspline_handle)
+    #occutil_edge = edge.Edge(occedge)
+    #trimedge = occutil_edge.trim(lbound, ubound)
+    
+    return tr_edge.Edge()

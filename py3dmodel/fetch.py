@@ -18,11 +18,15 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Topology
+from OCCUtils import Topology,edge
 from OCC.BRep import BRep_Tool
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX
 from OCC.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
+
+from OCC.Geom import Handle_Geom_BSplineCurve
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
 import calculate
 import construct
 
@@ -289,3 +293,29 @@ def points_from_edge(occ_edge):
     vertex_list = list(Topology.Topo(occ_edge).vertices())
     point_list = vertex_list_2_point_list(vertex_list)
     return point_list
+    
+def poles_from_bsplinecurve_edge(occedge):
+    '''
+    occedge: the edge to be measured
+    type: occedge
+    '''
+    #occutil_edge = edge.Edge(occedge)
+    adaptor = BRepAdaptor_Curve(occedge)
+    adaptor_handle = BRepAdaptor_HCurve(adaptor)
+    handle_bspline = Handle_Geom_BSplineCurve()
+    bspline = handle_bspline.DownCast(adaptor.Curve().Curve()).GetObject()
+    #bsplineedge = BRepBuilderAPI_MakeEdge(adaptor.Curve().Curve()).Edge()
+
+    npoles =  bspline.NbPoles()
+    polelist = []
+    for np in range(npoles):
+        pole = bspline.Pole(np+1)
+        pypole = (pole.X(), pole.Y(), pole.Z())
+        polelist.append(pypole)
+
+    return polelist
+
+def edge_domain(occedge):
+    occutil_edge = edge.Edge(occedge)
+    lbound, ubound = occutil_edge.domain()
+    return lbound, ubound

@@ -173,6 +173,30 @@ def project_face_on_faceplane(occface2projon, occface2proj):
         
     return proj_ptlist
     
+def project_shape_on_shape(occshape1, occshape2, tolerance = 1e-06):
+    '''
+    occshape1: shape to project
+    type: occshape
+    
+    occshape2: shape to be projected on
+    type: occshape
+    
+    tolerance: precision of the projection
+    type: float
+    '''
+    interpyptlist = []
+    dss = BRepExtrema_DistShapeShape(occshape1, occshape2)
+    dss.SetDeflection(tolerance)
+    dss.Perform()
+    min_dist = dss.Value()
+    npts = dss.NbSolution()
+    for i in range(npts):
+        gppt = dss.PointOnShape2(i+1)
+        pypt = (gppt.X(), gppt.Y(), gppt.Z())
+        interpyptlist.append(pypt)
+            
+    return interpyptlist
+    
 def intersect_edge_with_edge(occedge1, occedge2, tolerance = 1e-06):
     interpyptlist = []
     dss = BRepExtrema_DistShapeShape(occedge1, occedge2)
@@ -301,10 +325,6 @@ def edgeparameter2pt(u, occedge):
     gppt = occutil_edge.parameter_to_point(u)
     return (gppt.X(),gppt.Y(), gppt.Z())
     
-def edge_domain(occedge):
-    occutil_edge = edge.Edge(occedge)
-    lbound, ubound = occutil_edge.domain()
-    return lbound, ubound
     
 def edge_common_vertex(occedge1, occedge2):
     pyptlist_all = []

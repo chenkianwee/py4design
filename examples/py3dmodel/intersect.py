@@ -4,20 +4,22 @@ displaylist1 = []
 displaylist2 = []
 
 #point for projection
-pypt = (0,0,10)
+pypt = (0,0,0)
 occ_origcircle = pyliburo.py3dmodel.construct.make_circle(pypt, (0,0,1),5)
 
 #face for projection or intersection
 pyptlist = [(50,100,0), (75,60,0), (75,60,50),(50,100,60)]#clockwise
+pyptlist = [(0,0,0), (5,0,0), (5,5,0),(0,5,0)]#clockwise
 occ_face = pyliburo.py3dmodel.construct.make_polygon(pyptlist)
 displaylist1.append(occ_face)
 
 #intersect edge with face
 #define an edge
-dest_pypt = (75,90,10)
+dest_pypt = (5,5,0)
 occ_edge = pyliburo.py3dmodel.construct.make_edge(pypt, dest_pypt)
 displaylist1.append(occ_edge)
 interss = pyliburo.py3dmodel.calculate.intersect_edge_with_face(occ_edge, occ_face)
+print interss
 if interss:
     pyinterpt = (interss[0].X(),interss[0].Y(),interss[0].Z())
     interss_occcircle = pyliburo.py3dmodel.construct.make_circle(pyinterpt, (0,0,1),3)
