@@ -359,6 +359,58 @@ def are_same_edges(occedge1, occedge2):
             return True 
         else:
             return False 
+            
+def sort_edges_into_order(occedgelist, isclosed = False):
+    from OCC.TopoDS import topods 
+    from OCC.TopExp import topexp
+    from OCC.BRep import BRep_Tool
+    from OCC.ShapeAnalysis import ShapeAnalysis_WireOrder
+    from OCC.Precision import precision
+    
+    sawo_statusdict={0:"all edges are direct and in sequence",
+    1:"all edges are direct but some are not in sequence",
+    2:"unresolved gaps remain",
+    -1:"some edges are reversed, but no gaps remain",
+    -2:"some edges are reversed and some gaps remain",
+    -10:"failure on reorder"}
+    
+    mode3d = True
+    SAWO = ShapeAnalysis_WireOrder(mode3d, precision.PConfusion())
+    
+    for occedge in occedgelist:
+        V1 = topexp.FirstVertex(topods.Edge(occedge))
+        V2 = topexp.LastVertex(topods.Edge(occedge))
+        pnt1 = BRep_Tool().Pnt(V1)
+        pnt2 = BRep_Tool().Pnt(V2)
+        SAWO.Add(pnt1.XYZ(), pnt2.XYZ())
+        SAWO.SetKeepLoopsMode(True)
+        
+    SAWO.Perform(isclosed)
+    #print "SAWO.Status()", SAWO.Status()
+    if not SAWO.IsDone():
+        raise RuntimeError, "build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()]
+    else:
+        if SAWO.Status() not in [0, -1]:
+            pass # not critical, wirebuilder will handle this
+        SAWO.SetChains(precision.PConfusion())
+        sorted_edge2dlist = []
+        #print "Number of chains: ", SAWO.NbChains()
+        for i in range(SAWO.NbChains()):
+            sorted_edges = []
+            estart, eend = SAWO.Chain(i+1)
+            #print "Number of edges in chain", i, ": ", eend - estart + 1
+            if (eend - estart + 1)==0:
+                continue
+            for j in range(estart, eend+1):
+                idx = abs(SAWO.Ordered(j))
+                edge2w = occedgelist[idx-1]
+                if SAWO.Ordered(j) <0:
+                    edge2w.Reverse()
+                sorted_edges.append(edge2w)
+                
+            sorted_edge2dlist.append(sorted_edges)
+            
+    return sorted_edge2dlist
     
 def identify_open_close_wires_frm_loose_edges(occedgelist):
     open_wires = []

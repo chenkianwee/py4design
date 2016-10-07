@@ -5,7 +5,7 @@ face1 = pyliburo.py3dmodel.construct.make_polygon(points1)
 
 
 pypt1 = (0,0,0)
-pypt2 = (100,95,0)
+pypt2 = (100,80,0)
 edge = pyliburo.py3dmodel.construct.make_edge(pypt1, pypt2)
 
 res = pyliburo.py3dmodel.fetch.shape2shapetype(pyliburo.py3dmodel.construct.boolean_common(face1,edge))
@@ -24,7 +24,7 @@ for edge in edgelist:
     interpts = pyliburo.py3dmodel.calculate.intersect_edge_with_edge(bspline_edge, edge)
     interptlist.extend(interpts)
 
-interptlist = pyliburo.py3dmodel.modify.rmv_duplicated_pts(interptlist,roundndigit = 2)
+interptlist = pyliburo.py3dmodel.modify.rmv_duplicated_pts(interptlist)
 eparmlist = []
 for interpt in interptlist:
     eparm = pyliburo.py3dmodel.calculate.pt2edgeparameter(interpt, bspline_edge)
@@ -41,10 +41,7 @@ new_route_pyptlist = []
 if eparm_range1 < eparm_range2 or eparm_range1 == eparm_range2 :
     te = pyliburo.py3dmodel.modify.trimedge(eparmlist[0],eparmlist[-1], bspline_edge)
     telength = pyliburo.py3dmodel.calculate.edgelength(eparmlist[0],eparmlist[-1], bspline_edge)
-    new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.points_from_edge(edgelist2[0]))
-    new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.poles_from_bsplinecurve_edge(te))
-    new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.points_from_edge(edgelist2[1]))
-    new_route_wire = pyliburo.py3dmodel.construct.make_wire(new_route_pyptlist)
+    sorted_edge2dlist = pyliburo.py3dmodel.calculate.sort_edges_into_order([edgelist2[0],te, edgelist2[1]])
     
 if eparm_range1 > eparm_range2:
     te1 = pyliburo.py3dmodel.modify.trimedge(edmin, eparmlist[0], bspline_edge)
@@ -52,20 +49,24 @@ if eparm_range1 > eparm_range2:
     telength1 = pyliburo.py3dmodel.calculate.edgelength(edmin, eparmlist[0], bspline_edge)
     telength2 = pyliburo.py3dmodel.calculate.edgelength(eparmlist[-1],edmax, bspline_edge)
     telength = telength1+telength2
-    closew, openw = pyliburo.py3dmodel.calculate.identify_open_close_wires_frm_loose_edges([edgelist2[0], edgelist2[1],te1,te2])  
-    #new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.occptlist2pyptlist(pyliburo.py3dmodel.fetch.points_from_edge(edgelist2[0])))
-    new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.poles_from_bsplinecurve_edge(te1))
-    new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.poles_from_bsplinecurve_edge(te2))
-    #new_route_pyptlist.extend(pyliburo.py3dmodel.fetch.occptlist2pyptlist(pyliburo.py3dmodel.fetch.points_from_edge(edgelist2[1])))
-    new_route_pyptlist = pyliburo.py3dmodel.modify.rmv_duplicated_pts(new_route_pyptlist, roundndigit = 2)
-    print new_route_pyptlist
-    new_route_wire = pyliburo.py3dmodel.construct.make_wire(new_route_pyptlist)
+    sorted_edge2dlist = pyliburo.py3dmodel.calculate.sort_edges_into_order([edgelist2[0], te1, te2, edgelist2[1]])
     
+sorted_edgelist = sorted_edge2dlist[0]
 #turn the wire into a degree1 bspline curve edge
-#new_pyptlist = pyliburo.py3dmodel.fetch.occptlist2pyptlist(pyliburo.py3dmodel.fetch.points_frm_wire(new_route_wire))
-#new_bspline_edge = pyliburo.py3dmodel.construct.make_bspline_edge(new_pyptlist, mindegree = 1, maxdegree=1)    
+new_pyptlist = []
+
+for sorted_edge in sorted_edgelist:
     
+    if pyliburo.py3dmodel.fetch.is_edge_bspline(sorted_edge):
+        pts = pyliburo.py3dmodel.fetch.poles_from_bsplinecurve_edge(sorted_edge)
+    if pyliburo.py3dmodel.fetch.is_edge_line(sorted_edge):
+        pts = pyliburo.py3dmodel.fetch.occptlist2pyptlist(pyliburo.py3dmodel.fetch.points_from_edge(sorted_edge))
+        
+    print pts
+    new_pyptlist.extend(pts)
     
+new_bspline_edge = pyliburo.py3dmodel.construct.make_bspline_edge(new_pyptlist, mindegree = 1, maxdegree=1)    
+
 e2length = 0
 for edge2 in edgelist2:
     e2dmin, e2dmax = pyliburo.py3dmodel.fetch.edge_domain(edge2)
@@ -74,6 +75,7 @@ for edge2 in edgelist2:
 print telength + e2length
 
 display2dlist = []
-display2dlist.append([new_route_wire])
-display2dlist.append([edgelist2[0],edgelist2[1]])
+display2dlist.append([new_bspline_edge])
+#display2dlist.append(pyliburo.py3dmodel.fetch.pyptlist2vertlist(te1poles)[0:4])
+#display2dlist.append([edgelist2[0],edgelist2[1]])
 pyliburo.py3dmodel.construct.visualise(display2dlist, ["WHITE", "RED"])

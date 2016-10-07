@@ -284,6 +284,74 @@ def wire_frm_loose_edges(occedge_list):
             face_list.append(face)
         
     return face_list
+    
+def arrange_edges_2_wires(occedgelist, isclosed = False):
+    from OCC.TopoDS import topods 
+    from OCC.TopExp import topexp
+    from OCC.BRep import BRep_Tool
+    from OCC.ShapeAnalysis import ShapeAnalysis_WireOrder
+    from OCC.Precision import precision
+    from OCC.BRepBuilderAPI import BRepBuilderAPI_WireDone, BRepBuilderAPI_EmptyWire, BRepBuilderAPI_DisconnectedWire, BRepBuilderAPI_NonManifoldWire
+    
+    wb_errdict={BRepBuilderAPI_WireDone:"No error", BRepBuilderAPI_EmptyWire:"Empty wire", BRepBuilderAPI_DisconnectedWire:"disconnected wire",
+    BRepBuilderAPI_NonManifoldWire:"non-manifold wire"}
+    
+    sawo_statusdict={0:"all edges are direct and in sequence",
+    1:"all edges are direct but some are not in sequence",
+    2:"unresolved gaps remain",
+    -1:"some edges are reversed, but no gaps remain",
+    -2:"some edges are reversed and some gaps remain",
+    -10:"failure on reorder"}
+    
+    mode3d = True
+    SAWO = ShapeAnalysis_WireOrder(mode3d, precision.PConfusion())
+    
+    for edge in occedgelist:
+        V1 = topexp.FirstVertex(topods.Edge(edge))
+        V2 = topexp.LastVertex(topods.Edge(edge))
+        pnt1 = BRep_Tool().Pnt(V1)
+        pnt2 = BRep_Tool().Pnt(V2)
+        SAWO.Add(pnt1.XYZ(), pnt2.XYZ())
+        SAWO.SetKeepLoopsMode(True)
+        
+    SAWO.Perform(isclosed)
+    #print "SAWO.Status()", SAWO.Status()
+    if not SAWO.IsDone():
+        raise RuntimeError, "build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()]
+    else:
+        if SAWO.Status() not in [0, -1]:
+            pass # not critical, wirebuilder will handle this
+        SAWO.SetChains(precision.PConfusion())
+        wirelist = []
+        #print "Number of chains: ", SAWO.NbChains()
+        
+        for i in range(SAWO.NbChains()):
+            wirebuilder = BRepBuilderAPI_MakeWire()
+            estart, eend = SAWO.Chain(i+1)
+            #print "Number of edges in chain", i, ": ", eend - estart + 1
+            if (eend - estart + 1)==0:
+                continue
+            for j in range(estart, eend+1):
+                idx = abs(SAWO.Ordered(j)) # wirebuilder = s_addToWireBuilder(wirebuilder, edgelist[idx-1])
+                edge2w = occedgelist[idx-1]
+                wirebuilder.Add(edge2w)
+                if wirebuilder is None:
+                    raise RuntimeError, " build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i)
+                    err = wirebuilder.Error()
+                    if err != BRepBuilderAPI_WireDone:
+                        raise RuntimeError, "Overlay2D: build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i) +": \n" + wb_errdict[err]
+                        try:
+                            wirebuilder.Build()
+                            aWire = wirebuilder.Wire()
+                            wirelist.append(aWire)
+                        except Exception, err:
+                            raise RuntimeError, "Overlay2D: build wire: Creation of Wire number " + str(i) + " from edge(s) failed. \n" + str(err)
+        
+            wirebuilder.Build()
+            aWire = wirebuilder.Wire()
+            wirelist.append(aWire)
+            
+    return wirelist
         
 def merge_faces(occ_face_list, tolerance = 1e-06 ):
     sew = BRepBuilderAPI_Sewing(tolerance)
