@@ -43,9 +43,11 @@ boundary_area = max(plot_arealist)
 boundary_index = plot_arealist.index(boundary_area)
 boundary_occface = plots_occfacelist[boundary_index]
 plots_occfacelist.remove(boundary_occface)
-displayitem = pyliburo.urbanformeval.route_directness(network_occedgelist, plots_occfacelist, boundary_occface)
+
+print len(plots_occfacelist)
+displayitem = pyliburo.urbanformeval.route_directness(network_occedgelist, plots_occfacelist, boundary_occface, route_directness_threshold = 5)
     
-#DISPLAY & VISUALISE
+#DISPLAY & VISUALISE#
 display2dlist.append(plots_occfacelist)
 display2dlist.append(displayitem)
 #display2dlist.append(plot_wirelist)

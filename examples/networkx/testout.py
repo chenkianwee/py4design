@@ -11,8 +11,18 @@ G.add_edge((1,2,3),(4,5,6), distance = 4.5)
 G.add_edge((4,5,6),(70,8,9), distance = 10)
 G.add_edge((70,8,9), (10,5,9), distance = 20)
 G.add_edge((1,2,3), (10,5,9), distance = 20)
-print G.nodes(data=True)
-#print type(nx.shortest_path(G, source = (1,2,3), target = (70,8,9)))
-print G.edges(data=True)[0][2]["distance"]
-#nx.draw(G)
-#plt.show()
+#print G.nodes(data=True)
+shortest_path =  nx.shortest_path(G, source = (1,2,3), target = (70,8,9))
+
+nshortpath = len(shortest_path)
+total_distance = 0
+for scnt in range(nshortpath):
+    if scnt != nshortpath-1:
+        network_edge = G[shortest_path[scnt]][shortest_path[scnt+1]]
+        total_distance = total_distance + network_edge["distance"]
+        print network_edge["distance"]
+        print network_edge
+    
+print total_distance
+nx.draw(G)
+plt.show()

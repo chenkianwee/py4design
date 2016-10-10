@@ -313,6 +313,14 @@ def edgelength(lbound, ubound, occedge):
     length = occutil_edge.length(lbound, ubound)
     return length
     
+def wirelength(occwire):
+    edgelist = fetch.edges_frm_wire(occwire)
+    wire_length = 0
+    for occedge in edgelist:
+        dmin, dmax = fetch.edge_domain(occedge)
+        wire_length = wire_length + edgelength(dmin, dmax, occedge)
+    return wire_length
+    
 def edgeparameter2pt(u, occedge):
     '''
     u: u parameter of the parameterise edge

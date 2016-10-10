@@ -24,9 +24,11 @@ from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf
 from OCC.ShapeFix import ShapeFix_Shell
 from OCC.BRepLib import breplib
 from OCC.Geom import Geom_TrimmedCurve, Handle_Geom_Curve, Geom_Curve
-from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
+from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
 from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
+
 import fetch
+import construct
 
 def move(orig_pt, location_pt, shape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())
@@ -128,3 +130,35 @@ def trimedge(lbound, ubound, occedge):
     #trimedge = occutil_edge.trim(lbound, ubound)
     
     return tr_edge.Edge()
+    
+def trim_wire(occ_wire, shapeLimit1, shapeLimit2, is_periodic=False):
+    '''
+    occwire: wire to be trimmed
+    type: occwire
+    
+    shapeLimit1: the 1st point where to cut the wire
+    type: tuple, e.g. (0,1,2.5)
+    
+    shapeLimit1: the 2nd point where to cut the wire
+    type: tuple, e.g. (0,1,2.5)
+    
+    is_periodic: indicate if the wire is open or close, true for close, false for open
+    type: bool, e.g. True or False
+    '''
+    
+    trimmed = Construct.trim_wire(occ_wire, shapeLimit1, shapeLimit2, periodic= is_periodic )
+    return trimmed
+    
+def wire_2_bsplinecurve_edge(occwire):
+    '''
+    occwire: wire to be converted
+    type: occwire
+    '''
+    adaptor = BRepAdaptor_CompCurve(occwire)
+    hadap = BRepAdaptor_HCompCurve(adaptor)
+    from OCC.Approx import Approx_Curve3d
+    from OCC.GeomAbs import GeomAbs_C0, GeomAbs_C0, GeomAbs_C2, GeomAbs_C3
+    approx = Approx_Curve3d(hadap.GetHandle(), 1e-06, GeomAbs_C2 , 10000, 12)
+    bspline_handle = approx.Curve()
+    occedge = BRepBuilderAPI_MakeEdge(bspline_handle)
+    return occedge.Edge()

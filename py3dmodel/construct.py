@@ -25,7 +25,7 @@ import numpy as np
 from scipy.spatial import Delaunay
 
 from OCC.Display.SimpleGui import init_display
-from OCCUtils import face, Construct, Topology
+from OCCUtils import face, Construct, Topology, Common
 from OCC.Display import OCCViewer
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
@@ -77,13 +77,22 @@ def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
         gppt = make_gppnt(pypt)
         array.SetValue(pcnt, gppt)
         pcnt+=1
-        
     bcurve =GeomAPI_PointsToBSpline(array,mindegree,maxdegree).Curve()
     curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
     return curve_edge.Edge()
     
-def make_parameterisedpolyline_edge():
-    pass
+def make_bspline_edge_interpolate(pyptlist, is_closed):
+    '''
+    pyptlist: list of pypt
+    type: list(tuple)
+    
+    is_closed: is the curve open or close
+    type: bool, True or False
+    '''
+    gpptlist = make_gppntlist(pyptlist)
+    bcurve = Common.interpolate_points_to_spline_no_tangency(gpptlist, closed=is_closed)
+    curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
+    return curve_edge.Edge()
     
 def make_wire(pyptlist):
     '''

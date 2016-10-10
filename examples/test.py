@@ -1,4 +1,5 @@
-if 1 not in [0,-1]:
-    pass
-    print "i am not in"
+x = 10
+y = x
 
+print y+10
+print x
