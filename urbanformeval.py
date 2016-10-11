@@ -19,6 +19,7 @@
 #
 # ==================================================================================================
 import math
+import networkx as nx
 import py3dmodel
 
 def calculate_srfs_area(occ_srflist):
@@ -92,6 +93,55 @@ def route_ard_obstruction(obstruction_face, crow_wire):
         
     new_bwire = py3dmodel.construct.make_wire(new_pyptlist)
     return new_bwire
+    
+def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelist,G):
+    crow_wire = py3dmodel.construct.make_wire([startpypt, peripheralpypt])   
+    #need to check if the crow edge intersect any obstruction
+    rerouted_wire = crow_wire 
+    for obface in obstruction_occfacelist:
+        common_compound = py3dmodel.construct.boolean_common(obface, rerouted_wire)
+        is_comp_null = py3dmodel.fetch.is_compound_null(common_compound)
+        if not is_comp_null:
+            #means there is an intersection
+            #need to reconstruct the distance
+            rerouted_wire = route_ard_obstruction(obface, crow_wire)
+            
+    #measure the direct distance
+    direct_distance = py3dmodel.calculate.wirelength(rerouted_wire)
+    #measure the route distance
+    shortest_path = nx.shortest_path(G,source=startpypt,target=peripheralpypt)
+    nshortpath = len(shortest_path)
+    route_distance = 0
+    for scnt in range(nshortpath):
+        if scnt != nshortpath-1:
+            network_edge = G[shortest_path[scnt]][shortest_path[scnt+1]]
+            route_distance = route_distance + network_edge["distance"]
+            
+    route_directness = route_distance/direct_distance
+    return route_directness
+    
+def generate_directions(rot_degree):
+    #generate the direction from the midpt to the plot edges 
+    orig_vert = py3dmodel.construct.make_vertex((0,1,0))
+    pydirlist = []
+    for dircnt in range(int(360/rot_degree)):
+        degree = rot_degree*dircnt
+        rot_vert = py3dmodel.modify.rotate(orig_vert, (0,0,0), (0,0,1), degree)
+        gppt = py3dmodel.fetch.vertex2point(rot_vert)
+        pypt = py3dmodel.fetch.occpt2pypt(gppt)
+        pydirlist.append(pypt)
+        
+    return pydirlist
+    
+def construct_network_compound(network_occedgelist, extrusion_height):
+    nfacelist = []
+    for nedge in network_occedgelist:
+        #move the edge upwards then loft it to make a face
+        nface = py3dmodel.construct.extrude_edge(nedge, (0,0,1), 10)
+        nfacelist.append(nface)
+
+    network_compound = py3dmodel.construct.make_compound(nfacelist)
+    return network_compound
     
     
 def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
@@ -176,8 +226,6 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
     
 def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], route_directness_threshold = 1.6):
-    import networkx as nx
-    import matplotlib.pyplot as plt
     '''
     Algorithm for Route Directness Test  
     Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
@@ -362,63 +410,42 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #======================================================================
     #construct the network between the midpt of the plot to the internal network
     #======================================================================
+    plot_edgeptlist = []
     plot_midptlist = []
     network_ptlist = []
     midpt2_network_edgelist = []
-    extrusion_height = 10
-    nfacelist = []
-    
-    for nedge in network_occedgelist:
-        #move the edge upwards then loft it to make a face
-        nedge_midpt = py3dmodel.calculate.edge_midpt(nedge)
-        location_pt = py3dmodel.modify.move_pt(nedge_midpt, (0,0,1),extrusion_height)
-        nedge2 = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(nedge_midpt, location_pt, nedge))
-        nedge_wire = py3dmodel.construct.make_wire_frm_edges([nedge])
-        nedge_wire2 = py3dmodel.construct.make_wire_frm_edges([nedge2])
-        nface = py3dmodel.construct.make_loft_with_wires([nedge_wire,nedge_wire2])
-        nfacelist.append(nface)
-        
-    network_compound = py3dmodel.construct.make_compound(nfacelist)
-    
-    #generate the direction from the midpt to the plot edges 
-    rot_degree = 45
-    orig_vert = py3dmodel.construct.make_vertex((0,1,0))
-    pydirlist = []
-    for dircnt in range(int(360/rot_degree)):
-        degree = rot_degree*dircnt
-        rot_vert = py3dmodel.modify.rotate(orig_vert, (0,0,0), (0,0,1), degree)
-        gppt = py3dmodel.fetch.vertex2point(rot_vert)
-        pypt = py3dmodel.fetch.occpt2pypt(gppt)
-        pydirlist.append(pypt)
-        
+    network_compound = construct_network_compound(network_occedgelist, 10)
     #get the mid point of the plot
     for plot_occface in plot_occfacelist:
         pymidpt = py3dmodel.calculate.face_midpt(plot_occface)
         plot_midptlist.append(pymidpt)
-        #extrude the plot and get all the vertical surfaces and make a shell from it 
-        extrusion = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.extrude(plot_occface, (0,0,1), extrusion_height))
-        extrusion_occfacelist = py3dmodel.fetch.faces_frm_solid(extrusion)
-        n_extrusion_facelist = []
-        for extrusion_occface in extrusion_occfacelist:
-            n = py3dmodel.calculate.face_normal(extrusion_occface)
-            if not n == (0,0,1) or n == (0,0,-1):
-                n_extrusion_facelist.append(extrusion_occface)
-        extrusion_shell = py3dmodel.construct.make_shell_frm_faces(n_extrusion_facelist)[0]
-        #shoot the midpt towards one of the direction and hits the edge
-        for pydir in pydirlist:
-            inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(extrusion_shell, pymidpt, pydir)
-            interpypt = py3dmodel.fetch.occpt2pypt(inter_occpt)
-            midpt2pedge =  py3dmodel.construct.make_edge(pymidpt, interpypt)
+        plot_edgeptlist.append([])
+        #get all the edges of the plot 
+        plotedgelist = py3dmodel.fetch.geom_explorer(plot_occface, "edge")
+        #extrude the plot into a solid
+        pextrude = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.extrude(plot_occface,(0,0,1), 10))
+        #face_list = py3dmodel.fetch.geom_explorer(pextrude, "face")
+        for pedge in plotedgelist:
+            #find the midpt of the edge 
+            pedge_midpypt = py3dmodel.calculate.edge_midpt(pedge)
+            #shoot the midpt towards the midpt of the edge
+            midpt2pedge = py3dmodel.construct.make_edge(pymidpt, pedge_midpypt)
             midpt2_network_edgelist.append(midpt2pedge)
-            pydir2 = py3dmodel.calculate.face_normal(inter_face)
-            inter_occpt2, inter_face2 = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, interpypt, pydir2)
-            
+            gpvec = py3dmodel.construct.make_vector(pymidpt,pedge_midpypt)
+            pyvec = py3dmodel.modify.normalise_vec(gpvec)
+            inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(pextrude, pymidpt, pyvec) 
+            pydir = py3dmodel.calculate.face_normal(inter_face)
+            inter_occpt2, inter_face2 = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pydir)             
             if inter_occpt2 !=None:
-                inter_pypt2 = py3dmodel.fetch.occpt2pypt(inter_occpt2)
-                pedge2network = py3dmodel.construct.make_edge(interpypt, inter_pypt2)
-                network_ptlist.append(inter_pypt2)
+                #it means according to the normal direction of the surface it will hit a network edge
+                inter_pypt = py3dmodel.fetch.occpt2pypt(inter_occpt2)
+                pedge2network = py3dmodel.construct.make_edge(pedge_midpypt, inter_pypt)
+                network_ptlist.append(inter_pypt)
                 midpt2_network_edgelist.append(pedge2network)
-
+                rounded_pedge_midpypt = py3dmodel.modify.round_pypt(pedge_midpypt,2)
+                plot_edgeptlist[-1].append(rounded_pedge_midpypt)
+                #make sure the plot edge is a free edge
+                #if it cuts any of the plots it means it is not a free edge
                 for plot_occface2 in plot_occfacelist:
                     dmin,dmax = py3dmodel.fetch.edge_domain(pedge2network)
                     drange = dmax-dmin
@@ -427,11 +454,13 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                     pypt2 = py3dmodel.calculate.edgeparameter2pt(dmax, pedge2network)
                     pedge2network2 = py3dmodel.construct.make_edge(pypt1, pypt2)
                     is_intersecting = py3dmodel.construct.boolean_common(plot_occface2,pedge2network2)
+                    
                     if not py3dmodel.fetch.is_compound_null(is_intersecting):
                         #it is not a free edge
                         midpt2_network_edgelist.remove(midpt2pedge)
                         midpt2_network_edgelist.remove(pedge2network)
-                        network_ptlist.remove(inter_pypt2)
+                        network_ptlist.remove(inter_pypt)
+                        plot_edgeptlist[-1].remove(rounded_pedge_midpypt)
                         break
 
             else:
@@ -463,18 +492,6 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                 n_nedge2 = py3dmodel.construct.make_edge(pypt2, pypt3)
                 new_network_occedgelist.append(n_nedge2)
                 break
-           
-    nnedge_pyptlist = []
-    for nnedge in new_network_occedgelist:
-        nnedge_pyptlist.extend(py3dmodel.fetch.points_from_edge(nnedge))
-
-    nnedge_pyptlist = py3dmodel.modify.rmv_duplicated_pts(py3dmodel.fetch.occptlist2pyptlist(nnedge_pyptlist), roundndigit = 2)
-    
-    midpt2net_pyptlist = []
-    for mnedge in midpt2_network_edgelist:
-        midpt2net_pyptlist.extend(py3dmodel.fetch.points_from_edge(mnedge))
-
-    midpt2net_pyptlist = py3dmodel.modify.rmv_duplicated_pts(py3dmodel.fetch.occptlist2pyptlist(midpt2net_pyptlist),roundndigit = 2)
     
     #======================================================================
     #construct the networkx network
@@ -487,7 +504,6 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     for x_edge in edges4_networkx:
         edge_nodes = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(x_edge))
         edge_nodes = py3dmodel.modify.round_pyptlist(edge_nodes, 2)
-        
         xdmin,xdmax = py3dmodel.fetch.edge_domain(x_edge)
         length = py3dmodel.calculate.edgelength(xdmin,xdmax,x_edge)
         G.add_edge(edge_nodes[0],edge_nodes[1], distance = length)
@@ -500,7 +516,6 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     fail_plots = []
     plot_midptlist = py3dmodel.modify.round_pyptlist(plot_midptlist,2)
     graph_nodes = G.nodes()
-    print len(plot_occfacelist), len(plot_midptlist)
     plcnt = 0
     for midpt in plot_midptlist:
         #check if the plot is a dead plot with no free edges
@@ -512,42 +527,39 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
             #measure the direct distance crow flies distance
             #TODO solve the unit problem 
             plot_area = py3dmodel.calculate.face_area(plof_occface)*0.00064516   
-            print plot_area
-            #if plot_area >= 2023: #1/2 acre
-            for perpypt in peripheral_pyptlist:
-                crow_wire = py3dmodel.construct.make_wire([midpt, perpypt])   
-                #need to check if the crow edge intersect any obstruction
-                rerouted_wire = crow_wire 
-                for obface in obstruction_occfacelist:
-                    common_compound = py3dmodel.construct.boolean_common(obface, rerouted_wire)
-                    is_comp_null = py3dmodel.fetch.is_compound_null(common_compound)
-                    if not is_comp_null:
-                        #means there is an intersection
-                        #need to reconstruct the distance
-                        rerouted_wire = route_ard_obstruction(obface, crow_wire)
-                        
-                #measure the direct distance
-                direct_distance = py3dmodel.calculate.wirelength(rerouted_wire)
-                #measure the route distance
-                shortest_path = nx.shortest_path(G,source=midpt,target=perpypt)
-                nshortpath = len(shortest_path)
-                route_distance = 0
-                for scnt in range(nshortpath):
-                    if scnt != nshortpath-1:
-                        network_edge = G[shortest_path[scnt]][shortest_path[scnt+1]]
-                        route_distance = route_distance + network_edge["distance"]
-                        
-                route_directness = route_distance/direct_distance
-                print route_directness, plcnt
-                if route_directness > route_directness_threshold:
-                    fail_plots.append(plof_occface)
-                    pass_plots.remove(plof_occface)
-                    break
+            #1/2 acre
+            if plot_area <= 2023: 
+                for perpypt in peripheral_pyptlist:
+                    route_directness = calculate_route_directness(midpt, perpypt, obstruction_occfacelist,G)
+                    print route_directness, plcnt
+                    if route_directness > route_directness_threshold:
+                        fail_plots.append(plof_occface)
+                        pass_plots.remove(plof_occface)
+                        break
+            else:
+                route_directness_list = []
+                escnt = 0
+                nespt = len(plot_edgeptlist)
+                for edgestartpt in plot_edgeptlist[plcnt]:
+                    for perpypt in peripheral_pyptlist:
+                        route_directness = calculate_route_directness(edgestartpt, perpypt, obstruction_occfacelist,G)
+                        route_directness_list.append(route_directness)
+                        print route_directness, plcnt, escnt
+                        if route_directness > route_directness_threshold and escnt < nespt-1:
+                            route_directness_list.remove(route_directness)
+                            break
+                        elif route_directness > route_directness_threshold and escnt == nespt-1:
+                            route_directness_list.remove(route_directness)
+                            fail_plots.append(plof_occface)
+                            pass_plots.remove(plof_occface)
+                            break
+                    escnt += 1
         plcnt += 1
 
     print len(fail_plots), len(pass_plots), len(fail_plots) + len(pass_plots)
+
     #displaylist.extend(new_network_occedgelist)
-    #displaylist.extend(pedgelist)
+    #displaylist.extend(total_pedgelist)
     displaylist.extend(edges4_networkx)
     #displaylist.extend(py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(peripheral_ptlist), 300))
     #displaylist.extend(py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(nnedge_pyptlist), 150))

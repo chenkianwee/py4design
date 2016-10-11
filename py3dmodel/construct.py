@@ -38,6 +38,7 @@ from OCC.TColgp import TColgp_Array1OfPnt
 
 import fetch
 import calculate
+import modify
 
 def make_polygon(pyptlist):   
     array = []
@@ -206,6 +207,16 @@ def extrude(occ_face, pyvector, height):
     vec = make_vector((0,0,0),pyvector)*height
     extrude = BRepPrimAPI_MakePrism(occ_face, vec)
     return extrude.Shape()
+    
+def extrude_edge(occedge, pydirection, height):
+    edge_midpt = calculate.edge_midpt(occedge)
+    location_pt = modify.move_pt(edge_midpt, pydirection, height)
+    edge2 = fetch.shape2shapetype(modify.move(edge_midpt, location_pt, occedge))
+    edge_wire = make_wire_frm_edges([occedge])
+    edge_wire2 = make_wire_frm_edges([edge2])
+    edgeface = make_loft_with_wires([edge_wire,edge_wire2])
+    facelist = fetch.geom_explorer(edgeface, "face")
+    return facelist[0]
     
 def grid_face(occ_face, udim, vdim):
     #returns a series of polygons 

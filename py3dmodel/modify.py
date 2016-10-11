@@ -38,6 +38,10 @@ def move(orig_pt, location_pt, shape):
     trsf_shp = BRepBuilderAPI_Transform(shape, aTrsf).Shape()
     return trsf_shp
     
+def normalise_vec(gpvec):
+    ngpvec = gpvec.Normalized()
+    return (ngpvec.X(), ngpvec.Y(), ngpvec.Z())
+    
 def rotate(shape, rot_pt, axis, degree):
     gp_ax3 = gp_Ax1(gp_Pnt(rot_pt[0], rot_pt[1], rot_pt[2]), gp_Dir(axis[0], axis[1], axis[2]))
     rot_shape = Construct.rotate(shape, gp_ax3, degree, copy=False)
@@ -97,14 +101,17 @@ def rmv_duplicated_pts(pyptlist, roundndigit = None):
                 round_pyptlist.append(round_pypt)
             
     return round_pyptlist
+   
+def round_pypt(pypt, roundndigit):
+    rounded_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
+    return rounded_pypt
     
 def round_pyptlist(pyptlist, roundndigit):
-    round_pyptlist = []
+    rounded_pyptlist = []
     for pypt in pyptlist:
-        round_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
-        round_pyptlist.append(round_pypt)
-        
-    return round_pyptlist
+        rounded_pypt = round_pypt(pypt, roundndigit)
+        rounded_pyptlist.append(rounded_pypt)
+    return rounded_pyptlist
     
 def trimedge(lbound, ubound, occedge):
     '''
