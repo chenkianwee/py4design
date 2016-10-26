@@ -18,15 +18,28 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import py2radiance
-import pycitygml
-import py3dmodel
-import pyoptimise
+import numpy as np
+import matplotlib.pyplot as plt
 
-import citygml2eval
-import gmlparameterise
-import shp2citygml
-import threedmodel
-import urbanformeval
-import collada2citygml
-import runopt
+def scatter_plot(pts2plot_2dlist, colour_list):
+    x =[]
+    y = []
+    colours = []
+    area = []
+    #nclrs = len(pts2plot_2dlist)
+    #step = 1.0/float(nclrs)
+    cnt = 0
+    colors = np.random.rand(10)
+    print colors
+    for pts2plot in pts2plot_2dlist:
+        for pt in pts2plot:
+            x.append(pt[0])
+            y.append(pt[1])
+            colours.append(colour_list[cnt])
+            area.append(15)
+            
+        cnt +=1
+        
+    print x, y
+    plt.scatter(x, y,s = area , c=colours, alpha=0.5)
+    plt.show()

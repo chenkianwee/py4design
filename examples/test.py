@@ -1,5 +1,3 @@
-x = 10
-y = x
-
-print y+10
-print x
+x = [[2,3], [5,6]]
+y = zip(x)
+print y

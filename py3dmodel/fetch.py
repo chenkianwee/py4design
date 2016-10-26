@@ -218,6 +218,9 @@ def is_compound_null(occ_compound):
         isnull = False
     
     return isnull
+    
+def is_face_null(occface):
+    return occface.IsNull()
             
 def solids_frm_compsolid(occ_compsolid):
     solid_list = Topology.Topo(occ_compsolid).solids()

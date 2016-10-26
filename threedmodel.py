@@ -30,7 +30,7 @@ def pypolygons2occsolid(pypolygon_list):
         face_list.append(face)
 
     #make shell
-    shell = py3dmodel.construct.make_shell_frm_faces(face_list)
+    shell = py3dmodel.construct.make_shell_frm_faces(face_list)[0]
     shell = py3dmodel.modify.fix_shell_orientation(shell)
     
     solid = py3dmodel.construct.make_solid(shell)

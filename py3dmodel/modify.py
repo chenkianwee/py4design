@@ -18,17 +18,16 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Construct, edge
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge
-from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf
+from OCCUtils import Construct
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
+from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
 from OCC.ShapeFix import ShapeFix_Shell
 from OCC.BRepLib import breplib
-from OCC.Geom import Geom_TrimmedCurve, Handle_Geom_Curve, Geom_Curve
-from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
+from OCC.Geom import Geom_TrimmedCurve
+from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
 from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
 
 import fetch
-import construct
 
 def move(orig_pt, location_pt, shape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())
@@ -54,6 +53,20 @@ def move_pt(orig_pt, direction2move, magnitude):
     moved_pt = (gp_moved_pt.X(), gp_moved_pt.Y(), gp_moved_pt.Z())
     return moved_pt
     
+def uniform_scale(occshape, tx, ty, tz, ref_pypt):
+    moved_shape = move(ref_pypt, (0,0,0),occshape)
+    xform = gp_GTrsf()
+    xform.SetVectorialPart(gp_Mat(
+      tx, 0, 0,
+      0, ty, 0,
+      0, 0, tz,
+    ))
+    brep = BRepBuilderAPI_GTransform(moved_shape, xform, False)
+    brep.Build()
+    trsfshape = brep.Shape()
+    move_back_shp = move((0,0,0), ref_pypt,trsfshape)
+    return move_back_shp
+
 def reverse_vector(vec):
     gp_rev_vec = gp_Vec(vec[0], vec[1], vec[2]).Reversed()
     rev_vec = (gp_rev_vec.X(), gp_rev_vec.Y(), gp_rev_vec.Z())
