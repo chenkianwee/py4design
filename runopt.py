@@ -23,11 +23,9 @@ import pyoptimise
 def empty_xml_files(xml_filelist):
     for xmlf in xml_filelist:
         open(xmlf,"w").close()
-
-def initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
-          live_file,dead_file ):
-              
-    empty_xml_files([live_file, dead_file])
+        
+def create_population_class(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+          live_file,dead_file):
     #====================================
     #initialise the genotype class object
     #====================================
@@ -69,6 +67,14 @@ def initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_ra
     #====================================
     
     p = pyoptimise.nsga2.Population(init_population, gm, sm, live_file , dead_file, mutation_rate, crossover_rate)
+    return p
+
+def initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+          live_file,dead_file ):
+              
+    empty_xml_files([live_file, dead_file])
+    p = create_population_class(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+          live_file,dead_file)
     p.randomise()
     not_evaluated = p.individuals
     for ind in not_evaluated:
@@ -76,12 +82,22 @@ def initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_ra
         
     p.write()
     return p
+    
+def resume_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+      live_file,dead_file ):
+              
+    p = create_population_class(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+          live_file,dead_file)
+          
+    p.read()       
+    return p
 
-def feedback_nsga2(population, generation):
+def feedback_nsga2(population):
     #===================================
     #feedback
     #=================================== 
-    population.reproduce(population.individuals, generation)
+    current_gen = population.individuals[0].generation
+    population.reproduce(population.individuals, current_gen+1)
     population.write()
     #====================================
     #separate the evaluated individuals from the unevaluated one  

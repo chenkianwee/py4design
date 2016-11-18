@@ -18,28 +18,33 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import numpy as np
 import matplotlib.pyplot as plt
 
-def scatter_plot(pts2plot_2dlist, colour_list):
+def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labellist = [], xlabel = "", ylabel = "", title = "", 
+                 savefile = ""):
     x =[]
     y = []
-    colours = []
-    area = []
-    #nclrs = len(pts2plot_2dlist)
-    #step = 1.0/float(nclrs)
+
     cnt = 0
-    colors = np.random.rand(10)
-    print colors
-    for pts2plot in pts2plot_2dlist:
-        for pt in pts2plot:
-            x.append(pt[0])
-            y.append(pt[1])
-            colours.append(colour_list[cnt])
-            area.append(15)
-            
+    for pt in pts2plotlist:
+        x.append(pt[0])
+        y.append(pt[1])
         cnt +=1
+    
+    plt.scatter(x, y, s = pt_arealist , c=colourlist, alpha=0.5)
+    
+    if labellist:
+        for i, txt in enumerate(labellist):
+            plt.annotate(txt, (x[i],y[i]))
+    
+    if xlabel:
+        plt.xlabel(xlabel, fontsize=label_size)
+    if ylabel:
+        plt.ylabel(ylabel, fontsize=label_size)
+    if title:
+        plt.title(title, fontsize=label_size )
+    if savefile:
+        plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
         
-    print x, y
-    plt.scatter(x, y,s = area , c=colours, alpha=0.5)
+    plt.tick_params(axis='both', which='major', labelsize=label_size)
     plt.show()

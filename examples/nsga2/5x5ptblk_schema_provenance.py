@@ -3,11 +3,10 @@ from collada import *
 #==================================================
 #INPUTS
 #==================================================
-resume = True
 dae_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\dae\\5x5ptblks.dae"
 base_citygml_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\gml\\5x5ptblks.gml"
 
-ngeneration = 45
+ngeneration = 50
 init_population = 100
 mutation_rate = 0.01
 crossover_rate  = 0.8 
@@ -266,16 +265,12 @@ citygml_writer.write(base_citygml_file)
 gene_dict_list = generate_gene_dict_list()
 score_dict_list = generate_score_dict_list()
 
-if resume == False:
-    population = pyliburo.runopt.initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
-              live_file,dead_file )
-if resume == True:
-    population = pyliburo.runopt.resume_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
-              live_file,dead_file )
+population = pyliburo.runopt.initialise_nsga2(gene_dict_list, score_dict_list, mutation_rate,crossover_rate,init_population,
+          live_file,dead_file )
     
-for gencnt in range(ngeneration):
+for generation in range(ngeneration):
     indlist = population.individuals
-    print "GEN",gencnt+7, len(indlist)
+    print "GEN",generation+1, len(indlist)
     for ind in indlist:
         #==================================================
         #GENERATE DESIGN VARIANT
@@ -296,6 +291,6 @@ for gencnt in range(ngeneration):
     #==================================================
     #NSGA FEEDBACK 
     #=================================================
-    pyliburo.runopt.feedback_nsga2(population)
+    pyliburo.runopt.feedback_nsga2(population, generation+1)
     
 print "DONE"

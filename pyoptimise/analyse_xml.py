@@ -165,6 +165,10 @@ def get_score(ind):
     for score in score_list:
         score_list_f.append(float(score))
     return score_list_f
+    
+def get_id(ind):
+    identity = get_childnode_value("identity", ind)
+    return identity
 
 def get_inds_frm_xml(xml_filepath):
     doc = xml.dom.minidom.parse(xml_filepath)

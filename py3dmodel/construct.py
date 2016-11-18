@@ -432,7 +432,7 @@ def visualise(shape2dlist, colour_list):
         display.DisplayColoredShape(compound, color = colour, update=True)
         sc_cnt+=1
         
-    display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
+    display.set_bg_gradient_color(250, 250, 250, 250, 250, 250)
     display.View_Iso()
     display.FitAll()
     start_display()
@@ -510,7 +510,6 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_fi
         
     res_colours = falsecolour(results, minval, maxval)
     falsecolour_bar = generate_falsecolour_bar(minval, maxval, falsecolour_file, display)
-    
     colour_list = []
     c_srf_list = []
     for r_cnt in range(len(res_colours)):

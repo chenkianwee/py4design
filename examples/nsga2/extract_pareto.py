@@ -38,9 +38,9 @@ print "DRAWING GRAPH ..."
 pts2plotlist = []
 pts2plotlist.extend(pareto_pts)  
 pts2plotlist.extend(npareto_pts)
-labellist = []
-labellist.extend(pareto_labellist) 
-labellist.extend(npareto_labellist) 
+label_list = []
+label_list.extend(pareto_labellist) 
+label_list.extend(npareto_labellist) 
 colourlist = []
 colourlist.extend(pareto_colourlist)
 colourlist.extend(npareto_colourlist)
@@ -49,7 +49,7 @@ arealist.extend(pareto_arealist)
 arealist.extend(npareto_arealist)
 
 filepath = "F:\\kianwee_work\\smart\\conference\\bs2017\\image\\png\\pareto_front.png"
-pyliburo.pyoptimise.draw_graph.scatter_plot(pts2plotlist, colourlist, arealist, label_size=24,
+pyliburo.pyoptimise.draw_graph.scatter_plot(pts2plotlist, colourlist, arealist, label_size=24, labellist = label_list,
                                             xlabel = "FAR", ylabel = "DFAI (%)", savefile = filepath )
 #pyliburo.pyoptimise.draw_graph.scatter_plot_label(pts2plotlist, colourlist, labellist, arealist)
 print len(pareto_pts), len(npareto_pts)

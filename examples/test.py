@@ -1,3 +1,3 @@
-x = [[2,3], [5,6]]
-y = zip(x)
-print y
+x = "hello"
+if x:
+    print "x has words"

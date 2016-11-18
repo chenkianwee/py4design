@@ -45,9 +45,10 @@ class Evals(object):
         self.landuse_occpolygons = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
-        self.sfgai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'sgfai_data')
+        self.sgfai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'sgfai_data')
         self.dfai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'dfai_data')
-        self.rpvp_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'rpvp_data')
+        self.pvai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'pvai_data')
+        self.daysim_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'daysim_data')
         self.solarxdim = None
         self.solarydim = None
         self.rad = None
@@ -85,7 +86,7 @@ class Evals(object):
         self.footprint_occfaces = footprint_list
         
                 
-    def initialise_solar_analyse_facade(self, epweatherfile, xdim, ydim):
+    def initialise_solar_analyse_facade(self, epweatherfile, xdim, ydim, folderpath):
         #check if the building surfaces has been identified
         if self.facade_occfaces == None:
             self.initialise_occgeom()
@@ -106,7 +107,7 @@ class Evals(object):
             topo_list.extend(sensor_surfaces)
             
         #initialise py2radiance 
-        rad = py2radiance.Rad(self.rad_base_filepath, self.sfgai_folderpath)
+        rad = py2radiance.Rad(self.rad_base_filepath, folderpath)
         #get all the geometry of the buildings for shading in radiance
         buildings = self.buildings
         bcnt = 0
@@ -120,8 +121,8 @@ class Evals(object):
                 del pypolygon[-1]
                 #extract the shading geometry 
                 srfname = gmlpolygon.attrib["{%s}id" % self.citygml.namespaces['gml']]
-                #just use pure white paint
-                srfmat = "RAL9010_pur_white_paint"
+                #material with reflectance 0.2
+                srfmat = "RAL2012"
                 py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
                 
             bcnt +=1
@@ -140,13 +141,7 @@ class Evals(object):
         receives irradiation below a specified level over the net facade area. 
         SGFAI is represented as an area ratio.
         """
-        
-        if self.rad == None:
-            self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim)
-            
-        elif (self.solarxdim, self.solarydim) != (xdim, ydim):
-            self.solar_analyse_facade(epweatherfile, xdim, ydim)
-        
+        self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim, self.sgfai_folderpath )
         #execute cumulative oconv for the whole year
         rad = self.rad
         time = str(0) + " " + str(24)
@@ -184,6 +179,58 @@ class Evals(object):
         above a specified percentage of the annual daytime hours
         over the net facade area. 
         DFAI is represented as an area ratio.
+        """            
+        self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim, self.dfai_folderpath )
+        #execute cumulative oconv for the whole year
+        rad = self.rad
+        #execute cumulative oconv for the whole year
+        rad = self.rad
+        time = str(0) + " " + str(24)
+        date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
+        rad.execute_cumulative_oconv(time, date, epweatherfile, output = "illuminance")
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        illum_ress = rad.eval_cumulative_rad(output = "illuminance")
+        facade_list = self.facade_occfaces
+        topo_list = self.facade_grid_srfs
+        
+        #get the number of sunuphrs
+        #once the geometries are created initialise daysim
+        daysim_dir = self.daysim_folderpath
+        rad.initialise_daysim(daysim_dir)
+        #a 60min weatherfile is generated
+        rad.execute_epw2wea(epweatherfile)
+        sunuphrs = rad.sunuphrs
+        
+        high_illum = []
+        high_illum_faces = []
+        mean_illum_ress = []
+        illum_cnt = 0
+        for illum_res in illum_ress:
+            mean_illum = (illum_res/float(sunuphrs))
+            mean_illum_ress.append(mean_illum)
+            if mean_illum > daylight_threshold:
+                high_illum.append(mean_illum)
+                #measure the area of the grid 
+                high_illum_faces.append(topo_list[illum_cnt])
+            illum_cnt +=1
+            
+        total_area = gml3dmodel.faces_surface_area(facade_list)
+        high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
+        sgfai = (high_illum_area/total_area) * 100
+        
+        self.illum_results = mean_illum_ress
+        #return dfai, topo_list, illum_ress
+        return sgfai, topo_list, mean_illum_ress 
+        
+    def hourly_solar_analysis(self, epweatherfile, xdim, ydim, irradiance = True):
+        """
+        Run Daysim hourly simulation 
+        returns: a dictionary with each day as a key
+        the key points to a 2d list 
+        each row is the sensor pts
+        each column is the hourly values 
         """
         if self.rad == None:
             self.initialise_solar_analyse_facade(epweatherfile, xdim, ydim)
@@ -195,16 +242,26 @@ class Evals(object):
         rad = self.rad
  
         #once the geometries are created initialise daysim
-        daysim_dir = self.dfai_folderpath
+        daysim_dir = self.daysim_folderpath
         rad.initialise_daysim(daysim_dir)
         #a 60min weatherfile is generated
         rad.execute_epw2wea(epweatherfile)
         rad.execute_radfiles2daysim()
-        #create sensor points
+        #execute daysim
         rad.write_default_radiance_parameters()#the default settings are the complex scene 1 settings of daysimPS
-        rad.execute_gen_dc("lux")
+        if irradiance == True :
+            rad.execute_gen_dc("w/m2")
+        else:
+            rad.execute_gen_dc("lux")
+            
         rad.execute_ds_illum()
+        
         res_dict = rad.eval_ill()
+
+        return res_dict
+        
+    def avg_illuminance(self, res_dict):
+        rad = self.rad
         npts = len(res_dict.values()[0])
         sensorptlist = []
         for _ in range(npts):
@@ -222,27 +279,9 @@ class Evals(object):
             avg_illuminance = cumulative_sensorpt/sunuphrs
             cumulative_list.append(cumulative_sensorpt)
             illum_ress.append(avg_illuminance)
-
-        
-        facade_list = self.facade_occfaces
-        topo_list = self.facade_grid_srfs
-        high_illum = []
-        high_illum_faces = []
-        illum_cnt = 0
-        for illum_res in illum_ress:
-            if illum_res> daylight_threshold:
-                high_illum.append(illum_res)
-                #measure the area of the grid 
-                high_illum_faces.append(topo_list[illum_cnt])
-            illum_cnt +=1
             
-        total_area = gml3dmodel.faces_surface_area(facade_list)
-        high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
-        dfai = (high_illum_area/total_area) * 100
+        return illum_ress
         
-        self.illum_results = illum_ress
-        return dfai, topo_list, illum_ress 
-    
     def pvai(self, irrad_threshold, epweatherfile, xdim, ydim, surface = "roof"):
         '''
         Roof PV Potential (RPVP) calculates the potential electricity 
@@ -277,7 +316,7 @@ class Evals(object):
             
         
         #initialise py2radiance 
-        rad = py2radiance.Rad(self.rad_base_filepath, self.rpvp_folderpath)
+        rad = py2radiance.Rad(self.rad_base_filepath, self.pvai_folderpath)
         #get all the geometry of the buildings for shading in radiance
         buildings = self.buildings
         bcnt = 0

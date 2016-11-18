@@ -125,6 +125,7 @@ class Rad(object):
             #gencumulative sky command  
             cumulative_cal_file_name = "input_cumulative_sky.cal"
             cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
+            #with -p command the output is in kwh, without -p the output is in wh
             cumulative_sky_command = "GenCumulativeSky +s1 -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
                                      time +" -date " + date + " " + weatherfile_path + " > " + cumulative_cal_file_path
                                      
@@ -132,7 +133,7 @@ class Rad(object):
             #gencumulative sky command  
             cumulative_cal_file_name = "input_cumulative_sky.cal"
             cumulative_cal_file_path = os.path.join(self.data_folder_path, cumulative_cal_file_name)
-            cumulative_sky_command = "GenCumulativeSky +s1 -l -a " + latitude + " -o " + longtitude + " -m " + meridian + " -p -E -time " +\
+            cumulative_sky_command = "GenCumulativeSky +s1 -a " + latitude + " -o " + longtitude + " -m " + meridian + " -E -time " +\
                                      time +" -date " + date + " " + weatherfile_path + " > " + cumulative_cal_file_path
                                      
         f = open(self.command_file, "a")
