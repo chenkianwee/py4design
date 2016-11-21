@@ -57,11 +57,9 @@ def generate_sensor_surfaces(occ_face, xdim, ydim):
     normal = py3dmodel.calculate.face_normal(occ_face)
     mid_pt = py3dmodel.calculate.face_midpt(occ_face)
     location_pt = py3dmodel.modify.move_pt(mid_pt, normal, 0.01)
-    
     moved_oface = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(mid_pt, location_pt, occ_face))
     #put it into occ and subdivide surfaces 
     sensor_surfaces = py3dmodel.construct.grid_face(moved_oface, xdim, ydim)
-
     sensor_pts = []
     sensor_dirs = []
     for sface in sensor_surfaces:

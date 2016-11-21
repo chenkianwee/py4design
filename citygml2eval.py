@@ -261,6 +261,9 @@ class Evals(object):
         return res_dict
         
     def avg_illuminance(self, res_dict):
+        """
+        for daysim hourly simulation
+        """
         rad = self.rad
         npts = len(res_dict.values()[0])
         sensorptlist = []
@@ -443,9 +446,9 @@ class Evals(object):
         avg_fai = sum(fai_list)/float(len(fai_list))
         return avg_fai, fuse_psrfs_list, surfaces_projected_list
         
-    def ptui(self):
+    def rdi(self):
         """
-        Public Transport Usability Index (PTUI) is based on CASBEE calculation
+        Route Directness Index
         """
         pass
 

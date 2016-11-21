@@ -4,8 +4,8 @@ import pyliburo
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
-#citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
-citygml_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\design_variants\\1222.gml"
+citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
+#citygml_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\design_variants\\1222.gml"
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================

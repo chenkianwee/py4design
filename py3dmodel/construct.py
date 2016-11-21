@@ -226,7 +226,6 @@ def grid_face(occ_face, udim, vdim):
     umin, umax, vmin, vmax = fc.domain()
     u_div = int(math.ceil((umax-umin)/udim))
     v_div = int(math.ceil((vmax-vmin)/vdim))
-    
     for ucnt in range(u_div+1):
         for vcnt in range(v_div+1):
             u = umin + (ucnt*udim)
@@ -248,7 +247,6 @@ def grid_face(occ_face, udim, vdim):
             
     #intersect the grids and the face so that those grids that are not in the face will be erase
     intersection_list = []
-    
     for f in face_list:
         intersection = BRepAlgoAPI_Common(f, occ_face).Shape()
         compound = fetch.shape2shapetype(intersection)

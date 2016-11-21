@@ -3,12 +3,12 @@ from collada import *
 #==================================================
 #INPUTS
 #==================================================
-resume = True
+resume = False
 dae_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\dae\\5x5ptblks.dae"
 base_citygml_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\gml\\5x5ptblks.gml"
 
-ngeneration = 45
-init_population = 100
+ngeneration = 1
+init_population = 1
 mutation_rate = 0.01
 crossover_rate  = 0.8 
 live_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\live.xml"
@@ -45,7 +45,7 @@ def read_collada(dae_filepath):
     shapelist = []
     for bfaces in buildinglist:
         if bfaces:                
-            bsolid = pyliburo.py3dmodel.construct.make_shell_frm_faces(bfaces)[0]    
+            bsolid = pyliburo.py3dmodel.construct.make_shell_frm_faces(bfaces)[0]
             shapelist.append(bsolid)
 
     shapelist.extend(luselist)
@@ -275,7 +275,6 @@ if resume == True:
     
 for gencnt in range(ngeneration):
     indlist = population.individuals
-    print "GEN",gencnt+7, len(indlist)
     for ind in indlist:
         #==================================================
         #GENERATE DESIGN VARIANT

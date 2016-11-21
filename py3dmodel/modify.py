@@ -136,8 +136,6 @@ def trimedge(lbound, ubound, occedge):
     
     occedge: the edge to be trimmed
     type: occedge
-    
-    doesnt work if the input is already a trimmed edge
     '''
     adaptor = BRepAdaptor_Curve(occedge)
     #print adaptor.Trim(adaptor.FirstParameter(), adaptor.LastParameter(), adaptor.Tolerance()).GetObject().NbPoles().Curve()
