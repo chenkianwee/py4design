@@ -1,6 +1,31 @@
 import os 
 import pylibudo
 
+def avg_illuminance(self, res_dict):
+    """
+    for daysim hourly simulation
+    """
+    rad = self.rad
+    npts = len(res_dict.values()[0])
+    sensorptlist = []
+    for _ in range(npts):
+        sensorptlist.append([])
+        
+    for res in res_dict.values():
+        for rnum in range(npts):
+            sensorptlist[rnum].append(res[rnum])
+            
+    cumulative_list = []
+    sunuphrs = rad.sunuphrs
+    illum_ress = []
+    for sensorpt in sensorptlist:
+        cumulative_sensorpt = sum(sensorpt)
+        avg_illuminance = cumulative_sensorpt/sunuphrs
+        cumulative_list.append(cumulative_sensorpt)
+        illum_ress.append(avg_illuminance)
+        
+    return illum_ress
+        
 #create all the relevant folders 
 current_path = os.path.dirname(__file__)
 base_filepath = os.path.join(current_path, 'base.rad')
@@ -55,8 +80,8 @@ rad.execute_radfiles2daysim()
 rad.set_sensor_points(sensor_pts,sensor_dirs)
 rad.create_sensor_input_file()
 rad.write_default_radiance_parameters()#the default settings are the complex scene 1 settings of daysimPS
-rad.execute_gen_dc("w/m2")
+rad.execute_gen_dc("w/m2") #lux
 rad.execute_ds_illum()
-
+res_dict = rad.eval_ill()
 print "DONE"
 pylibudo.py3dmodel.construct.visualise(display2dlist, ["WHITE"])

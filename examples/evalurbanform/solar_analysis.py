@@ -15,7 +15,6 @@ def read_collada(dae_filepath):
     luselist = []
     mesh = Collada(dae_file)
     unit = mesh.assetInfo.unitmeter or 1
-    print unit
     geoms = mesh.scene.objects('geometry')
     geoms = list(geoms)
     gcnt = 0
@@ -69,8 +68,8 @@ def redraw_occfaces(occcompound):
     return solidlist
     
 collada_solids = read_collada(dae_file)
-collada_solids = collada_solids[0:5]
-'''
+collada_solids = collada_solids[0:3]
+
 #==========================================================================================================================
 #SHGFAVI
 #==========================================================================================================================
@@ -85,7 +84,8 @@ collada_solids = collada_solids[0:5]
 irrad_threshold = (50*8760*1.5)/1000.0
 avg_shgfavi, shgfavi_percent, shgfai, topo_list, irrad_ress = pyliburo.urbanformeval.shgfavi(collada_solids, irrad_threshold, 
                                                                                      weatherfilepath, 10,10, rad_filepath )
-'''
+print avg_shgfavi, shgfai
+
 #==========================================================================================================================
 #DFAVI
 #==========================================================================================================================
@@ -94,19 +94,33 @@ avg_dfavi, dfavi_percent, dfai, topo_list, illum_ress = pyliburo.urbanformeval.d
                                                                                      weatherfilepath, 10,10, 
                                                                                      rad_filepath, daysim_filepath )
 
-'''
+print avg_dfavi, dfai
+
 #==========================================================================================================================
 #PVAVI
 #==========================================================================================================================
 pv_facade_threshold = 512 #kwh/m2
 pv_roof_threshold = 1280 #kwh/m2
 
-avg_pvavi, pvavi_percent, pvai_value, epv, topo_list, irrad_ress = pyliburo.urbanformeval.pvavi(collada_solids, 
-                                                                                                pv_roof_threshold, 
-                                                                                                weatherfilepath, 
-                                                                                                10,10, rad_filepath, 
-                                                                                                mode = "roof")  
-'''                       
-print avg_dfavi, dfai
-#pyliburo.py3dmodel.construct.visualise_falsecolour_topo(illum_ress, topo_list, falsecolour_file, image_file)
+avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress =  pyliburo.urbanformeval.pvavi(collada_solids, 
+                                                                                                  pv_facade_threshold, 
+                                                                                                  weatherfilepath, 10, 10, 
+                                                                                                  rad_filepath, 
+                                                                                                  mode = "facade",
+                                                                                                  pvavi_threshold = None)
+                                                                                                  
+print avg_pvfavi, pvfai
 
+                                                                                               
+avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress = pyliburo.urbanformeval.pveavi(collada_solids, 
+                                                                                             pv_roof_threshold, 
+                                                                                             pv_facade_threshold, 
+                                                                                             weatherfilepath, 10, 10, 
+                                                                                             rad_filepath, 
+                                                                                             pvravi_threshold = None, 
+                                                                                             pvfavi_threshold = None, 
+                                                                                             pveavi_threshold = None)
+                                                                                             
+print avg_pvfavi, pvfai
+
+#pyliburo.py3dmodel.construct.visualise_falsecolour_topo(irrad_ress, topo_list, falsecolour_file, image_file)

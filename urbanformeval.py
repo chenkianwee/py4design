@@ -578,34 +578,47 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
     
     sensor_ptlist = []
     sensor_dirlist = []
-    topo_list = []
-    bvol_dict = {}
+    sensor_surfacelist = []
+    
+    bldg_dictlist = []
+    
     gsrf_index_cnt = 0
     bldg_cnt = 0
     for bsolid in building_occsolids:
         gsrf_cnt = 0
         #separate the solid into facade footprint and roof
-        
+        bldg_dict = {}
         facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
         bsrflist = facades + roofs + footprints
         #measure the volume of the solid
         bvol = py3dmodel.calculate.solid_volume(bsolid)
-        if surface == "roof":
+        bldg_dict["volume"] = bvol
+        if surface == "roof" or surface == "envelope":
             for roof in roofs:
                 sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
-                gsrf_cnt += len(sensor_surfaces)
                 sensor_ptlist.extend(sensor_pts)
                 sensor_dirlist.extend(sensor_dirs)
-                topo_list.extend(sensor_surfaces)
+                sensor_surfacelist.extend(sensor_surfaces)
                 
-        if surface == "facade":
+                gsrf_cnt += len(sensor_surfaces)
+                
+            if surface == "envelope":
+                roof_index1 = gsrf_index_cnt
+                roof_index2 = gsrf_index_cnt + gsrf_cnt
+             
+        if surface == "facade" or surface == "envelope":
             for facade in facades:
                 sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
-                gsrf_cnt += len(sensor_surfaces)
                 sensor_ptlist.extend(sensor_pts)
                 sensor_dirlist.extend(sensor_dirs)
-                topo_list.extend(sensor_surfaces)
-          
+                sensor_surfacelist.extend(sensor_surfaces)
+                
+                gsrf_cnt += len(sensor_surfaces)
+                
+            if surface == "envelope":
+                facade_index1 = roof_index2
+                facade_index2 = gsrf_index_cnt + gsrf_cnt
+             
         bsrf_cnt = 0
         for bsrf in bsrflist:
             pypolygon = py3dmodel.fetch.pyptlist_frm_occface(bsrf)
@@ -616,36 +629,127 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
         gsrf_range1 = gsrf_index_cnt
         gsrf_range2= gsrf_index_cnt + gsrf_cnt
         
-        bvol_dict[bvol] = [gsrf_range1, gsrf_range2]
-        gsrf_index_cnt +=  gsrf_cnt    
+        
+        if surface == "envelope":
+            bldg_dict["surface_index"] = [gsrf_range1, gsrf_range2,roof_index1,roof_index2,facade_index1,facade_index2]
+        else:
+             bldg_dict["surface_index"] = [gsrf_range1, gsrf_range2]
+             
+        bldg_dictlist.append(bldg_dict)
+        gsrf_index_cnt +=  gsrf_cnt 
         bldg_cnt += 1 
+        
+    
     #get the sensor grid points
     rad.set_sensor_points(sensor_ptlist, sensor_dirlist)
     rad.create_sensor_input_file()
     #create the geometry files
     rad.create_rad_input_file()
+    return rad, sensor_ptlist, sensor_dirlist, sensor_surfacelist, bldg_dictlist
     
-    return rad, sensor_ptlist, sensor_dirlist, topo_list, bvol_dict
+def execute_cummulative_radiance(rad,start_mth,end_mth, start_date,end_date,start_hr, end_hr, 
+                                 epwweatherfile, mode = "irradiance"):
+    time = str(start_hr) + " " + str(end_hr)
+    date = str(start_mth) + " " + str(start_date) + " " + str(end_mth) + " " + str(end_date)
     
-def shgfai(irrad_ress,irrad_threshold, topo_list):
-    high_irrad = []
-    high_irrad_faces = []
+    if mode == "irradiance":
+        rad.execute_cumulative_oconv(time, date, epwweatherfile)
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        irrad_ress = rad.eval_cumulative_rad()
+        return irrad_ress
+    if mode == "illuminance":
+        rad.execute_cumulative_oconv(time, date, epwweatherfile, output = "illuminance")
+        #execute cumulative_rtrace
+        rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+        #retrieve the results
+        illum_ress = rad.eval_cumulative_rad(output = "illuminance")   
+        return illum_ress
     
-    irrad_cnt = 0
-    for irrad_res in irrad_ress:
-        if irrad_res> irrad_threshold:
-            high_irrad.append(irrad_res)
-            #measure the area of the grid 
-            high_irrad_faces.append(topo_list[irrad_cnt])
-        irrad_cnt +=1
+def calculate_avi(bldgdict_list, result_threshold, avi_threshold = None):
+    avi_list = []
+    compared_avi_list = []
+    vol_list = []
+    sa_list = []
+    for bldgdict in bldgdict_list:
+        bvol = bldgdict["volume"]
+        vol_list.append(bvol)
+        result_list = bldgdict["result"]
+        surface_list = bldgdict["surface"]
         
-    total_area = gml3dmodel.faces_surface_area(topo_list)
-    high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
-    shgfai = (high_irrad_area/total_area) * 100
-    return shgfai
+        high_res = []
+        high_res_srf = []
+        bradcnt = 0
+        for res in result_list:
+            if res >= result_threshold:
+                high_res.append(res)
+                high_res_srf.append(surface_list[bradcnt])
+            bradcnt+=1
+
+        high_res_area = gml3dmodel.faces_surface_area(high_res_srf)
+        sa_list.append(high_res_area)
+        
+        avi = high_res_area/bvol
+        avi_list.append(avi)
+
+        if avi_threshold != None:
+            if avi >= avi_threshold:
+                compared_avi_list.append(avi)
+        
+    avg_avi = sum(avi_list)/float(len(avi_list))
+    if avi_threshold != None:
+        avi_percent = float(len(compared_avi_list))/float(len(avi_list))
+    else:
+        avi_percent = None
+    return avg_avi, avi_percent, sa_list, vol_list
+    
+def calculate_fai(bldgdict_list, result_threshold):
+    high_res = []
+    high_res_srf = []
+    sensor_srflist = []
+
+    for bldgdict in bldgdict_list:
+        result_list = bldgdict["result"]
+        surface_list = bldgdict["surface"]
+        sensor_srflist.extend(surface_list)
+        bradcnt = 0
+        for res in result_list:
+            if res > result_threshold:
+                high_res.append(res)
+                high_res_srf.append(surface_list[bradcnt])
+            bradcnt+=1
+        
+    total_area = gml3dmodel.faces_surface_area(sensor_srflist)
+    high_res_area = gml3dmodel.faces_surface_area(high_res_srf)
+    fai = (high_res_area/total_area) * 100
+    return fai, high_res_area, total_area
+    
+def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all_surfaces"):
+    """
+    rearrange the surfaces of a building accordingly for calculate_avi function 
+    """
+    sorted_bldgdict_list = []
+    for bldgdict in bldgdict_list:
+        sorted_bldgdict = {}
+        surface_index = bldgdict["surface_index"]
+        bvol = bldgdict["volume"]
+        sorted_bldgdict["volume"] = bvol
+        if surface == "all_surfaces":
+            sorted_bldgdict["result"] = result_list[surface_index[0]:surface_index[1]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[0]:surface_index[1]]
+        if surface == "roof":
+            sorted_bldgdict["result"] = result_list[surface_index[2]:surface_index[3]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[2]:surface_index[3]]
+        if surface == "facade":
+            sorted_bldgdict["result"] = result_list[surface_index[4]:surface_index[5]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[4]:surface_index[5]]
+        sorted_bldgdict_list.append(sorted_bldgdict)
+            
+    return sorted_bldgdict_list
 
 def shgfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, mode = "facade", shgfavi_threshold = None):
+            rad_folderpath, shgfavi_threshold = None):
     '''
     Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
     
@@ -691,162 +795,43 @@ def shgfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
     :rtype: list(float)
     '''
-    rad, sensor_ptlist, sensor_dirlist, topo_list, bvol_dict = initialise_vol_indexes(building_occsolids, xdim, ydim, 
-                                                                                      rad_folderpath, surface = mode)   
-    time = str(0) + " " + str(24)
-    date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
-    rad.execute_cumulative_oconv(time, date, epwweatherfile)
-    #execute cumulative_rtrace
-    rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
-    #retrieve the results
-    irrad_ress = rad.eval_cumulative_rad()
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+                                                                                               xdim, ydim, 
+                                                                                               rad_folderpath)   
     
-    shgfavi_list = []
-    low_shgfavi_list = []
-    for bvol in bvol_dict.keys():
-        gsrf_range = bvol_dict[bvol]
-        birradlist = irrad_ress[gsrf_range[0]:gsrf_range[1]]
-        
-        high_irrad = []
-        high_irrad_faces = []
-        
-        bradcnt = 0
-        for birrad in birradlist:
-            if birrad > irrad_threshold:
-                high_irrad.append(birrad)
-                high_irrad_faces.append(topo_list[gsrf_range[0]+bradcnt])
-            bradcnt+=1
-
-        high_irrad_area = gml3dmodel.faces_surface_area(high_irrad_faces)
-        shgfavi = high_irrad_area/bvol
-        shgfavi_list.append(shgfavi)
-        if shgfavi_threshold != None:
-            if shgfavi < shgfavi_threshold:
-                low_shgfavi_list.append(shgfavi)
-        
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    avg_shgfavi = sum(shgfavi_list)/float(len(shgfavi_list))
-    if shgfavi_threshold != None:
-        shgfavi_percent = float(len(low_shgfavi_list))/float(len(low_shgfavi_list))
-    else:
-        shgfavi_percent = None
-        
-    shgfai_value = shgfai(irrad_ress,irrad_threshold, topo_list)
+    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
-    return avg_shgfavi, shgfavi_percent, shgfai_value, topo_list, irrad_ress
+    #calculate avg shgfavi 
+    avg_shgfavi, shgfavi_percent, shgfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, 
+                                                                             avi_threshold = None)
+              
+    #calculate shgfai
+    shgfai, shgfa, total_srfarea = calculate_fai(sorted_bldgdict_list,irrad_threshold)
     
-def dfai(illum_ress, sunuphrs, illum_threshold, topo_list):
-    high_illum = []
-    high_illum_faces = []
-    mean_illum_ress = []
-    illum_cnt = 0
-    for illum_res in illum_ress:
-        mean_illum = (illum_res/float(sunuphrs))
-        mean_illum_ress.append(mean_illum)
-        if mean_illum > illum_threshold:
-            high_illum.append(mean_illum)
-            #measure the area of the grid 
-            high_illum_faces.append(topo_list[illum_cnt])
-        illum_cnt +=1
-        
-    total_area = gml3dmodel.faces_surface_area(topo_list)
-    high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
-    sgfai = (high_illum_area/total_area) * 100
-    return sgfai
+    return avg_shgfavi, shgfavi_percent, shgfai, sensor_srflist, irrad_ress
     
-def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath,daysim_folderpath, dfavi_threshold = None):
+def calculate_epv(sensor_srflist,irrad_ress):
     '''
-    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
-    
-    Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the volume of the building. 
-    
-    Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the total facade area. 
-    
-    PARAMETERS
-    ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
-    
-    :param illum_threshold: a solar illuminance threshold value
-    :ptype: float
-    
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
-    
-    :param xdim: x dimension grid size
-    :ptype: float
-    
-    :param ydim: y dimension grid size
-    :ptype: float
-    
-    :param dfavi_threshold: a shgfavi threshold value
-    :ptype: float
-    
-    RETURNS
-    -------
-    :returns dfavi: average dfavi facade area volume index
-    :rtype: float
-    
-    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
-    :rtype: float
-    
-    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
+    eqn to calculate the energy produce by pv
+    epv = apv*fpv*gt*nmod*ninv
+    epv is energy produced by pv (kwh/yr)
+    apv is area of pv (m2)
+    fpv is faction of surface with active solar cells (ratio)
+    gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
+    nmod is the pv efficiency (12%)
+    ninv is the avg inverter efficiency (90%)
     '''
-    
-    rad, sensor_ptlist, sensor_dirlist, topo_list, bvol_dict = initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath)   
-    time = str(0) + " " + str(24)
-    date = str(1) + " " + str(1) + " " + str(12) + " " + str(31)
-    rad.execute_cumulative_oconv(time, date, epwweatherfile, output = "illuminance")
-    #execute cumulative_rtrace
-    rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
-    #retrieve the results
-    illum_ress = rad.eval_cumulative_rad(output = "illuminance")
-    
-    rad.initialise_daysim(daysim_folderpath)
-    #a 60min weatherfile is generated
-    rad.execute_epw2wea(epwweatherfile)
-    sunuphrs = rad.sunuphrs
-    
-    dfavi_list = []
-    high_dfavi_list = []
-    for bvol in bvol_dict.keys():
-        gsrf_range = bvol_dict[bvol]
-        billumlist = illum_ress[gsrf_range[0]:gsrf_range[1]]
-        
-        high_illum = []
-        high_illum_faces = []
-        
-        bradcnt = 0
-        for billum in billumlist:
-            mean_billum = (billum/float(sunuphrs))
-            if mean_billum > illum_threshold:
-                high_illum.append(mean_billum)
-                high_illum_faces.append(topo_list[gsrf_range[0]+bradcnt])
-            bradcnt+=1
-
-        high_illum_area = gml3dmodel.faces_surface_area(high_illum_faces)
-        dfavi = high_illum_area/bvol
-        dfavi_list.append(dfavi)
-        if dfavi_threshold != None:
-            if dfavi > dfavi_threshold:
-                high_dfavi_list.append(dfavi)
-        
-    
-    avg_dfavi = sum(dfavi_list)/float(len(dfavi_list))
-    if dfavi_threshold != None:
-        dfavi_percent = float(len(high_dfavi_list))/float(len(high_dfavi_list))
-    else:
-        dfavi_percent = None
-        
-    dfai_value = dfai(illum_ress, sunuphrs, illum_threshold, topo_list)
-    return avg_dfavi, dfavi_percent, dfai_value, topo_list, illum_ress
+    apv = gml3dmodel.faces_surface_area(sensor_srflist)
+    fpv = 0.8
+    gt = (sum(irrad_ress))/(float(len(irrad_ress)))
+    nmod = 0.12
+    ninv = 0.9
+    epv = apv*fpv*gt*nmod*ninv
+    return epv
     
 def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, mode = "roof", pvavi_threshold = None):
@@ -899,26 +884,182 @@ def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     :rtype: list(float)
     '''
     """    
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
+                                                                                      rad_folderpath, surface = mode)   
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    avg_pvavi, pvavi_percent, pvai_value, topo_list, irrad_ress = shgfavi(building_occsolids, irrad_threshold, 
-                                                                                epwweatherfile, xdim, ydim, rad_folderpath, 
-                                                                                mode = mode, 
-                                                                                shgfavi_threshold = pvavi_threshold)
-    '''
-    eqn to calculate the energy produce by pv
-    epv = apv*fpv*gt*nmod*ninv
-    epv is energy produced by pv (kwh/yr)
-    apv is area of pv (m2)
-    fpv is faction of surface with active solar cells (ratio)
-    gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
-    nmod is the pv efficiency (12%)
-    ninv is the avg inverter efficiency (90%)
-    '''
-    apv = gml3dmodel.faces_surface_area(topo_list)
-    fpv = 0.8
-    gt = (sum(irrad_ress))/(float(len(irrad_ress)))
-    nmod = 0.12
-    ninv = 0.9
-    epv = apv*fpv*gt*nmod*ninv
+    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
     
-    return avg_pvavi, pvavi_percent, pvai_value, epv, topo_list, irrad_ress
+    #calculate avg pvavi 
+    avg_pvavi, pvavi_percent, pva_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, avi_threshold = None)
+              
+    #calculate pvai
+    pvai, pva, total_area = calculate_fai(sorted_bldgdict_list,irrad_threshold)
+    
+    #calculate the potential energy generated from pv 
+    epv = calculate_epv(sensor_srflist,irrad_ress)
+    
+    
+    return avg_pvavi, pvavi_percent, pvai, epv, sensor_srflist, irrad_ress
+    
+            
+def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
+                
+    """
+    PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
+    receives irradiation above a specified level over the building volume. 
+    
+    Roof PV Potential (RPVP) calculates the potential electricity 
+    that can be generated on the roof of buildings annually.
+    RPVP is represented in kWh/yr.
+    
+    PV Roof Area Index (PVAI) calculates the ratio of roof area that 
+    receives irradiation above a specified level over the net envelope/roof/facade area. 
+    PVRAI is represented as an area ratio.
+        
+        
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param illum_threshold: a solar illuminance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param dfavi_threshold: a shgfavi threshold value
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns dfavi: average dfavi facade area volume index
+    :rtype: float
+    
+    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
+    :rtype: float
+    
+    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    """    
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
+                                                                                      rad_folderpath, surface = "envelope")   
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
+    
+    sorted_bldgdict_listr = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "roof")
+    sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
+    
+    #calculate avg pvavi 
+    avg_pvravi, pvravi_percent, pvra_list, total_vol_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold, 
+                                               avi_threshold = pvravi_threshold)
+                         
+    avg_pvfavi, pvfavi_percent, pvfa_list, total_vol_list  = calculate_avi(sorted_bldgdict_listf, facade_irrad_threshold, 
+                                               avi_threshold = pvfavi_threshold)
+                                               
+    pveavi_list = []
+    compared_list = []
+    for pv_cnt in range(len(pvra_list)):
+        pveavi = (pvra_list[pv_cnt] + pvfa_list[pv_cnt])/total_vol_list[pv_cnt]
+        pveavi_list.append(pveavi)
+        if pveavi_threshold != None:
+            if pveavi >= pveavi_threshold:
+                compared_list.append(pveavi)
+        
+    
+    avg_pveavi = float(sum(pveavi_list))/float(len(pveavi_list))
+    pveavi_percent = (float(len(compared_list))/float(len(pveavi_list)))*100
+    
+    #calculate pvai
+    pvrai, pvra, total_rarea = calculate_fai(sorted_bldgdict_listr,roof_irrad_threshold)
+    pvfai, pvfa, total_farea = calculate_fai(sorted_bldgdict_listf,facade_irrad_threshold)
+    pveai = ((pvra+pvfa)/(total_rarea + total_farea))*100
+    #calculate the potential energy generated from pv 
+    epv = calculate_epv(sensor_srflist,irrad_ress)
+    
+    return [avg_pveavi, avg_pvravi,avg_pvfavi],[pveavi_percent,pvravi_percent,pvfavi_percent], [pveai, pvrai,pvfai], epv, sensor_srflist, irrad_ress
+    
+def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath,daysim_folderpath, dfavi_threshold = None):
+    '''
+    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
+    
+    Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
+    receives daylighting above a specified level over the volume of the building. 
+    
+    Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
+    receives daylighting above a specified level over the total facade area. 
+    
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param illum_threshold: a solar illuminance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param dfavi_threshold: a shgfavi threshold value
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns dfavi: average dfavi facade area volume index
+    :rtype: float
+    
+    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
+    :rtype: float
+    
+    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    '''
+    
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+                                                                                      xdim, ydim, rad_folderpath)   
+    
+    illum_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile, mode = "illuminance")
+    
+    rad.initialise_daysim(daysim_folderpath)
+    #a 60min weatherfile is generated
+    rad.execute_epw2wea(epwweatherfile)
+    sunuphrs = rad.sunuphrs
+    
+    #ge the mean_illum_ress
+    mean_illum_ress = []
+    for illum in illum_ress:
+        mean_illum = illum/float(sunuphrs)
+        mean_illum_ress.append(mean_illum)
+        
+    sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    
+    avg_dfavi, dfavi_percent, dfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, illum_threshold, 
+                                                                       avi_threshold = None)
+                                                                       
+    dfai, dfa, total_area = calculate_fai(sorted_bldgdict_list,illum_threshold)
+    
+    return avg_dfavi, dfavi_percent, dfai, sensor_srflist, mean_illum_ress
