@@ -356,6 +356,16 @@ def edge_common_vertex(occedge1, occedge2):
     else:
         return common 
         
+def are_same_faces(occface1, occface2):
+    pyptlist1 = fetch.pyptlist_frm_occface(occface1)
+    pyptlist2 = fetch.pyptlist_frm_occface(occface2)
+    pyptlist1.sort()
+    pyptlist2.sort()
+    if pyptlist1 == pyptlist2:
+        return True
+    else:
+        return False
+        
 def are_same_edges(occedge1, occedge2):
     edgepyptlist1 = fetch.occptlist2pyptlist(fetch.points_from_edge(occedge1))
     edgepyptlist2 = fetch.occptlist2pyptlist(fetch.points_from_edge(occedge2))

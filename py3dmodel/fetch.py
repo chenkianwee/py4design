@@ -84,7 +84,11 @@ def pyptlist2vertlist(pyptlist):
         vert = construct.make_vertex(pypt)
         vertlist.append(vert)
     return vertlist
-
+    
+def get_shapetype(occ_shape):
+    shapetype = occ_shape.ShapeType()
+    return shapetype
+    
 def shape2shapetype(occ_shape):
     shapetype = occ_shape.ShapeType()
     if shapetype == 0:#compound

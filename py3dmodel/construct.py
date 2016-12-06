@@ -139,8 +139,9 @@ def make_circle(pycentre_pt, pydirection, radius):
     
 def circles_frm_pyptlist(pyptlist, radius):
     circlelist = []
-    for pypt in pyptlist:
-        circle = make_circle((pypt.X(),pypt.Y(),pypt.Z()), (0,0,1), radius)
+    gpptlist = make_gppntlist(pyptlist)
+    for gppt in gpptlist:
+        circle = make_circle((gppt.X(),gppt.Y(),gppt.Z()), (0,0,1), radius)
         circlelist.append(circle)
     return circlelist
             
@@ -385,7 +386,6 @@ def merge_faces(occ_face_list, tolerance = 1e-06 ):
     free_edges = []
     for fe_cnt in range(nfreeedge):
         free_edges.append(sew.FreeEdge(fe_cnt+1))
-        
     face_list = wire_frm_loose_edges(free_edges)
     return face_list
     
@@ -491,7 +491,7 @@ def generate_falsecolour_bar(minval, maxval, export_path, display):
     display.ExportToImage(export_path)
     display.EraseAll()
     
-def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_file, 
+def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, image_file=None, 
                                other_topo2dlist = None, other_colourlist = None, minval_range = None, maxval_range = None):
                                    
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = "wx")
@@ -507,7 +507,8 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_fi
         maxval = maxval_range
         
     res_colours = falsecolour(results, minval, maxval)
-    falsecolour_bar = generate_falsecolour_bar(minval, maxval, falsecolour_file, display)
+    if falsecolour_file!=None:
+        falsecolour_bar = generate_falsecolour_bar(minval, maxval, falsecolour_file, display)
     colour_list = []
     c_srf_list = []
     for r_cnt in range(len(res_colours)):
@@ -547,5 +548,6 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file, image_fi
     display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
     display.View_Iso()
     display.FitAll()
-    display.ExportToImage(image_file)
+    if image_file !=None:
+        display.ExportToImage(image_file)
     start_display()

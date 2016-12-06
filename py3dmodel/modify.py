@@ -28,6 +28,7 @@ from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdapto
 from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
 
 import fetch
+import calculate
 
 def move(orig_pt, location_pt, shape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())
@@ -95,6 +96,53 @@ def fix_shape(occ_shape):
 def fix_face(occ_face):
     fixed_face = Construct.fix_face(occ_face)
     return fixed_face
+    
+def rmv_duplicated_faces(occfacelist):
+    fcnt = 0
+    same_face_list = []
+    non_dup_faces = []
+    for occface in occfacelist:
+        same_index = [fcnt]
+        for fcnt2 in range(len(occfacelist)):
+            if fcnt2 != fcnt:
+                is_same = calculate.are_same_faces(occface, occfacelist[fcnt2])
+                if is_same:
+                    same_index.append(fcnt2)
+
+        same_index.sort()
+        same_face_list.append
+        if same_index not in same_face_list:
+            same_face_list.append(same_index)                        
+        fcnt +=1
+        
+    for indexes in same_face_list:
+        unique_f = occfacelist[indexes[0]]
+        non_dup_faces.append(unique_f)
+    return non_dup_faces
+    
+def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
+    '''
+    fuse all pts in the list within a certain tolerance
+    '''
+    npyptlist = len(pyptlist)
+    total_ptlist = []
+    for ptcnt in range(npyptlist):
+        ptlist = []
+        ptlist.append(ptcnt)
+        for ptcnt2 in range(npyptlist):
+            if ptcnt != ptcnt2:
+                ptdist = calculate.distance_between_2_pts(pyptlist[ptcnt], pyptlist[ptcnt2])
+                if ptdist <= tolerance:
+                    ptlist.append(ptcnt2)
+                    
+        ptlist.sort()
+        if ptlist not in total_ptlist:
+            total_ptlist.append(ptlist)
+            
+    upyptlist = []
+    for upt in total_ptlist:
+        upyptlist.append(pyptlist[upt[0]])
+    return upyptlist
     
 def rmv_duplicated_pts(pyptlist, roundndigit = None):
     '''

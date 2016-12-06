@@ -300,8 +300,9 @@ def convert(collada_file):
                 name2 = node2.xmlnode.get('name')
                 print 'name2', name2
                 children_node2 = node2.children
-                if type(children_node2[0]) == scene.NodeNode:
-                    print children_node2[0].children
+                if children_node2:
+                    if type(children_node2[0]) == scene.NodeNode:
+                        print children_node2[0].children
 
     
     meshs = list(dae.scene.objects('geometry')) 

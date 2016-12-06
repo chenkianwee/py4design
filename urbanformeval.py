@@ -21,9 +21,11 @@
 import os
 import math
 import networkx as nx
+import matplotlib.pyplot as plt
 import py3dmodel
 import gml3dmodel
 import py2radiance
+import pyoptimise
 
 
 def calculate_srfs_area(occ_srflist):
@@ -39,115 +41,10 @@ def pyptlist2vertlist(pyptlist):
         vert = py3dmodel.construct.make_vertex(pypt)
         vertlist.append(vert)
     return vertlist
-
-def route_ard_obstruction(obstruction_face, crow_wire):        
-    res = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(obstruction_face,crow_wire))
-    res2 =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_difference(crow_wire,obstruction_face))
-    edgelist = py3dmodel.fetch.geom_explorer(res, "edge")
-    edgelist2 = py3dmodel.fetch.geom_explorer(res2, "edge")
     
-    wire = py3dmodel.fetch.wires_frm_face(obstruction_face)[0]
-    #turn the wire into a degree1 bspline curve edge
-    pyptlist = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(wire))
-    pyptlist.append(pyptlist[0])
-    bspline_edge  = py3dmodel.construct.make_bspline_edge(pyptlist, mindegree=1, maxdegree=1)
-    
-    interptlist = []
-    for edge in edgelist:
-        interpts = py3dmodel.calculate.intersect_edge_with_edge(bspline_edge, edge)
-        interptlist.extend(interpts)
-    
-    interptlist = py3dmodel.modify.rmv_duplicated_pts(interptlist)
-    eparmlist = []
-    
-    for interpt in interptlist:
-        eparm = py3dmodel.calculate.pt2edgeparameter(interpt, bspline_edge)
-        eparmlist.append(eparm)
-        
-    eparmlist.sort()
-    edmin,edmax = py3dmodel.fetch.edge_domain(bspline_edge)
-    eparm_range1 = eparmlist[-1] - eparmlist[0]
-    eparm_range21 = eparmlist[0] - edmin
-    eparm_range22 = edmax-eparmlist[-1]
-    eparm_range2 = eparm_range21 + eparm_range22
-    
-    if eparm_range1 < eparm_range2 or eparm_range1 == eparm_range2 :
-        te = py3dmodel.modify.trimedge(eparmlist[0],eparmlist[-1], bspline_edge)
-        edgelist2.append(te)
-        sorted_edge2dlist = py3dmodel.calculate.sort_edges_into_order(edgelist2)
-        
-    if eparm_range1 > eparm_range2:
-        te1 = py3dmodel.modify.trimedge(edmin, eparmlist[0], bspline_edge)
-        te2 = py3dmodel.modify.trimedge(eparmlist[-1], edmax, bspline_edge)
-        edgelist2.append(te1)
-        edgelist2.append(te2)
-        sorted_edge2dlist = py3dmodel.calculate.sort_edges_into_order(edgelist2)
-        
-    sorted_edgelist = sorted_edge2dlist[0]
-    
-    #turn the wire into a degree1 bspline curve edge
-    new_pyptlist = []
-    for sorted_edge in sorted_edgelist:
-        if py3dmodel.fetch.is_edge_bspline(sorted_edge):
-            pts = py3dmodel.fetch.poles_from_bsplinecurve_edge(sorted_edge)
-        if py3dmodel.fetch.is_edge_line(sorted_edge):
-            pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(sorted_edge))
-            
-        new_pyptlist.extend(pts)
-        
-    new_bwire = py3dmodel.construct.make_wire(new_pyptlist)
-    return new_bwire
-    
-def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelist,G):
-    crow_wire = py3dmodel.construct.make_wire([startpypt, peripheralpypt])   
-    #need to check if the crow edge intersect any obstruction
-    rerouted_wire = crow_wire 
-    for obface in obstruction_occfacelist:
-        common_compound = py3dmodel.construct.boolean_common(obface, rerouted_wire)
-        is_comp_null = py3dmodel.fetch.is_compound_null(common_compound)
-        if not is_comp_null:
-            #means there is an intersection
-            #need to reconstruct the distance
-            rerouted_wire = route_ard_obstruction(obface, crow_wire)
-            
-    #measure the direct distance
-    direct_distance = py3dmodel.calculate.wirelength(rerouted_wire)
-    #measure the route distance
-    shortest_path = nx.shortest_path(G,source=startpypt,target=peripheralpypt)
-    nshortpath = len(shortest_path)
-    route_distance = 0
-    for scnt in range(nshortpath):
-        if scnt != nshortpath-1:
-            network_edge = G[shortest_path[scnt]][shortest_path[scnt+1]]
-            route_distance = route_distance + network_edge["distance"]
-            
-    route_directness = route_distance/direct_distance
-    return route_directness
-    
-def generate_directions(rot_degree):
-    #generate the direction from the midpt to the plot edges 
-    orig_vert = py3dmodel.construct.make_vertex((0,1,0))
-    pydirlist = []
-    for dircnt in range(int(360/rot_degree)):
-        degree = rot_degree*dircnt
-        rot_vert = py3dmodel.modify.rotate(orig_vert, (0,0,0), (0,0,1), degree)
-        gppt = py3dmodel.fetch.vertex2point(rot_vert)
-        pypt = py3dmodel.fetch.occpt2pypt(gppt)
-        pydirlist.append(pypt)
-        
-    return pydirlist
-    
-def construct_network_compound(network_occedgelist, extrusion_height):
-    nfacelist = []
-    for nedge in network_occedgelist:
-        #move the edge upwards then loft it to make a face
-        nface = py3dmodel.construct.extrude_edge(nedge, (0,0,1), 10)
-        nfacelist.append(nface)
-
-    network_compound = py3dmodel.construct.make_compound(nfacelist)
-    return network_compound
-    
-    
+#================================================================================================================
+#FRONTAL AREA INDEX
+#================================================================================================================
 def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     '''
     Algorithm to calculate frontal area index
@@ -228,7 +125,10 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     fai = facet_area/plane_area
     
     return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
-    
+   
+#================================================================================================================
+#ROUTE DIRECTNESS INDEX
+#================================================================================================================
 def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], route_directness_threshold = 1.6):
     '''
     Algorithm for Route Directness Test  
@@ -271,12 +171,14 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     :rtype: list(occpts)
     
     '''
-    displaylist = []
+    ndecimal = 3
+    precision = 1e-02
     #======================================================================
     #designate peripheral points
     #======================================================================
     peripheral_ptlist = []
     peripheral_parmlist = []
+    peripheral_parmlist4network = []
     boundary_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(boundary_occface)
     boundary_pyptlist.append(boundary_pyptlist[0])
     #extract the wire from the face and convert it to a bspline curve
@@ -285,13 +187,12 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #get all the intersection points 
     interptlist = []
     for network_occedge in network_occedgelist:
-        intersect_pts = py3dmodel.calculate.intersect_edge_with_edge(bedge, network_occedge, tolerance=1e-02)
+        intersect_pts = py3dmodel.calculate.intersect_edge_with_edge(bedge, network_occedge, tolerance=precision)
         if intersect_pts!=None:
             interptlist.extend(intersect_pts)
             
     #remove all duplicate points    
-    fused_interptlist = py3dmodel.modify.rmv_duplicated_pts(interptlist)
-    
+    fused_interptlist = py3dmodel.modify.rmv_duplicated_pts_by_distance(interptlist, tolerance = precision)
     #translate all the points to parameter
     ulist = []
     for fused_interpt in fused_interptlist:
@@ -300,19 +201,20 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     
     ulist = sorted(ulist)
     nulist = len(ulist)
-    
-    #place a marker at the midpt between thiese intersection
+    #place a marker at the midpt between these intersection
     midptlist = []
     mulist = []
     bedge_lbound, bedge_ubound = py3dmodel.fetch.edge_domain(bedge)
+
     for ucnt in range(nulist):
         curparm = ulist[ucnt]
+        
         if ucnt == nulist-1:
-            if curparm == 1 and ulist[0] != 0:
+            if curparm == bedge_ubound and ulist[0] != bedge_lbound:
                 terange = ulist[0]-0
                 temidparm = terange/2
                 
-            elif curparm !=1 and ulist[0] != 0:
+            elif curparm !=bedge_ubound and ulist[0] != bedge_lbound:
                 terange1 = 1-curparm
                 terange2 =  ulist[0]-0
                 terange3 = terange1+terange2
@@ -320,7 +222,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                 if temidparm > 1:
                     temidparm = temidparm-1
                 
-            elif curparm !=1 and ulist[0] == 0:
+            elif curparm !=bedge_ubound and ulist[0] == bedge_lbound:
                 terange = 1-curparm
                 temidparm = terange/2
 
@@ -339,13 +241,13 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     for mcnt in range(numulist):
         mcurparm = umulist[mcnt]
         if mcnt == numulist-1:
-            if mcurparm == 1 and umulist[0] != 0:
+            if mcurparm == bedge_ubound and umulist[0] != bedge_lbound:
                 mcurparm = 0
                 mnextparm = umulist[0]
                 mrange = mnextparm - mcurparm
                 mlength = py3dmodel.calculate.edgelength(mcurparm,mnextparm, bedge)
                 
-            elif mcurparm !=1 and umulist[0] != 0:
+            elif mcurparm !=bedge_ubound and umulist[0] != bedge_lbound:
                 mlength1 = py3dmodel.calculate.edgelength(mcurparm,1, bedge)
                 mlength2 = py3dmodel.calculate.edgelength(0,umulist[0], bedge)
                 mrange1 = 1-mcurparm
@@ -357,10 +259,9 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
             mrange = mnextparm - mcurparm
             mlength = py3dmodel.calculate.edgelength(mcurparm,mnextparm, bedge)
             
-        #TODO solve the unit problem 
-        if (mlength*0.0254) > 106:
+        if mlength > 106:
             #divide the segment into 106m segments
-            nsegments = math.ceil((mlength*0.0254)/106.0)
+            nsegments = math.ceil((mlength)/106.0)
             segment = mrange/nsegments
             for scnt in range(int(nsegments)-1):
                 divparm = mcurparm + ((scnt+1)*segment)
@@ -368,49 +269,49 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                     divparm = divparm - 1
                 
                 peripheral_parmlist.append(divparm)
-                
-    peripheral_parmlist.extend(mulist)
-    peripheral_parmlist.sort()
-    
+            
+    peripheral_parmlist4network = peripheral_parmlist + umulist
+    peripheral_parmlist4network.sort()
     #reconstruct the boundary into curve segments 
     pcurvelist = []
-    nplist = len(peripheral_parmlist)
+    nplist = len(peripheral_parmlist4network)
     for pcnt in range(nplist):
-        pcurparm = peripheral_parmlist[pcnt]
+        pcurparm = peripheral_parmlist4network[pcnt]
         if pcnt == nplist-1:
-            if pcurparm == 1 and peripheral_parmlist[0] != 0:
+            if pcurparm == bedge_ubound and peripheral_parmlist4network[0] != bedge_lbound:
                 pcurparm = 0
-                pnextparm = peripheral_parmlist[0]
+                pnextparm = peripheral_parmlist4network[0]
                 pcurve = py3dmodel.modify.trimedge(pcurparm, pnextparm, bedge)
                 pcurvelist.append(pcurve)
                 
-            elif pcurparm !=1 and peripheral_parmlist[0] != 0:
+            elif pcurparm !=bedge_ubound and peripheral_parmlist4network[0] != bedge_lbound:
                 pcurve1 = py3dmodel.modify.trimedge(pcurparm, 1, bedge)
-                pcurve2 = py3dmodel.modify.trimedge(0, peripheral_parmlist[0], bedge)
+                pcurve2 = py3dmodel.modify.trimedge(0, peripheral_parmlist4network[0], bedge)
                 pcurvelist.append(pcurve1)
                 pcurvelist.append(pcurve2)
         else:
-            pnextparm = peripheral_parmlist[pcnt+1]
+            pnextparm = peripheral_parmlist4network[pcnt+1]
             pcurve = py3dmodel.modify.trimedge(pcurparm, pnextparm, bedge)
             pcurvelist.append(pcurve)
             
+    #===========================================================================
+    peripheral_parmlist.extend(mulist)
+    peripheral_parmlist.sort()
     for pparm in peripheral_parmlist:
         peripheral_pt = py3dmodel.calculate.edgeparameter2pt(pparm, bedge)
         peripheral_ptlist.append(peripheral_pt)
         
     pedgelist = []
+    ppoles_all = []
     for pc in pcurvelist:
         ppoles = py3dmodel.fetch.poles_from_bsplinecurve_edge(pc)
+        ppoles_all.append(ppoles)
         pwire = py3dmodel.construct.make_wire(ppoles)
         pedges = py3dmodel.fetch.edges_frm_wire(pwire)
         pedgelist.extend(pedges)
+      
+    peripheral_ptlist = py3dmodel.modify.round_pyptlist(peripheral_ptlist, ndecimal)
         
-    peripheral_pyptlist = []
-    for peredge in pedgelist:
-        peripheral_pyptlist.extend(py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(peredge)))
-        
-    peripheral_pyptlist = py3dmodel.modify.rmv_duplicated_pts(peripheral_pyptlist, roundndigit = 2)
-    
     #======================================================================
     #construct the network between the midpt of the plot to the internal network
     #======================================================================
@@ -432,22 +333,25 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
         for pedge in plotedgelist:
             #find the midpt of the edge 
             pedge_midpypt = py3dmodel.calculate.edge_midpt(pedge)
-            #shoot the midpt towards the midpt of the edge
+            #connect the midpt towards the pedge_midpypt
             midpt2pedge = py3dmodel.construct.make_edge(pymidpt, pedge_midpypt)
             midpt2_network_edgelist.append(midpt2pedge)
+            #get the normal direction of the edge, then use the normal direction 
+            #to project the point into network edges
             gpvec = py3dmodel.construct.make_vector(pymidpt,pedge_midpypt)
             pyvec = py3dmodel.modify.normalise_vec(gpvec)
             inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(pextrude, pymidpt, pyvec) 
             pydir = py3dmodel.calculate.face_normal(inter_face)
+            #project pedge_midpypt to the network edges
             inter_occpt2, inter_face2 = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pydir)             
+            
             if inter_occpt2 !=None:
                 #it means according to the normal direction of the surface it will hit a network edge
                 inter_pypt = py3dmodel.fetch.occpt2pypt(inter_occpt2)
                 pedge2network = py3dmodel.construct.make_edge(pedge_midpypt, inter_pypt)
                 network_ptlist.append(inter_pypt)
                 midpt2_network_edgelist.append(pedge2network)
-                rounded_pedge_midpypt = py3dmodel.modify.round_pypt(pedge_midpypt,2)
-                plot_edgeptlist[-1].append(rounded_pedge_midpypt)
+                plot_edgeptlist[-1].append(pedge_midpypt)
                 #make sure the plot edge is a free edge
                 #if it cuts any of the plots it means it is not a free edge
                 for plot_occface2 in plot_occfacelist:
@@ -458,16 +362,16 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                     pypt2 = py3dmodel.calculate.edgeparameter2pt(dmax, pedge2network)
                     pedge2network2 = py3dmodel.construct.make_edge(pypt1, pypt2)
                     is_intersecting = py3dmodel.construct.boolean_common(plot_occface2,pedge2network2)
-                    
                     if not py3dmodel.fetch.is_compound_null(is_intersecting):
                         #it is not a free edge
                         midpt2_network_edgelist.remove(midpt2pedge)
                         midpt2_network_edgelist.remove(pedge2network)
                         network_ptlist.remove(inter_pypt)
-                        plot_edgeptlist[-1].remove(rounded_pedge_midpypt)
+                        plot_edgeptlist[-1].remove(pedge_midpypt)
                         break
 
             else:
+                #it means according to the normal direction of the surface this plot edge is a deadend 
                 midpt2_network_edgelist.remove(midpt2pedge)
 
     #reconstruct the network edges with the new network_ptlist
@@ -505,70 +409,544 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #add all the edges for the boundary
     edges4_networkx = new_network_occedgelist + pedgelist + midpt2_network_edgelist
     
+    network_pts = []
+    for ne in edges4_networkx:
+        occptlist = py3dmodel.fetch.points_from_edge(ne)
+        npyptlist = py3dmodel.fetch.occptlist2pyptlist(occptlist)
+        network_pts.extend(npyptlist)
+        
+    fused_ntpts = py3dmodel.modify.rmv_duplicated_pts_by_distance(network_pts, tolerance = precision)
+    fused_ntpts = py3dmodel.modify.round_pyptlist(fused_ntpts, ndecimal)
+    total_edge_nodes = []
     for x_edge in edges4_networkx:
         edge_nodes = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(x_edge))
-        edge_nodes = py3dmodel.modify.round_pyptlist(edge_nodes, 2)
+        edge_nodes = py3dmodel.modify.round_pyptlist(edge_nodes, ndecimal)
+        total_edge_nodes.extend(edge_nodes)
         xdmin,xdmax = py3dmodel.fetch.edge_domain(x_edge)
         length = py3dmodel.calculate.edgelength(xdmin,xdmax,x_edge)
-        G.add_edge(edge_nodes[0],edge_nodes[1], distance = length)
-            
+        node1 = fused_ntpts.index(edge_nodes[0])
+        node2 = fused_ntpts.index(edge_nodes[1])
+        G.add_edge(node1,node2, distance = length)
+        
+    #TODO: understand the difference interms of decimal place round off on the results
+    #print "nnodes", len(G.nodes())
+    #print 'nedgenodes', len(total_edge_nodes)
+    #circles_pts = py3dmodel.construct.circles_frm_pyptlist(G.nodes(), 2)
+    #err_pts = py3dmodel.construct.circles_frm_pyptlist([(30041.83, 16162.51, 863.33),(31417.41, 15838.08, 863.33)],5)
+    #nx.draw(G)
+    nx.draw_circular(G)
+    plt.show()
+
+    #return edges4_networkx, circles_pts,err_pts
     #======================================================================
     #measure route directness
     #======================================================================
     #loop thru all the midpts of the plot
     pass_plots = plot_occfacelist[:]
     fail_plots = []
-    plot_midptlist = py3dmodel.modify.round_pyptlist(plot_midptlist,2)
+    display_plots = []
+    total_route_directness_aplot = []
     graph_nodes = G.nodes()
+    netedge = []
+    gedges = G.edges()
+    print gedges
+    #for gedge in gedges:
+        
     plcnt = 0
     for midpt in plot_midptlist:
+        midpt = py3dmodel.modify.round_pypt(midpt,ndecimal)
+        midpt_node = fused_ntpts.index(midpt)
         #check if the plot is a dead plot with no free edges
         plof_occface = plot_occfacelist[plcnt]
-        if midpt not in graph_nodes:
+        if midpt_node not in graph_nodes:
             fail_plots.append(plof_occface)
             pass_plots.remove(plof_occface)
         else:        
             #measure the direct distance crow flies distance
-            #TODO solve the unit problem 
-            plot_area = py3dmodel.calculate.face_area(plof_occface)*0.00064516   
+            plot_area = py3dmodel.calculate.face_area(plof_occface) 
+            display_plots.append(plof_occface)
+            aplot_avg_rdi_list = []
             #1/2 acre
-            if plot_area <= 2023: 
-                for perpypt in peripheral_pyptlist:
-                    route_directness = calculate_route_directness(midpt, perpypt, obstruction_occfacelist,G)
-                    print route_directness, plcnt
-                    if route_directness > route_directness_threshold:
-                        fail_plots.append(plof_occface)
-                        pass_plots.remove(plof_occface)
-                        break
-            else:
-                route_directness_list = []
-                escnt = 0
-                nespt = len(plot_edgeptlist)
-                for edgestartpt in plot_edgeptlist[plcnt]:
-                    for perpypt in peripheral_pyptlist:
-                        route_directness = calculate_route_directness(edgestartpt, perpypt, obstruction_occfacelist,G)
-                        route_directness_list.append(route_directness)
-                        print route_directness, plcnt, escnt
-                        if route_directness > route_directness_threshold and escnt < nespt-1:
-                            route_directness_list.remove(route_directness)
-                            break
-                        elif route_directness > route_directness_threshold and escnt == nespt-1:
-                            route_directness_list.remove(route_directness)
-                            fail_plots.append(plof_occface)
-                            pass_plots.remove(plof_occface)
-                            break
-                    escnt += 1
+            #if plot_area <= 2023: 
+            for perpypt in peripheral_ptlist:
+                perpypt_index = fused_ntpts.index(perpypt)
+                route_directness = calculate_route_directness(midpt, perpypt, obstruction_occfacelist,G, fused_ntpts, plot_area = plot_area)
+                aplot_avg_rdi_list.append(route_directness)
+                if route_directness > route_directness_threshold:
+                    fail_plots.append(plof_occface)
+                    pass_plots.remove(plof_occface)
+                    break
+                
+            for perpypt in peripheral_ptlist:
+                route_directness = calculate_route_directness(midpt, perpypt, obstruction_occfacelist,G, fused_ntpts)
+                #print "rdi, plcnt", route_directness, plcnt
+                aplot_avg_rdi_list.append(route_directness)
+                
+            max_rdi_aplot = max(aplot_avg_rdi_list)
+            total_route_directness_aplot.append(max_rdi_aplot)
         plcnt += 1
+    
+    avg_rdi = float(sum(total_route_directness_aplot))/float(len(total_route_directness_aplot))
+    rdi_percentage = float(len(pass_plots))/float((len(fail_plots) + len(pass_plots))) * 100
+    circles_peri_pts = py3dmodel.construct.circles_frm_pyptlist(peripheral_ptlist, 5)    
+    #circles_inter_pts = py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(midptlist), 5)  
+    return avg_rdi, rdi_percentage, display_plots, pass_plots, fail_plots, total_route_directness_aplot, edges4_networkx, circles_peri_pts 
 
-    print len(fail_plots), len(pass_plots), len(fail_plots) + len(pass_plots)
+def route_ard_obstruction(obstruction_face, crow_wire):        
+    res = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(obstruction_face,crow_wire))
+    res2 =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_difference(crow_wire,obstruction_face))
+    edgelist = py3dmodel.fetch.geom_explorer(res, "edge")
+    edgelist2 = py3dmodel.fetch.geom_explorer(res2, "edge")
+    
+    wire = py3dmodel.fetch.wires_frm_face(obstruction_face)[0]
+    #turn the wire into a degree1 bspline curve edge
+    pyptlist = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(wire))
+    pyptlist.append(pyptlist[0])
+    bspline_edge  = py3dmodel.construct.make_bspline_edge(pyptlist, mindegree=1, maxdegree=1)
+    
+    interptlist = []
+    for edge in edgelist:
+        interpts = py3dmodel.calculate.intersect_edge_with_edge(bspline_edge, edge)
+        interptlist.extend(interpts)
+    
+    interptlist = py3dmodel.modify.rmv_duplicated_pts(interptlist)
+    eparmlist = []
+    
+    for interpt in interptlist:
+        eparm = py3dmodel.calculate.pt2edgeparameter(interpt, bspline_edge)
+        eparmlist.append(eparm)
+        
+    eparmlist.sort()
+    edmin,edmax = py3dmodel.fetch.edge_domain(bspline_edge)
+    eparm_range1 = eparmlist[-1] - eparmlist[0]
+    eparm_range21 = eparmlist[0] - edmin
+    eparm_range22 = edmax-eparmlist[-1]
+    eparm_range2 = eparm_range21 + eparm_range22
+    
+    if eparm_range1 < eparm_range2 or eparm_range1 == eparm_range2 :
+        te = py3dmodel.modify.trimedge(eparmlist[0],eparmlist[-1], bspline_edge)
+        edgelist2.append(te)
+        sorted_edge2dlist = py3dmodel.calculate.sort_edges_into_order(edgelist2)
+        
+    if eparm_range1 > eparm_range2:
+        te1 = py3dmodel.modify.trimedge(edmin, eparmlist[0], bspline_edge)
+        te2 = py3dmodel.modify.trimedge(eparmlist[-1], edmax, bspline_edge)
+        edgelist2.append(te1)
+        edgelist2.append(te2)
+        sorted_edge2dlist = py3dmodel.calculate.sort_edges_into_order(edgelist2)
+        
+    sorted_edgelist = sorted_edge2dlist[0]
+    
+    #turn the wire into a degree1 bspline curve edge
+    new_pyptlist = []
+    for sorted_edge in sorted_edgelist:
+        if py3dmodel.fetch.is_edge_bspline(sorted_edge):
+            pts = py3dmodel.fetch.poles_from_bsplinecurve_edge(sorted_edge)
+        if py3dmodel.fetch.is_edge_line(sorted_edge):
+            pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(sorted_edge))
+            
+        new_pyptlist.extend(pts)
+        
+    new_bwire = py3dmodel.construct.make_wire(new_pyptlist)
+    return new_bwire
+    
+def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelist,G,index_list, plot_area = None):
+    crow_wire = py3dmodel.construct.make_wire([startpypt, peripheralpypt])   
+    #need to check if the crow edge intersect any obstruction
+    rerouted_wire = crow_wire 
+    for obface in obstruction_occfacelist:
+        common_compound = py3dmodel.construct.boolean_common(obface, rerouted_wire)
+        is_comp_null = py3dmodel.fetch.is_compound_null(common_compound)
+        if not is_comp_null:
+            #means there is an intersection
+            #need to reconstruct the distance
+            rerouted_wire = route_ard_obstruction(obface, crow_wire)
+            
+    #measure the direct distance
+    direct_distance = py3dmodel.calculate.wirelength(rerouted_wire)
+    #measure the route distance
+    perpypt_index = index_list.index(peripheralpypt)
+    startpypt_index = index_list.index(startpypt)
+    is_path = nx.has_path(G,startpypt_index, perpypt_index)
+    #if is_path:
+    #shortest_path = nx.shortest_path(G,source=startpypt_index,target=perpypt_index, weight = "distance")
+    shortest_path = nx.shortest_path(G,source=startpypt_index,target=perpypt_index)
+    nshortpath = len(shortest_path)
+    route_distance = 0
+    
+    for scnt in range(nshortpath):
+        if scnt != nshortpath-1:
+            network_edge = G[shortest_path[scnt]][shortest_path[scnt+1]]
+            route_distance = route_distance + network_edge["distance"]
+            
+    if plot_area != None:
+        if plot_area <= 2023:#1/2 acre
+            #the route distance is from the frontage edge not from the midpt
+            #so we will minus of the distance from the midpt to the frontage
+            midpt_2_edge = G[shortest_path[0]][shortest_path[1]]
+            m2e_dist = midpt_2_edge["distance"]
+            route_distance = route_distance - m2e_dist
+    #else:
+    #    route_distance = 5000
+    #print route_distance
+    route_directness = route_distance/direct_distance
+    return route_directness
+    
+def generate_directions(rot_degree):
+    #generate the direction from the midpt to the plot edges 
+    orig_vert = py3dmodel.construct.make_vertex((0,1,0))
+    pydirlist = []
+    for dircnt in range(int(360/rot_degree)):
+        degree = rot_degree*dircnt
+        rot_vert = py3dmodel.modify.rotate(orig_vert, (0,0,0), (0,0,1), degree)
+        gppt = py3dmodel.fetch.vertex2point(rot_vert)
+        pypt = py3dmodel.fetch.occpt2pypt(gppt)
+        pydirlist.append(pypt)
+        
+    return pydirlist
+    
+def construct_network_compound(network_occedgelist, extrusion_height):
+    nfacelist = []
+    for nedge in network_occedgelist:
+        #move the edge upwards then loft it to make a face
+        nface = py3dmodel.construct.extrude_edge(nedge, (0,0,1), 10)
+        nfacelist.append(nface)
 
-    #displaylist.extend(new_network_occedgelist)
-    #displaylist.extend(total_pedgelist)
-    displaylist.extend(edges4_networkx)
-    #displaylist.extend(py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(peripheral_ptlist), 300))
-    #displaylist.extend(py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(nnedge_pyptlist), 150))
-    #displaylist.extend(py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(peripheral_pyptlist), 150))
-    return displaylist
+    network_compound = py3dmodel.construct.make_compound(nfacelist)
+    return network_compound
+
+#================================================================================================================
+#SOLAR ANALYSES
+#================================================================================================================
+def shgfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, shgfavi_threshold = None):
+    '''
+    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
+    
+    Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
+    receives irradiation above a specified level over the building volume.    
+    
+    Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
+    receives irradiation below a specified level over the net facade area. 
+    
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param irrad_threshold: a solar irradiance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns shgfavi: average solar heat gain facade area volume index
+    :rtype: float
+    
+    :returns shgfavi_percent: percentage of buildings achieving the shgfavi_threshold
+    :rtype: float
+    
+    :returns shgfai: shgfai value 
+    :rtype: float
+    
+    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    '''
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+                                                                                               xdim, ydim, 
+                                                                                               rad_folderpath)   
+    
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
+    
+    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    
+    #calculate avg shgfavi 
+    avg_shgfavi, shgfavi_percent, shgfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, 
+                                                                             avi_threshold = None)
+              
+    #calculate shgfai
+    shgfai, shgfa, total_srfarea = calculate_fai(sorted_bldgdict_list,irrad_threshold)
+    
+    return avg_shgfavi, shgfavi_percent, shgfai, sensor_srflist, irrad_ress
+    
+def calculate_epv(sensor_srflist,irrad_ress):
+    '''
+    epv is energy produced by pv (kwh/yr)
+    
+    eqn to calculate the energy produce by pv
+    epv = apv*fpv*gt*nmod*ninv
+    apv is area of pv (m2)
+    fpv is faction of surface with active solar cells (ratio)
+    gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
+    nmod is the pv efficiency (12%)
+    ninv is the avg inverter efficiency (90%)
+    '''
+    apv = gml3dmodel.faces_surface_area(sensor_srflist)
+    fpv = 0.8
+    gt = (sum(irrad_ress))/(float(len(irrad_ress)))
+    nmod = 0.12
+    ninv = 0.9
+    epv = apv*fpv*gt*nmod*ninv
+    return epv
+    
+def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, mode = "roof", pvavi_threshold = None):
+                
+    """
+    PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
+    receives irradiation above a specified level over the building volume. 
+    
+    epv calculates the potential electricity 
+    that can be generated on the buildings annually. (kWh/yr.)
+    
+    PV Area Index (PVAI) calculates the ratio of  area that 
+    receives irradiation above a specified level over the net envelope/roof/facade area.         
+        
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param irrad_threshold: a solar irradiance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param pvavi_threshold: a pvavi threshold value for calculating the pvavi_percent
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns avg_pvavi: average pvavi facade area volume index
+    :rtype: float
+    
+    :returns pvavi_percent: percentage of buildings achieving the pvavi_threshold
+    :rtype: float
+    
+    :returns pvai: pvai value 
+    :rtype: float
+    
+    :returns epv: potential electricity that can be generated on the buildings annually. (kWh/yr.)
+    :rtype: float
+    
+    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    """    
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
+                                                                                      rad_folderpath, surface = mode)   
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
+    
+    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
+    
+    #calculate avg pvavi 
+    avg_pvavi, pvavi_percent, pva_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, avi_threshold = None)
+              
+    #calculate pvai
+    pvai, pva, total_area = calculate_fai(sorted_bldgdict_list,irrad_threshold)
+    
+    #calculate the potential energy generated from pv 
+    epv = calculate_epv(sensor_srflist,irrad_ress)
+    
+    
+    return avg_pvavi, pvavi_percent, pvai, epv, sensor_srflist, irrad_ress
+    
+            
+def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
+                
+    """
+    PV Envelope Area to Volume  Index (PVEAVI) calculates the ratio of envelope area that 
+    receives irradiation above a specified level over the building volume. 
+    
+    epv calculates the potential electricity 
+    that can be generated on the buildings annually. (kWh/yr.)
+    
+    PV Area Index (PVEAI) calculates the ratio of  area that 
+    receives irradiation above a specified level over the net envelope area.                 
+        
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param irrad_threshold: a solar irradiance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param pvravi_threshold: a pvravi threshold value for calculating the pvravi_percent
+    :ptype: float
+    
+    :param pvfavi_threshold: a pvravi threshold value for calculating the pvfavi_percent
+    :ptype: float
+    
+    :param pveavi_threshold: a pvravi threshold value for calculating the pveavi_percent
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns list of avi averages: average avi values of pveavi, pvravi, pvfavi 
+    :rtype: list(float, float, float)
+    
+    :returns list of avi_percent: percentage of buildings achieving the avi_threshold, pveavi_percent, pvravi_percent, pvfavi_percent
+    :rtype: list(float, float, float)
+    
+    :returns list of fai values: fai values of pveai, pvrai, pvfai
+    :rtype: list(float, float, float)
+    
+    :returns epv: potential electricity that can be generated on the buildings annually. (kWh/yr.)
+    :rtype: float
+    
+    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    """    
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
+                                                                                      rad_folderpath, surface = "envelope")   
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
+    
+    sorted_bldgdict_listr = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "roof")
+    sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
+    
+    #calculate avg pvavi 
+    avg_pvravi, pvravi_percent, pvra_list, total_vol_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold, 
+                                               avi_threshold = pvravi_threshold)
+                         
+    avg_pvfavi, pvfavi_percent, pvfa_list, total_vol_list  = calculate_avi(sorted_bldgdict_listf, facade_irrad_threshold, 
+                                               avi_threshold = pvfavi_threshold)
+                                               
+    pveavi_list = []
+    compared_list = []
+    for pv_cnt in range(len(pvra_list)):
+        pveavi = (pvra_list[pv_cnt] + pvfa_list[pv_cnt])/total_vol_list[pv_cnt]
+        pveavi_list.append(pveavi)
+        if pveavi_threshold != None:
+            if pveavi >= pveavi_threshold:
+                compared_list.append(pveavi)
+        
+    
+    avg_pveavi = float(sum(pveavi_list))/float(len(pveavi_list))
+    pveavi_percent = (float(len(compared_list))/float(len(pveavi_list)))*100
+    
+    #calculate pvai
+    pvrai, pvra, total_rarea = calculate_fai(sorted_bldgdict_listr,roof_irrad_threshold)
+    pvfai, pvfa, total_farea = calculate_fai(sorted_bldgdict_listf,facade_irrad_threshold)
+    pveai = ((pvra+pvfa)/(total_rarea + total_farea))*100
+    #calculate the potential energy generated from pv 
+    epv = calculate_epv(sensor_srflist,irrad_ress)
+    
+    return [avg_pveavi, avg_pvravi,avg_pvfavi],[pveavi_percent,pvravi_percent,pvfavi_percent], [pveai, pvrai,pvfai], epv, sensor_srflist, irrad_ress
+    
+def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath,daysim_folderpath, dfavi_threshold = None):
+    '''
+    Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
+    receives daylighting above a specified level over the volume of the building. 
+    
+    Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
+    receives daylighting above a specified level over the total facade area. 
+    
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param illum_threshold: a solar illuminance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param dfavi_threshold: a shgfavi threshold value
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns dfavi: average dfavi facade area volume index
+    :rtype: float
+    
+    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
+    :rtype: float
+    
+    :returns dfai: dfai value
+    :rtype: float
+    
+    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns mean illum_ress: mean illuminance results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    '''
+    
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+                                                                                      xdim, ydim, rad_folderpath)   
+    
+    illum_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile, mode = "illuminance")
+    
+    rad.initialise_daysim(daysim_folderpath)
+    #a 60min weatherfile is generated
+    rad.execute_epw2wea(epwweatherfile)
+    sunuphrs = rad.sunuphrs
+    
+    #ge the mean_illum_ress
+    mean_illum_ress = []
+    for illum in illum_ress:
+        mean_illum = illum/float(sunuphrs)
+        mean_illum_ress.append(mean_illum)
+        
+    sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    
+    avg_dfavi, dfavi_percent, dfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, illum_threshold, 
+                                                                       avi_threshold = None)
+                                                                       
+    dfai, dfa, total_area = calculate_fai(sorted_bldgdict_list,illum_threshold)
+    
+    return avg_dfavi, dfavi_percent, dfai, sensor_srflist, mean_illum_ress
     
 def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surface = "facade"):
     #initialise py2radiance 
@@ -747,319 +1125,3 @@ def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all
         sorted_bldgdict_list.append(sorted_bldgdict)
             
     return sorted_bldgdict_list
-
-def shgfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, shgfavi_threshold = None):
-    '''
-    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
-    
-    Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
-    receives irradiation above a specified level over the building volume.    
-    
-    Solar Gain Facade Area Index (SGFAI) calculates the ratio of facade area that 
-    receives irradiation below a specified level over the net facade area. 
-    SGFAI is represented as an area ratio.
-        
-    
-    PARAMETERS
-    ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
-    
-    :param irrad_threshold: a solar irradiance threshold value
-    :ptype: float
-    
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
-    
-    :param xdim: x dimension grid size
-    :ptype: float
-    
-    :param ydim: y dimension grid size
-    :ptype: float
-    
-    :param shgfavi_threshold: a shgfavi threshold value
-    :ptype: float
-    
-    RETURNS
-    -------
-    :returns shgfavi: average solar heat gain facade area volume index
-    :rtype: float
-    
-    :returns shgfavi_percent: percentage of buildings achieving the shgfavi_threshold
-    :rtype: float
-    
-    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
-    #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
-                                                                                               xdim, ydim, 
-                                                                                               rad_folderpath)   
-    
-    #execute gencumulative sky rtrace
-    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
-    
-    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
-    
-    #calculate avg shgfavi 
-    avg_shgfavi, shgfavi_percent, shgfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, 
-                                                                             avi_threshold = None)
-              
-    #calculate shgfai
-    shgfai, shgfa, total_srfarea = calculate_fai(sorted_bldgdict_list,irrad_threshold)
-    
-    return avg_shgfavi, shgfavi_percent, shgfai, sensor_srflist, irrad_ress
-    
-def calculate_epv(sensor_srflist,irrad_ress):
-    '''
-    eqn to calculate the energy produce by pv
-    epv = apv*fpv*gt*nmod*ninv
-    epv is energy produced by pv (kwh/yr)
-    apv is area of pv (m2)
-    fpv is faction of surface with active solar cells (ratio)
-    gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
-    nmod is the pv efficiency (12%)
-    ninv is the avg inverter efficiency (90%)
-    '''
-    apv = gml3dmodel.faces_surface_area(sensor_srflist)
-    fpv = 0.8
-    gt = (sum(irrad_ress))/(float(len(irrad_ress)))
-    nmod = 0.12
-    ninv = 0.9
-    epv = apv*fpv*gt*nmod*ninv
-    return epv
-    
-def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, mode = "roof", pvavi_threshold = None):
-                
-    """
-    PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
-    receives irradiation above a specified level over the building volume. 
-    
-    Roof PV Potential (RPVP) calculates the potential electricity 
-    that can be generated on the roof of buildings annually.
-    RPVP is represented in kWh/yr.
-    
-    PV Roof Area Index (PVAI) calculates the ratio of roof area that 
-    receives irradiation above a specified level over the net envelope/roof/facade area. 
-    PVRAI is represented as an area ratio.
-        
-        
-    PARAMETERS
-    ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
-    
-    :param illum_threshold: a solar illuminance threshold value
-    :ptype: float
-    
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
-    
-    :param xdim: x dimension grid size
-    :ptype: float
-    
-    :param ydim: y dimension grid size
-    :ptype: float
-    
-    :param dfavi_threshold: a shgfavi threshold value
-    :ptype: float
-    
-    RETURNS
-    -------
-    :returns dfavi: average dfavi facade area volume index
-    :rtype: float
-    
-    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
-    :rtype: float
-    
-    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
-    """    
-    #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
-                                                                                      rad_folderpath, surface = mode)   
-    #execute gencumulative sky rtrace
-    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
-    
-    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
-    
-    #calculate avg pvavi 
-    avg_pvavi, pvavi_percent, pva_list, total_vol_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, avi_threshold = None)
-              
-    #calculate pvai
-    pvai, pva, total_area = calculate_fai(sorted_bldgdict_list,irrad_threshold)
-    
-    #calculate the potential energy generated from pv 
-    epv = calculate_epv(sensor_srflist,irrad_ress)
-    
-    
-    return avg_pvavi, pvavi_percent, pvai, epv, sensor_srflist, irrad_ress
-    
-            
-def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
-                
-    """
-    PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
-    receives irradiation above a specified level over the building volume. 
-    
-    Roof PV Potential (RPVP) calculates the potential electricity 
-    that can be generated on the roof of buildings annually.
-    RPVP is represented in kWh/yr.
-    
-    PV Roof Area Index (PVAI) calculates the ratio of roof area that 
-    receives irradiation above a specified level over the net envelope/roof/facade area. 
-    PVRAI is represented as an area ratio.
-        
-        
-    PARAMETERS
-    ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
-    
-    :param illum_threshold: a solar illuminance threshold value
-    :ptype: float
-    
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
-    
-    :param xdim: x dimension grid size
-    :ptype: float
-    
-    :param ydim: y dimension grid size
-    :ptype: float
-    
-    :param dfavi_threshold: a shgfavi threshold value
-    :ptype: float
-    
-    RETURNS
-    -------
-    :returns dfavi: average dfavi facade area volume index
-    :rtype: float
-    
-    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
-    :rtype: float
-    
-    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    """    
-    #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, xdim, ydim, 
-                                                                                      rad_folderpath, surface = "envelope")   
-    #execute gencumulative sky rtrace
-    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
-    
-    sorted_bldgdict_listr = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "roof")
-    sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
-    
-    #calculate avg pvavi 
-    avg_pvravi, pvravi_percent, pvra_list, total_vol_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold, 
-                                               avi_threshold = pvravi_threshold)
-                         
-    avg_pvfavi, pvfavi_percent, pvfa_list, total_vol_list  = calculate_avi(sorted_bldgdict_listf, facade_irrad_threshold, 
-                                               avi_threshold = pvfavi_threshold)
-                                               
-    pveavi_list = []
-    compared_list = []
-    for pv_cnt in range(len(pvra_list)):
-        pveavi = (pvra_list[pv_cnt] + pvfa_list[pv_cnt])/total_vol_list[pv_cnt]
-        pveavi_list.append(pveavi)
-        if pveavi_threshold != None:
-            if pveavi >= pveavi_threshold:
-                compared_list.append(pveavi)
-        
-    
-    avg_pveavi = float(sum(pveavi_list))/float(len(pveavi_list))
-    pveavi_percent = (float(len(compared_list))/float(len(pveavi_list)))*100
-    
-    #calculate pvai
-    pvrai, pvra, total_rarea = calculate_fai(sorted_bldgdict_listr,roof_irrad_threshold)
-    pvfai, pvfa, total_farea = calculate_fai(sorted_bldgdict_listf,facade_irrad_threshold)
-    pveai = ((pvra+pvfa)/(total_rarea + total_farea))*100
-    #calculate the potential energy generated from pv 
-    epv = calculate_epv(sensor_srflist,irrad_ress)
-    
-    return [avg_pveavi, avg_pvravi,avg_pvfavi],[pveavi_percent,pvravi_percent,pvfavi_percent], [pveai, pvrai,pvfai], epv, sensor_srflist, irrad_ress
-    
-def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath,daysim_folderpath, dfavi_threshold = None):
-    '''
-    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
-    
-    Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the volume of the building. 
-    
-    Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the total facade area. 
-    
-    PARAMETERS
-    ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
-    
-    :param illum_threshold: a solar illuminance threshold value
-    :ptype: float
-    
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
-    
-    :param xdim: x dimension grid size
-    :ptype: float
-    
-    :param ydim: y dimension grid size
-    :ptype: float
-    
-    :param dfavi_threshold: a shgfavi threshold value
-    :ptype: float
-    
-    RETURNS
-    -------
-    :returns dfavi: average dfavi facade area volume index
-    :rtype: float
-    
-    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
-    :rtype: float
-    
-    :returns grid_srfs_list: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns illum_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
-    
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
-                                                                                      xdim, ydim, rad_folderpath)   
-    
-    illum_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile, mode = "illuminance")
-    
-    rad.initialise_daysim(daysim_folderpath)
-    #a 60min weatherfile is generated
-    rad.execute_epw2wea(epwweatherfile)
-    sunuphrs = rad.sunuphrs
-    
-    #ge the mean_illum_ress
-    mean_illum_ress = []
-    for illum in illum_ress:
-        mean_illum = illum/float(sunuphrs)
-        mean_illum_ress.append(mean_illum)
-        
-    sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
-    
-    avg_dfavi, dfavi_percent, dfa_list, total_vol_list = calculate_avi(sorted_bldgdict_list, illum_threshold, 
-                                                                       avi_threshold = None)
-                                                                       
-    dfai, dfa, total_area = calculate_fai(sorted_bldgdict_list,illum_threshold)
-    
-    return avg_dfavi, dfavi_percent, dfai, sensor_srflist, mean_illum_ress

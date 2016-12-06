@@ -5,7 +5,7 @@ display2dlist = []
 displaylist = []
 
 #dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\simple_case.dae"
-dae_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\dae\\5x5ptblks.dae"
+dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
 mesh = Collada(dae_file)
 unit = mesh.assetInfo.unitmeter or 1
 geoms = mesh.scene.objects('geometry')
@@ -29,7 +29,7 @@ for geom in geoms:
                 elif type(prim) == lineset.Line:
                     pyptlist = prim.vertices.tolist()
                     occpolygon = pyliburo.py3dmodel.construct.make_edge(pyptlist[0], pyptlist[1])
-                    #displaylist.append(occpolygon)
+                    displaylist.append(occpolygon)
                     g_cnt +=1
             
             

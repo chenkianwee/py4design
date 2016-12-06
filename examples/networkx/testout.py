@@ -9,10 +9,11 @@ G = nx.Graph()
 #G.add_nodes_from(nodelist)
 G.add_edge((1,2,3),(4,5,6), distance = 4.5)
 G.add_edge((4,5,6),(70,8,9), distance = 10)
-G.add_edge((70,8,9), (10,5,9), distance = 20)
+G.add_edge((70,8,9), (10,5,9), distance = 50)
 G.add_edge((1,2,3), (10,5,9), distance = 20)
+G.add_edge((20,2,3), (10,5,9), distance = 15)
 #print G.nodes(data=True)
-shortest_path =  nx.shortest_path(G, source = (1,2,3), target = (70,8,9))
+shortest_path =  nx.shortest_path(G, source = (20,2,3), target = (4,5,6), weight = "distance")
 
 nshortpath = len(shortest_path)
 total_distance = 0

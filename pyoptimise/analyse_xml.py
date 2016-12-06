@@ -24,6 +24,16 @@ from xml.dom.minidom import Document
 #================================================================================
 #xml functions
 #================================================================================
+def findmedian(lst):
+    sortedLst = sorted(lst)
+    lstLen = len(lst)
+    index = (lstLen - 1) // 2
+
+    if (lstLen % 2):
+        return sortedLst[index]
+    else:
+        return (sortedLst[index] + sortedLst[index + 1])/2.0
+        
 def get_childnode_values(node_name, parent_node):
     values = []
     for node in parent_node.getElementsByTagName(node_name):
@@ -210,7 +220,7 @@ def rmv_unevaluated_inds(xmlfile):
             eval_inds.append(ind)
             
     write_inds_2_xml(eval_inds, xmlfile)
-    
+        
 def dominates(ind1, ind2, min_max_list):
     equal = True
     score1 = get_score(ind1)

@@ -6,10 +6,6 @@ weatherfilepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\pungg
 rad_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\py2radiance_dfavi"
 daysim_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\daysim_data"
 
-image_file = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\py2radiance_data\\result.png"
-falsecolour_file = "F:\\kianwee_work\spyder_workspace\pyliburo\examples\punggol_case_study\citygml\\py2radiance_data\\falsecolour.png"
-
-
 def read_collada(dae_filepath):
     buildinglist = []
     luselist = []
@@ -123,4 +119,4 @@ avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress = pyliburo.urbanfor
                                                                                              
 print avg_pvfavi, pvfai
 
-#pyliburo.py3dmodel.construct.visualise_falsecolour_topo(irrad_ress, topo_list, falsecolour_file, image_file)
+pyliburo.py3dmodel.construct.visualise_falsecolour_topo(irrad_ress, topo_list)
