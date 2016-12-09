@@ -84,7 +84,7 @@ plots_occfacelist.remove(boundary_occface)
 avg_rdi,rdi_per,plts,passplts,failplts,rdi_list,edges,peri  = pyliburo.urbanformeval.route_directness(network_occedgelist, 
                                                                                                          plots_occfacelist, 
                                                                                                          boundary_occface, 
-                                                                                                    route_directness_threshold = 1.6)
+                                                                                                    route_directness_threshold = 4)
                                                                                                     
 print rdi_per, avg_rdi
 print rdi_list

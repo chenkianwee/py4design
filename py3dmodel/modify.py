@@ -110,7 +110,6 @@ def rmv_duplicated_faces(occfacelist):
                     same_index.append(fcnt2)
 
         same_index.sort()
-        same_face_list.append
         if same_index not in same_face_list:
             same_face_list.append(same_index)                        
         fcnt +=1
@@ -119,6 +118,28 @@ def rmv_duplicated_faces(occfacelist):
         unique_f = occfacelist[indexes[0]]
         non_dup_faces.append(unique_f)
     return non_dup_faces
+    
+def rmv_duplicated_edges(occedgelist):
+    fcnt = 0
+    same_edge_list = []
+    non_dup_edges = []
+    for occedge in occedgelist:
+        same_index = [fcnt]
+        for fcnt2 in range(len(occedgelist)):
+            if fcnt2 != fcnt:
+                is_same = calculate.are_same_edges(occedge, occedgelist[fcnt2])
+                if is_same:
+                    same_index.append(fcnt2)
+
+        same_index.sort()
+        if same_index not in same_edge_list:
+            same_edge_list.append(same_index)                        
+        fcnt +=1
+        
+    for indexes in same_edge_list:
+        unique_f = occedgelist[indexes[0]]
+        non_dup_edges.append(unique_f)
+    return non_dup_edges
     
 def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
     '''

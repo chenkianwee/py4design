@@ -58,12 +58,14 @@ def read_collada(dae_filepath):
     compound = pyliburo.py3dmodel.construct.make_compound(compound_list)  
     ref_pt = pyliburo.py3dmodel.calculate.get_centre_bbox(compound)
     ref_pt = (ref_pt[0],ref_pt[1],0)
-    
+    #make sure no duplicate edges
+    edgelist2 = pyliburo.py3dmodel.modify.rmv_duplicated_edges(edgelist)
+    print len(edgelist), len(edgelist2)
     #scale the compounds
     compound1 = pyliburo.py3dmodel.construct.make_compound(closegeomlist)  
     compound2 = pyliburo.py3dmodel.construct.make_compound(opengeomlist_shell)  
     compound3 = pyliburo.py3dmodel.construct.make_compound(opengeomlist_srf)  
-    compound4 = pyliburo.py3dmodel.construct.make_compound(edgelist) 
+    compound4 = pyliburo.py3dmodel.construct.make_compound(edgelist2) 
     
     scaled_shape1 = pyliburo.py3dmodel.modify.uniform_scale(compound1, unit, unit, unit,ref_pt)
     scaled_shape2 = pyliburo.py3dmodel.modify.uniform_scale(compound2, unit, unit, unit,ref_pt)
