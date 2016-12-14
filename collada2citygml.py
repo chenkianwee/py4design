@@ -18,7 +18,6 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-
 import py3dmodel
 from collada import *
 
@@ -80,12 +79,6 @@ def sphere2edge_pts(occedgelist, radius):
             circlelist.append(occcircle)
     return circlelist
     
-def make_boundingface(occshape):
-    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(occshape)
-    boundary_pyptlist = [[xmin,ymin,0], [xmax,ymin,0], [xmax,ymax,0], [xmin,ymax,0]]
-    boundary_face = py3dmodel.construct.make_polygon(boundary_pyptlist)
-    return boundary_face
-    
 def consolidate_terrain_shelllist(terrain_shelllist):
     terrain_faces = []
     for shell in terrain_shelllist:
@@ -108,184 +101,241 @@ def is_edge_touching_terrain(edgelist, terrain_shelllist):
         return True
     else:
         return False
+#==============================================================================================================        
+#==============================================================================================================
+def redraw_occ_shell_n_edge(occcompound):
+    #redraw the surfaces so the domain are right
+    #TODO: fix the scaling 
+    recon_shelllist = []
+    shells = py3dmodel.fetch.geom_explorer(occcompound, "shell")
+    for shell in shells:
+        faces = py3dmodel.fetch.geom_explorer(shell, "face")
+        recon_faces = []
+        for face in faces:
+            pyptlist = py3dmodel.fetch.pyptlist_frm_occface(face)
+            recon_face = py3dmodel.construct.make_polygon(pyptlist)
+            recon_faces.append(recon_face)
+        nrecon_faces = len(recon_faces)
+        if nrecon_faces == 1:
+            recon_shell = py3dmodel.construct.make_shell(recon_faces)
+        if nrecon_faces > 1:
+            recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces)[0]
+        recon_shelllist.append(recon_shell)
         
-def identify_city_objects(geomlist):
-    '''
-    identify the various city objects, terrain, landuse, roads and buildings
-    '''
-    building_solidlist = []
-    plot_wirelist = []
-    plot_shelllist = []
-    terrain_shelllist = []
-    terrain_dictlist = []
-    road_wirelist =[]
-    b_display = []
+    #boolean the edges from the shell compound and edges compound and find the difference to get the network edges
+    shell_compound = py3dmodel.construct.make_compound(shells)
+    shell_edges = py3dmodel.fetch.geom_explorer(shell_compound, "edge")
+    shell_edge_compound = py3dmodel.construct.make_compound(shell_edges)
     
-    #======================================================================
-    #SEPARATE THE GEOMETRIES INTO SOLIDORSHELL AND EDGES
-    #======================================================================
-    sslist = []
-    edge2dlist = []    
-    for geom_d in geomlist:
-        if "solidorshell" in geom_d.keys():
-            solidorshell = geom_d["solidorshell"]
-            boundary_face = make_boundingface(solidorshell)
-            geom_d["boundary"] = boundary_face
-            sslist.append(geom_d)
+    edges = py3dmodel.fetch.geom_explorer(occcompound, "edge")
+    edge_compound = py3dmodel.construct.make_compound(edges)
+    network_edge_compound = py3dmodel.construct.boolean_difference(edge_compound,shell_edge_compound) 
+    
+    nw_edges = py3dmodel.fetch.geom_explorer(network_edge_compound,"edge")
+    recon_edgelist = []
+    for edge in nw_edges:
+        eptlist = py3dmodel.fetch.points_from_edge(edge)
+        epyptlist = py3dmodel.fetch.occptlist2pyptlist(eptlist)
+        recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
+        
+    recon_compoundlist = recon_shelllist + recon_edgelist
+    recon_compound = py3dmodel.construct.make_compound(recon_compoundlist)
+    return recon_compound
+    
+def simplify_shell(occshell):
+    #this will merge any coincidental faces into a single surfaces to simplify the geometry
+    fshell = py3dmodel.modify.fix_shell_orientation(occshell)
+    #get all the faces from the shell and arrange them according to their normals
+    sfaces = py3dmodel.fetch.geom_explorer(fshell,"face")
+    nf_dict = py3dmodel.calculate.grp_faces_acc2normals(sfaces)
+    merged_fullfacelist = []
+    #merge all the faces thats share edges into 1 face
+    for snfaces in nf_dict.values():
+        merged_facelist = py3dmodel.construct.merge_faces(snfaces)
+        merged_fullfacelist.extend(merged_facelist)
+        
+    if len(merged_fullfacelist) >1:
+        simpleshell = py3dmodel.construct.make_shell_frm_faces(merged_fullfacelist)
+        fshell2 = py3dmodel.modify.fix_shell_orientation(simpleshell[0])
+        
+    else:
+        #if there is only one face it means its an open shell
+        fshell2 = py3dmodel.construct.make_shell(merged_fullfacelist)
+    return fshell2
+
+def make_2dboundingface(occshape):
+    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(occshape)
+    boundary_pyptlist = [[xmin,ymin,0], [xmax,ymin,0], [xmax,ymax,0], [xmin,ymax,0]]
+    boundary_face = py3dmodel.construct.make_polygon(boundary_pyptlist)
+    return boundary_face
+    
+def identify_shell_attribs(occshelllist):
+    nshells = len(occshelllist)
+    shell_dictlist = []
+
+    for shellcnt in range(nshells):
+        shell_dict = {}
+        is_in_boundary = []
+        boundary_contains = []
+        #first check if it is an open or close shell
+        shell = occshelllist[shellcnt]
+        shell_dict["shell"] = shell
+        is_closed = py3dmodel.calculate.is_shell_closed(shell)
+        if is_closed:
+            shell_dict["is_closed"] = True
         else:
-            edge2dlist.append(geom_d)
+            shell_dict["is_closed"] = False
+        cur_boundary = make_2dboundingface(shell)
+        for shellcnt2 in range(nshells):
+            if shellcnt2 != shellcnt:
+                nxt_shell = occshelllist[shellcnt2]
+                nxt_boundary = make_2dboundingface(nxt_shell)
+                #check if cur_shell is inside nxt_shell
+                is_inside_nxt_boundary = py3dmodel.calculate.face_is_inside(cur_boundary,nxt_boundary)
+                if is_inside_nxt_boundary:
+                    is_in_boundary.append(nxt_shell)
+                    
+                #check if cur_shell contains nxt_shell
+                contains_nxt_boundary = py3dmodel.calculate.face_is_inside(nxt_boundary,cur_boundary)
+                if contains_nxt_boundary:
+                    boundary_contains.append(nxt_shell)
+                    
+        shell_dict["is_in_boundary"] = is_in_boundary
+        shell_dict["boundary_contains"] = boundary_contains
+        shell_dictlist.append(shell_dict)
+    return shell_dictlist
     
-    print "NEDGES", len(edge2dlist)
-    #======================================================================
-    #ESTABLISH THE RELATIONSHIP BETWEEN GEOMETRIES "IS_INSIDE"
-    #======================================================================
-    nss = len(sslist)
-    nsscntlist = range(nss)
-    for nsscnt in nsscntlist:
-        cur_boundary = sslist[nsscnt] 
-        nsscntlist2 = nsscntlist[:]
-        nsscntlist2.remove(nsscnt)
-        faces_inside = []
-        for nsscnt2 in nsscntlist2:
-            cur_boundary2 = sslist[nsscnt2]
-            is_inside = py3dmodel.calculate.face_is_inside(cur_boundary2["boundary"], cur_boundary["boundary"])
-            if is_inside:
-                cur_boundary_area = py3dmodel.calculate.face_area(cur_boundary["boundary"])
-                cur_boundary_area2 = py3dmodel.calculate.face_area(cur_boundary2["boundary"])
-                if cur_boundary_area == cur_boundary_area2:
-                    difference = py3dmodel.construct.boolean_difference(cur_boundary["boundary"], cur_boundary2["boundary"])
-                    if py3dmodel.fetch.is_compound_null(py3dmodel.fetch.shape2shapetype(difference)):
-                        if "is_same_as" in cur_boundary.keys():
-                            cur_boundary["is_same_as"].append(nsscnt2)
-                        else:
-                            cur_boundary["is_same_as"] = [nsscnt2]
-                    else:
-                        faces_inside.append(nsscnt2)
-                        if "is_inside" in cur_boundary2.keys():
-                            cur_boundary2["is_inside_indices"].append(nsscnt)
-                        else:
-                            cur_boundary2["is_inside_indices"] = [nsscnt]
+def identify_edge_attribs(occedgelist, occshelllist):
+    edge_dictlist = []
+    for edge in occedgelist:
+        edge_dict = {}
+        is_in_boundary = []
+        edge_dict["edge"] = edge
+        for shell in occshelllist:
+            min_dist = py3dmodel.calculate.minimum_distance(edge,shell)
+            if min_dist < 0.0001:
+                is_in_boundary.append(shell)
+                
+        edge_dict["is_in_boundary"] = is_in_boundary
+        edge_dictlist.append(edge_dict)
+    return edge_dictlist
+    
+def read_collada(dae_filepath):
+    edgelist = []
+    shelllist = []
+    mesh = Collada(dae_filepath)
+    unit = mesh.assetInfo.unitmeter or 1
+    geoms = mesh.scene.objects('geometry')
+    geoms = list(geoms)
+    gcnt = 0
+    for geom in geoms:   
+        prim2dlist = list(geom.primitives())
+        for primlist in prim2dlist: 
+            spyptlist = []
+            epyptlist = []
+            faces = []
+            edges = []
+            if primlist:
+                for prim in primlist:
+                    if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
+                        pyptlist = prim.vertices.tolist()
+                        pyptlist.sort()
+                        if pyptlist not in spyptlist:
+                            spyptlist.append(pyptlist)
+                            occpolygon = py3dmodel.construct.make_polygon(pyptlist)
+                            if not py3dmodel.fetch.is_face_null(occpolygon):
+                                faces.append(occpolygon)
+                            gcnt +=1
+                    elif type(prim) == lineset.Line:
+                        pyptlist = prim.vertices.tolist()
+                        pyptlist.sort()
+                        if pyptlist not in epyptlist:
+                            epyptlist.append(pyptlist)
+                            occedge = py3dmodel.construct.make_edge(pyptlist[0], pyptlist[1])
+                            edges.append(occedge)
+                        gcnt +=1
+                        
+                if faces:
+                    #remove all the duplicated faces
+                    #non_dup_faces = py3dmodel.modify.rmv_duplicated_faces(faces)
+                    n_unique_faces = len(faces)
+                    if n_unique_faces == 1:
+                        shell = py3dmodel.construct.make_shell(faces)
+                        shelllist.append(shell)
+                    if n_unique_faces >1:
+                        shell = py3dmodel.construct.make_shell_frm_faces(faces)[0]
+                        #this will merge any coincidental faces into a single surfaces to simplify the geometry
+                        shell = simplify_shell(shell)
+                        shelllist.append(shell)
                 else:
-                    faces_inside.append(nsscnt2)
-                    if "is_inside" in cur_boundary2.keys():
-                        cur_boundary2["is_inside_indices"].append(nsscnt)
-                    else:
-                        cur_boundary2["is_inside_indices"] = [nsscnt]
-                
-        cur_boundary["contain_faces_indices"] = faces_inside
+                    edgelist.extend(edges)
     
-    #==============================================================================
-    #identify the various city objects base on the size and position of the geometry
-    #==============================================================================
-    sscnt = 0
-    for ss in sslist:
-        keys = ss.keys()
-        ncontainface = len(ss["contain_faces_indices"])
-        is_solid = ss["is_solid"]
-        #if the geom is open shell only contain faces and is not inside any other faces it is definitely a terrain
-        if not is_solid and ncontainface > 0 and "is_inside_indices" not in keys: 
-            #do not append repeeat geometries
-            if "is_same_as" in keys:
-                samecntlist = ss["is_same_as"]
-                samecntlist.append(sscnt)
-                min_index = samecntlist.index(min(samecntlist))
-                if min_index == len(samecntlist)-1:
-                    terrain_shelllist.append(ss["solidorshell"])
-                    terrain_dictlist.append(ss)
-            else:
-                terrain_shelllist.append(ss["solidorshell"])
-                terrain_dictlist.append(ss)
-                
-        #if the geom is open shell may or may not contain faces and is inside other faces it is possibly a terrain
-        if not is_solid:
-            terrain_shelllist.append(ss["solidorshell"])
-            terrain_dictlist.append(ss)
-            
-        #if the geom is inside other geom and do not contain anything it is a building 
-        if ncontainface == 0 and "is_inside_indices" in keys:
-            building_solidlist.append((ss["solidorshell"]))
-            
-        sscnt+=1
-        
-    terrain_shelllist = consolidate_terrain_shelllist(terrain_shelllist)
-    
-    for ts in terrain_dictlist:
-        meshcnt = ts["meshcnt"]
-        #search for edges that has the same meshcnt as the terrain geometries or it is touching the terrain
-        for edge_d in edge2dlist:
-            edgelist = edge_d["edgelist"]
-            edge_meshcnt = edge_d["meshcnt"]
-            is_edge_touch = is_edge_touching_terrain(edgelist, terrain_shelllist)
-           
-            #if edge is touching the terrain or have same meshcnt 
-            if edge_meshcnt == meshcnt or is_edge_touch:
-                
-                if edgelist:
-                    #rearrange the edges, edges that are open are roads, closed edges are plots
-                    close_wire_edge2dlist, open_wire_edge2dlist = py3dmodel.calculate.identify_open_close_wires_frm_loose_edges(edgelist)
-                    for open_wire_edgelist in open_wire_edge2dlist:
-                        open_wire = py3dmodel.construct.make_wire_frm_edges(open_wire_edgelist)
-                        road_wirelist.append(open_wire)
-                    for close_wire_edgelist in close_wire_edge2dlist:
-                        close_wire = py3dmodel.construct.make_wire_frm_edges(close_wire_edgelist)
-                        wire_pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(close_wire))
-                        plot_wirelist.append(close_wire)
-              
-    print "NROAD", len(road_wirelist)
-    for plot_wire in plot_wirelist:
-        plot_face3d = py3dmodel.construct.make_face_frm_wire(plot_wire)
-        plot_wire2d = wire3d22d(plot_wire)
-        #check the area of the plot, if the area is the same as the terrain it cannot be the plot
-        #this is to make sure the outer edges cannot be counted as a plot
-        #get the area of the terrain
-        this_is_a_plot = True
-        for tshell in terrain_shelllist:
-            pdifference = py3dmodel.construct.boolean_difference(tshell, plot_face3d )
-            if py3dmodel.fetch.is_compound_null(py3dmodel.fetch.shape2shapetype(pdifference)):
-                #print "I AM REMOVED FOR BEING THE TERRAIN"
-                this_is_a_plot = False
-                plot_wirelist.remove(plot_wire)
-                break
+    #find the midpt of all the geometry
+    compoundlist = shelllist + edgelist
+    compound = py3dmodel.construct.make_compound(compoundlist)
+    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(compound)
+    ref_pt = py3dmodel.calculate.get_centre_bbox(compound)
+    ref_pt = (ref_pt[0],ref_pt[1],zmin)
+    #make sure no duplicate edges 
+    scaled_shape = py3dmodel.modify.uniform_scale(compound, unit, unit, unit,ref_pt)
+    scaled_compound = py3dmodel.fetch.shape2shapetype(scaled_shape)
+    recon_compound = redraw_occ_shell_n_edge(scaled_compound)
 
-        #need to check if the touches any of the roads 
-        #only if it doesnt touch any roads it is a plot
-        if this_is_a_plot:
-            for road_wire in road_wirelist:
-                #first flatten the road 
-                #road_wire2d = wire3d22d(road_wire)
-                min_dist = py3dmodel.calculate.minimum_distance(plot_wire2d, road_wire)
-                if min_dist == 0: #means it is touching, this is not a plot and prob a roundabout 
-                    #print "I AM REMOVED FOR BEING A ROAD"                    
-                    this_is_a_plot = False
-                    road_wirelist.append(plot_wire)
-                    plot_wirelist.remove(plot_wire)
-                    break
-            
-        if this_is_a_plot:     
-            wire_pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(plot_wire2d))
-            #plot_face = py3dmodel.construct.make_polygon(wire_pts)
-            plot_face2d = py3dmodel.construct.make_face_frm_wire(plot_wire2d)            
-            origpt = wire_pts[0]
-            locpt = py3dmodel.modify.move_pt(origpt, (0,0,-1),500000)
-            plot_face_moved = py3dmodel.modify.move(origpt, locpt, plot_face2d)
-            
-            extrude_plot = py3dmodel.construct.extrude(plot_face_moved, (0,0,1), 1000000)
-            for terrain in terrain_shelllist:
-                common_compound =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(extrude_plot, terrain))
-                is_compound_null = py3dmodel.fetch.is_compound_null(common_compound)
-                if not is_compound_null:
-                    face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
-                    if len(face_list) != 1:
-                        plot_shell = py3dmodel.construct.make_shell_frm_faces(face_list)[0]
-                        plot_shelllist.append(plot_shell)
-                    else:
-                        plot_shelllist.append(face_list[0])
-        
-    cityobject_dict = {"terrain":terrain_shelllist, "plot":plot_shelllist, 
-    "building":building_solidlist, "road":road_wirelist}
+    return recon_compound
     
-    return cityobject_dict
-
+def identify_cityobj(occcompound):
+    cityobj_dict = {}
+    building_list = []
+    landuse_list = []
+    terrain_list = []
+    network_list = []
+    
+    #define the geometrical attributes between shells
+    shells  = py3dmodel.fetch.geom_explorer(occcompound,"shell")
+    shell_dict_list = identify_shell_attribs(shells)
+    
+    #boolean the edges from the shell compound and edges compound and find the difference to get the network edges
+    shell_compound = py3dmodel.construct.make_compound(shells)
+    shell_edges = py3dmodel.fetch.geom_explorer(shell_compound, "edge")
+    shell_edge_compound = py3dmodel.construct.make_compound(shell_edges)
+    
+    edges = py3dmodel.fetch.geom_explorer(occcompound, "edge")
+    edge_compound = py3dmodel.construct.make_compound(edges)
+    network_edge_compound = py3dmodel.construct.boolean_difference(edge_compound,shell_edge_compound) 
+    nw_edges = py3dmodel.fetch.geom_explorer(network_edge_compound,"edge")
+    #define the geometrical attributes between edges and shells    
+    edge_dict_list = identify_edge_attribs(nw_edges, shells)
+    
+    for shell_dict in shell_dict_list:
+        shell = shell_dict["shell"]
+        is_closed = shell_dict["is_closed"]
+        is_in_boundary = shell_dict["is_in_boundary"]
+        boundary_contains = shell_dict["boundary_contains"]
+        if is_closed == True and len(is_in_boundary)>0 and len(boundary_contains) == 0:
+            building_list.append(shell)
+        if is_closed == False and len(is_in_boundary)==0 and len(boundary_contains)> 0:
+            terrain_list.append(shell)
+        if is_closed == False and len(is_in_boundary)>0 and len(boundary_contains)> 0:
+            landuse_list.append(shell)
+    
+    for edge_dict in edge_dict_list:
+        edge = edge_dict["edge"]
+        is_in_boundary = edge_dict["is_in_boundary"]
+        if len(is_in_boundary) >0:
+            network_list.append(edge)
+            
+    cityobj_dict["building"] = building_list
+    cityobj_dict["landuse"] = landuse_list
+    cityobj_dict["terrain"] = terrain_list
+    cityobj_dict["network"] = network_list
+    return cityobj_dict
+        
+def auto_convert_dae2gml(colladafile):
+    dae_compound = read_collada(colladafile)
+    cityobj_dict = identify_cityobj(dae_compound)
+    return cityobj_dict
+    
+'''
 def convert(collada_file):
     dae = Collada(collada_file)
     nodes = dae.scene.nodes
@@ -349,3 +399,4 @@ def convert(collada_file):
     cityobject_dict = identify_city_objects(geomlist)
     
     return cityobject_dict
+'''

@@ -35,6 +35,8 @@ from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt
+from OCC.BRep import BRep_Builder
+from OCC.TopoDS import TopoDS_Shell
 
 import fetch
 import calculate
@@ -176,6 +178,15 @@ def make_gppntlist(pyptlist):
 def make_line(pypt, pydir):
     occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
     return occ_line
+    
+def make_shell(occfacelist):
+    builder = BRep_Builder()
+    shell = TopoDS_Shell()
+    builder.MakeShell(shell)
+    for occface in occfacelist:
+        builder.Add(shell, occface)
+        
+    return shell
     
 def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     #make shell
@@ -494,7 +505,7 @@ def generate_falsecolour_bar(minval, maxval, export_path, display):
 def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, image_file=None, 
                                other_topo2dlist = None, other_colourlist = None, minval_range = None, maxval_range = None):
                                    
-    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = "wx")
+    display, start_display, add_menu, add_function_to_menu = init_display()
     
     if minval_range == None: 
         minval = min(results)

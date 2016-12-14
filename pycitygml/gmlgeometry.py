@@ -26,6 +26,13 @@ class SurfaceMember(object):
     def construct(self):
         surface = write_gmlgeometry.write_surface_member(self.pos_list)
         return surface
+        
+class Triangle(object):
+    def __init__(self, pos_list):
+        self.pos_list = pos_list
+    def construct(self):
+        triangle = write_gmlgeometry.write_triangle(self.pos_list)
+        return triangle
 
 class LineString(object):
     def __init__(self, pos_list):

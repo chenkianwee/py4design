@@ -69,14 +69,12 @@ def generate_sensor_surfaces(occ_face, xdim, ydim):
     
     return sensor_surfaces, sensor_pts, sensor_dirs
         
-def identify_building_surfaces(bsolid):
-    face_list = py3dmodel.fetch.faces_frm_solid(bsolid)
-    #loop thru the faces in the solid 
+def identify_srfs_according_2_angle(occfacelist):
     roof_list = []
     facade_list = []
     footprint_list = []
     vec1 = (0,0,1)
-    for f in face_list:
+    for f in occfacelist:
         #get the normal of each face
         n = py3dmodel.calculate.face_normal(f)
         angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, n)
@@ -88,7 +86,11 @@ def identify_building_surfaces(bsolid):
             roof_list.append(f)
         elif angle>=135:
             footprint_list.append(f)
+    return facade_list, roof_list, footprint_list
             
+def identify_building_surfaces(bsolid):
+    face_list = py3dmodel.fetch.faces_frm_solid(bsolid)
+    facade_list, roof_list, footprint_list = identify_srfs_according_2_angle(face_list)     
     return facade_list, roof_list, footprint_list
     
 def faces_surface_area(occ_facelist):

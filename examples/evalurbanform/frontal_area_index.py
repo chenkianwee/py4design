@@ -26,7 +26,7 @@ occfaces.extend(ext1faces)
 ext2faces = pyliburo.py3dmodel.fetch.faces_frm_solid(extrude2)
 occfaces.extend(ext2faces)
 
-fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = pyliburo.urbanformeval.frontal_area_index(occfaces, plane_polygon, (-1,-1,0))
+fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = pyliburo.urbanformeval.frontal_area_index_aplot(occfaces, plane_polygon, (-1,-1,0))
 common_area = calculate_srfs_area(fuse_psrfs)
 proj_area = calculate_srfs_area(projected_faces)
 print len(fuse_psrfs), common_area

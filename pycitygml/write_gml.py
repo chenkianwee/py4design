@@ -61,6 +61,7 @@ def write_root():
    root = Element("CityModel",
                attrib={"{" + XMLNamespaces.xsi + "}schemaLocation" : schemaLocation},
                nsmap={None:"http://www.opengis.net/citygml/1.0",
+                      'core': XMLNamespaces.core,
                       'xsi':XMLNamespaces.xsi,
                       'trans':XMLNamespaces.trans,
                       'wtr': XMLNamespaces.wtr,
@@ -143,6 +144,42 @@ def write_landuse(lod, name, function, epsg, generic_attrib_dict, geometry_list)
    write_gen_Attribute(luse, generic_attrib_dict)
    
    return cityObjectMember
+   
+def write_tin_relief(lod, name, geometry_list):
+   cityObjectMember = Element('cityObjectMember')
+
+   relief_feature = SubElement(cityObjectMember, "{" + XMLNamespaces.dem+ "}" +'ReliefFeature')
+   relief_feature.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
+
+   gml_name = SubElement(relief_feature, "{" + XMLNamespaces.gml+ "}" + 'name')
+   gml_name.text = name
+
+   #=======================================================================================================
+   #geometries
+   #=======================================================================================================
+   if lod == "lod1":
+      dem_lod = SubElement(relief_feature, "{" + XMLNamespaces.dem+ "}" + 'lod')
+      dem_lod.text = "1"
+      dem_reliefComponent = SubElement(relief_feature, "{" + XMLNamespaces.dem+ "}" + 'reliefComponent')
+      
+      dem_TINRelief = SubElement(dem_reliefComponent, "{" + XMLNamespaces.dem+ "}" + 'TINRelief')
+      dem_TINRelief.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name+"dem"
+      
+      gml_name = SubElement(dem_TINRelief, "{" + XMLNamespaces.gml+ "}" + 'name')
+      gml_name.text = "ground"
+      dem_lod = SubElement(dem_TINRelief, "{" + XMLNamespaces.dem+ "}" + 'lod')
+      dem_lod.text = "1"
+      dem_tin =  SubElement(dem_TINRelief, "{" + XMLNamespaces.dem+ "}" + 'tin')
+      
+      gml_TriangulatedSurface = SubElement(dem_tin, "{" + XMLNamespaces.gml+ "}" + 'TriangulatedSurface')
+      
+      gml_trianglePatches = SubElement(gml_TriangulatedSurface, "{" + XMLNamespaces.gml+ "}" + 'trianglePatches')
+
+      for geometry in geometry_list:
+         gml_trianglePatches.append(geometry.construct())
+   
+   return cityObjectMember
+   
    
 def write_transportation(trpt_type, lod, name, rd_class, function, epsg, generic_attrib_dict, geometry_list):
    cityObjectMember = Element('cityObjectMember')

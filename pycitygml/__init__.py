@@ -54,6 +54,10 @@ class Writer(object):
     def add_cityfurniture(self,lod, name,furn_class,function, epsg, generic_attrib_dict, geometry_list ):
         city_frn = write_gml.write_cityfurniture(lod, name,furn_class,function, epsg, generic_attrib_dict, geometry_list)
         self.et.append(city_frn)
+        
+    def add_tin_relief(self, lod, name, geometry_list ):
+        tin_relief = write_gml.write_tin_relief(lod,name,geometry_list)
+        self.et.append(tin_relief)
 
     def write2string(self):
         print etree.tostring(self.et, pretty_print=True)

@@ -25,7 +25,6 @@ import matplotlib.pyplot as plt
 import py3dmodel
 import gml3dmodel
 import py2radiance
-import pyoptimise
 
 
 def calculate_srfs_area(occ_srflist):
@@ -45,9 +44,79 @@ def pyptlist2vertlist(pyptlist):
 #================================================================================================================
 #FRONTAL AREA INDEX
 #================================================================================================================
-def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
+def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 100, ydim = 100):
     '''
-    Algorithm to calculate frontal area index
+    Algorithm to calculate frontal area index for a design
+    
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param boundary_occface: occface that is the boundary of the area
+    :ptype: occface
+    
+    :param wind_dir: a 3d tuple specifying the direction of the wind is blowing from
+    :ptype: tuple
+    
+    :param xdim: x dimension of the grid for the boundary occface, in metres (m)
+    :ptype: float
+    
+    :param ydim: y dimension of the grid for the boundary occface, in metres (m)
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns avg_fai: average frontal area index of the whole design
+    :rtype: float
+    
+    :returns gridded_boundary: the grid of the frontal area index
+    :rtype: list(occface)
+    
+    :returns fai_list: list of all the FAI of each plot
+    :rtype: list(float)    
+    
+    :returns fs_list: the projected surfaces fused together
+    :rtype: list(occface)
+    
+    :returns wp_list: the plane representing the direction of the wind
+    :rtype: list(occface)
+    
+    :returns os_list: the facade surfaces that are projected
+    :rtype: list(occface)
+    
+    '''
+    fai_list = []
+    fs_list = []
+    wp_list = []
+    os_list = []
+    
+    gridded_boundary = py3dmodel.construct.grid_face(boundary_occface, xdim, ydim)
+    close_compound = py3dmodel.construct.make_compound(building_occsolids)
+    gcnt = 0
+    for grid in gridded_boundary:
+        grid_extrude = py3dmodel.construct.extrude(grid, (0,0,1), 10000)
+        common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
+        common_shape = py3dmodel.fetch.shape2shapetype(common_shape)
+        compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
+        facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
+        if facade_list:
+            fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, (1,1,0))
+            fai_list.append(fai)
+            fs_list.extend(fuse_srfs)
+            wp_list.append(wind_plane)
+            os_list.extend(origsrf_prj)
+        else:
+            fai_list.append(0)
+            
+        gcnt+=1
+        
+    avg_fai = float(sum(fai_list))/float(len(fai_list))
+    return avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list
+    
+def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
+    '''
+    Algorithm to calculate frontal area index for a single plot
     
     PARAMETERS
     ----------
@@ -57,7 +126,7 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     :param plane_occpolygon: an occ face that is the horizontal plane buildings are sitting on 
     :ptype: occface
     
-    :param wind_dir: a 3d tuple specifying the direction of the wind
+    :param wind_dir: a 3d tuple specifying the direction of the wind is blowing from
     :ptype: tuple
     
     RETURNS
@@ -68,8 +137,6 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     :returns fuse_srfs: the projected surfaces fused together
     :rtype: list(occface)
     
-    :returns projected_facet_faces: the projected surfaces not fuse together
-    :rtype: list(occface)
     
     :returns wind_plane: the plane representing the direction of the wind
     :rtype: occface
@@ -78,12 +145,12 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     :rtype: list(occface)
     
     '''
-    facet_faces_compound = py3dmodel.construct.make_compound(facet_occpolygons)
+    facade_faces_compound = py3dmodel.construct.make_compound(facade_occpolygons)
      
     #create win dir plane
     #get the bounding box of the compound, so that the wind plane will be placed at the edge of the bounding box
-    xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(facet_faces_compound)
-    pymidpt = py3dmodel.calculate.get_centre_bbox(facet_faces_compound)
+    xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(facade_faces_compound)
+    pymidpt = py3dmodel.calculate.get_centre_bbox(facade_faces_compound)
     #calculate the furthest distance of the bounding box
     pycornerpt = (xmin, ymin, 0)
     
@@ -94,17 +161,17 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     
     surfaces_projected = []
     projected_facet_faces = []
-    for facet_face in facet_occpolygons:
-        srf_dir = py3dmodel.calculate.face_normal(facet_face)
-        #srf_midpt = py3dmodel.calculate.face_midpt(urb_face)
-        angle = py3dmodel.calculate.angle_bw_2_vecs(wind_dir, srf_dir)
+    for facade_face in facade_occpolygons:
+        #srf_dir = py3dmodel.calculate.face_normal(facade_face)
+        #angle = py3dmodel.calculate.angle_bw_2_vecs(wind_dir, srf_dir)
         #interpt, interface = py3dmodel.calculate.intersect_shape_with_ptdir(wind_plane, srf_midpt, srf_dir)
-        if angle<90:
-            surfaces_projected.append(facet_face)
-            projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facet_face)
-            projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
-            if py3dmodel.calculate.face_area(projected_srf) >0:
-                projected_facet_faces.append(projected_srf)
+        #print "ANGLE",angle
+        #if angle<90:
+        surfaces_projected.append(facade_face)
+        projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facade_face)
+        projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
+        if py3dmodel.calculate.face_area(projected_srf) >0:
+            projected_facet_faces.append(projected_srf)
          
     npfaces = len(projected_facet_faces)
     if npfaces == 1:
@@ -124,12 +191,12 @@ def frontal_area_index(facet_occpolygons, plane_occpolygon, wind_dir):
     plane_area = py3dmodel.calculate.face_area(plane_occpolygon)
     fai = facet_area/plane_area
     
-    return fai, fuse_srfs, projected_facet_faces, wind_plane, surfaces_projected
+    return fai, fuse_srfs, wind_plane, surfaces_projected
    
 #================================================================================================================
 #ROUTE DIRECTNESS INDEX
 #================================================================================================================
-def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], route_directness_threshold = 1.6):
+def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], rdi_threshold = 1.6):
     '''
     Algorithm for Route Directness Test  
     Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
@@ -214,7 +281,6 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
         
     #sp = nx.shortest_path(G,source = 4, target = 224)
     #print sp
-    #TODO: understand the difference interms of decimal place round off on the results
     #======================================================================
     #measure route directness
     #======================================================================
@@ -243,7 +309,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
                 perpypt = py3dmodel.modify.round_pypt(perpypt,ndecimal)
                 route_directness = calculate_route_directness(midpt, perpypt, obstruction_occfacelist,G, fused_ntpts, plot_area = plot_area)
                 aplot_avg_rdi_list.append(route_directness)
-                if route_directness > route_directness_threshold:
+                if route_directness > rdi_threshold:
                     fail_plots.append(plof_occface)
                     pass_plots.remove(plof_occface)
                     break

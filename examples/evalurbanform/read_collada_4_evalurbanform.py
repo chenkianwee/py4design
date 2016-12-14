@@ -60,7 +60,6 @@ def read_collada(dae_filepath):
     ref_pt = (ref_pt[0],ref_pt[1],0)
     #make sure no duplicate edges
     edgelist2 = pyliburo.py3dmodel.modify.rmv_duplicated_edges(edgelist)
-    print len(edgelist), len(edgelist2)
     #scale the compounds
     compound1 = pyliburo.py3dmodel.construct.make_compound(closegeomlist)  
     compound2 = pyliburo.py3dmodel.construct.make_compound(opengeomlist_shell)  
@@ -81,8 +80,20 @@ def read_collada(dae_filepath):
     recon_faces2, recon_edges2 = redraw_occfaces(scaled_compound2)
     recon_faces3, recon_edges3 = redraw_occfaces(scaled_compound3)
     recon_faces4, recon_edges4 = redraw_occfaces(scaled_compound4)
+    
+    close_shell_list = pyliburo.py3dmodel.construct.make_shell_frm_faces(recon_faces1)
+    solid_list = []
+    for cs in close_shell_list:
+        solid = pyliburo.py3dmodel.construct.make_solid(cs)
+        fixed_solid = pyliburo.py3dmodel.modify.fix_close_solid(solid)
+        solid_list.append(fixed_solid)
+    
+    if recon_faces2:
+        oshell_list = pyliburo.py3dmodel.construct.make_shell_frm_faces(recon_faces2)
+    else:
+        oshell_list = []
 
-    return recon_faces1, recon_faces2, recon_faces3, recon_edges4
+    return solid_list, oshell_list, recon_faces3, recon_edges4
 
 def redraw_occfaces(occcompound):
     #redraw the surfaces so the domain are right

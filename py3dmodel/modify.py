@@ -107,11 +107,12 @@ def rmv_duplicated_faces(occfacelist):
             if fcnt2 != fcnt:
                 is_same = calculate.are_same_faces(occface, occfacelist[fcnt2])
                 if is_same:
+                    print is_same
                     same_index.append(fcnt2)
-
+                    
         same_index.sort()
         if same_index not in same_face_list:
-            same_face_list.append(same_index)                        
+            same_face_list.append(same_index)                       
         fcnt +=1
         
     for indexes in same_face_list:

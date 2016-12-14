@@ -29,7 +29,6 @@ from OCC.TopAbs import TopAbs_IN, TopAbs_REVERSED
 from OCC.BRepClass3d import BRepClass3d_SolidClassifier
 from OCC.GProp import GProp_GProps
 from OCC.BRepGProp import brepgprop_VolumeProperties
-from OCC.BOPInt import BOPInt_Context
 from OCC.BRepCheck import BRepCheck_Wire, BRepCheck_Shell, BRepCheck_NoError
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
 from OCC.BRep import BRep_Tool
@@ -118,8 +117,13 @@ def face_is_inside(occ_face, occ_boundary_face):
     return BRepFeat.brepfeat_IsInside(occ_face, occ_boundary_face)
 
 def point_in_face(pypt, occ_face, tol=0.0001):
-    gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
-    isinside = BOPInt_Context().IsValidPointForFace(gp_pt, occ_face,tol )
+    vertex = construct.make_vertex(pypt)
+    min_dist = minimum_distance(vertex, occ_face)
+    if min_dist < tol:
+        isinside = True
+    else:
+        isinside = False
+    #isinside = BOPInt_Context().IsValidPointForFace(gp_pt, occ_face,tol )
     return isinside
     
 def check_solid_inward(occ_solid):
