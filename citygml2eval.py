@@ -35,6 +35,7 @@ class Evals(object):
         self.stops = self.citygml.get_bus_stops()
         self.roads = self.citygml.get_roads()
         self.railways = self.citygml.get_railways()
+        self.relief_features = self.citygml.get_relief_feature()
         #occ geometries
         self.building_occsolids = None
         self.roof_occfaces = None
@@ -43,6 +44,7 @@ class Evals(object):
         self.building_dictlist = None
         self.buildings_on_plot_2dlist = None #2d list of building dictlist according to the plot they belong to 
         self.landuse_occpolygons = None
+        self.relief_feature_occshells = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
         self.shgfavi_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'shgfavi_data')
@@ -87,6 +89,20 @@ class Evals(object):
         self.facade_occfaces = facade_list
         self.roof_occfaces = roof_list
         self.footprint_occfaces = footprint_list
+        
+        #get the relief feature
+        relief_features = self.relief_features
+        rf_shell_list = []
+        for rf in relief_features:
+            pytrianglelist = self.citygml.get_pytriangle_list(rf)
+            occtriangle_list = []
+            for pytriangle in pytrianglelist:
+                occtriangle = py3dmodel.construct.make_polygon(pytriangle)
+                occtriangle_list.append(occtriangle)
+            rf_shell = py3dmodel.construct.make_shell_frm_faces(occtriangle_list)[0]
+            rf_shell_list.append(rf_shell)
+            
+        self.relief_feature_occshells = rf_shell_list
         
     def shgfavi(self, irrad_threshold, epwweatherfile, xdim, ydim, shgfavi_threshold=None):
         """
@@ -164,62 +180,41 @@ class Evals(object):
                                                                                              pvfavi_threshold = pvfavi_threshold, 
                                                                                              pveavi_threshold = pveavi_threshold)
         return avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress
-        
-    def initialise_fai(self):
-        
-        if self.building_dictlist == None:
-            self.initialise_occgeom()
-            
-        landuses = self.landuses
-        building_dictlist = self.building_dictlist
-        building_dictlist2 = building_dictlist[:]
-        landuse_occpolygons = []
-        buildings_on_plot_2dlist = []
-        
-        for landuse in landuses:
-            pypolygonlist = self.citygml.get_pypolygon_list(landuse)
-            for pypolygon in pypolygonlist:    
-                landuse_occpolygon = py3dmodel.construct.make_polygon(pypolygon)
-                if building_dictlist2:
-                    buildings_on_plot = gml3dmodel.buildings_on_landuse(landuse_occpolygon, building_dictlist2)
-                    
-                    if buildings_on_plot:
-                        buildings_on_plot_2dlist.append(buildings_on_plot)
-                        landuse_occpolygons.append(landuse_occpolygon)
-                        for abuilding in buildings_on_plot:
-                            building_dictlist2.remove(abuilding)
-        
-        self.buildings_on_plot_2dlist = buildings_on_plot_2dlist
-        self.landuse_occpolygons = landuse_occpolygons
 
-    def fai(self, wind_dir):
+    def fai(self, wind_dir, boundary_occface = None):
         """
         Frontal Area Index (FAI)
         """
-        if self.buildings_on_plot_2dlist == None:
-            self.initialise_fai()
+        
+        if self.relief_feature_occshells == None:
+            self.initialise_occgeom()
             
-        print "DONE WITH INITIALISATION"
-        landuse_occpolygons = self.landuse_occpolygons
-        buidlings_on_plot_2dlist = self.buildings_on_plot_2dlist
-        fai_list = []
-        fuse_psrfs_list = []
-        surfaces_projected_list = []
-        lcnt = 0
-        for landuse_occpolygon in landuse_occpolygons:
-            facade_occpolygons = []
-            for building in buidlings_on_plot_2dlist[lcnt]:
-                occfacades = building["facade"]
-                facade_occpolygons.extend(occfacades)
+        if boundary_occface == None:
+            rf_shells = self.relief_feature_occshells
+            rf_compound = py3dmodel.construct.make_compound(rf_shells)
+            xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(rf_compound)
+            
+            all_flatten_rf_faces = []
+            for rfshell in rf_shells:
+                rffaces = py3dmodel.fetch.geom_explorer(rfshell, "face")
+                for rfface in rffaces:
+                    rf_nrml = py3dmodel.calculate.face_normal(rfface)
+                    ref_nrml = (0,0,1)
+                    angle = py3dmodel.calculate.angle_bw_2_vecs(rf_nrml,ref_nrml)
+                    if angle <90:
+                        #flatten the surfaces 
+                        flatten_face_z = py3dmodel.modify.flatten_face_z_value(rfface, z = zmin)
+                        all_flatten_rf_faces.append(flatten_face_z)
                         
-            fai,fuse_psrfs, projected_faces, windplane, surfaces_projected = urbanformeval.frontal_area_index(facade_occpolygons, landuse_occpolygon, wind_dir)
-            fai_list.append(fai)
-            fuse_psrfs_list.extend(fuse_psrfs)
-            surfaces_projected_list.extend(surfaces_projected)
-            lcnt+=1
+            boundary_occface = py3dmodel.construct.merge_faces(all_flatten_rf_faces)[0]
             
-        avg_fai = sum(fai_list)/float(len(fai_list))
-        return avg_fai, fuse_psrfs_list, surfaces_projected_list
+        bsolid_list = self.building_occsolids
+        avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list = urbanformeval.frontal_area_index(bsolid_list,
+                                                                                                         boundary_occface,
+                                                                                                         wind_dir,
+                                                                                                         xdim = 100, ydim = 100)
+
+        return avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list
         
     def rdi(self):
         """

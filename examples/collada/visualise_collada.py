@@ -6,7 +6,7 @@ displaylist = []
 
 #dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\simple_case.dae"
 #dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
-dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\complex_surface.dae"
+dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\complex_testout_rhino.dae"
 mesh = Collada(dae_file)
 unit = mesh.assetInfo.unitmeter or 1
 geoms = mesh.scene.objects('geometry')

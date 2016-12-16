@@ -35,19 +35,21 @@ class Writer(object):
         cityObjectMember = Element('cityObjectMember')
         return cityObjectMember
             
-    def add_landuse(self, lod, name, function, epsg, generic_attrib_dict, geometry_list):
-        landuse = write_gml.write_landuse(lod, name, function, epsg, generic_attrib_dict, geometry_list)
+    def add_landuse(self, lod, name, geometry_list, function = None, generic_attrib_dict = None):
+        landuse = write_gml.write_landuse(lod, name, geometry_list, function = function, generic_attrib_dict = generic_attrib_dict)
         self.et.append(landuse)
 
-    def add_transportation(self, trpt_type, lod, name, rd_class, function, epsg, generic_attrib_dict, geometry_list):
-        transportation = write_gml.write_transportation(trpt_type, lod, name, rd_class, function, epsg, generic_attrib_dict, geometry_list)
+    def add_transportation(self, trpt_type, lod, name, geometry_list, rd_class = None, function = None, generic_attrib_dict= None):
+        transportation = write_gml.write_transportation(trpt_type, lod, name, geometry_list, rd_class = rd_class, function = function, generic_attrib_dict= generic_attrib_dict)
         self.et.append(transportation)
 
-    def add_building(self, lod, name, buildg_class, function, usage,yr_constr,rooftype,height,stry_abv_grd,
-                   stry_blw_grd, epsg, generic_attrib_dict, geometry_list):
+    def add_building(self, lod, name, geometry_list, bldg_class = None,function = None, usage = None,yr_constr  = None,
+                   rooftype = None,height = None,stry_abv_grd = None, stry_blw_grd = None, generic_attrib_dict=None ):
         
-        bldg = write_gml.write_building(lod, name,buildg_class,function,usage,yr_constr,rooftype,height,stry_abv_grd,
-                   stry_blw_grd, epsg, generic_attrib_dict, geometry_list)
+        bldg = write_gml.write_building(lod, name, geometry_list, bldg_class = bldg_class ,function = function ,
+                                        usage = usage, yr_constr = yr_constr, rooftype = rooftype , height= height ,
+                                        stry_abv_grd = stry_abv_grd, stry_blw_grd = stry_blw_grd, 
+                                        generic_attrib_dict = generic_attrib_dict )
         
         self.et.append(bldg)
         
@@ -58,6 +60,9 @@ class Writer(object):
     def add_tin_relief(self, lod, name, geometry_list ):
         tin_relief = write_gml.write_tin_relief(lod,name,geometry_list)
         self.et.append(tin_relief)
+        
+    def add_bounded_by(self, epsg, lower_bound, upper_bound):
+        write_gml.write_boundedby(self.et, epsg, lower_bound, upper_bound)
 
     def write2string(self):
         print etree.tostring(self.et, pretty_print=True)
@@ -155,6 +160,15 @@ class Reader(object):
                 generic_attrib_dict[name] = float(value)
                 
         return generic_attrib_dict
+    
+    def get_relief_feature(self):
+        relief_features = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            relief_feature = cityobject.find("dem:ReliefFeature", namespaces=self.namespaces)
+            if relief_feature is not None:
+                relief_features.append(relief_feature)
+        return relief_features
                 
     def get_landuses(self):
         landuses = []
@@ -209,6 +223,10 @@ class Reader(object):
     def get_gml_id(self, cityobject):
         name = cityobject.attrib["{%s}id"% self.namespaces['gml']]
         return name
+        
+    def get_triangles(self,cityobject):
+        triangles = cityobject.findall(".//gml:Triangle", namespaces=self.namespaces)
+        return triangles
     
     def get_polygons(self,cityobject):
         polygons = cityobject.findall(".//gml:Polygon", namespaces=self.namespaces)
@@ -221,6 +239,14 @@ class Reader(object):
             pyptlist = self.polygon_2_pt_list(polygon)
             pypolygon_list.append(pyptlist)
         return pypolygon_list
+        
+    def get_pytriangle_list(self, cityobject):
+        triangles = self.get_triangles(cityobject)
+        pytriangle_list = []
+        for triangle in triangles:
+            pyptlist = self.polygon_2_pt_list(triangle)
+            pytriangle_list.append(pyptlist)
+        return pytriangle_list
         
     def get_poslist(self, polygon):
         rings = polygon.findall("gml:exterior//gml:LinearRing", namespaces=self.namespaces)

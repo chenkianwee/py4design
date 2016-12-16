@@ -29,6 +29,7 @@ from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
 
 import fetch
 import calculate
+import construct
 
 def move(orig_pt, location_pt, shape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())
@@ -250,3 +251,14 @@ def wire_2_bsplinecurve_edge(occwire):
     bspline_handle = approx.Curve()
     occedge = BRepBuilderAPI_MakeEdge(bspline_handle)
     return occedge.Edge()
+    
+def flatten_face_z_value(occface, z=0):
+    pyptlist = fetch.pyptlist_frm_occface(occface)
+    pyptlist_2d = []
+    for pypt in pyptlist:
+        pypt2d = (pypt[0],pypt[1],z)
+        pyptlist_2d.append(pypt2d)
+    flatten_face = construct.make_polygon(pyptlist_2d)
+    return flatten_face
+        
+        

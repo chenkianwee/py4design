@@ -81,12 +81,18 @@ def write_root():
                       'gen': XMLNamespaces.gen})
    return root
 
-def write_boundedBy(parent_node, crs):
+def write_boundedby(parent_node, crs, lowercorner, uppercorner):
    gml_boundedBy = SubElement(parent_node, "{" + XMLNamespaces.gml+ "}" + 'boundedBy')
    #TO DO: implement geometry operattions to find the boundary
    gml_Envelope = SubElement(gml_boundedBy, "{" + XMLNamespaces.gml+ "}" + 'Envelope')
    gml_Envelope.attrib['srsName'] = crs
-   gml_pos = SubElement(gml_Envelope, "{" + XMLNamespaces.gml+ "}" + 'pos')
+   gml_lowerCorner = SubElement(gml_Envelope, "{" + XMLNamespaces.gml+ "}" + 'lowerCorner')
+   gml_lowerCorner.attrib['srsDimension'] = '3'
+   gml_lowerCorner.text = str(lowercorner[0]) + " " +  str(lowercorner[1]) + " " + str(lowercorner[2]) 
+   gml_upperCorner = SubElement(gml_Envelope, "{" + XMLNamespaces.gml+ "}" + 'upperCorner')
+   gml_upperCorner.attrib['srsDimension'] = '3'
+   gml_upperCorner.text = str(uppercorner[0]) + " " + str(uppercorner[1]) + " " + str(uppercorner[2]) 
+   
 
 def write_gen_Attribute(parent_node, generic_attrib_dict):
    for name in generic_attrib_dict:
@@ -109,7 +115,7 @@ def write_gen_Attribute(parent_node, generic_attrib_dict):
          gen_value = SubElement(gen_stringAttribute, "{" + XMLNamespaces.gen + "}" +'value')
          gen_value.text = str(attrib)
 
-def write_landuse(lod, name, function, epsg, generic_attrib_dict, geometry_list):
+def write_landuse(lod, name, geometry_list, function = None, generic_attrib_dict = None):
    cityObjectMember = Element('cityObjectMember')
 
    luse = SubElement(cityObjectMember, "{" + XMLNamespaces.luse+ "}" +'LandUse')
@@ -117,11 +123,6 @@ def write_landuse(lod, name, function, epsg, generic_attrib_dict, geometry_list)
 
    gml_name = SubElement(luse, "{" + XMLNamespaces.gml+ "}" + 'name')
    gml_name.text = name
-
-   write_boundedBy(luse, epsg)
-
-   creationDate = SubElement(luse, 'creationDate')
-   creationDate.text = str(datetime.datetime.now())
 
    #=======================================================================================================
    #geometries
@@ -138,10 +139,12 @@ def write_landuse(lod, name, function, epsg, generic_attrib_dict, geometry_list)
    #=======================================================================================================
    #attribs
    #=======================================================================================================
-   luse_function = SubElement(luse, "{" + XMLNamespaces.luse+ "}" +'function')
-   luse_function.text = function
-   
-   write_gen_Attribute(luse, generic_attrib_dict)
+   if function != None:
+       luse_function = SubElement(luse, "{" + XMLNamespaces.luse+ "}" +'function')
+       luse_function.text = function
+       
+   if generic_attrib_dict != None:
+       write_gen_Attribute(luse, generic_attrib_dict)
    
    return cityObjectMember
    
@@ -181,18 +184,14 @@ def write_tin_relief(lod, name, geometry_list):
    return cityObjectMember
    
    
-def write_transportation(trpt_type, lod, name, rd_class, function, epsg, generic_attrib_dict, geometry_list):
+def write_transportation(trpt_type, lod, name, geometry_list, rd_class = None, function = None, generic_attrib_dict= None):
    cityObjectMember = Element('cityObjectMember')
    tran_trpt_type = SubElement(cityObjectMember, "{" + XMLNamespaces.trans+ "}" + trpt_type)
    tran_trpt_type.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
 
    gml_name = SubElement(tran_trpt_type, "{" + XMLNamespaces.gml+ "}" + 'name')
    gml_name.text = name
-
-   write_boundedBy(tran_trpt_type, epsg)
    
-   creationDate = SubElement(tran_trpt_type, 'creationDate')
-   creationDate.text = str(datetime.datetime.now())
    #=======================================================================================================
    #geometries
    #=======================================================================================================
@@ -207,27 +206,24 @@ def write_transportation(trpt_type, lod, name, rd_class, function, epsg, generic
    #=======================================================================================================
    #attrib
    #=======================================================================================================
-   tran_class = SubElement(tran_trpt_type,"{" + XMLNamespaces.trans+ "}" + 'class')
-   tran_class.text = rd_class
-
-   tran_function = SubElement(tran_trpt_type,"{" + XMLNamespaces.trans+ "}" + 'function')
-   tran_function.text = function
-   
-   write_gen_Attribute(tran_trpt_type, generic_attrib_dict)
+   if rd_class !=None:
+       tran_class = SubElement(tran_trpt_type,"{" + XMLNamespaces.trans+ "}" + 'class')
+       tran_class.text = rd_class
+   if function != None:
+       tran_function = SubElement(tran_trpt_type,"{" + XMLNamespaces.trans+ "}" + 'function')
+       tran_function.text = function
+   if generic_attrib_dict != None:
+       write_gen_Attribute(tran_trpt_type, generic_attrib_dict)
    
    return cityObjectMember
 
-def write_building(lod, name,buildg_class,function,usage,yr_constr,rooftype,height,stry_abv_grd,
-                   stry_blw_grd, epsg, generic_attrib_dict, geometry_list):
+def write_building(lod, name, geometry_list, bldg_class = None,function = None, usage = None,yr_constr  = None,
+                   rooftype = None,height = None,stry_abv_grd = None, stry_blw_grd = None, generic_attrib_dict=None ):
    
    cityObjectMember = Element('cityObjectMember')
    bldg_Building = SubElement(cityObjectMember, "{" + XMLNamespaces.bldg + "}" + "Building")
    bldg_Building.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
-
-   write_boundedBy(bldg_Building, epsg)
    
-   creationDate = SubElement(bldg_Building, 'creationDate')
-   creationDate.text = str(datetime.datetime.now())
    #=======================================================================================================
    #geometries
    #=======================================================================================================
@@ -241,32 +237,40 @@ def write_building(lod, name,buildg_class,function,usage,yr_constr,rooftype,heig
    #=======================================================================================================
    #attrib
    #=======================================================================================================
-   bldg_class = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'class')
-   bldg_class.text = buildg_class
+   if bldg_class != None:
+       b_class = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'class')
+       b_class.text = bldg_class
+       
+   if function!=None:
+       bldg_function = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'function')
+       bldg_function.text = function
+       
+   if usage != None:
+       bldg_usage = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'usage')
+       bldg_usage.text = usage
+       
+   if yr_constr != None:
+       bldg_yearOfConstruction = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'yearOfConstruction')
+       bldg_yearOfConstruction.text = yr_constr
 
-   bldg_function = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'function')
-   bldg_function.text = function
-   
-   bldg_usage = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'usage')
-   bldg_usage.text = usage
-
-   bldg_yearOfConstruction = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'yearOfConstruction')
-   bldg_yearOfConstruction.text = yr_constr
-
-   bldg_roofType = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'roofType')
-   bldg_roofType.text = rooftype
-
-   bldg_measuredHeight = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'measuredHeight')
-   bldg_measuredHeight.attrib['uom'] = "m"
-   bldg_measuredHeight.text = height
-
-   bldg_storeysAboveGround = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'storeysAboveGround')
-   bldg_storeysAboveGround.text = stry_abv_grd
-
-   bldg_storeysBelowGround = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'storeysBelowGround')
-   bldg_storeysBelowGround.text = stry_blw_grd
-
-   write_gen_Attribute(bldg_Building, generic_attrib_dict)
+   if rooftype != None:
+       bldg_roofType = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'roofType')
+       bldg_roofType.text = rooftype
+   if height!=None:
+       bldg_measuredHeight = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'measuredHeight')
+       bldg_measuredHeight.attrib['uom'] = "m"
+       bldg_measuredHeight.text = height
+       
+   if stry_abv_grd != None:
+       bldg_storeysAboveGround = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'storeysAboveGround')
+       bldg_storeysAboveGround.text = stry_abv_grd
+       
+   if stry_blw_grd != None:
+       bldg_storeysBelowGround = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'storeysBelowGround')
+       bldg_storeysBelowGround.text = stry_blw_grd
+       
+   if generic_attrib_dict != None:
+       write_gen_Attribute(bldg_Building, generic_attrib_dict)
    
    return cityObjectMember
 
@@ -274,8 +278,6 @@ def write_cityfurniture(lod, name,furn_class,function, epsg, generic_attrib_dict
    cityObjectMember = Element('cityObjectMember')
    frn_CityFurniture = SubElement(cityObjectMember,"{" + XMLNamespaces.frn+ "}" + 'CityFurniture')
    frn_CityFurniture.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
-
-   write_boundedBy(frn_CityFurniture, epsg)
    
    creationDate = SubElement(frn_CityFurniture, 'creationDate')
    creationDate.text = str(datetime.datetime.now())

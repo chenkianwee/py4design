@@ -55,7 +55,7 @@ def write_surface_member(pos_list):
     
 def write_triangle(pos_list):
     gml_Triangle = Element("{" + write_gml.XMLNamespaces.gml+ "}" + 'Triangle')
-    gml_Triangle.attrib["{" + write_gml.XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
+    #gml_Triangle.attrib["{" + write_gml.XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
     gml_exterior = SubElement(gml_Triangle, "{" + write_gml.XMLNamespaces.gml+ "}" + 'exterior')
 
     gml_LinearRing = SubElement(gml_exterior, "{" + write_gml.XMLNamespaces.gml+ "}" + 'LinearRing')
