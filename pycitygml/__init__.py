@@ -232,6 +232,38 @@ class Reader(object):
         polygons = cityobject.findall(".//gml:Polygon", namespaces=self.namespaces)
         return polygons
         
+    def get_poslist(self, polygon):
+        rings = polygon.findall("gml:exterior//gml:LinearRing", namespaces=self.namespaces)
+        poly_poslist = []
+        if rings is not None:
+            for ring in rings:
+                poslist = ring.find("gml:posList", namespaces=self.namespaces)
+                poly_poslist.append(poslist)
+                
+        return poly_poslist
+        
+    def get_pos_list_2_pypt_list(self, poslist):
+        pos_list_str = poslist.text
+        splitted_pt_list_str = pos_list_str.split(" ")
+        srsdim = int(poslist.attrib["srsDimension"])
+        npts = len(splitted_pt_list_str)/srsdim
+                
+        pt_list = []
+        for c_cnt in range(npts):
+            x = float(splitted_pt_list_str[c_cnt*srsdim])
+            y = float(splitted_pt_list_str[(c_cnt*srsdim) + 1])
+            z = float(splitted_pt_list_str[(c_cnt*srsdim) + 2])
+            pt = (x,y,z)
+            pt_list.append(pt)
+            
+        return pt_list
+        
+    def polygon_2_pt_list(self, polygon):
+        poslist = self.get_poslist(polygon)[0]
+        pt_list = self.get_pos_list_2_pypt_list( poslist)
+            
+        return pt_list
+        
     def get_pypolygon_list(self, cityobject):
         polygons = self.get_polygons(cityobject)
         pypolygon_list = []
@@ -248,16 +280,6 @@ class Reader(object):
             pytriangle_list.append(pyptlist)
         return pytriangle_list
         
-    def get_poslist(self, polygon):
-        rings = polygon.findall("gml:exterior//gml:LinearRing", namespaces=self.namespaces)
-        poly_poslist = []
-        if rings is not None:
-            for ring in rings:
-                poslist = ring.find("gml:posList", namespaces=self.namespaces)
-                poly_poslist.append(poslist)
-                
-        return poly_poslist
-        
     def get_linestring(self, cityobject):
         lod0networks = cityobject.findall("trans:lod0Network", namespaces=self.namespaces)
         polylines = []
@@ -270,22 +292,14 @@ class Reader(object):
                     
         return polylines
         
-    def polygon_2_pt_list(self, polygon):
-        poslist = self.get_poslist(polygon)[0]
-        pos_list_str = poslist.text
-        splitted_pt_list_str = pos_list_str.split(" ")
-        srsdim = int(poslist.attrib["srsDimension"])
-        npts = len(splitted_pt_list_str)/srsdim
-                
-        pt_list = []
-        for c_cnt in range(npts):
-            x = float(splitted_pt_list_str[c_cnt*srsdim])
-            y = float(splitted_pt_list_str[(c_cnt*srsdim) + 1])
-            z = float(splitted_pt_list_str[(c_cnt*srsdim) + 2])
-            pt = (x,y,z)
-            pt_list.append(pt)
+    def get_pylinestring_list(self, cityobject):
+        polylines = self.get_linestring(cityobject)
+        pylinestring_list = []
+        for polyline in polylines:
+            pt_list = self.get_pos_list_2_pypt_list(polyline)
+            pylinestring_list.append(pt_list)
             
-        return pt_list
+        return pylinestring_list
 #===============================================================================================================================================================
 if __name__ == '__main__':
 

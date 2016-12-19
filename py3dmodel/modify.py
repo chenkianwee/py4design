@@ -261,4 +261,13 @@ def flatten_face_z_value(occface, z=0):
     flatten_face = construct.make_polygon(pyptlist_2d)
     return flatten_face
         
-        
+def flatten_edge_z_value(occedge, z=0):
+    occptlist = fetch.points_from_edge(occedge)        
+    pyptlist = fetch.occptlist2pyptlist(occptlist)
+    pyptlist_2d = []
+    for pypt in pyptlist:
+        pypt2d = (pypt[0],pypt[1],z)
+        pyptlist_2d.append(pypt2d)
+    flatten_edge = construct.make_edge(pyptlist_2d[0],pyptlist_2d[1])
+    return flatten_edge
+    

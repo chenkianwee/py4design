@@ -26,8 +26,13 @@ railways = read_citygml.get_railways()
 print "nbuildings:", len(buildings)
 
 #get all the polylines of the lod0 roads
+road_occedges = []
 for road in roads:
-    polylines = read_citygml.get_linestring(road)
+    polylines = read_citygml.get_pylinestring_list(road)
+    for polyline in polylines:
+        occ_wire = pyliburo.py3dmodel.construct.make_wire(polyline)
+        edge_list = pyliburo.py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+        road_occedges.extend(edge_list)
 
 #get all the polygons of the landuses
 for landuse in landuses:
@@ -78,5 +83,6 @@ print "VISUALISING"
 display_2dlist.append(ldisplay_list)
 display_2dlist.append(bdisplay_list)
 display_2dlist.append(edgedisplay_list)
-colour_list = ["WHITE", "WHITE", "BLACK"]
+display_2dlist.append(road_occedges)
+colour_list = ["WHITE", "WHITE", "BLACK", "RED"]
 pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)
