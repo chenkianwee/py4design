@@ -187,7 +187,7 @@ def construct_building_through_floorplates(building_solid, build_area, storey_he
     face_list = py3dmodel.fetch.faces_frm_shell(new_building_shell) 
     face_list.append(roof_srf)
     face_list.append(flr_srf)
-    closed_shell = py3dmodel.construct.make_shell_frm_faces(face_list)
+    closed_shell = py3dmodel.construct.make_shell_frm_faces(face_list)[0]
     shell_list = py3dmodel.fetch.topos_frm_compound(closed_shell)["shell"]
     new_building_solid = py3dmodel.construct.make_solid(shell_list[0])
     

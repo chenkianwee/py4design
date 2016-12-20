@@ -109,7 +109,8 @@ for luse in landuses:
         gml_srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
         luse_geometry_list.append(gml_srf)
     
-    citygml_writer.add_landuse(luse_lod, luse_name, luse_function, luse_epsg, luse_generic_attrib_dict, luse_geometry_list)
+    citygml_writer.add_landuse(luse_lod, luse_name, luse_geometry_list, function = luse_function, 
+                               generic_attrib_dict = luse_generic_attrib_dict )
     luse_cnt +=1
 
 bldg_cnt = 0
@@ -119,7 +120,6 @@ for building in buildings2write:
     bldg_class = read_citygml.get_building_class(building)
     bldg_function = read_citygml.get_building_function(building)
     bldg_usage = read_citygml.get_building_usage(building)
-    bldg_yr_construct = read_citygml.get_building_yr_constr(building)
     bldg_rooftype = read_citygml.get_building_rooftype(building)
     bldg_height = read_citygml.get_building_height(building)
     bldg_str_abv_grd = read_citygml.get_building_storey(building)
@@ -131,8 +131,10 @@ for building in buildings2write:
         gml_srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(pypoly)
         bldg_geometry_list.append(gml_srf)
     
-    citygml_writer.add_building(bldg_lod, bldg_name, bldg_class, bldg_function, bldg_usage,bldg_yr_construct,bldg_rooftype,str(bldg_height),str(bldg_str_abv_grd),
-                   str(bldg_str_blw_grd), bldg_epsg, bldg_generic_attrib_dict, bldg_geometry_list)
+    citygml_writer.add_building(bldg_lod, bldg_name, bldg_geometry_list, bldg_class = bldg_class, 
+                                function = bldg_function, usage = bldg_usage,rooftype = bldg_rooftype,
+                                height = str(bldg_height), stry_abv_grd = str(bldg_str_abv_grd),
+                                stry_blw_grd = str(bldg_str_blw_grd), generic_attrib_dict = bldg_generic_attrib_dict)
                    
     bldg_cnt +=1
     

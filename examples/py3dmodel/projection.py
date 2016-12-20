@@ -19,7 +19,7 @@ print len(projected_facepts)
 for facept in projected_facepts:    
     pyfacept = (facept.X(),facept.Y(),facept.Z())
     projpt_facecircle = pyliburo.py3dmodel.construct.make_circle(pyfacept, (0,0,1),5)
-    face_circles.append(projpt_facecircle.Edge())
+    face_circles.append(projpt_facecircle)
     
 displaylist3.extend(face_circles)
 displaylist3.append(face2project)
@@ -32,7 +32,7 @@ projpt_occcircle = pyliburo.py3dmodel.construct.make_circle(pyprojpt, (0,0,1),5)
 projpt_occedge = pyliburo.py3dmodel.construct.make_edge(pypt, pyprojpt)
 
 displaylist1.append(occ_face)
-displaylist1.append(projpt_occcircle.Edge())
+displaylist1.append(projpt_occcircle)
 displaylist1.append(projpt_occedge)
 
 #project point to edge
@@ -43,7 +43,7 @@ interedgept_path = pyliburo.py3dmodel.construct.make_edge(pypt, (interedgept.X()
 
 displaylist2.append(interedgept_path)
 displaylist2.append(dest_occedge)
-displaylist2.append(interedgept_occcircle.Edge())
+displaylist2.append(interedgept_occcircle)
 
 #create the 2dlist
 display2dlist = []

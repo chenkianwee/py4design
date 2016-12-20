@@ -53,8 +53,8 @@ class Writer(object):
         
         self.et.append(bldg)
         
-    def add_cityfurniture(self,lod, name,furn_class,function, epsg, generic_attrib_dict, geometry_list ):
-        city_frn = write_gml.write_cityfurniture(lod, name,furn_class,function, epsg, generic_attrib_dict, geometry_list)
+    def add_cityfurniture(self,lod, name, geometry_list, furn_class = None,function = None, generic_attrib_dict = None):
+        city_frn = write_gml.write_cityfurniture(lod, name, geometry_list, furn_class = furn_class,function = function, generic_attrib_dict = generic_attrib_dict)
         self.et.append(city_frn)
         
     def add_tin_relief(self, lod, name, geometry_list ):

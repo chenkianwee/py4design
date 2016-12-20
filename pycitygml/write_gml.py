@@ -123,6 +123,16 @@ def write_landuse(lod, name, geometry_list, function = None, generic_attrib_dict
 
    gml_name = SubElement(luse, "{" + XMLNamespaces.gml+ "}" + 'name')
    gml_name.text = name
+   
+   #=======================================================================================================
+   #attribs
+   #=======================================================================================================
+   if function != None:
+       luse_function = SubElement(luse, "{" + XMLNamespaces.luse+ "}" +'function')
+       luse_function.text = function
+       
+   if generic_attrib_dict != None:
+       write_gen_Attribute(luse, generic_attrib_dict)
 
    #=======================================================================================================
    #geometries
@@ -136,16 +146,6 @@ def write_landuse(lod, name, geometry_list, function = None, generic_attrib_dict
       for geometry in geometry_list:
          gml_MultiSurface.append(geometry.construct())
       
-   #=======================================================================================================
-   #attribs
-   #=======================================================================================================
-   if function != None:
-       luse_function = SubElement(luse, "{" + XMLNamespaces.luse+ "}" +'function')
-       luse_function.text = function
-       
-   if generic_attrib_dict != None:
-       write_gen_Attribute(luse, generic_attrib_dict)
-   
    return cityObjectMember
    
 def write_tin_relief(lod, name, geometry_list):
@@ -193,17 +193,6 @@ def write_transportation(trpt_type, lod, name, geometry_list, rd_class = None, f
    gml_name.text = name
    
    #=======================================================================================================
-   #geometries
-   #=======================================================================================================
-   if lod == "lod0":
-      tran_lod0Network = SubElement(tran_trpt_type, "{" + XMLNamespaces.trans+ "}" + 'lod0Network')
-      gml_GeometricComplex = SubElement(tran_lod0Network, "{" + XMLNamespaces.gml+ "}" + 'GeometricComplex')
-      
-      for geometry in geometry_list:
-         gml_element = SubElement(gml_GeometricComplex, "{" + XMLNamespaces.gml+ "}" + 'element')
-         gml_element.append(geometry.construct())
-         gml_GeometricComplex.append(gml_element)
-   #=======================================================================================================
    #attrib
    #=======================================================================================================
    if rd_class !=None:
@@ -214,6 +203,18 @@ def write_transportation(trpt_type, lod, name, geometry_list, rd_class = None, f
        tran_function.text = function
    if generic_attrib_dict != None:
        write_gen_Attribute(tran_trpt_type, generic_attrib_dict)
+       
+   #=======================================================================================================
+   #geometries
+   #=======================================================================================================
+   if lod == "lod0":
+      tran_lod0Network = SubElement(tran_trpt_type, "{" + XMLNamespaces.trans+ "}" + 'lod0Network')
+      gml_GeometricComplex = SubElement(tran_lod0Network, "{" + XMLNamespaces.gml+ "}" + 'GeometricComplex')
+      
+      for geometry in geometry_list:
+         gml_element = SubElement(gml_GeometricComplex, "{" + XMLNamespaces.gml+ "}" + 'element')
+         gml_element.append(geometry.construct())
+         gml_GeometricComplex.append(gml_element)
    
    return cityObjectMember
 
@@ -222,18 +223,7 @@ def write_building(lod, name, geometry_list, bldg_class = None,function = None, 
    
    cityObjectMember = Element('cityObjectMember')
    bldg_Building = SubElement(cityObjectMember, "{" + XMLNamespaces.bldg + "}" + "Building")
-   bldg_Building.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
-   
-   #=======================================================================================================
-   #geometries
-   #=======================================================================================================
-   if lod == "lod1":
-      bldg_lod1Solid = SubElement(bldg_Building, "{" + XMLNamespaces.bldg+ "}" + 'lod1Solid')
-      gml_Solid = SubElement(bldg_lod1Solid, "{" + XMLNamespaces.gml+ "}" + 'Solid')
-      gml_exterior = SubElement(gml_Solid, "{" + XMLNamespaces.gml+ "}" + 'exterior')
-      gml_CompositeSurface = SubElement(gml_exterior, "{" + XMLNamespaces.gml+ "}" + 'CompositeSurface')
-      for geometry in geometry_list:
-         gml_CompositeSurface.append(geometry.construct())
+   bldg_Building.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name        
    #=======================================================================================================
    #attrib
    #=======================================================================================================
@@ -272,15 +262,39 @@ def write_building(lod, name, geometry_list, bldg_class = None,function = None, 
    if generic_attrib_dict != None:
        write_gen_Attribute(bldg_Building, generic_attrib_dict)
    
+   #=======================================================================================================
+   #geometries
+   #=======================================================================================================
+   if lod == "lod1":
+      bldg_lod1Solid = SubElement(bldg_Building, "{" + XMLNamespaces.bldg+ "}" + 'lod1Solid')
+      gml_Solid = SubElement(bldg_lod1Solid, "{" + XMLNamespaces.gml+ "}" + 'Solid')
+      gml_exterior = SubElement(gml_Solid, "{" + XMLNamespaces.gml+ "}" + 'exterior')
+      gml_CompositeSurface = SubElement(gml_exterior, "{" + XMLNamespaces.gml+ "}" + 'CompositeSurface')
+      for geometry in geometry_list:
+         gml_CompositeSurface.append(geometry.construct())
+   
    return cityObjectMember
 
-def write_cityfurniture(lod, name,furn_class,function, epsg, generic_attrib_dict, geometry_list):
+def write_cityfurniture(lod, name, geometry_list, furn_class = None,function = None, generic_attrib_dict = None ):
    cityObjectMember = Element('cityObjectMember')
    frn_CityFurniture = SubElement(cityObjectMember,"{" + XMLNamespaces.frn+ "}" + 'CityFurniture')
    frn_CityFurniture.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
    
    creationDate = SubElement(frn_CityFurniture, 'creationDate')
    creationDate.text = str(datetime.datetime.now())
+   
+   #=======================================================================================================
+   #attrib
+   #=======================================================================================================
+   if furn_class !=None:
+       frn_class = SubElement(frn_CityFurniture,"{" + XMLNamespaces.frn+ "}" + 'class')
+       frn_class.text = furn_class
+   if function != None:
+       frn_function = SubElement(frn_CityFurniture,"{" + XMLNamespaces.frn+ "}" + 'function')
+       frn_function.text = function
+   if generic_attrib_dict != None:
+       write_gen_Attribute(frn_CityFurniture, generic_attrib_dict)
+   
    #=======================================================================================================
    #geometries
    #=======================================================================================================
@@ -305,15 +319,5 @@ def write_cityfurniture(lod, name,furn_class,function, epsg, generic_attrib_dict
       referencePoint = SubElement(ImplicitGeometry,'referencePoint')
       referencePoint.append(ref_pt.construct())
       '''
-   #=======================================================================================================
-   #attrib
-   #=======================================================================================================
-   frn_class = SubElement(frn_CityFurniture,"{" + XMLNamespaces.frn+ "}" + 'class')
-   frn_class.text = furn_class
-
-   frn_function = SubElement(frn_CityFurniture,"{" + XMLNamespaces.frn+ "}" + 'function')
-   frn_function.text = function
-   
-   write_gen_Attribute(frn_CityFurniture, generic_attrib_dict)
    
    return cityObjectMember

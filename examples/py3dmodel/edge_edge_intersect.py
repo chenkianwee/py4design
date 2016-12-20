@@ -8,10 +8,9 @@ pyptlist = [(2.5,0.5,0), (3,6,0), (2,8,0),(0.5,2,0), (2.5,0.5,0)]
 edge3 = pyliburo.py3dmodel.construct.make_bspline_edge(pyptlist)
 
 interptlist = pyliburo.py3dmodel.calculate.intersect_edge_with_edge(edge1, edge3)
-
 circles = []
 for interpt in interptlist:
-    vert = pyliburo.py3dmodel.construct.make_vertex((interpt.X(), interpt.Y(), interpt.Z()))
+    vert = pyliburo.py3dmodel.construct.make_vertex((interpt[0], interpt[1], interpt[2]))
     #circle = pyliburo.py3dmodel.construct.make_circle((interpt.X(),interpt.Y(),interpt.Z()), (0,0,1), 1)
     circles.append(vert)
 

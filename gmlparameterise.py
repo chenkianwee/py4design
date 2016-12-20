@@ -118,7 +118,6 @@ class Parameterise(object):
         building_name = citygml_reader.get_gml_id(orgin_gml_building)
         bclass = citygml_reader.get_building_class(orgin_gml_building)
         bfunction = citygml_reader.get_building_function(orgin_gml_building)
-        yr_of_construction = citygml_reader.get_building_yr_constr(orgin_gml_building)
         rooftype = citygml_reader.get_building_rooftype(orgin_gml_building)
         stry_blw_grd = citygml_reader.get_building_storey_blw_grd(orgin_gml_building)
         epsg = citygml_reader.get_building_epsg(orgin_gml_building)
@@ -135,8 +134,10 @@ class Parameterise(object):
             srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
             geometry_list.append(srf)
         
-        citygml_writer.add_building("lod1", building_name, bclass, bfunction, bfunction, yr_of_construction, rooftype,str(new_height),
-                                    str(new_nstorey), stry_blw_grd, epsg, generic_attrib_dict, geometry_list)
+        citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
+                                    function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
+                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd, 
+                                    generic_attrib_dict = generic_attrib_dict)
                                     
                                     
     def write_citygml(self, landuse_list, stop_list, road_list, railway_list, citygml_writer):

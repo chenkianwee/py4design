@@ -48,7 +48,7 @@ def if_blevel(building, blevel_list):
     if "building_l" in building:
         blevel_list.append(building)
             
-def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
+def convert_ptshpfile(field_name_list, shapeRecs, citygml):
     name_index = field_name_list.index("name")-1
     station_index = field_name_list.index("station")-1
     highway_index = field_name_list.index("highway")-1
@@ -82,7 +82,8 @@ def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
                     srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(pt_list)
                     geometry_list.append(srf)
                     
-            citygml.add_cityfurniture("lod1", name,"1000","1110", epsg_num, generic_attrib_dict, geometry_list)
+            citygml.add_cityfurniture("lod1", name, geometry_list, furn_class = "1000", function = "1110", 
+                                      generic_attrib_dict = generic_attrib_dict)
          
         if not station.isspace():
             if name.isspace():
@@ -110,12 +111,13 @@ def convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml):
                     geometry_list.append(srf)
                     
             trpst_bldg_list.append(name)                
-            citygml.add_building("lod1", name, "1170", "2480", "2480","0", "1000",str(station_height),
-             str(station_storey), str(storey_blw_grd), epsg_num, generic_attrib_dict, geometry_list)   
+            citygml.add_building("lod1", name, geometry_list, bldg_class = "1170", function ="2480", 
+            usage = "2480", rooftype ="1000", height = str(station_height),
+             stry_abv_grd = str(station_storey), stry_blw_grd = str(storey_blw_grd), generic_attrib_dict = generic_attrib_dict)   
              
     return trpst_bldg_list
              
-def convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml):
+def convert_polylineshpfile(field_name_list, shapeRecs, citygml):
     railway_index = field_name_list.index("railway")-1
     name_index = field_name_list.index("name")-1
     highway_index = field_name_list.index("highway")-1
@@ -131,15 +133,15 @@ def convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml):
         
         if not railway.isspace():
             generic_attrib_dict = {"railway":railway}
-            pyliburo.shp2citygml.trpst2citygml("Railway", rec, name, railway, epsg_num, generic_attrib_dict, citygml)
+            pyliburo.shp2citygml.trpst2citygml("Railway", rec, name, railway, generic_attrib_dict, citygml)
             
         if not highway.isspace():
             generic_attrib_dict = {"highway":highway}
-            pyliburo.shp2citygml.trpst2citygml("Road", rec, name, highway, epsg_num, generic_attrib_dict, citygml)
+            pyliburo.shp2citygml.trpst2citygml("Road", rec, name, highway, generic_attrib_dict, citygml)
         
         count_shapes+=1
         
-def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list):
+def convert_apolygon(rec, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list):
     poly_attribs=rec.record
     landuse = poly_attribs[landuse_index]
     landuse.strip()
@@ -178,7 +180,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
             plot_area = pyliburo.shp2citygml.get_plot_area(rec)
             generic_attrib_dict["plot_area"] = plot_area
             
-            citygml.add_landuse("lod1", name, function, epsg_num, generic_attrib_dict, geometry_list)
+            citygml.add_landuse("lod1", name, geometry_list, function = function, generic_attrib_dict = generic_attrib_dict)
             
             #=======================================================================================================
             #find the buildings that belong to this plot
@@ -243,7 +245,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                                 #write the carparks as buildings
                                 for parking in parking_list:
                                     perror(parking, parking_storeys, perror_list, inacc_buildings)
-                                    pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                    pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys)
                                             
                         #TODO: calculate for commercial buildings in terms of parking space too 
                         else:
@@ -252,7 +254,7 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                         
                         for not_parking in not_parking_list:
                             perror(not_parking, num_storeys, perror_list, inacc_buildings)
-                            pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                            pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                         
                     #================================================================================================================
                     #for those plots without plot ratio and might be educational or civic buildings
@@ -273,11 +275,11 @@ def convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, p
                         for not_parking in not_parking_list:
                             height = num_storeys*commercial_height
                             perror(not_parking, num_storeys, perror_list, inacc_buildings)
-                            pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                            pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                             
     return total_build_up, perror_list, constr_buildings, inacc_buildings
                    
-def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list):
+def convert_apolygon_origlvl(rec, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list):
     poly_attribs=rec.record
     landuse = poly_attribs[landuse_index]
     landuse.strip()
@@ -315,7 +317,7 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
             plot_area = pyliburo.shp2citygml.get_plot_area(rec)
             generic_attrib_dict["plot_area"] = plot_area
             
-            citygml.add_landuse("lod1", name, function, epsg_num, generic_attrib_dict, geometry_list)
+            citygml.add_landuse("lod1", name,geometry_list, function = function, generic_attrib_dict = generic_attrib_dict )
             
             #=======================================================================================================
             #find the buildings that belong to this plot
@@ -377,9 +379,9 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                         blevel_list.append(parking)
                                         parking_storeys = parking["building_l"]
                                         parking_height = parking_storey_height*parking_storeys
-                                        pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                        pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys)
                                     else:
-                                        pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, epsg_num)
+                                        pyliburo.shp2citygml.building2citygml(parking, parking_height, citygml, landuse, parking_storeys, )
                                             
                         #TODO: calculate for commercial buildings in terms of parking space too 
                         else:
@@ -394,9 +396,9 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                     height = residential_height*num_storeys
                                 else:
                                     height = commercial_height*num_storeys
-                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                             else:
-                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                         
                     #================================================================================================================
                     #for those plots without plot ratio and might be educational or civic buildings
@@ -419,14 +421,14 @@ def convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_
                                 blevel_list.append(not_parking)
                                 num_storeys = not_parking["building_l"]
                                 height = commercial_height*num_storeys
-                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                             else:
                                 height = num_storeys*commercial_height
-                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys, epsg_num)
+                                pyliburo.shp2citygml.building2citygml(not_parking, height, citygml, landuse, num_storeys)
                             
     return total_build_up, constr_buildings, blevel_list
     
-def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list, origlvl=False):
+def convert_polygonshpfile(field_name_list, shapeRecs, citygml, building_list, origlvl=False):
     #the attributes are mainly base on the attributes from osm 
     landuse_index = field_name_list.index("landuse")-1
     plot_ratio_index = field_name_list.index("plot_ratio")-1
@@ -439,7 +441,7 @@ def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, buildi
         shp_perror_list = []
         shp_inacc_buildings = []
         for rec in shapeRecs:
-            build_footprint, perror_list,constr_list, inacc_buildings = convert_apolygon(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
+            build_footprint, perror_list,constr_list, inacc_buildings = convert_apolygon(rec, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
             shp_perror_list.extend(perror_list)    
             shp_constr_list.extend(constr_list)
             shp_inacc_buildings.extend(inacc_buildings)
@@ -450,7 +452,7 @@ def convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, buildi
     if origlvl == True:
         shp_blevel_list = []
         for rec in shapeRecs:
-            build_footprint, constr_list, blevel_list = convert_apolygon_origlvl(rec, epsg_num, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
+            build_footprint, constr_list, blevel_list = convert_apolygon_origlvl(rec, landuse_index, building_index, name_index, plot_ratio_index, count_shapes, citygml, building_list)         
             shp_constr_list.extend(constr_list)
             shp_blevel_list.extend(blevel_list)
             total_flr_area = total_flr_area + build_footprint                    
@@ -486,14 +488,14 @@ def convert(shpfile_list, citygml):
         #shapetype 1 is point, 3 is polyline, shapetype 5 is polygon
         #if it is a point file it must be recording the location of the bus stops and subway stations
         if shapetype == 1:
-            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml)          
+            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, citygml)          
             total_trpst_bldg_list.extend(trpst_bldg_list)
             
         if shapetype == 3:
-            convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml)
+            convert_polylineshpfile(field_name_list, shapeRecs, citygml)
             
         if shapetype == 5:
-            shp_perror_list, shp_constr_list, shp_inacc_buildings, total_flr_area = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list)
+            shp_perror_list, shp_constr_list, shp_inacc_buildings, total_flr_area = convert_polygonshpfile(field_name_list, shapeRecs, citygml, building_list)
             if shp_perror_list:
                 total_perror_list.extend(shp_perror_list)
             if shp_constr_list:
@@ -540,14 +542,14 @@ def convert_origlvl(shpfile_list, citygml):
         #shapetype 1 is point, 3 is polyline, shapetype 5 is polygon
         #if it is a point file it must be recording the location of the bus stops and subway stations
         if shapetype == 1:
-            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, epsg_num, citygml)
+            trpst_bldg_list = convert_ptshpfile(field_name_list, shapeRecs, citygml)
             total_trpst_bldg_list.extend(trpst_bldg_list)
             
         if shapetype == 3:
-            convert_polylineshpfile(field_name_list, shapeRecs, epsg_num, citygml)
+            convert_polylineshpfile(field_name_list, shapeRecs, citygml)
             
         if shapetype == 5:
-            shp_constr_list, total_flr_area, shp_blevel_list  = convert_polygonshpfile(field_name_list, shapeRecs, epsg_num, citygml, building_list, origlvl=True)
+            shp_constr_list, total_flr_area, shp_blevel_list  = convert_polygonshpfile(field_name_list, shapeRecs, citygml, building_list, origlvl=True)
             if shp_constr_list:
                 total_constr_list.extend(shp_constr_list)
             if shp_blevel_list:

@@ -71,28 +71,19 @@ def daeluse2gmlluse(daeluse, citygml_writer):
     luse_lod = "lod1"
     luse_name = "plot1"
     luse_function = "1010"
-    luse_epsg = "EPSG:21781"
     luse_generic_attrib_dict = {}
     luse_poly = pyliburo.py3dmodel.fetch.pyptlist_frm_occface(daeluse)
     gml_srf = pyliburo.pycitygml.gmlgeometry.SurfaceMember(luse_poly)
     luse_geometry_list = [gml_srf]
-    citygml_writer.add_landuse(luse_lod, luse_name, luse_function, luse_epsg, luse_generic_attrib_dict, luse_geometry_list)
+    citygml_writer.add_landuse(luse_lod, luse_name, luse_geometry_list, function = luse_function, 
+                               generic_attrib_dict = luse_generic_attrib_dict)
 
 def daebldglist2gmlbuildings(daebldg_shelllist, citygml_writer):
     bldg_cnt = 0
     for building in daebldg_shelllist:
         bldg_lod = "lod1"
         bldg_name = "building" + str(bldg_cnt)
-        bldg_class = "1000"
-        bldg_function = "1000"
-        bldg_usage = "1000"
-        bldg_yr_construct = "2016"
-        bldg_rooftype = "1000"
-        
         bldg_str_abv_grd = "30"
-        bldg_str_blw_grd = "0"
-        bldg_epsg = "EPSG:21781"
-        bldg_generic_attrib_dict = {}
         bfacelist = pyliburo.py3dmodel.fetch.geom_explorer(building, "face")
         footprint, roof = get_footprint_roof(building)
         bldg_geometry_list = []
@@ -105,8 +96,9 @@ def daebldglist2gmlbuildings(daebldg_shelllist, citygml_writer):
         heightpt2 = pyliburo.py3dmodel.calculate.face_midpt(roof)
         height = pyliburo.py3dmodel.calculate.distance_between_2_pts(heightpt1, heightpt2)
         bldg_height = height
-        citygml_writer.add_building(bldg_lod, bldg_name, bldg_class, bldg_function, bldg_usage,bldg_yr_construct,bldg_rooftype,str(bldg_height),str(bldg_str_abv_grd),
-                       str(bldg_str_blw_grd), bldg_epsg, bldg_generic_attrib_dict, bldg_geometry_list)
+        citygml_writer.add_building(bldg_lod, bldg_name, bldg_geometry_list, 
+                                    height = str(bldg_height),
+                                    stry_abv_grd = str(bldg_str_abv_grd))
                        
         bldg_cnt +=1
     
@@ -203,7 +195,7 @@ def eval_daylight(citygml_filepath):
     illum threshold (lux)
     '''
     illum_threshold = 10000
-    dfai, topo_list, illum_ress = evaluations.dfai(illum_threshold,weatherfilepath,xdim,ydim)    
+    avg_dfavi, dfavi_percent, dfai, topo_list, illum_ress = evaluations.dfavi(illum_threshold,weatherfilepath,xdim,ydim)    
     
     return dfai
     

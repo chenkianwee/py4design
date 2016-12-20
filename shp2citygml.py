@@ -400,8 +400,7 @@ def get_plot_area(plot_rec):
     return plot_area
 
 
-def building2citygml(building, height, citygml, landuse, storey, epsg):
-    yr_construct = "0"
+def building2citygml(building, height, citygml, landuse, storey):
     storey_blw_grd = "0"
     bclass = map_osm2citygml_building_class(landuse)
     if "name" in building:
@@ -434,11 +433,12 @@ def building2citygml(building, height, citygml, landuse, storey, epsg):
             srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
             geometry_list.append(srf)
         
-    citygml.add_building("lod1", name, bclass, function, function,yr_construct, "1000",str(height),
-                         str(storey), storey_blw_grd, epsg, generic_attrib_dict, geometry_list)
+    citygml.add_building("lod1", name,geometry_list, bldg_class = bclass, function = function, usage = function,
+                         rooftype = "1000", height = str(height),
+                         stry_abv_grd = str(storey), stry_blw_grd = storey_blw_grd, generic_attrib_dict = generic_attrib_dict )
 
 
-def trpst2citygml(trpt_type, rec, name, trpst_attrib, epsg_num, generic_attrib_dict,citygml):
+def trpst2citygml(trpt_type, rec, name, trpst_attrib, generic_attrib_dict,citygml):
     if name.isspace():
         name = trpst_attrib + str(uuid.uuid1())
     trpst_class = map_osm2citygml_trpst_complex_class(trpst_attrib)
@@ -450,7 +450,8 @@ def trpst2citygml(trpt_type, rec, name, trpst_attrib, epsg_num, generic_attrib_d
         linestring = pycitygml.gmlgeometry.LineString(point_list2d_2_3d(part,0.0))
         geometry_list.append(linestring)
         
-    citygml.add_transportation(trpt_type, "lod0", name, trpst_class, function, epsg_num, generic_attrib_dict, geometry_list)
+    citygml.add_transportation(trpt_type, "lod0", name, geometry_list, rd_class = trpst_class, 
+                               function = function, generic_attrib_dict = generic_attrib_dict)
     
 def terrain2d23d_tin(terrain_shpfile, elev_attrib_name):
     sf = shapefile.Reader(terrain_shpfile)
