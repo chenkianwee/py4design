@@ -203,7 +203,7 @@ class Evals(object):
         return avg_pvavi, pvavi_percent, pvai, epv, topo_list, irrad_ress
     
     def pveavi(self, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim, 
-               surface = "roof", pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
+               pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
         '''
         epv calculates the potential electricity 
         that can be generated on the roof of buildings annually.

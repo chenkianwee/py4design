@@ -835,7 +835,7 @@ def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     :rtype: list(float)
     """    
     #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, shading_occfaces, 
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
                                                                                                xdim, ydim, rad_folderpath, 
                                                                                                surface = mode, 
                                                                                                shading_occfaces = shading_occfaces)   

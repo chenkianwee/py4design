@@ -4,9 +4,9 @@ import time
 display2dlist = []
 colourlist = []
 time1 = time.clock()
-#dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\simple_case.dae"
-dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\complex_testout_rhino.dae"
-citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\complex.gml"
+#dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\grid_tower.dae"
+dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
+citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\grid_tower.gml"
 
 cityobj_dict = pyliburo.collada2citygml.auto_convert_dae2gml(dae_file, citygml_filepath)
 bldg_list = cityobj_dict["building"]
