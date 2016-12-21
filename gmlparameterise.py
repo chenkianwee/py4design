@@ -24,6 +24,7 @@ import pycitygml
 import py3dmodel
 import gml3dmodel
 import threedmodel
+import gmlparmpalette
 
 class Parameterise(object):
     def __init__(self, citygmlfile):
