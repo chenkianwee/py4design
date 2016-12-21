@@ -84,7 +84,7 @@ class BldgHeightParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, parameters):
-        
+        print "test"
         return "implemented"
         
 if __name__ == '__main__':
