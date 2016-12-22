@@ -18,15 +18,22 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import py2radiance
-import pycitygml
-import py3dmodel
-import pyoptimise
+import math
 
-import citygml2eval
-import gmlparameterise
-import shp2citygml
-import urbanformeval
-import collada2citygml
-import runopt
-import utility
+def frange(start, end=None, inc=None):
+    """A range function, that does accept float increments..."""
+    if end == None:
+        end = start + 0.0
+        start = 0.0
+    else: start += 0.0 # force it to be a float
+
+    if inc == None:
+        inc = 1.0
+    count = int(math.ceil((end - start) / inc))
+
+    L = [None,] * count
+
+    L[0] = start
+    for i in xrange(1,count):
+        L[i] = L[i-1] + inc
+    return L

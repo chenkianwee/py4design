@@ -21,89 +21,47 @@
 import random
 
 import pycitygml
-import py3dmodel
 import gml3dmodel
-import threedmodel
 import gmlparmpalette
 
 class Parameterise(object):
     def __init__(self, citygmlfile):
         self.citygml = pycitygml.Reader(citygmlfile)
+        self.parm_obj_list = []
+        self.nparameters = None
+        
         self.buildings = self.citygml.get_buildings()
         self.landuses = self.citygml.get_landuses()
         self.stops = self.citygml.get_bus_stops()
         self.roads = self.citygml.get_roads()
         self.railways = self.citygml.get_railways()
         self.building_footprints = None
-        self.nparameters = None
+        
         self.buildings2landuses = None
         self.nparms_abuilding = 3
         
-    def get_builiding_footprints(self):
-        if self.building_footprints == None:
-            buildings = self.buildings
-            building_footprints = []
-            for building in buildings:
-                footprint_dict = {}
-                polygons = self.citygml.get_pypolygon_list(building)
-                solid = threedmodel.pypolygons2occsolid(polygons)
-                footprint = gml3dmodel.get_building_footprint(solid)
-                footprint_dict["footprint"] = footprint
-                footprint_dict["building"] = building
-                building_footprints.append(footprint_dict)
-            
-            self.building_footprints = building_footprints
-            
-            
+    def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None):
+        """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
+        this parameter will apply to all buildings"""
+
+        bldg_parm = gmlparmpalette.BldgFlrAreaHeightParm()
+        bldg_parm.define_int_range(1,10,1)
+        if bldg_class !=None:
+            bldg_parm.apply_2_bldg_class(bldg_class)
+        if bldg_function != None:
+            bldg_parm.apply_2_bldg_function(bldg_function)
+        if bldg_usage != None:
+            bldg_parm.apply_2_bldg_usage(bldg_usage)
+        self.parm_obj_list.append(bldg_parm)
+        
     def define_nparameters(self):
-        #generate a python script for generating design variants of the citygml model
-        #get all the building footprints
-        self.get_builiding_footprints()
-        
-        #at the end of the script we should know the number of parameters required
-        nparameters = 0
-        nbuildings = 0
-        #a list to document which buildings belong to the plot
-        buildings2landuses = []
-        
-        #get the landuses plot
-        citygml = self.citygml
-        landuses = self.landuses
-        
-        lcnt = 0
-        for landuse in landuses:
-            lpolygon = citygml.get_polygons(landuse)[0]
-            landuse_pts = citygml.polygon_2_pt_list(lpolygon)
-            landuse_occpolygon = py3dmodel.construct.make_polygon(landuse_pts)
-            buildings_on_landuse = gml3dmodel.buildings_on_landuse(landuse_occpolygon, self.building_footprints)  
-            
-            #build a dictionary the landuse is the key to the list of buildings 
-            buildings2landuse_dict = {}
-            buildings2landuse_dict['landuse'] = landuse
-            buildings2landuse_dict['landuse_pts'] = landuse_pts
-            buildings2landuse_dict["buildings"] = buildings_on_landuse
-            buildings2landuses.append(buildings2landuse_dict)
-            
-            #calculate number of buildings 
-            nbuildings_on_landuse = len(buildings_on_landuse)
-            nbuildings += nbuildings_on_landuse
-            total_parm_plot = 0
-            #nparm will differ according to the building function
-            for building_dict in buildings_on_landuse:
-                gml_building = building_dict["building"]
-                bfunction = citygml.get_building_function(gml_building)
-                if bfunction == "1610": #carpqrk
-                    total_parm_plot = total_parm_plot+2
-                else:
-                    total_parm_plot = total_parm_plot+3
-                    
-            nparameters += total_parm_plot
-            lcnt+=1
-            
-        self.nparameters = nparameters
-        self.buildings2landuses = buildings2landuses
-        print "NUMBER OF PARAMETERS", nparameters
-        
+        parm_obj_list = self.parm_obj_list
+        citygml_reader = self.citygml
+        total_nparms = 0
+        for parm_obj in parm_obj_list:
+            nparms = parm_obj.define_nparameters(citygml_reader)
+            total_nparms += nparms
+        self.nparameters = total_nparms
         
     def generate_random_parameters(self):
         if self.nparameters == None:
@@ -113,58 +71,14 @@ class Parameterise(object):
             random.seed()
             parameters.append(random.random())
         return parameters
-    
-    def update_gml_building(self, orgin_gml_building, new_height, new_nstorey, new_occ_building_solid, citygml_writer):
+        
+    def generate_design_variant(self, parameters, dv_citygml_filepath):
+        parm_obj_list = self.parm_obj_list
         citygml_reader = self.citygml
-        building_name = citygml_reader.get_gml_id(orgin_gml_building)
-        bclass = citygml_reader.get_building_class(orgin_gml_building)
-        bfunction = citygml_reader.get_building_function(orgin_gml_building)
-        rooftype = citygml_reader.get_building_rooftype(orgin_gml_building)
-        stry_blw_grd = citygml_reader.get_building_storey_blw_grd(orgin_gml_building)
-        epsg = citygml_reader.get_building_epsg(orgin_gml_building)
-        generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)
-        face_list = py3dmodel.fetch.faces_frm_solid(new_occ_building_solid)
-        geometry_list = []
-        pt_list_list = []
-        
-        for face in face_list:
-            pt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
-            first_pt = pt_list[0]
-            pt_list.append(first_pt)
-            pt_list_list.append(pt_list)
-            srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
-            geometry_list.append(srf)
-        
-        citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
-                                    function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd, 
-                                    generic_attrib_dict = generic_attrib_dict)
-                                    
-                                    
-    def write_citygml(self, landuse_list, stop_list, road_list, railway_list, citygml_writer):
-        citygml_root = citygml_writer.et
-        
-        for landuse in landuse_list:
-            cityobjectmember = citygml_writer.create_cityobjectmember()
-            cityobjectmember.append(landuse)
-            citygml_root.append(cityobjectmember)
-        
-        for stop in stop_list:
-            cityobjectmember = citygml_writer.create_cityobjectmember()
-            cityobjectmember.append(stop)
-            citygml_root.append(cityobjectmember)
-            
-        for road in road_list:
-            cityobjectmember = citygml_writer.create_cityobjectmember()
-            cityobjectmember.append(road)
-            citygml_root.append(cityobjectmember)
-            
-        for railway in railway_list:
-            cityobjectmember = citygml_writer.create_cityobjectmember()
-            cityobjectmember.append(railway)
-            citygml_root.append(cityobjectmember)
-        
-    def generate_design_variant(self, parameters):
+        for parm_obj in parm_obj_list:
+            parm_obj.execute(citygml_reader, parameters)
+        pass 
+        '''
         if self.buildings2landuses == None:
             raise Exception 
             
@@ -300,5 +214,5 @@ class Parameterise(object):
             
         self.write_citygml(self.landuses, self.stops, self.roads, self.railways, citygml_writer)
         return citygml_writer, newblist, plot_faces_list, b_attribs_list, bounding_list_list
-                
+        '''
 #===================================================================================================================================================

@@ -24,7 +24,6 @@ import pycitygml
 import py3dmodel
 import gml3dmodel
 import urbanformeval
-import threedmodel
 
 class Evals(object):
     def __init__(self, citygmlfile):
@@ -73,7 +72,7 @@ class Evals(object):
             building_dict ={}
             #get all the polygons from the building 
             pypolygonlist = self.citygml.get_pypolygon_list(building) 
-            bsolid = threedmodel.pypolygons2occsolid(pypolygonlist)
+            bsolid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygonlist)
             #extract the polygons from the building and separate them into facade, roof, footprint
             facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
             building_dict["facade"] = facades

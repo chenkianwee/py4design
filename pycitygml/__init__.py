@@ -106,7 +106,17 @@ class Reader(object):
             if building is not None:
                 buildings.append(building)
         return buildings
-        
+    
+    def get_non_xtype_cityobject(self, xtype):
+        """xtype is a type of cityobject, e.g. "bldg:Building, xtype is a string"""
+        non_xtype_cityobject = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            xtype_cityobj = cityobject.find(xtype, namespaces=self.namespaces)
+            if xtype_cityobj is None:
+                non_xtype_cityobject.append(cityobject)
+        return non_xtype_cityobject
+    
     def get_building_height(self, building):
         return float(building.find("bldg:measuredHeight", namespaces=self.namespaces).text)
         

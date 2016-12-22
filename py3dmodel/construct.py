@@ -201,6 +201,20 @@ def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     shell_list = topo_dict["shell"]
     return shell_list
     
+def make_occsolid_frm_pypolygons(pypolygon_list):
+    face_list = []
+    for polygon_pts in pypolygon_list:
+        face = make_polygon(polygon_pts)
+        face_list.append(face)
+
+    #make shell
+    shell = make_shell_frm_faces(face_list)[0]
+    shell = modify.fix_shell_orientation(shell)
+    
+    solid = make_solid(shell)
+    solid = modify.fix_shape(solid)
+    return solid
+    
 def make_solid(occ_shell):
     ms = BRepBuilderAPI_MakeSolid()
     ms.Add(occ_shell)
