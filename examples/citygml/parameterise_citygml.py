@@ -1,5 +1,4 @@
 import time
-import random
 import pyliburo
 
 #specify the citygml file
@@ -8,25 +7,15 @@ result_citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\example
 time1 = time.clock()   
 display_2dlist = []
 colour_list = []
-citygml_reader = pyliburo.pycitygml.Reader(citygml_filepath)
 
-#define the parameter
-bldg_parm = pyliburo.gmlparmpalette.BldgFlrAreaHeightParm()
-parm_range = bldg_parm.define_int_range(1,10,1)
-nparameters = bldg_parm.define_nparameters(citygml_reader)
-
-r_parm_list = []
-for _ in range(nparameters):
-    r_parm = random.random()
-    r_parm_list.append(r_parm)
-    
-citygml_writer = bldg_parm.execute(citygml_reader, r_parm_list)
-citygml_writer.write(result_citygml_filepath)
-print "READER", citygml_reader.citymodelnode
-print "WRITER", citygml_writer.et
+parameterise = pyliburo.gmlparameterise.Parameterise(citygml_filepath)
+parameterise.add_bldg_flr_area_height_parm()
+parameterise.add_bldg_orientation_parm((0,350,10))
+parameters = parameterise.generate_random_parameters()
+parameterise.generate_design_variant(parameters, result_citygml_filepath)
+print parameters
 time2 = time.clock() 
 print "TIME TAKEN", (time2-time1)/60.0
-
 print "VISUALISING"  
 #display_2dlist.append(dlist)
 #colour_list.append("RED")

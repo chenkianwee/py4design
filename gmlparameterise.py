@@ -21,13 +21,14 @@
 import random
 
 import pycitygml
-import gml3dmodel
 import gmlparmpalette
 
 class Parameterise(object):
     def __init__(self, citygmlfile):
-        self.citygml = pycitygml.Reader(citygmlfile)
-        self.parm_obj_list = []
+        reader = pycitygml.Reader()
+        reader.load_filepath(citygmlfile)
+        self.citygml = reader
+        self.parm_obj_dict_list = []
         self.nparameters = None
         
         self.buildings = self.citygml.get_buildings()
@@ -38,34 +39,71 @@ class Parameterise(object):
         self.building_footprints = None
         
         self.buildings2landuses = None
-        self.nparms_abuilding = 3
         
     def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None):
         """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
         this parameter will apply to all buildings"""
 
-        bldg_parm = gmlparmpalette.BldgFlrAreaHeightParm()
-        bldg_parm.define_int_range(1,10,1)
+        parm = gmlparmpalette.BldgFlrAreaHeightParm()
+        parm.define_int_range(1,10,1)
         if bldg_class !=None:
-            bldg_parm.apply_2_bldg_class(bldg_class)
+            parm.apply_2_bldg_class(bldg_class)
         if bldg_function != None:
-            bldg_parm.apply_2_bldg_function(bldg_function)
+            parm.apply_2_bldg_function(bldg_function)
         if bldg_usage != None:
-            bldg_parm.apply_2_bldg_usage(bldg_usage)
-        self.parm_obj_list.append(bldg_parm)
+            parm.apply_2_bldg_usage(bldg_usage)
+            
+        bldg_parm_dict = {}
+        bldg_parm_dict["parameter_object"] = parm
+        self.parm_obj_dict_list.append(bldg_parm_dict)
+        
+    def add_bldg_orientation_parm(self, parm_definition, bldg_class= None, bldg_function = None, bldg_usage = None):
+        """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
+        this parameter will apply to all buildings
+        
+        parm definition can either be a [start, stop, step] or a list of the parameters"""
+
+        parm = gmlparmpalette.BldgOrientationParm()
+        if type(parm_definition) == tuple:
+            is_it_int = True
+            for ele in parm_definition:
+                if type(ele) == float:
+                    is_it_int = False
+                    
+            if is_it_int:        
+                parm.define_int_range(parm_definition[0],parm_definition[1],parm_definition[2])
+            else:
+                parm.define_float_range(parm_definition[0],parm_definition[1],parm_definition[2])
+            
+        if type(parm_definition) == list:
+            parm.set_parm_range(parm_definition)
+            
+        if bldg_class !=None:
+            parm.apply_2_bldg_class(bldg_class)
+        if bldg_function != None:
+            parm.apply_2_bldg_function(bldg_function)
+        if bldg_usage != None:
+            parm.apply_2_bldg_usage(bldg_usage)
+            
+        bldg_parm_dict = {}
+        bldg_parm_dict["parameter_object"] = parm
+        self.parm_obj_dict_list.append(bldg_parm_dict)
         
     def define_nparameters(self):
-        parm_obj_list = self.parm_obj_list
+        parm_obj_dict_list = self.parm_obj_dict_list
         citygml_reader = self.citygml
         total_nparms = 0
-        for parm_obj in parm_obj_list:
+        for parm_obj_dict in parm_obj_dict_list:
+            parm_obj = parm_obj_dict["parameter_object"]
             nparms = parm_obj.define_nparameters(citygml_reader)
+            parm_obj_dict["parameter_count"] = (total_nparms, total_nparms+nparms )
             total_nparms += nparms
+            
         self.nparameters = total_nparms
         
     def generate_random_parameters(self):
         if self.nparameters == None:
-            raise Exception("please run define_nparameters() before running this ")
+            self.define_nparameters()
         parameters = []
         for _ in range(self.nparameters):
             random.seed()
@@ -73,11 +111,20 @@ class Parameterise(object):
         return parameters
         
     def generate_design_variant(self, parameters, dv_citygml_filepath):
-        parm_obj_list = self.parm_obj_list
+        if self.nparameters == None:
+            self.define_nparameters()
+        parm_obj_dict_list = self.parm_obj_dict_list
         citygml_reader = self.citygml
-        for parm_obj in parm_obj_list:
-            parm_obj.execute(citygml_reader, parameters)
-        pass 
+        for parm_obj_dict in parm_obj_dict_list:
+            parm_obj = parm_obj_dict["parameter_object"]
+            parm_cnt = parm_obj_dict["parameter_count"]
+            parm_object_parms = parameters[parm_cnt[0]:parm_cnt[1]]
+            citygml_reader = parm_obj.execute(citygml_reader, parm_object_parms)
+            
+        citygml_writer = pycitygml.Writer()
+        citygml_writer.citymodelnode = citygml_reader.citymodelnode
+        citygml_writer.write(dv_citygml_filepath)
+ 
         '''
         if self.buildings2landuses == None:
             raise Exception 

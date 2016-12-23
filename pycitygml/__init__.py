@@ -29,7 +29,7 @@ import write_gml
 
 class Writer(object):
     def __init__(self):
-        self.et = write_gml.write_root()
+        self.citymodelnode = write_gml.write_root()
         
     def create_cityobjectmember(self):
         cityObjectMember = Element('cityObjectMember')
@@ -37,11 +37,11 @@ class Writer(object):
             
     def add_landuse(self, lod, name, geometry_list, function = None, generic_attrib_dict = None):
         landuse = write_gml.write_landuse(lod, name, geometry_list, function = function, generic_attrib_dict = generic_attrib_dict)
-        self.et.append(landuse)
+        self.citymodelnode.append(landuse)
 
     def add_transportation(self, trpt_type, lod, name, geometry_list, rd_class = None, function = None, generic_attrib_dict= None):
         transportation = write_gml.write_transportation(trpt_type, lod, name, geometry_list, rd_class = rd_class, function = function, generic_attrib_dict= generic_attrib_dict)
-        self.et.append(transportation)
+        self.citymodelnode.append(transportation)
 
     def add_building(self, lod, name, geometry_list, bldg_class = None,function = None, usage = None,yr_constr  = None,
                    rooftype = None,height = None,stry_abv_grd = None, stry_blw_grd = None, generic_attrib_dict=None ):
@@ -51,31 +51,31 @@ class Writer(object):
                                         stry_abv_grd = stry_abv_grd, stry_blw_grd = stry_blw_grd, 
                                         generic_attrib_dict = generic_attrib_dict )
         
-        self.et.append(bldg)
+        self.citymodelnode.append(bldg)
         
     def add_cityfurniture(self,lod, name, geometry_list, furn_class = None,function = None, generic_attrib_dict = None):
         city_frn = write_gml.write_cityfurniture(lod, name, geometry_list, furn_class = furn_class,function = function, generic_attrib_dict = generic_attrib_dict)
-        self.et.append(city_frn)
+        self.citymodelnode.append(city_frn)
         
     def add_tin_relief(self, lod, name, geometry_list ):
         tin_relief = write_gml.write_tin_relief(lod,name,geometry_list)
-        self.et.append(tin_relief)
+        self.citymodelnode.append(tin_relief)
         
     def add_bounded_by(self, epsg, lower_bound, upper_bound):
-        write_gml.write_boundedby(self.et, epsg, lower_bound, upper_bound)
+        write_gml.write_boundedby(self.citymodelnode, epsg, lower_bound, upper_bound)
 
     def write2string(self):
-        print etree.tostring(self.et, pretty_print=True)
+        print etree.tostring(self.citymodelnode, pretty_print=True)
         
     def write(self, filepath):
         outFile = open(filepath, 'w')
-        ElementTree(self.et).write(outFile,pretty_print = True, xml_declaration = True, encoding="UTF-8", standalone="yes")
+        ElementTree(self.citymodelnode).write(outFile,pretty_print = True, xml_declaration = True, encoding="UTF-8", standalone="yes")
         outFile.close()
 
 class Reader(object):
-    def __init__(self, filepath):
-        self.tree = etree.parse(filepath)
-        self.citymodelnode = self.tree.getroot()
+    def __init__(self):
+        self.citymodelnode = None
+        self.cityobjectmembers = None
         self.namespaces = {"citygml":write_gml.XMLNamespaces.citygml,
                            "core": write_gml.XMLNamespaces.core,
                            "xsi": write_gml.XMLNamespaces.xsi,
@@ -94,9 +94,25 @@ class Reader(object):
                            "bldg": write_gml.XMLNamespaces.bldg,
                            "dem": write_gml.XMLNamespaces.dem,
                            "veg": write_gml.XMLNamespaces.veg,
-                           "gen": write_gml.XMLNamespaces.gen}
+                           "gen": write_gml.XMLNamespaces.gen} 
         
-        self.cityobjectmembers = self.tree.findall("citygml:cityObjectMember", namespaces=self.namespaces)
+    def load_filepath(self, filepath):
+        if self.citymodelnode != None:
+            raise Exception("you have already loaded a citygml file")
+        #self.tree = etree.parse(filepath)
+        #self.citymodelnode = self.tree.getroot()
+        #self.cityobjectmembers = self.tree.findall("citygml:cityObjectMember", namespaces=self.namespaces)
+        tree = etree.parse(filepath)
+        self.citymodelnode = tree.getroot()
+        self.cityobjectmembers = tree.findall("citygml:cityObjectMember", namespaces=self.namespaces)
+        
+    def load_citymodel_node(self, citymodel_node):
+        if self.citymodelnode != None:
+            raise Exception("you have already loaded a citygml file")
+            
+        tree = etree.fromstring(etree.tostring(citymodel_node, pretty_print=True))        
+        self.citymodelnode = tree
+        self.cityobjectmembers = tree.findall("citygml:cityObjectMember", namespaces=self.namespaces)
         
     def get_buildings(self):
         buildings = []
