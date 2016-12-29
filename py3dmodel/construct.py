@@ -201,6 +201,20 @@ def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     shell_list = topo_dict["shell"]
     return shell_list
     
+def make_occsolid_frm_pypolygons(pypolygon_list):
+    face_list = []
+    for polygon_pts in pypolygon_list:
+        face = make_polygon(polygon_pts)
+        face_list.append(face)
+
+    #make shell
+    shell = make_shell_frm_faces(face_list)[0]
+    shell = modify.fix_shell_orientation(shell)
+    
+    solid = make_solid(shell)
+    solid = modify.fix_shape(solid)
+    return solid
+    
 def make_solid(occ_shell):
     ms = BRepBuilderAPI_MakeSolid()
     ms.Add(occ_shell)
@@ -218,7 +232,8 @@ def make_compound(topo):
 def extrude(occ_face, pyvector, height):
     vec = make_vector((0,0,0),pyvector)*height
     extrude = BRepPrimAPI_MakePrism(occ_face, vec)
-    return extrude.Shape()
+    solid = fetch.shape2shapetype(extrude.Shape())
+    return solid
     
 def extrude_edge(occedge, pydirection, height):
     edge_midpt = calculate.edge_midpt(occedge)
@@ -271,15 +286,18 @@ def grid_face(occ_face, udim, vdim):
 
 def boolean_common(occ_shape1, occ_shape2):
     intersection = BRepAlgoAPI_Common(occ_shape1, occ_shape2).Shape()
-    return intersection
+    compound = fetch.shape2shapetype(intersection)
+    return compound
     
 def boolean_fuse(occshape1, occshape2):
     fused = Construct.boolean_fuse(occshape1, occshape2)
-    return fused
+    compound = fetch.shape2shapetype(fused)
+    return compound
 
 def boolean_difference(occshape2cutfrm, occ_cuttingshape):
     difference = Construct.boolean_cut(occshape2cutfrm, occ_cuttingshape)
-    return difference
+    compound = fetch.shape2shapetype(difference)
+    return compound
     
 def make_face_frm_wire(occwire):
     occface = BRepBuilderAPI_MakeFace(occwire).Face()

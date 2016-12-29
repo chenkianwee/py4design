@@ -4,8 +4,9 @@ import pyliburo
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
-citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
-#citygml_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\design_variants\\1222.gml"
+citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\punggol_luse50_53.gml"
+#citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
+#citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\grid_tower.gml"
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
@@ -13,10 +14,12 @@ citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\
 
 time1 = time.clock()
 display_2dlist = []
+colour_list = []
 #===================================================================================================
 #read the citygml file 
 #===================================================================================================
-read_citygml = pyliburo.pycitygml.Reader(citygml_filepath)
+read_citygml = pyliburo.pycitygml.Reader()
+read_citygml.load_filepath(citygml_filepath)
 buildings = read_citygml.get_buildings()
 landuses = read_citygml.get_landuses()
 stops = read_citygml.get_bus_stops()
@@ -41,11 +44,6 @@ for landuse in landuses:
 #get all the stations in the buildings and extract their polygons 
 stations = []
 for building in buildings:
-    bclass = building.find("bldg:class", namespaces=read_citygml.namespaces).text
-    bfunction = building.find("bldg:function", namespaces=read_citygml.namespaces).text
-    
-    if bclass == "1170" and bfunction == "2480":
-        stations.append(building)
     polygons = read_citygml.get_polygons(building)
     for polygon in polygons:
         polygon_id = polygon.attrib["{%s}id" % read_citygml.namespaces['gml']]
@@ -54,15 +52,14 @@ for building in buildings:
 edgedisplay_list = []
 bdisplay_list = []
 #extract all the footprint of the buildings 
-building_footprints = []
 for building in buildings:
     pypolgon_list = read_citygml.get_pypolygon_list(building)
-    solid = pyliburo.threedmodel.pypolygons2occsolid(pypolgon_list)
+    solid = pyliburo.py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
     edgelist = pyliburo.py3dmodel.fetch.geom_explorer(solid, "edge")
     bdisplay_list.append(solid)
     edgedisplay_list.extend(edgelist)
     
-#find all the buildings inside the landuse 
+
 ldisplay_list = []
 
 for landuse in landuses:
@@ -81,8 +78,11 @@ print "TIME TAKEN", time
 print "VISUALISING"  
 
 display_2dlist.append(ldisplay_list)
-display_2dlist.append(bdisplay_list)
+#display_2dlist.append(bdisplay_list)
 display_2dlist.append(edgedisplay_list)
 display_2dlist.append(road_occedges)
-colour_list = ["WHITE", "WHITE", "BLACK", "RED"]
+colour_list.append('WHITE')
+#colour_list.append('WHITE')
+colour_list.append('BLACK')
+colour_list.append('BLACK')
 pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)
