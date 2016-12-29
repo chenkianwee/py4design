@@ -40,12 +40,33 @@ class Parameterise(object):
         
         self.buildings2landuses = None
         
-    def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None):
+    def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None, parm_definition = None, 
+                                      range_definition = True):
         """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
         this parameter will apply to all buildings"""
 
         parm = gmlparmpalette.BldgFlrAreaHeightParm()
-        parm.define_int_range(1,10,1)
+        
+        if parm_definition!=None:
+            if range_definition == True:
+                is_it_int = True
+                for ele in parm_definition:
+                    if type(ele) == float:
+                        is_it_int = False
+                        
+                if is_it_int:        
+                    parm.define_int_range(parm_definition[0],parm_definition[1],parm_definition[2])
+                else:
+                    n_p_define = len(parm_definition)
+                    if n_p_define == 2:
+                        parm.define_float_range(parm_definition[0],parm_definition[1])
+                    if n_p_define == 3:
+                        parm.define_float_range(parm_definition[0],parm_definition[1], parm_definition[2])
+                        
+            if range_definition == False:
+                parm.set_parm_range(parm_definition)
+            
+            
         if bldg_class !=None:
             parm.apply_2_bldg_class(bldg_class)
         if bldg_function != None:
@@ -57,14 +78,16 @@ class Parameterise(object):
         bldg_parm_dict["parameter_object"] = parm
         self.parm_obj_dict_list.append(bldg_parm_dict)
         
-    def add_bldg_orientation_parm(self, parm_definition, bldg_class= None, bldg_function = None, bldg_usage = None):
+    def add_bldg_orientation_parm(self, parm_definition, range_definition = True, bldg_class= None, 
+                                  bldg_function = None, bldg_usage = None, clash_detection = True, boundary_detection = True):
         """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
         this parameter will apply to all buildings
         
         parm definition can either be a [start, stop, step] or a list of the parameters"""
 
         parm = gmlparmpalette.BldgOrientationParm()
-        if type(parm_definition) == tuple:
+        
+        if range_definition == True:
             is_it_int = True
             for ele in parm_definition:
                 if type(ele) == float:
@@ -73,9 +96,13 @@ class Parameterise(object):
             if is_it_int:        
                 parm.define_int_range(parm_definition[0],parm_definition[1],parm_definition[2])
             else:
-                parm.define_float_range(parm_definition[0],parm_definition[1],parm_definition[2])
-            
-        if type(parm_definition) == list:
+                n_p_define = len(parm_definition)
+                if n_p_define == 2:
+                    parm.define_float_range(parm_definition[0],parm_definition[1])
+                if n_p_define == 3:
+                    parm.define_float_range(parm_definition[0],parm_definition[1], parm_definition[2])
+                    
+        if range_definition == False:
             parm.set_parm_range(parm_definition)
             
         if bldg_class !=None:
@@ -84,6 +111,33 @@ class Parameterise(object):
             parm.apply_2_bldg_function(bldg_function)
         if bldg_usage != None:
             parm.apply_2_bldg_usage(bldg_usage)
+            
+        if clash_detection == False:
+            parm.set_clash_detection(clash_detection)
+        if boundary_detection == False:
+            parm.set_boundary_detection(boundary_detection)
+    
+        bldg_parm_dict = {}
+        bldg_parm_dict["parameter_object"] = parm
+        self.parm_obj_dict_list.append(bldg_parm_dict)
+        
+    def add_bldg_pos_parm(self, xdim = 10, ydim=10, bldg_class= None, bldg_function = None, bldg_usage = None, 
+                          clash_detection = True, boundary_detection = True):
+        
+        parm = gmlparmpalette.BldgPositionParm()
+        parm.set_xdim_ydim(xdim, ydim)
+        
+        if bldg_class !=None:
+            parm.apply_2_bldg_class(bldg_class)
+        if bldg_function != None:
+            parm.apply_2_bldg_function(bldg_function)
+        if bldg_usage != None:
+            parm.apply_2_bldg_usage(bldg_usage)
+            
+        if clash_detection == False:
+            parm.set_clash_detection(clash_detection)
+        if boundary_detection == False:
+            parm.set_boundary_detection(boundary_detection)
             
         bldg_parm_dict = {}
         bldg_parm_dict["parameter_object"] = parm
@@ -124,142 +178,4 @@ class Parameterise(object):
         citygml_writer = pycitygml.Writer()
         citygml_writer.citymodelnode = citygml_reader.citymodelnode
         citygml_writer.write(dv_citygml_filepath)
- 
-        '''
-        if self.buildings2landuses == None:
-            raise Exception 
-            
-        citygml = self.citygml
-        citygml_writer = pycitygml.Writer()
-        buildings2landuses = self.buildings2landuses
-        nparms_abuilding = self.nparms_abuilding
-        newblist = []
-        plot_faces_list = []
-        gcnt_list = []
-        
-        bounding_list_list = []
-        
-        lcnt = 0
-        for b2l in buildings2landuses:
-            print "LANDUSE", lcnt
-            
-            #get the buildings on the landuse
-            landuse_pts = b2l["landuse_pts"]
-            buildings_on_landuse = b2l["buildings"]
-            nbuildings_on_landuse = len(buildings_on_landuse)
-            print nbuildings_on_landuse, "BUILDINGS ON LANDUSE", 
-            b_attribs_list = []
-            building_flr_area_list = []
-            
-            #print "GCNT_LIST", gcnt_list
-            
-            bcnt = 0
-            #calculate the total build up flr area of the landuse
-            for building_footprint_dict in buildings_on_landuse:
-                b_attribs = {}
-                gml_building = building_footprint_dict["building"]
-                bfunction = citygml.get_building_function(gml_building)
-                
-                gcnt = []
-                #carpark only have 2 parameters it does not have the build area parameters
-                if bfunction == "1610": #carpark
-                    print "CARPARK!!"
-                    for i in range(nparms_abuilding-1):
-                        if gcnt_list:
-                            gcnt.append(gcnt_list[-1][-1] + i + 1)
-                        else:
-                            gcnt.append(0+i)
-                        #gcnt.append(parameter_cnt + ((bcnt*nparms_abuilding)+i))
-                        
-                else: 
-                    for i in range(nparms_abuilding):
-                        if gcnt_list:
-                            gcnt.append(gcnt_list[-1][-1] + i + 1)
-                        else:
-                            gcnt.append(0+i)
-                        #print parameter_cnt + ((bcnt*nparms_abuilding)+i)
-                        #gcnt.append(parameter_cnt + ((bcnt*nparms_abuilding)+i))
-                        
-                gcnt_list.append(gcnt)
-                
-                b_attribs["gcnt"] = gcnt
-                building_solid = gml3dmodel.get_building_solid(gml_building, citygml)
-                b_attribs["solid"] = building_solid
-                loc_pt, bounding_footprint = gml3dmodel.get_building_location_pt(building_solid)
-                b_attribs["loc_pt"] = loc_pt
-                b_attribs["bounding_footprint"] = bounding_footprint
-                height, nstorey, storey_height = gml3dmodel.get_building_height_storey(building_footprint_dict["building"], citygml)
-                b_attribs["height"] = height
-                b_attribs["nstorey"] = nstorey
-                b_attribs["storey_height"] = storey_height
-                building_footprint = building_footprint_dict["footprint"]
-                b_attribs["building_footprint"] = building_footprint
-                b_attribs_list.append(b_attribs)
-                
-                if bfunction != "1610":
-                    flr_area = gml3dmodel.get_bulding_floor_area(building_solid, loc_pt, bounding_footprint, nstorey, 
-                                                                        storey_height, building_footprint)
-                                                                        
-                    building_flr_area_list.append(flr_area)
-                    
-                bcnt += 1
-                
-            build_area = sum(building_flr_area_list)
-            
-            #rearrange the buildings on the plot 
-            b_attribs_list, plot_faces = gml3dmodel.rearrange_building_location(b_attribs_list, landuse_pts, parameters, 5, 5)
-            plot_faces_list.extend(plot_faces)
-            
-            #determine the floor area distribution of the buildings according to the parameters
-            rproportion = []
-            total_prop = 0
-            ba_cnt = 0
-            for ba_cnt in range(nbuildings_on_landuse):
-                b_attribs = b_attribs_list[ba_cnt]
-                gml_building = buildings_on_landuse[ba_cnt]["building"]
-                bfunction = citygml.get_building_function(gml_building)
-                if bfunction != "1610": #carpark do not include in the redistribuition of floor area
-                    rprop_cnt = b_attribs["gcnt"][nparms_abuilding-1]
-                    rprop = parameters[rprop_cnt]
-                    rproportion.append(rprop)
-                    total_prop += rprop
-                if  bfunction == "1610":
-                    rprop = None
-                    rproportion.append(rprop)
-                ba_cnt +=1
-                
-            #construct the buildings according to the new distribuition
-            pcnt = 0
-            for p in rproportion:
-                building = buildings_on_landuse[pcnt]["building"]
-                height = citygml.get_building_height(building)
-                storey = citygml.get_building_storey(building)
-                if p != None:
-                    prop = p/total_prop
-                    p_area = prop*build_area
-                    storey_height = height/storey
-                    #get the solid and bounding footprint
-                    building_solid = b_attribs_list[pcnt]["solid"]
-                    new_building_solid, floorplates, bounding_list = gml3dmodel.construct_building_through_floorplates(building_solid, p_area, 
-                                                                                                               storey_height, citygml)
-                    bounding_list_list.append(bounding_list)  
-                                                                     
-                    new_nstorey = len(floorplates)-1 #minus away the roof
-                    new_height = new_nstorey*storey_height
-                    
-                else:
-                    new_building_solid = building_solid = b_attribs_list[pcnt]["solid"]
-                    new_nstorey = storey
-                    new_height = height
-                    bounding_list_list.append([])  
-                    
-                self.update_gml_building(building, new_height, new_nstorey, new_building_solid, citygml_writer)
-                newblist.append(new_building_solid)
-                pcnt += 1
-                
-            lcnt+=1
-            
-        self.write_citygml(self.landuses, self.stops, self.roads, self.railways, citygml_writer)
-        return citygml_writer, newblist, plot_faces_list, b_attribs_list, bounding_list_list
-        '''
 #===================================================================================================================================================

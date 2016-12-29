@@ -243,7 +243,8 @@ class Reader(object):
         
     def get_epsg(self, cityobject):
         envelope = cityobject.find("gml:boundedBy//gml:Envelope", namespaces=self.namespaces)
-        epsg = envelope.attrib["srsName"]
+        if envelope != None:
+            epsg = envelope.attrib["srsName"]
         return epsg
         
     def get_gml_id(self, cityobject):

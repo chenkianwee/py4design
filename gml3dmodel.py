@@ -127,19 +127,48 @@ def gml_landuse_2_occface(gml_landuse, citygml_reader):
     return landuse_occface
             
 def buildings_on_landuse(gml_landuse, gml_bldg_list, citygml_reader):
+    display_list = []
     buildings_on_plot_list = []
     landuse_occface = gml_landuse_2_occface(gml_landuse, citygml_reader)
     flatten_landuse_occface = py3dmodel.modify.flatten_face_z_value(landuse_occface)
+    display_list.append(landuse_occface)
     for gml_bldg in gml_bldg_list:
         bldg_fp_list = get_building_footprint(gml_bldg, citygml_reader)
-        is_inside = True
+        is_inside = False
         for bldg_fp in bldg_fp_list:
             flatten_fp = py3dmodel.modify.flatten_face_z_value(bldg_fp)
-            if not py3dmodel.calculate.face_is_inside(flatten_fp, flatten_landuse_occface):
-                is_inside = False
+            #display_list.append(flatten_fp)
+            occface_area = py3dmodel.calculate.face_area(flatten_fp)
+            common_cmpd = py3dmodel.construct.boolean_common(flatten_fp, flatten_landuse_occface)
+            face_list = py3dmodel.fetch.geom_explorer(common_cmpd, "face")
+            if face_list:
+                common_area = 0
+                for common_face in face_list:
+                    acommon_area = py3dmodel.calculate.face_area(common_face)
+                    common_area = common_area +  acommon_area
+                common_ratio = common_area/occface_area
+                if common_ratio >= 0.5:
+                    is_inside = True
+                
         if is_inside:
             buildings_on_plot_list.append(gml_bldg)
+            
     return buildings_on_plot_list
+    
+def detect_clash(bldg_occsolid, other_occsolids):
+    compound = py3dmodel.construct.make_compound(other_occsolids)
+    common_compound = py3dmodel.construct.boolean_common(bldg_occsolid, compound)
+    is_cmpd_null = py3dmodel.fetch.is_compound_null(common_compound)
+    if is_cmpd_null:
+        return False
+    else:
+        return True
+    
+def detect_in_boundary(bldg_occsolid, luse_occface):
+    luse_occsolid = py3dmodel.construct.extrude(luse_occface,(0,0,1), 10000)
+    diff_cmpd = py3dmodel.construct.boolean_difference(bldg_occsolid, luse_occsolid)
+    is_cmpd_null = py3dmodel.fetch.is_compound_null(diff_cmpd)
+    return is_cmpd_null
             
 def get_building_occsolid(gml_bldg, citygml_reader):
     pypolygon_list = citygml_reader.get_pypolygon_list(gml_bldg)
@@ -276,6 +305,93 @@ def rotate_bldg(gml_bldg, rot_angle, citygml_reader):
     loc_pt = get_building_location_pt(bldg_occsolid)
     rot_bldg_occsolid = py3dmodel.modify.rotate(bldg_occsolid, loc_pt, (0,0,1), rot_angle)
     return rot_bldg_occsolid
+    
+def landuse_2_grid(landuse_occface, xdim, ydim):
+    pt_list = []
+    grid_faces = py3dmodel.construct.grid_face(landuse_occface, xdim, ydim)
+    for f in grid_faces:
+        pt = py3dmodel.calculate.face_midpt(f)
+        pt_list.append(pt)
+        
+    return pt_list, grid_faces
+
+def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse_occface, parameters, other_occsolids = [], clash_detection = True, 
+                                boundary_detection = True):
+    
+    moved_buildings = []
+    moved_buildings.extend(other_occsolids)
+    npypt_list = len(luse_gridded_pypt_list)
+    nbldgs = len(bldg_occsolid_list)
+    print 'NBUILDINGS', nbldgs
+    for cnt in range(nbldgs):      
+        bldg_occsolid = bldg_occsolid_list[cnt]
+        pos_parm = parameters[cnt]
+        loc_pt = get_building_location_pt(bldg_occsolid)
+        
+        isclash = True
+        for clash_cnt in range(npypt_list):
+            #print "clash_cnt", clash_cnt
+            #map the location point to the grid points
+            mpt_index = pos_parm+clash_cnt
+            if mpt_index >= npypt_list:
+                mpt_index = mpt_index-(npypt_list-1) 
+                
+            moved_pt = luse_gridded_pypt_list[mpt_index]
+            moved_solid = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, moved_pt, bldg_occsolid))
+            #=======================================================================================
+            if clash_detection == True and boundary_detection == False:
+                if moved_buildings:
+                    clash_detected = detect_clash(moved_solid, moved_buildings)                    
+                    if not clash_detected:
+                        #means there is no intersection and there is no clash
+                        #print "I am not clashing onto anyone!!!"
+                        isclash = False
+                        break
+                
+                else:
+                    isclash = False
+                    break
+                
+            #=======================================================================================
+            elif boundary_detection == True and clash_detection == False:
+                is_in_boundary = detect_in_boundary(moved_solid, luse_occface)
+                if is_in_boundary:
+                    isclash = False
+                    break
+            #=======================================================================================
+            elif boundary_detection == True and clash_detection == True:
+                #need to check if the moved building is within the boundaries of the landuse 
+                is_in_boundary = detect_in_boundary(moved_solid, luse_occface)
+                
+                if is_in_boundary:
+                    #test if it clashes with the other buildings 
+                    if moved_buildings:
+                        clash_detected = detect_clash(moved_solid, moved_buildings)                    
+                        if not clash_detected:
+                            #print "I am not clashing onto anyone!!!"
+                            isclash = False
+                            break
+                    
+                    else:
+                        isclash = False
+                        break
+            #=======================================================================================  
+            elif clash_detection == False and boundary_detection == False:
+                isclash = False
+                break
+            
+        if isclash == True:
+            print "it is not feasible with these parameters to create a design variant"
+            #just append the original arrangements into the list
+            return bldg_occsolid_list
+        
+        if isclash == False:
+            #print "successfully positioned the building"
+            moved_buildings.append(moved_solid)
+            
+    print "successfully positioned the buildings"
+    return moved_buildings
+    
 #===========================================================================================================================
 def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, citygml_writer, new_height = None, new_nstorey = None):
     building_name = citygml_reader.get_gml_id(orgin_gml_building)
@@ -283,7 +399,7 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     bfunction = citygml_reader.get_building_function(orgin_gml_building)
     rooftype = citygml_reader.get_building_rooftype(orgin_gml_building)
     stry_blw_grd = citygml_reader.get_building_storey_blw_grd(orgin_gml_building)
-    generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)
+    #generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)
     face_list = py3dmodel.fetch.faces_frm_solid(new_bldg_occsolid)
     geometry_list = []
     pt_list_list = []
@@ -313,8 +429,7 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     
     citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                 function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd, 
-                                generic_attrib_dict = generic_attrib_dict)
+                                stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd)
         
 def write_citygml(cityobjmembers, citygml_writer):
         citygml_root = citygml_writer.citymodelnode
@@ -322,134 +437,3 @@ def write_citygml(cityobjmembers, citygml_writer):
             citygml_root.append(cityobj)
             
 #===========================================================================================================================
-    
-def get_building_combined_footprint(bldg_occsolid, loc_pt, bounding_footprint, nstorey, storey_height, building_footprint):
-    flrplates = get_bulding_flrplates(bldg_occsolid, loc_pt, bounding_footprint, nstorey, storey_height, building_footprint)
-    building_footprint_pts = py3dmodel.pyptlist_frm_occface(building_footprint)
-    elev_ftprint = building_footprint_pts[0][2] #assuming the footprint is flat 
-    #project each footprint onto the footprint
-    new_flrs = []
-    for flr in flrplates:
-        flrpts = py3dmodel.pyptlist_frm_occface(flr)
-        projected_flrpts = []
-        for fp in flrpts:
-            new_fp = [fp[0],fp[1],elev_ftprint]
-            projected_flrpts.append(new_fp)
-            
-        new_flr = py3dmodel.construct.make_polygon(projected_flrpts)
-        new_flrs.append(new_flr)
-        
-    fcnt = 0
-    for nf in new_flrs:
-        if fcnt == 0:
-            fused = py3dmodel.construct.boolean_fuse(nf, new_flrs[fcnt+1])
-        elif fcnt < len(new_flrs)-1 and fcnt > 0:
-            fused = py3dmodel.construct.boolean_fuse(fused, new_flrs[fcnt+1])
-        fcnt +=1
-        
-    return py3dmodel.fetch.shape2shapetype(fused)
-            
-def surface_area(surface_pts):
-    face = py3dmodel.construct.make_polygon(surface_pts)
-    area = py3dmodel.calculate.face_area(face)
-    return area
-    
-def landuse_2_grid(landuse_face, xdim, ydim):
-    pt_list = []
-    grid_faces = py3dmodel.construct.grid_face(landuse_face, xdim, ydim)
-    for f in grid_faces:
-        pt = py3dmodel.calculate.face_midpt(f)
-        pt_list.append(pt)
-        
-    return pt_list, grid_faces
-    
-def b_attrib_list2_unmoved(b_attribs_list):
-    for b in b_attribs_list:
-        b["location_status"] = "unmoved"
-    return b_attribs_list
-    
-def is_solid_common(solid1, solid2):
-    is_solid_common = False
-    intersection = py3dmodel.construct.boolean_common(solid1, solid2)
-    compound = py3dmodel.fetch.shape2shapetype(intersection)
-    iscompundnull = py3dmodel.fetch.is_compound_null(compound)
-    if not iscompundnull:
-        is_solid_common = True
-    return is_solid_common
-
-def rearrange_building_location(b_attribs_list, landuse_pts, parameters, xdim, ydim):
-    luse_face = py3dmodel.construct.make_polygon(landuse_pts)
-    grid_luse, grid_faces = landuse_2_grid(luse_face, xdim, ydim)
-    npts = len(grid_luse)
-    moved_buildings_attribs_list = []
-    moved_buildings = []
-    
-    bcnt = 0
-    for building in b_attribs_list:
-        loc_pt = building["loc_pt"]
-        
-        #rotate the building solid 
-        rot_cnt = building["gcnt"][0]
-        n_rotate_parameter = parameters[rot_cnt]
-        rotate_parameter = n_rotate_parameter*360
-        solid = building["solid"]
-        rot_solid = py3dmodel.modify.rotate(solid, loc_pt, (0,0,1), rotate_parameter)
-        
-        #map the location point to the grid points
-        loc_cnt = building["gcnt"][1]
-        n_loc_parameter = parameters[loc_cnt]
-        loc_parameter = int(n_loc_parameter*(npts-1))
-        
-        isclash = True
-        for clash_cnt in range(npts):
-            #print "clash_cnt", clash_cnt
-            mpt_index = loc_parameter+clash_cnt
-            if mpt_index >= npts:
-                mpt_index = mpt_index-(npts-1) 
-                
-            moved_pt = grid_luse[mpt_index]
-            moved_solid = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, moved_pt, rot_solid))
-            
-            #need to check if the moved building is within the boundaries of the landuse 
-            bounding_footprint = get_building_bounding_footprint(moved_solid)
-            
-            if py3dmodel.calculate.face_is_inside(bounding_footprint, luse_face):
-                #test if it clashes with the other buildings 
-                if moved_buildings:
-                    for mv_b in moved_buildings:
-                        IsCommon = is_solid_common(moved_solid, mv_b)
-                        if IsCommon:
-                            isclash = True
-                            break
-                        elif not IsCommon:
-                            #print "I am not clashing onto anyone!!!"
-                            isclash = False
-                            
-                    #since there is no clash there is no need for a next round
-                    if isclash == False:
-                        break
-                
-                else:
-                    isclash = False
-                    break
-                            
-        if isclash == True:
-            print "it is not feasible with these parameters to create a design variant"
-            #just append the original arrangements into the list
-            return b_attrib_list2_unmoved(b_attribs_list), grid_faces
-        
-        if isclash == False:
-            #print "successfully positioned the building"
-            moved_buildings.append(py3dmodel.fetch.shape2shapetype(moved_solid))
-            moved_buildings_attrib = {}
-            moved_buildings_attrib["solid"] = py3dmodel.fetch.shape2shapetype(moved_solid)
-            moved_buildings_attrib["bounding_footprint"] = bounding_footprint
-            moved_buildings_attrib["loc_pt"] = moved_pt
-            moved_buildings_attrib["gcnt"] = building["gcnt"]
-            moved_buildings_attrib["location_status"] = "moved"
-            moved_buildings_attribs_list.append(moved_buildings_attrib)
-            
-        bcnt +=1
-        
-    print "successfully positioned the buildings"
-    return moved_buildings_attribs_list, grid_faces
