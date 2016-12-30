@@ -1,9 +1,21 @@
+import os
 import time
 import pyliburo
-
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
 #specify the citygml file
-citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\punggol_luse50_53.gml"
-result_citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\punggol_variant.gml"
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_luse50_53.gml")
+result_citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_variant.gml" )
+
+'''citygml_filepath = "C://file2analyse.gml"
+result_citygml_filepath = "C://result.gml'''
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
+
 time1 = time.clock()   
 display_2dlist = []
 colour_list = []

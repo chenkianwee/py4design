@@ -1,18 +1,21 @@
+import os
 import pyliburo
 from collada import *
 #==================================================
 #INPUTS
 #==================================================
 resume = False
-dae_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\dae\\5x5ptblks.dae"
-base_citygml_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\gml\\5x5ptblks.gml"
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+base_citygml_file =  os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
 
-ngeneration = 1
-init_population = 1
+ngeneration = 3
+init_population = 2
 mutation_rate = 0.01
 crossover_rate  = 0.8 
-live_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\live.xml"
-dead_file = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\dead.xml"
+live_file =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "live.xml")
+dead_file =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "dead.xml")
 #==================================================
 #FUNCTIONS
 #==================================================   
@@ -35,18 +38,22 @@ def read_collada(dae_filepath):
                         occpolygon = pyliburo.py3dmodel.construct.make_polygon(pyptlist)
                         pyliburo.py3dmodel.fetch.is_face_null(occpolygon)
                         if not pyliburo.py3dmodel.fetch.is_face_null(occpolygon):
-                            if gcnt == 550:#the last geometry is the plot
-                                luselist.append(occpolygon)
-                            else:
-                                buildinglist[-1].append(occpolygon)
+                            buildinglist[-1].append(occpolygon)
                             gcnt +=1
                   
     #create solid out of the buildings 
     shapelist = []
     for bfaces in buildinglist:
-        if bfaces:                
-            bsolid = pyliburo.py3dmodel.construct.make_shell_frm_faces(bfaces)[0]
-            shapelist.append(bsolid)
+        if bfaces:     
+            if len(bfaces) == 1:
+                luselist.append(bfaces[0])
+            #display_2dlist = [bfaces]
+            #colour_list = ["WHITE"]
+            #pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)
+            else:
+                bsolid = pyliburo.py3dmodel.construct.make_shell_frm_faces(bfaces)[0]
+                shapelist.append(bsolid)
+            
 
     shapelist.extend(luselist)
     compound = pyliburo.py3dmodel.construct.make_compound(shapelist)  
@@ -104,7 +111,7 @@ def daebldglist2gmlbuildings(daebldg_shelllist, citygml_writer):
     
 def gmlbuilding2buildingsolid(building, read_citygml):
     pypolygonlist = read_citygml.get_pypolygon_list(building)
-    bsolid = pyliburo.threedmodel.pypolygons2occsolid(pypolygonlist)
+    bsolid = pyliburo.py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygonlist)
     return bsolid
         
 def parameterise_citygml(ref_citygml_file, parameterlist, citygml_resultpath):
@@ -113,7 +120,8 @@ def parameterise_citygml(ref_citygml_file, parameterlist, citygml_resultpath):
     #==================================================
     #this model has 75 parameters
     #height, position, orientation
-    read_citygml = pyliburo.pycitygml.Reader(ref_citygml_file)
+    read_citygml = pyliburo.pycitygml.Reader()
+    read_citygml.load_filepath(ref_citygml_file)
     buildings = read_citygml.get_buildings()
     landuses = read_citygml.get_landuses()
     lpolygon = read_citygml.get_polygons(landuses[0])[0]
@@ -168,7 +176,8 @@ def parameterise_citygml(ref_citygml_file, parameterlist, citygml_resultpath):
     return changed_bldglist
     
 def eval_density(citygml_filepath):
-    read_citygml = pyliburo.pycitygml.Reader(citygml_filepath)
+    read_citygml = pyliburo.pycitygml.Reader()
+    read_citygml.load_filepath(citygml_filepath)
     buildings = read_citygml.get_buildings()
     flr2flr_height = 3.0
     luse_area = 136900.0
@@ -190,7 +199,7 @@ def eval_daylight(citygml_filepath):
     evaluations = pyliburo.citygml2eval.Evals(citygml_filepath)
     xdim = 9
     ydim = 9
-    weatherfilepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\weatherfile\\SGP_Singapore.486980_IWEC.epw"
+    weatherfilepath = os.path.join(parent_path, "example_files","weatherfile", "SGP_Singapore.486980_IWEC.epw")
     '''
     illum threshold (lux)
     '''
@@ -249,7 +258,8 @@ cface_list = pyliburo.py3dmodel.fetch.geom_explorer(collada_compound, "face") #t
 #convert the collada plot to citygml plot
 daeluse2gmlluse(cface_list[550], citygml_writer)
 #convert the collada buildings to citygml buidlings
-cshell_list = pyliburo.py3dmodel.fetch.geom_explorer(collada_compound, "shell") #the last face is the plot
+cshell_list = pyliburo.py3dmodel.fetch.geom_explorer(collada_compound, "shell") 
+
 daebldglist2gmlbuildings(cshell_list, citygml_writer)
 citygml_writer.write(base_citygml_file)
 #==================================================

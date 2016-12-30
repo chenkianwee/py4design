@@ -1,0 +1,38 @@
+# Metadata for Master Plan 2014 Planning Area Boundary (No Sea)
+---
+Identifier: '5589d1bc-d3bd-4d62-923d-7b59b4e822e2'
+Name: 'master-plan-2014-planning-area-boundary-no-sea'
+Title: 'Master Plan 2014 Planning Area Boundary (No Sea)'
+Description:
+  - 'Indicative polygon of planning area boundary.'
+  - ''
+  - 'To facilitate urban planning, the Urban Redevelopment Authority (URA) divides
+    Singapore into regions, planning areas and subzones.'
+  - ''
+  - 'The Planning Regions are divided into smaller Planning Areas. Each Planning Area
+    have a population of about 150,000 and served by a town centre and several neighbourhood
+    commercial/shopping centres.'
+  - ''
+  - 'The Master Plan 2014 is a forward looking guiding plan for Singapore''''s development
+    in the medium term over the next 10 to 15 years and the planning boundaries may
+    not coincide with existing developments for some areas.'
+Topics:
+  - 'Infrastructure'
+Keywords:
+  - 'MP14'
+  - 'MP2014'
+  - 'Master Plan 2014 Planning Boundary'
+  - 'Planning Area'
+Publisher:
+  Name: 'Urban Redevelopment Authority'
+Sources:
+  - 'Urban Redevelopment Authority'
+License: 'https://data.gov.sg/terms'
+Frequency: 'Ad-hoc'
+Last Updated: '2016-05-23T03:50:38.975868'
+Resources:
+  Identifier: '8c722373-0e03-4827-b26e-6a455d2f70b4'
+  Title: 'Master Plan 2014 Planning Area Boundary (No Sea) (KML)'
+  Url: 'https://geo.data.gov.sg/mp14-plng-area-no-sea-pl/2016/05/11/kml/mp14-plng-area-no-sea-pl.zip'
+  Format: 'KML'
+  Last Updated: '2016-05-10T16:00:00'

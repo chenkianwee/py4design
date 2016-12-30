@@ -1,17 +1,20 @@
+import os
 import time
 import pyliburo
 
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
-citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\punggol_luse50_53.gml"
-#citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
-#citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\grid_tower.gml"
+#specify the citygml file
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_luse50_53.gml" )
+
+#or just insert a citygml file you would like to analyse here 
+'''citygml_filepath = "C://file2analyse.gml"'''
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
-
-
 time1 = time.clock()
 display_2dlist = []
 colour_list = []
@@ -78,11 +81,11 @@ print "TIME TAKEN", time
 print "VISUALISING"  
 
 display_2dlist.append(ldisplay_list)
-#display_2dlist.append(bdisplay_list)
+display_2dlist.append(bdisplay_list)
 display_2dlist.append(edgedisplay_list)
 display_2dlist.append(road_occedges)
 colour_list.append('WHITE')
-#colour_list.append('WHITE')
+colour_list.append('WHITE')
 colour_list.append('BLACK')
 colour_list.append('BLACK')
 pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)

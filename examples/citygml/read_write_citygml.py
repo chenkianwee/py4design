@@ -1,14 +1,21 @@
 import os
 import time
 import pyliburo
-
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
 #specify the citygml file
-citygml_filepath = "F:\\kianwee_work\\smart\\conference\\asim2016\\asim_example\\citygml\\punggol_citygml_asim_origlvl.gml"
-print "READING CITYGML FILE ... ..."
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+citygml_filepath = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "citygml","punggol_citygml_asim_origlvl.gml")
+result_citygml_filepath = os.path.join(parent_path, "example_files", "citygml","punggol_luse50_53.gml")
 
+print "READING CITYGML FILE ... ..."
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
 display_2dlist = []
 colour_list = []
-
 time1 = time.clock()
 #===================================================================================================
 #read the citygml file 
@@ -64,7 +71,6 @@ for landuse in landuses:
 #write the citygml from scratch 
 #===================================================================================================
 print "WRITING CITYGML FILE ... ..."
-result_citygml_filepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\citygml\\punggol_luse50_53.gml"
 citygml_writer = pyliburo.pycitygml.Writer()
 
 for luse in landuses:

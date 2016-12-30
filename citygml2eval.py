@@ -27,7 +27,9 @@ import urbanformeval
 
 class Evals(object):
     def __init__(self, citygmlfile):
-        self.citygml = pycitygml.Reader(citygmlfile)
+        reader = pycitygml.Reader()
+        reader.load_filepath(citygmlfile)
+        self.citygml = reader
         self.citygmlfilepath = citygmlfile
         self.buildings = self.citygml.get_buildings()
         self.landuses = self.citygml.get_landuses()

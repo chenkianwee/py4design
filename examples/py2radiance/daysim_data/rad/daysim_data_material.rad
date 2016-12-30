@@ -15,13 +15,13 @@
  
 # This file contains the definitions of all materials in
 # the RADIANCE scene.
-# The scene geometry is stored in 'F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\daysim_data\rad\daysim_data_geometry.rad'.
+# The scene geometry is stored in 'F:/kianwee_work/spyder_workspace/pyliburo/examples/py2radiance\daysim_data\rad\daysim_data_geometry.rad'.
  
 
-# SOURCE FILE: F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\py2radiance_data\geometry.rad 
+# SOURCE FILE: F:/kianwee_work/spyder_workspace/pyliburo/examples/py2radiance\py2radiance_data\geometry.rad 
 
 
-# SOURCE FILE: F:/kianwee_work/spyder_workspace/pylibudo/examples/py2radiance\base.rad 
+# SOURCE FILE: F:/kianwee_work/spyder_workspace/pyliburo/examples/py2radiance\base.rad 
 
 void plastic RAL9010_pur_white_paint 0 0 5 0.8373 0.8373 0.8373 0.0000 0.0000 
 

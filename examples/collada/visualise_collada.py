@@ -1,23 +1,31 @@
+import os
 import pyliburo
 from collada import *
 
-display2dlist = []
-displaylist = []
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
+#specify the citygml file
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower.dae")
+dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+#or just insert a dae and citygml file you would like to analyse here 
+'''dae_file = "C://file2analyse.gml"'''
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
+display_2dlist = []
+display_list = []
 
-#dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\simple_case.dae"
-#dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
-dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\complex_testout_rhino.dae"
 mesh = Collada(dae_file)
 unit = mesh.assetInfo.unitmeter or 1
 geoms = mesh.scene.objects('geometry')
 geoms = list(geoms)
-print len(geoms)
 g_cnt = 0
 for geom in geoms:   
-    print geom
     prim2dlist = list(geom.primitives())
     for primlist in prim2dlist:     
-        print primlist
         if primlist:
             for prim in primlist:
                 if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
@@ -26,15 +34,15 @@ for geom in geoms:
                     occpolygon = pyliburo.py3dmodel.construct.make_polygon(pyptlist)
                     pyliburo.py3dmodel.fetch.is_face_null(occpolygon)
                     if not pyliburo.py3dmodel.fetch.is_face_null(occpolygon):
-                        displaylist.append(occpolygon)
+                        display_list.append(occpolygon)
                     g_cnt +=1
                 elif type(prim) == lineset.Line:
                     pyptlist = prim.vertices.tolist()
                     occpolygon = pyliburo.py3dmodel.construct.make_edge(pyptlist[0], pyptlist[1])
                     #displaylist.append(occpolygon)
                     g_cnt +=1
-            
-display2dlist.append(displaylist)
-colourlist = ["WHITE"]
+print len(display_list)
+display_2dlist.append(display_list[0:1])
+colour_list = ["WHITE"]
 
-pyliburo.py3dmodel.construct.visualise(display2dlist, colourlist)
+pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)

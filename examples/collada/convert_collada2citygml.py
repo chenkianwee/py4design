@@ -1,12 +1,24 @@
-import pyliburo
+import os
 import time
+import pyliburo
 
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
+#specify the citygml file
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower.dae")
+citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example", "citygml", "grid_tower.gml")
+#or just insert a dae and citygml file you would like to analyse here 
+'''dae_file = "C://file2analyse.gml"
+citygml_filepath = "C://file2analyse.gml"'''
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
 display2dlist = []
 colourlist = []
 time1 = time.clock()
-#dae_file = "F:\\kianwee_work\\smart\\may2016-oct2016\\pycollada_testout\\dae\\grid_tower.dae"
-dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
-citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\grid_tower.gml"
 
 cityobj_dict = pyliburo.collada2citygml.auto_convert_dae2gml(dae_file, citygml_filepath)
 bldg_list = cityobj_dict["building"]

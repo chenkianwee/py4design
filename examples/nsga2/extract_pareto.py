@@ -1,9 +1,14 @@
+import os
 import pyliburo
 
 print "READING XML ..."
-livexmlfile = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\archive\\live.xml"
-deadxmlfile = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\archive\\dead.xml"
-overallxmlfile = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\nsga2_xml\\archive\\overall.xml"
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+livexmlfile =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "live.xml")
+deadxmlfile =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "dead.xml")
+res_img_filepath = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "pareto_front.png")
+
+overallxmlfile = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "overall.xml")
 pyliburo.pyoptimise.analyse_xml.combine_xml_files(livexmlfile, deadxmlfile,overallxmlfile)
 pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds(overallxmlfile)
 inds = pyliburo.pyoptimise.analyse_xml.get_inds_frm_xml(overallxmlfile)
@@ -48,8 +53,8 @@ arealist = []
 arealist.extend(pareto_arealist)
 arealist.extend(npareto_arealist)
 
-filepath = "F:\\kianwee_work\\smart\\conference\\bs2017\\image\\png\\pareto_front.png"
+
 pyliburo.pyoptimise.draw_graph.scatter_plot(pts2plotlist, colourlist, arealist, label_size=24, labellist = label_list,
-                                            xlabel = "FAR", ylabel = "DFAI (%)", savefile = filepath )
+                                            xlabel = "FAR", ylabel = "DFAI (%)", savefile = res_img_filepath )
 #pyliburo.pyoptimise.draw_graph.scatter_plot_label(pts2plotlist, colourlist, labellist, arealist)
 print len(pareto_pts), len(npareto_pts)

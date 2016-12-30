@@ -1,14 +1,27 @@
+import os
 import time
 import pyliburo
 import read_collada_4_evalurbanform as read_collada
 
-dae_file = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\dae\\grid_tower.dae"
-weatherfilepath = "F:\\kianwee_work\\spyder_workspace\\pyliburo\\examples\\punggol_case_study\\weatherfile\\SGP_Singapore.486980_IWEC.epw"
-shgfavi_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\py2radiance_dfavi"
-dfavi_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\py2radiance_dfavi"
-pvavi_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\py2radiance_pvavi"
-pveavi_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\py2radiance_pveavi"
-daysim_filepath = "F:\\kianwee_work\\smart\\case_studies\\5x5ptblks\\daysim_data"
+#========================================================================================================================================
+#SPECIFY ALL THE NECCESSARY INPUTS
+#=========================================================================================================================================
+#specify the citygml file
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+
+dae_file = os.path.join(parent_path, "example_files","form_eval_example", "dae", "grid_tower.dae")
+weatherfilepath = os.path.join(parent_path, "example_files", "weatherfile", "SGP_Singapore.486980_IWEC.epw" )
+shgfavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_dfavi")
+dfavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_dfavi")
+pvavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_pvavi")
+pveavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_pveavi")
+daysim_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "daysim_data")
+
+irrad_threshold = (50*8760*1.5)/1000.0
+illum_threshold = 10000
+pv_facade_threshold = 512 #kwh/m2
+pv_roof_threshold = 1280 #kwh/m2
 
 display2dlist = []
 colourlist = []
@@ -49,7 +62,7 @@ print "TIME TAKEN2 4 RDI:", tt2/60.0
 #                                                        other_colourlist = colourlist, maxval_range = 2)
 
 #==================================================================================================
-#calculate RDI
+#calculate FAI
 #==================================================================================================
 print "CALCULATING FAI ..."
 time5 = time.clock()
@@ -75,7 +88,6 @@ print "TIME TAKEN3 4 FAI:", tt3/60.0
 #==================================================================================================
 print "CALCULATING SHGFAVI ..."
 time7 = time.clock()
-irrad_threshold = (50*8760*1.5)/1000.0
 avg_shgfavi, shgfavi_percent, shgfai, topo_list, irrad_ress = pyliburo.urbanformeval.shgfavi(solid_list, irrad_threshold, 
                                                                                      weatherfilepath, 10,10, shgfavi_filepath)
                                                                                      
@@ -89,7 +101,6 @@ print "TIME TAKEN4 4 SHGFAVI:", tt4/60.0
 #==========================================================================================================================
 print "CALCULATING DFAVI ..."
 time9 = time.clock()
-illum_threshold = 10000
 avg_dfavi, dfavi_percent, dfai, topo_list, illum_ress = pyliburo.urbanformeval.dfavi(solid_list, illum_threshold, 
                                                                                      weatherfilepath, 10,10, 
                                                                                      dfavi_filepath, daysim_filepath)
@@ -102,10 +113,7 @@ print "TIME TAKEN5 4 DFAVI:", tt5/60.0
 #calculate PVEAVI
 #==========================================================================================================================
 print "CALCULATING PVEAVI ..."
-time11 = time.clock()        
-pv_facade_threshold = 512 #kwh/m2
-pv_roof_threshold = 1280 #kwh/m2
-                                                                                       
+time11 = time.clock()
 avg_pveavi, pvavi_percent, pveai, epv, topo_list, irrad_ress = pyliburo.urbanformeval.pveavi(solid_list, 
                                                                                              pv_roof_threshold, 
                                                                                              pv_facade_threshold, 

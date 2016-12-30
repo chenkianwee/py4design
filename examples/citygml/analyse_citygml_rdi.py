@@ -1,8 +1,18 @@
+import os
 import time
 import pyliburo
-
-citygml_filepath = "F:\\kianwee_work\\smart\\journal\\mdpi_sustainability\\case_study\\citygml\\grid_tower1.gml"
-
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
+#specify the citygml file
+current_path = os.path.dirname(__file__)
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example","citygml", "grid_tower.gml" )
+#or just insert a citygml file you would like to analyse here 
+'''citygml_filepath = "C://file2analyse.gml"'''
+#================================================================================
+#INSTRUCTION: SPECIFY THE CITYGML FILE
+#================================================================================
 displaylist2 = []
 evaluations = pyliburo.citygml2eval.Evals(citygml_filepath)
 

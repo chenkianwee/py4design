@@ -37,3 +37,13 @@ def frange(start, end=None, inc=None):
     for i in xrange(1,count):
         L[i] = L[i-1] + inc
     return L
+    
+def findmedian(lst):
+    sortedLst = sorted(lst)
+    lstLen = len(lst)
+    index = (lstLen - 1) // 2
+
+    if (lstLen % 2):
+        return sortedLst[index]
+    else:
+        return (sortedLst[index] + sortedLst[index + 1])/2.0
