@@ -437,3 +437,42 @@ def write_citygml(cityobjmembers, citygml_writer):
             citygml_root.append(cityobj)
             
 #===========================================================================================================================
+#for massing2gml
+#===========================================================================================================================
+def write_gml_srf_member(occface_list):
+    gml_geometry_list = []
+    for face in occface_list:
+        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        first_pt = pypt_list[0]
+        pypt_list.append(first_pt)
+        pypt_list.reverse()
+        srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
+        gml_geometry_list.append(srf)
+    return gml_geometry_list
+
+def write_gml_triangle(occface_list):
+    gml_geometry_list = []
+    for face in occface_list:
+        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        n_pypt_list = len(pypt_list)
+        if n_pypt_list>3:
+            occtriangles = py3dmodel.construct.delaunay3d(pypt_list)
+            for triangle in occtriangles:
+                t_pypt_list = py3dmodel.fetch.pyptlist_frm_occface(triangle)
+                t_pypt_list.reverse()
+                gml_tri = pycitygml.gmlgeometry.Triangle(t_pypt_list)
+                gml_geometry_list.append(gml_tri)
+        else:
+            pypt_list.reverse()
+            gml_tri = pycitygml.gmlgeometry.Triangle(pypt_list)
+            gml_geometry_list.append(gml_tri)
+            
+    return gml_geometry_list
+    
+def write_gml_linestring(occedge):
+    gml_edge_list = []
+    occpt_list = py3dmodel.fetch.points_from_edge(occedge)
+    pypt_list = py3dmodel.fetch.occptlist2pyptlist(occpt_list)
+    linestring = pycitygml.gmlgeometry.LineString(pypt_list)
+    gml_edge_list.append(linestring)
+    return gml_edge_list

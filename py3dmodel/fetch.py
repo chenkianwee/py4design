@@ -85,27 +85,44 @@ def pyptlist2vertlist(pyptlist):
         vertlist.append(vert)
     return vertlist
     
-def get_shapetype(occ_shape):
-    shapetype = occ_shape.ShapeType()
-    return shapetype
+def get_shapetype(occ_shape_or_shape_str):
+    if isinstance(occ_shape_or_shape_str, str):
+        if occ_shape_or_shape_str == "compound":
+            return TopAbs_COMPOUND
+        if occ_shape_or_shape_str == "compsolid":
+            return TopAbs_COMPSOLID
+        if occ_shape_or_shape_str == "solid":
+            return TopAbs_SOLID
+        if occ_shape_or_shape_str == "shell":
+            return TopAbs_SHELL
+        if occ_shape_or_shape_str == "face":
+            return TopAbs_FACE
+        if occ_shape_or_shape_str == "wire":
+            return TopAbs_WIRE
+        if occ_shape_or_shape_str == "edge":
+            return TopAbs_EDGE
+        if occ_shape_or_shape_str == "vertex":
+            return TopAbs_VERTEX
+    else:        
+        return occ_shape_or_shape_str.ShapeType()
     
 def shape2shapetype(occ_shape):
     shapetype = occ_shape.ShapeType()
-    if shapetype == 0:#compound
+    if shapetype == TopAbs_COMPOUND:#compound
         orig_topo = topods_Compound(occ_shape)
-    if shapetype == 1:#compsolid
+    if shapetype == TopAbs_COMPSOLID:#compsolid
         orig_topo = topods_CompSolid(occ_shape)
-    if shapetype == 2:#solid
+    if shapetype == TopAbs_SOLID:#solid
         orig_topo = topods_Solid(occ_shape)
-    if shapetype == 3:#shell
+    if shapetype == TopAbs_SHELL:#shell
         orig_topo = topods_Shell(occ_shape)
-    if shapetype == 4:#face
+    if shapetype == TopAbs_FACE:#face
         orig_topo = topods_Face(occ_shape)
-    if shapetype == 5:#wire
+    if shapetype == TopAbs_WIRE:#wire
         orig_topo = topods_Wire(occ_shape)
-    if shapetype == 6:#edge
+    if shapetype == TopAbs_EDGE:#edge
         orig_topo = topods_Edge(occ_shape)
-    if shapetype == 7:#vertex
+    if shapetype == TopAbs_VERTEX:#vertex
         orig_topo = topods_Vertex(occ_shape)
     return orig_topo
 

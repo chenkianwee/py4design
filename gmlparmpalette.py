@@ -20,7 +20,6 @@
 # ==================================================================================================
 import abc
 import gml3dmodel
-import py3dmodel
 import pycitygml
 import utility
 

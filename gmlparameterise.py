@@ -143,6 +143,11 @@ class Parameterise(object):
         bldg_parm_dict["parameter_object"] = parm
         self.parm_obj_dict_list.append(bldg_parm_dict)
         
+    def add_parm(self, parm_obj):
+        bldg_parm_dict = {}
+        bldg_parm_dict["parameter_object"] = parm_obj
+        self.parm_obj_dict_list.append(bldg_parm_dict)
+        
     def define_nparameters(self):
         parm_obj_dict_list = self.parm_obj_dict_list
         citygml_reader = self.citygml
