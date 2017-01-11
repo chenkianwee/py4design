@@ -25,8 +25,12 @@ import pyoptimise
 
 import citygml2eval
 import gmlparameterise
+import gmlparmpalette
 import shp2citygml
 import urbanformeval
-import collada2citygml
 import runopt
 import utility
+import massing2citygml
+import analysisrulepalette
+import templaterulepalette
+import shapeattributes
