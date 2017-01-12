@@ -110,14 +110,14 @@ class IsShellInBoundary(BaseAnalysisRule):
 
         return occshape_attribs_obj_list
         
-class ShellContains(BaseAnalysisRule):        
+class ShellboundaryContains(BaseAnalysisRule):        
     @property
     def forshapetype(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     @property
     def dict_key(self):
-        return "shell_contains"
+        return "shell_boundary_contains"
         
     def make_2dboundingface(self,occshape):
         xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(occshape)
