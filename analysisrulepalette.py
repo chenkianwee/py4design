@@ -110,7 +110,7 @@ class IsShellInBoundary(BaseAnalysisRule):
 
         return occshape_attribs_obj_list
         
-class ShellboundaryContains(BaseAnalysisRule):        
+class ShellBoundaryContains(BaseAnalysisRule):        
     @property
     def forshapetype(self):
         return py3dmodel.fetch.get_shapetype("shell")

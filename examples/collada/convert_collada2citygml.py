@@ -8,8 +8,8 @@ import pyliburo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "complex_testout_rhino.dae")
-citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example", "citygml", "complex.gml")
+dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower.dae")
+citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example", "citygml", "tower.gml")
 #or just insert a dae and citygml file you would like to analyse here 
 '''dae_file = "C://file2analyse.gml"
 citygml_filepath = "C://file2analyse.gml"'''
@@ -25,7 +25,7 @@ massing_2_citygml.read_collada(dae_file)
 #first set up the analysis rule necessary for the template rules
 is_shell_closed = pyliburo.analysisrulepalette.IsShellClosed()
 is_shell_in_boundary = pyliburo.analysisrulepalette.IsShellInBoundary()
-shell_boundary_contains = pyliburo.analysisrulepalette.ShellContains()
+shell_boundary_contains = pyliburo.analysisrulepalette.ShellBoundaryContains()
 is_edge_in_boundary = pyliburo.analysisrulepalette.IsEdgeInBoundary()
 
 #then set up the template rules and append it into the massing2citygml obj
