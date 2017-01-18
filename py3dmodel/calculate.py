@@ -24,7 +24,7 @@ import construct
 
 from OCCUtils import face, Common, Construct, Topology, edge
 from OCC import BRepFeat 
-from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Ax1, gp_Dir
+from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Ax1, gp_Dir, gp_Trsf
 from OCC.TopAbs import TopAbs_IN, TopAbs_REVERSED 
 from OCC.BRepClass3d import BRepClass3d_SolidClassifier
 from OCC.GProp import GProp_GProps
@@ -513,3 +513,8 @@ def identify_open_close_wires_frm_loose_edges(occedgelist):
                 ecnt+=1
             
     return close_wires, open_wires
+
+def cs_transformation(occ_gpax3_1, occ_gpax3_2):
+    aTrsf = gp_Trsf()
+    aTrsf.SetTransformation(occ_gpax3_1,occ_gpax3_2)
+    return aTrsf

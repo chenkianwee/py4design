@@ -26,7 +26,7 @@ class BaseTemplateRule(object):
     __metaclass__ = abc.ABCMeta
     
     @abc.abstractproperty
-    def forshapetype(self):
+    def for_shape_type(self):
         """the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound"""
         return 
     
@@ -52,7 +52,7 @@ class BaseTemplateRule(object):
         for occshape_attribs_obj in occshape_attribs_obj_list:
             occshp = occshape_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.forshapetype:
+            if shptype == self.for_shape_type:
                 conditioned_list.append(occshp)
                 for analysis_rule_obj_dict in analysis_rule_obj_dict_list:
                     analysis_rule_obj = analysis_rule_obj_dict["analysis_rule_obj"] 
@@ -70,7 +70,7 @@ class IdentifyBuildingMassings(BaseTemplateRule):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
@@ -98,7 +98,7 @@ class IdentifyTerrainMassings(BaseTemplateRule):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
@@ -114,6 +114,7 @@ class IdentifyTerrainMassings(BaseTemplateRule):
         for terrain in terrain_list:
             tname = "terrain" + str(tcnt)
             tfaces =  py3dmodel.fetch.geom_explorer(terrain, "face")
+            
             gml_triangle_list = gml3dmodel.write_gml_triangle(tfaces)
             pycitygml_writer.add_tin_relief("lod1",tname,gml_triangle_list)
             tcnt+=1
@@ -123,7 +124,7 @@ class IdentifyLandUseMassings(BaseTemplateRule):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
@@ -148,7 +149,7 @@ class IdentifyRoadMassings(BaseTemplateRule):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("edge")
         
     def get_analysis_rule_obj_dict_list(self):

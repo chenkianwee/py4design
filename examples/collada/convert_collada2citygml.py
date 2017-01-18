@@ -8,7 +8,7 @@ import pyliburo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower.dae")
+dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower2.dae")
 citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example", "citygml", "tower.gml")
 #or just insert a dae and citygml file you would like to analyse here 
 '''dae_file = "C://file2analyse.gml"

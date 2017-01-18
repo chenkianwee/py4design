@@ -8,7 +8,7 @@ import pyliburo
 #specify the citygml file
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_luse50_53.gml" )
+citygml_filepath = os.path.join(parent_path, "example_files", "form_eval_example", "citygml", "tower.gml" )
 
 #or just insert a citygml file you would like to analyse here 
 '''citygml_filepath = "C://file2analyse.gml"'''
@@ -28,6 +28,7 @@ landuses = read_citygml.get_landuses()
 stops = read_citygml.get_bus_stops()
 roads = read_citygml.get_roads()
 railways = read_citygml.get_railways()
+reliefs = read_citygml.get_relief_feature()
 
 print "nbuildings:", len(buildings)
 
@@ -64,7 +65,6 @@ for building in buildings:
     
 
 ldisplay_list = []
-
 for landuse in landuses:
     lpolygons = read_citygml.get_polygons(landuse)
     if lpolygons:
@@ -74,6 +74,13 @@ for landuse in landuses:
         fedgelist = pyliburo.py3dmodel.fetch.geom_explorer(lface, "edge")
         edgedisplay_list.extend(fedgelist)
         ldisplay_list.append(lface)
+      
+rdisplay_list = []
+for relief in reliefs:
+    pytri_list = read_citygml.get_pytriangle_list(relief)
+    for pytri in pytri_list:
+        rface = pyliburo.py3dmodel.construct.make_polygon(pytri)
+        rdisplay_list.append(rface)
     
 time2 = time.clock()   
 time = (time2-time1)/60.0
@@ -82,8 +89,10 @@ print "VISUALISING"
 
 display_2dlist.append(ldisplay_list)
 display_2dlist.append(bdisplay_list)
+display_2dlist.append(rdisplay_list)
 display_2dlist.append(edgedisplay_list)
 display_2dlist.append(road_occedges)
+colour_list.append('WHITE')
 colour_list.append('WHITE')
 colour_list.append('WHITE')
 colour_list.append('BLACK')

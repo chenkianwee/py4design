@@ -29,14 +29,16 @@ from OCCUtils import face, Construct, Topology, Common
 from OCC.Display import OCCViewer
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
-from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir
+from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt
-from OCC.BRep import BRep_Builder
-from OCC.TopoDS import TopoDS_Shell
+from OCC.BRep import BRep_Builder, BRep_Tool
+from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
+from OCC.BRepMesh import BRepMesh_IncrementalMesh
+from OCC.TopLoc import TopLoc_Location
 
 import fetch
 import calculate
@@ -165,7 +167,11 @@ def make_vector(pypt1,pypt2):
     gp_pt2 = gp_Pnt(pypt2[0],pypt2[1],pypt2[2])
     gp_vec = gp_Vec(gp_pt1, gp_pt2)
     return gp_vec
-    
+
+def make_gp_ax3(pypt, pydir):    
+    gp_ax3 = gp_Ax3(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2]))
+    return gp_ax3
+
 def make_gppnt(pypt):
     return gp_Pnt(pypt[0], pypt[1], pypt[2])
     
@@ -229,10 +235,20 @@ def make_solid_from_shell_list(occ_shell_list):
 def make_compound(topo):
     return Construct.compound(topo)
     
-def extrude(occ_face, pyvector, height):
-    vec = make_vector((0,0,0),pyvector)*height
-    extrude = BRepPrimAPI_MakePrism(occ_face, vec)
-    solid = fetch.shape2shapetype(extrude.Shape())
+def extrude(occface, pydir, height):
+    #vec = make_vector((0,0,0),pydir)*height
+    #extrude = BRepPrimAPI_MakePrism(occface, vec)
+    #solid = fetch.shape2shapetype(extrude.Shape())
+    orig_pt = calculate.face_midpt(occface)
+    dest_pt = modify.move_pt(orig_pt, pydir, height)
+    moved_face = modify.move(orig_pt,dest_pt, occface)
+    loft = make_loft([occface, moved_face])
+    face_list = fetch.geom_explorer(loft, "face")
+    face_list.append(occface)
+    face_list.append(moved_face)
+    shell = make_shell_frm_faces(face_list)[0]
+    solid = make_solid(shell)
+    solid = modify.fix_close_solid(solid)
     return solid
     
 def extrude_edge(occedge, pydirection, height):
@@ -418,6 +434,31 @@ def merge_faces(occ_face_list, tolerance = 1e-06 ):
     face_list = wire_frm_loose_edges(free_edges)
     return face_list
     
+def simple_mesh(occshape, mesh_incremental_float = 0.8):
+    #TODO: figure out why is it that some surfaces do not work
+    occshape = TopoDS_Shape(occshape)
+    bt = BRep_Tool()
+    BRepMesh_IncrementalMesh(occshape, mesh_incremental_float)
+    occshape_face_list = fetch.geom_explorer(occshape, "face")
+    occface_list = []
+    for occshape_face in occshape_face_list:
+        location = TopLoc_Location()
+        #occshape_face = modify.fix_face(occshape_face)
+        facing = bt.Triangulation(occshape_face, location).GetObject()
+        tab = facing.Nodes()
+        tri = facing.Triangles()
+        for i in range(1, facing.NbTriangles()+1):
+            trian = tri.Value(i)
+            index1, index2, index3 = trian.Get()
+            #print index1, index2, index3
+            pypt1 = fetch.occpt2pypt(tab.Value(index1))
+            pypt2 = fetch.occpt2pypt(tab.Value(index2))
+            pypt3 = fetch.occpt2pypt(tab.Value(index3))
+            #print pypt1, pypt2, pypt3
+            occface = make_polygon([pypt1, pypt2, pypt3])
+            occface_list.append(occface)
+    return occface_list
+    
 def delaunay3d(pyptlist):
     pyptlistx = []
     pyptlisty = []
@@ -450,8 +491,9 @@ def delaunay3d(pyptlist):
     
     return occtriangles
     
-def visualise(shape2dlist, colour_list):
-    display, start_display, add_menu, add_function_to_menu = init_display()#init_display(backend_str = "wx")
+def visualise(shape2dlist, colour_list, backend = "qt-pyqt5"):
+    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
+    
     sc_cnt = 0
     for shape_list in shape2dlist:
         compound = make_compound(shape_list)

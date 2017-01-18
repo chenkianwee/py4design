@@ -25,7 +25,7 @@ class BaseAnalysisRule(object):
     __metaclass__ = abc.ABCMeta
     
     @abc.abstractproperty
-    def forshapetype(self):
+    def for_shape_type(self):
         """the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound"""
         return 
         
@@ -43,7 +43,7 @@ class BaseAnalysisRule(object):
 #========================================================================================
 class IsShellClosed(BaseAnalysisRule):        
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     @property
@@ -57,7 +57,7 @@ class IsShellClosed(BaseAnalysisRule):
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.forshapetype:
+            if shptype == self.for_shape_type:
                 is_closed = py3dmodel.calculate.is_shell_closed(occshp)
                 if is_closed:
                     occshp_attribs_obj.set_analysis_rule_item(self.dict_key, True)
@@ -68,7 +68,7 @@ class IsShellClosed(BaseAnalysisRule):
         
 class IsShellInBoundary(BaseAnalysisRule):
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     @property
@@ -89,14 +89,14 @@ class IsShellInBoundary(BaseAnalysisRule):
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.forshapetype:
+            if shptype == self.for_shape_type:
                 cur_boundary = self.make_2dboundingface(occshp)
                 for shpcnt2 in range(nshp):
                     if shpcnt2 != shpcnt:
                         nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
                         nxt_occshp = nxt_occshp_dict_obj.shape
                         nxt_shptype = py3dmodel.fetch.get_shapetype(nxt_occshp)
-                        if nxt_shptype == self.forshapetype:
+                        if nxt_shptype == self.for_shape_type:
                             nxt_boundary = self.make_2dboundingface(nxt_occshp)
                             #check if cur_shell is inside nxt_shell
                             is_inside_nxt_boundary = py3dmodel.calculate.face_is_inside(cur_boundary,nxt_boundary)
@@ -112,7 +112,7 @@ class IsShellInBoundary(BaseAnalysisRule):
         
 class ShellBoundaryContains(BaseAnalysisRule):        
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("shell")
         
     @property
@@ -133,14 +133,14 @@ class ShellBoundaryContains(BaseAnalysisRule):
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.forshapetype:
+            if shptype == self.for_shape_type:
                 cur_boundary = self.make_2dboundingface(occshp)
                 for shpcnt2 in range(nshp):
                     if shpcnt2 != shpcnt:
                         nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
                         nxt_occshp = nxt_occshp_dict_obj.shape
                         nxt_shptype = py3dmodel.fetch.get_shapetype(nxt_occshp)
-                        if nxt_shptype == self.forshapetype:
+                        if nxt_shptype == self.for_shape_type:
                             nxt_boundary = self.make_2dboundingface(nxt_occshp)
                             #check if cur_shell is inside nxt_shell
                             contains_nxt_boundary = py3dmodel.calculate.face_is_inside(nxt_boundary,cur_boundary)
@@ -156,7 +156,7 @@ class ShellBoundaryContains(BaseAnalysisRule):
 
 class IsEdgeInBoundary(BaseAnalysisRule):        
     @property
-    def forshapetype(self):
+    def for_shape_type(self):
         return py3dmodel.fetch.get_shapetype("edge")
         
     @property
@@ -170,7 +170,7 @@ class IsEdgeInBoundary(BaseAnalysisRule):
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.forshapetype:
+            if shptype == self.for_shape_type:
                 for shpcnt2 in range(nshp):
                     nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
                     nxt_occshp = nxt_occshp_dict_obj.shape

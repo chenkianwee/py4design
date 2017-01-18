@@ -9,7 +9,7 @@ from collada import *
 current_path = os.path.dirname(__file__)
 parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
 dae_file = os.path.join(parent_path, "example_files", "form_eval_example",  "dae", "grid_tower.dae")
-dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+#dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
 #or just insert a dae and citygml file you would like to analyse here 
 '''dae_file = "C://file2analyse.gml"'''
 #================================================================================
@@ -42,7 +42,7 @@ for geom in geoms:
                     #displaylist.append(occpolygon)
                     g_cnt +=1
 print len(display_list)
-display_2dlist.append(display_list[0:1])
+display_2dlist.append(display_list)
 colour_list = ["WHITE"]
 
 pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)

@@ -31,12 +31,19 @@ import fetch
 import calculate
 import construct
 
-def move(orig_pt, location_pt, shape):
+def move(orig_pt, location_pt, occshape):
     gp_ax31 = gp_Ax3(gp_Pnt(orig_pt[0], orig_pt[1], orig_pt[2]), gp_DZ())
     gp_ax32 = gp_Ax3(gp_Pnt(location_pt[0], location_pt[1], location_pt[2]), gp_DZ())
     aTrsf = gp_Trsf()
     aTrsf.SetTransformation(gp_ax32,gp_ax31)
-    trsf_shp = BRepBuilderAPI_Transform(shape, aTrsf).Shape()
+    trsf_brep = BRepBuilderAPI_Transform(aTrsf)
+    trsf_brep.Perform(occshape, True)
+    trsf_shp = trsf_brep.Shape()
+    return trsf_shp
+    
+def map_cs(occgp_ax3_1, occgp_ax3_2, occshape):
+    a_trsf = calculate.cs_transformation(occgp_ax3_1, occgp_ax3_2)
+    trsf_shp = BRepBuilderAPI_Transform(occshape, a_trsf).Shape()
     return trsf_shp
     
 def normalise_vec(gpvec):
@@ -63,8 +70,9 @@ def uniform_scale(occshape, tx, ty, tz, ref_pypt):
       0, ty, 0,
       0, 0, tz,
     ))
-    brep = BRepBuilderAPI_GTransform(moved_shape, xform, False)
-    brep.Build()
+    
+    brep = BRepBuilderAPI_GTransform(xform)
+    brep.Perform(moved_shape, True)
     trsfshape = brep.Shape()
     move_back_shp = move((0,0,0), ref_pypt,trsfshape)
     return move_back_shp
@@ -270,4 +278,25 @@ def flatten_edge_z_value(occedge, z=0):
         pyptlist_2d.append(pypt2d)
     flatten_edge = construct.make_edge(pyptlist_2d[0],pyptlist_2d[1])
     return flatten_edge
+    
+def simplify_shell(occshell):
+    #this will merge any coincidental faces into a single surfaces to simplify the geometry
+    fshell = fix_shell_orientation(occshell)
+    #get all the faces from the shell and arrange them according to their normals
+    sfaces = fetch.geom_explorer(fshell,"face")
+    nf_dict = calculate.grp_faces_acc2normals(sfaces)
+    merged_fullfacelist = []
+    #merge all the faces thats share edges into 1 face
+    for snfaces in nf_dict.values():
+        merged_facelist = construct.merge_faces(snfaces)
+        merged_fullfacelist.extend(merged_facelist)
+        
+    if len(merged_fullfacelist) >1:
+        simpleshell = construct.make_shell_frm_faces(merged_fullfacelist)
+        fshell2 = fix_shell_orientation(simpleshell[0])
+        
+    else:
+        #if there is only one face it means its an open shell
+        fshell2 = construct.make_shell(merged_fullfacelist)
+    return fshell2
     
