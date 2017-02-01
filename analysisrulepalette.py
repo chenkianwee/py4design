@@ -75,34 +75,35 @@ class IsShellInBoundary(BaseAnalysisRule):
     def dict_key(self):
         return "is_shell_in_boundary"
         
-    def make_2dboundingface(self,occshape):
-        xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(occshape)
-        boundary_pyptlist = [[xmin,ymin,0], [xmax,ymin,0], [xmax,ymax,0], [xmin,ymax,0]]
-        boundary_face = py3dmodel.construct.make_polygon(boundary_pyptlist)
-        return boundary_face
         
     def execute(self, occshape_attribs_obj_list):
         nshp = len(occshape_attribs_obj_list)
-        
+        #get all the geometries from the dictionary 
+        occshape_flatten_list = []
+        for occshape_attrib in occshape_attribs_obj_list:
+            shptype = py3dmodel.fetch.get_shapetype(occshape_attrib.shape)
+            if shptype == py3dmodel.fetch.get_shapetype("shell"):
+                occshape_flatten_list.append(occshape_attrib.get_value("flatten_shell_face"))
+
         for shpcnt in range(nshp):
             is_in_boundary = []
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
             if shptype == self.for_shape_type:
-                cur_boundary = self.make_2dboundingface(occshp)
+                cur_boundary = occshp_attribs_obj.get_value("flatten_shell_face") #py3dmodel.modify.flatten_shell_z_value(occshp)
                 for shpcnt2 in range(nshp):
                     if shpcnt2 != shpcnt:
                         nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
                         nxt_occshp = nxt_occshp_dict_obj.shape
                         nxt_shptype = py3dmodel.fetch.get_shapetype(nxt_occshp)
                         if nxt_shptype == self.for_shape_type:
-                            nxt_boundary = self.make_2dboundingface(nxt_occshp)
+                            nxt_boundary = nxt_occshp_dict_obj.get_value("flatten_shell_face") #py3dmodel.modify.flatten_shell_z_value(nxt_occshp)
                             #check if cur_shell is inside nxt_shell
                             is_inside_nxt_boundary = py3dmodel.calculate.face_is_inside(cur_boundary,nxt_boundary)
                             if is_inside_nxt_boundary:
                                 is_in_boundary.append(nxt_occshp)
-                        
+                
             if len(is_in_boundary)>0:
                 occshp_attribs_obj.set_analysis_rule_item(self.dict_key, True)
             else:
@@ -119,11 +120,6 @@ class ShellBoundaryContains(BaseAnalysisRule):
     def dict_key(self):
         return "shell_boundary_contains"
         
-    def make_2dboundingface(self,occshape):
-        xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(occshape)
-        boundary_pyptlist = [[xmin,ymin,0], [xmax,ymin,0], [xmax,ymax,0], [xmin,ymax,0]]
-        boundary_face = py3dmodel.construct.make_polygon(boundary_pyptlist)
-        return boundary_face
         
     def execute(self, occshape_attribs_obj_list):
         nshp = len(occshape_attribs_obj_list)
@@ -134,14 +130,14 @@ class ShellBoundaryContains(BaseAnalysisRule):
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
             if shptype == self.for_shape_type:
-                cur_boundary = self.make_2dboundingface(occshp)
+                cur_boundary = occshp_attribs_obj.get_value("flatten_shell_face") #py3dmodel.modify.flatten_shell_z_value(occshp)
                 for shpcnt2 in range(nshp):
                     if shpcnt2 != shpcnt:
                         nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
                         nxt_occshp = nxt_occshp_dict_obj.shape
                         nxt_shptype = py3dmodel.fetch.get_shapetype(nxt_occshp)
                         if nxt_shptype == self.for_shape_type:
-                            nxt_boundary = self.make_2dboundingface(nxt_occshp)
+                            nxt_boundary = nxt_occshp_dict_obj.get_value("flatten_shell_face") #py3dmodel.modify.flatten_shell_z_value(nxt_occshp)
                             #check if cur_shell is inside nxt_shell
                             contains_nxt_boundary = py3dmodel.calculate.face_is_inside(nxt_boundary,cur_boundary)
                             if contains_nxt_boundary:
@@ -165,25 +161,24 @@ class IsEdgeInBoundary(BaseAnalysisRule):
         
     def execute(self,occshape_attribs_obj_list):
         nshp = len(occshape_attribs_obj_list)
+        occshape_list = []
+        for occshape_attrib in occshape_attribs_obj_list:
+            occ_shp = occshape_attrib.shape
+            if py3dmodel.fetch.get_shapetype(occ_shp) == py3dmodel.fetch.get_shapetype("shell"):
+                occshape_list.append(occshape_attrib.shape)
+            
         for shpcnt in range(nshp):
-            is_in_boundary = []
+            #is_in_boundary = []
             occshp_attribs_obj = occshape_attribs_obj_list[shpcnt]
             occshp = occshp_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
             if shptype == self.for_shape_type:
-                for shpcnt2 in range(nshp):
-                    nxt_occshp_dict_obj = occshape_attribs_obj_list[shpcnt2]
-                    nxt_occshp = nxt_occshp_dict_obj.shape
-                    nxt_shptype = py3dmodel.fetch.get_shapetype(nxt_occshp)
-                    if nxt_shptype == py3dmodel.fetch.get_shapetype("shell"):
-                        min_dist = py3dmodel.calculate.minimum_distance(occshp,nxt_occshp)
-                        if min_dist < 0.0001:
-                            is_in_boundary.append(nxt_occshp)
-                            
-            if len(is_in_boundary)>0:
-                occshp_attribs_obj.set_analysis_rule_item(self.dict_key, True)
-            else:
-                occshp_attribs_obj.set_analysis_rule_item(self.dict_key, False)
-            
+                occshape_list2 = occshape_list[:]
+                other_cmpd = py3dmodel.construct.make_compound(occshape_list2)
+                min_dist = py3dmodel.calculate.minimum_distance(occshp,other_cmpd)
+                if min_dist < 0.0001:
+                    occshp_attribs_obj.set_analysis_rule_item(self.dict_key, True)
+                else:
+                    occshp_attribs_obj.set_analysis_rule_item(self.dict_key, False)
         return occshape_attribs_obj_list
 #========================================================================================

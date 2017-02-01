@@ -54,6 +54,7 @@ class Massing2Citygml(object):
                         if type(children_node2[0]) == scene.NodeNode:
                             print children_node2[0].children
         '''
+        tolerance = 1e-04
         edgelist = []
         shelllist = []
         mesh = Collada(dae_filepath)
@@ -61,71 +62,70 @@ class Massing2Citygml(object):
         geoms = mesh.scene.objects('geometry')
         geoms = list(geoms)
         gcnt = 0
-        for geom in geoms:   
-            prim2dlist = list(geom.primitives())
-            for primlist in prim2dlist: 
-                spyptlist = []
-                epyptlist = []
-                faces = []
-                edges = []
-                if primlist:
-                    for prim in primlist:
-                        if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
-                            pyptlist = prim.vertices.tolist()
-                            pyptlist.sort()
-                            if pyptlist not in spyptlist:
-                                spyptlist.append(pyptlist)
-                                occpolygon = py3dmodel.construct.make_polygon(pyptlist)
-                                if not py3dmodel.fetch.is_face_null(occpolygon):
-                                    faces.append(occpolygon)
-                                gcnt +=1
-                        elif type(prim) == lineset.Line:
-                            pyptlist = prim.vertices.tolist()
-                            pyptlist.sort()
-                            if pyptlist not in epyptlist:
-                                epyptlist.append(pyptlist)
-                                occedge = py3dmodel.construct.make_edge(pyptlist[0], pyptlist[1])
-                                edges.append(occedge)
-                            gcnt +=1
-                            
-                    if faces:
-                        #remove all the duplicated faces
-                        #non_dup_faces = py3dmodel.modify.rmv_duplicated_faces(faces)
-                        n_unique_faces = len(faces)
-                        if n_unique_faces == 1:
-                            shell = py3dmodel.construct.make_shell(faces)
-                            shelllist.append(shell)
-                        if n_unique_faces >1:
-                            shell = py3dmodel.construct.make_shell_frm_faces(faces)[0]
-                            #this will merge any coincidental faces into a single surfaces to simplify the geometry
-                            shell = py3dmodel.modify.simplify_shell(shell)
-                            shelllist.append(shell)
-                    else:
-                        edgelist.extend(edges)
+        for geom in geoms:
+            if gcnt >= 0: #and gcnt <= 45:
+                prim2dlist = list(geom.primitives())
+                for primlist in prim2dlist: 
+                    spyptlist = []
+                    epyptlist = []
+                    faces = []
+                    edges = []
+                    if primlist:
+                        for prim in primlist:
+                            if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
+                                pyptlist = prim.vertices.tolist()
+                                sorted_pyptlist = sorted(pyptlist)
+                                if sorted_pyptlist not in spyptlist:
+                                    spyptlist.append(sorted_pyptlist)
+                                    occpolygon = py3dmodel.construct.make_polygon(pyptlist)
+                                    if not py3dmodel.fetch.is_face_null(occpolygon):
+                                        faces.append(occpolygon)
+
+                            elif type(prim) == lineset.Line:
+                                pyptlist = prim.vertices.tolist()
+                                pyptlist.sort()
+                                if pyptlist not in epyptlist:
+                                    epyptlist.append(pyptlist)
+                                    occedge = py3dmodel.construct.make_edge(pyptlist[0], pyptlist[1])
+                                    edges.append(occedge)
+                                
+                        if faces:
+                            n_unique_faces = len(faces)
+                            if n_unique_faces == 1:
+                                shell = py3dmodel.construct.make_shell(faces)
+                                shelllist.append(shell)
+                            if n_unique_faces >1:
+                                shell = py3dmodel.construct.make_shell_frm_faces(faces, tolerance = tolerance)
+                                if shell:
+                                    shelllist.append(shell[0])
+                        else:
+                            edgelist.extend(edges)
+            gcnt +=1
         
+        cmpd_shell = py3dmodel.construct.make_compound(shelllist)  
+        
+        cmpd_edge = py3dmodel.construct.make_compound(edgelist)
+        cmpd_list = [cmpd_shell, cmpd_edge]
         #find the midpt of all the geometry
-        compoundlist = shelllist + edgelist
-        compound = py3dmodel.construct.make_compound(compoundlist)
+        compound = py3dmodel.construct.make_compound(cmpd_list)
         xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(compound)
         ref_pt = py3dmodel.calculate.get_centre_bbox(compound)
         ref_pt = (ref_pt[0],ref_pt[1],zmin)
-        #make sure no duplicate edges 
-        scaled_shape = py3dmodel.modify.uniform_scale(compound, unit, unit, unit,ref_pt)
-        scaled_compound = py3dmodel.fetch.shape2shapetype(scaled_shape)
-        recon_compound = gml3dmodel.redraw_occ_shell_n_edge(scaled_compound)
+        #scale all the geometries into metre
+        scaled_shell_shape = py3dmodel.modify.uniform_scale(cmpd_shell, unit, unit, unit,ref_pt)
+        scaled_edge_shape = py3dmodel.modify.uniform_scale(cmpd_edge, unit, unit, unit,ref_pt)
         
-        #define the geometrical attributes between shells
-        shells  = py3dmodel.fetch.geom_explorer(recon_compound,"shell")
+        scaled_shell_compound = py3dmodel.fetch.shape2shapetype(scaled_shell_shape)
+        scaled_edge_compound = py3dmodel.fetch.shape2shapetype(scaled_edge_shape)
+        
+        recon_shell_compound = gml3dmodel.redraw_occ_shell(scaled_shell_compound, tolerance)
+        recon_edge_compound = gml3dmodel.redraw_occ_edge(scaled_edge_compound, tolerance)
+        #sort and recompose the shells 
+        shells  = py3dmodel.fetch.geom_explorer(recon_shell_compound,"shell")
         sewed_shells = gml3dmodel.reconstruct_open_close_shells(shells)
-        
-        shell_compound = py3dmodel.construct.make_compound(sewed_shells)
-        shell_edges = py3dmodel.fetch.geom_explorer(shell_compound, "edge")
-        shell_edge_compound = py3dmodel.construct.make_compound(shell_edges)
-        
-        edges = py3dmodel.fetch.geom_explorer(recon_compound, "edge")
-        edge_compound = py3dmodel.construct.make_compound(edges)
-        network_edge_compound = py3dmodel.construct.boolean_difference(edge_compound,shell_edge_compound)
-        nw_edges = py3dmodel.fetch.geom_explorer(network_edge_compound,"edge")
+                
+        nw_edges = py3dmodel.fetch.geom_explorer(recon_edge_compound,"edge")
+
         occshp_attribs_obj_list = []
         for sewed_shell in sewed_shells:
             occshp_attribs_obj = shapeattributes.ShapeAttributes()
@@ -136,9 +136,10 @@ class Massing2Citygml(object):
             occshp_attribs_obj = shapeattributes.ShapeAttributes()
             occshp_attribs_obj.set_shape(nw_edge)
             occshp_attribs_obj_list.append(occshp_attribs_obj)
-        
-        self.occshp_attribs_obj_list = occshp_attribs_obj_list
             
+        print len(shells), len(sewed_shells)
+        self.occshp_attribs_obj_list = occshp_attribs_obj_list
+
     def add_template_rule(self, template_rule_obj):
         self.template_rule_obj_list.append(template_rule_obj)
         
@@ -146,6 +147,7 @@ class Massing2Citygml(object):
         occshp_attribs_obj_list = self.occshp_attribs_obj_list
         template_rule_obj_list = self.template_rule_obj_list
         analysis_rule_obj_list = []
+        
         for template_rule_obj in template_rule_obj_list:
             analysis_rule_obj_dict_list = template_rule_obj.analysis_rule_obj_dict_list
             for analysis_rule_obj_dict in analysis_rule_obj_dict_list:
@@ -153,16 +155,32 @@ class Massing2Citygml(object):
                 if analysis_rule_obj not in analysis_rule_obj_list:
                     analysis_rule_obj_list.append(analysis_rule_obj)
                     
+        #calculate the flatten shell for the analysis rules
+        #doing it once here saves time
+        print  "GETTING FLATTEN SURFACE"
+        for occshp_attribs_obj in occshp_attribs_obj_list:
+            occshp = occshp_attribs_obj.shape
+            shptype = py3dmodel.fetch.get_shapetype(occshp)
+            if shptype == py3dmodel.fetch.get_shapetype("shell"):
+                flatten_shell_face = py3dmodel.modify.flatten_shell_z_value(occshp)
+                if not flatten_shell_face == None:
+                    flat_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(flatten_shell_face)
+                    flatten_shell_face = py3dmodel.construct.make_polygon(flat_pyptlist)
+                    occshp_attribs_obj.dictionary["flatten_shell_face"] = flatten_shell_face
+
+
         for analysis_rule_obj in analysis_rule_obj_list:
+            print analysis_rule_obj
             occshp_attribs_obj_list = analysis_rule_obj.execute(occshp_attribs_obj_list)
             
         self.occshp_attribs_obj_list = occshp_attribs_obj_list
             
-    def execute_template_rule(self, citygml_filepath):
+    def execute_template_rule(self, citygml_filepath, tolerance = 1e-02):
         template_rule_obj_list = self.template_rule_obj_list
         occshape_attribs_obj_list = self.occshp_attribs_obj_list
         pycitygml_writer = pycitygml.Writer()
         for template_rule_obj in template_rule_obj_list:
+            print template_rule_obj
             template_rule_obj.identify(occshape_attribs_obj_list, pycitygml_writer)
             
         pycitygml_writer.write(citygml_filepath)

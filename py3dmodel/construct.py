@@ -203,8 +203,9 @@ def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
         
     sewing.Perform()
     sewing_shape = fetch.shape2shapetype(sewing.SewedShape())
-    topo_dict = fetch.topos_frm_compound(sewing_shape)
-    shell_list = topo_dict["shell"]
+    #topo_dict = fetch.topos_frm_compound(sewing_shape)
+    #shell_list = topo_dict["shell"]
+    shell_list = fetch.geom_explorer(sewing_shape, "shell")
     return shell_list
     
 def make_occsolid_frm_pypolygons(pypolygon_list):
@@ -445,18 +446,19 @@ def simple_mesh(occshape, mesh_incremental_float = 0.8):
         location = TopLoc_Location()
         #occshape_face = modify.fix_face(occshape_face)
         facing = bt.Triangulation(occshape_face, location).GetObject()
-        tab = facing.Nodes()
-        tri = facing.Triangles()
-        for i in range(1, facing.NbTriangles()+1):
-            trian = tri.Value(i)
-            index1, index2, index3 = trian.Get()
-            #print index1, index2, index3
-            pypt1 = fetch.occpt2pypt(tab.Value(index1))
-            pypt2 = fetch.occpt2pypt(tab.Value(index2))
-            pypt3 = fetch.occpt2pypt(tab.Value(index3))
-            #print pypt1, pypt2, pypt3
-            occface = make_polygon([pypt1, pypt2, pypt3])
-            occface_list.append(occface)
+        if facing:
+            tab = facing.Nodes()
+            tri = facing.Triangles()
+            for i in range(1, facing.NbTriangles()+1):
+                trian = tri.Value(i)
+                index1, index2, index3 = trian.Get()
+                #print index1, index2, index3
+                pypt1 = fetch.occpt2pypt(tab.Value(index1))
+                pypt2 = fetch.occpt2pypt(tab.Value(index2))
+                pypt3 = fetch.occpt2pypt(tab.Value(index3))
+                #print pypt1, pypt2, pypt3
+                occface = make_polygon([pypt1, pypt2, pypt3])
+                occface_list.append(occface)
     return occface_list
     
 def delaunay3d(pyptlist):

@@ -49,6 +49,7 @@ class BaseTemplateRule(object):
         
         analysis_rule_obj_dict_list = self.get_analysis_rule_obj_dict_list()
         conditioned_list = []
+        cnt = 0
         for occshape_attribs_obj in occshape_attribs_obj_list:
             occshp = occshape_attribs_obj.shape
             shptype = py3dmodel.fetch.get_shapetype(occshp)
@@ -62,6 +63,7 @@ class BaseTemplateRule(object):
                     if analysis_attrib != condition:
                         conditioned_list.remove(occshp)
                         break
+            cnt+=1
         return conditioned_list
         
 #========================================================================================
@@ -82,14 +84,57 @@ class IdentifyBuildingMassings(BaseTemplateRule):
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):        
         building_list = super(IdentifyBuildingMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
-        
+        tolerance = 1e-04
         bcnt = 0
         for building in building_list:
-            solid = py3dmodel.construct.make_solid(building)
-            fix_solid = py3dmodel.modify.fix_close_solid(solid)
-            bldg_name = "bldg" + str(bcnt)
-            bfaces = py3dmodel.fetch.geom_explorer(fix_solid, "face")
+            building = py3dmodel.modify.fix_shell_orientation(building)
+            #mesh the shell first so that it will be more accurate for pythonocc to process the geometries
+            #mesh_faces = py3dmodel.construct.simple_mesh(building)
+            #building = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
+            #building = py3dmodel.modify.fix_shell_orientation(building)
+            #first try to simplify the solid as much as possible
+            mbuilding = py3dmodel.modify.simplify_shell(building, tolerance = tolerance)
+
+            least_verts = 2
+            while least_verts <3:
+                least_verts = 3
+                shell_faces = py3dmodel.fetch.geom_explorer(mbuilding, "face")
+                #this is to try to remove any unwanted small area face 
+                #this will only happens when the simplification do not work
+                for face in shell_faces:
+                    pyptlist= py3dmodel.fetch.pyptlist_frm_occface(face)
+                    nverts = len(pyptlist)
+                    if nverts <3:
+                        shell_faces.remove(face)
+                        least_verts = 2
+                        continue
+                    area = py3dmodel.calculate.face_area(face)
+                    if area < 1e-03:
+                        shell_faces.remove(face)
+                        least_verts = 2
+                        
+                #reconstruct the shell with the remaining face
+                mbuilding = py3dmodel.construct.make_shell_frm_faces(shell_faces,tolerance = tolerance)[0]
+                mbuilding = py3dmodel.modify.fix_shell_orientation(mbuilding)
+            
+            is_shell_close = py3dmodel.calculate.is_shell_closed(mbuilding)
+            is_shell_planar = gml3dmodel.is_shell_faces_planar(mbuilding)
+            is_shell_simple = gml3dmodel.is_shell_simple(mbuilding)
+            #if after removal of faces the shell is no longer close 
+            #reconstruct the entire shell entirely by meshing the original geometry
+            if is_shell_close == False or is_shell_planar == False or is_shell_simple == False :
+                mesh_faces = py3dmodel.construct.simple_mesh(building)
+                mbuilding = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
+                mbuilding = py3dmodel.modify.fix_shell_orientation(mbuilding)
+                mbuilding = py3dmodel.construct.make_solid(mbuilding)
+                mbuilding = py3dmodel.modify.fix_close_solid(mbuilding)
+            else:
+                mbuilding = py3dmodel.construct.make_solid(mbuilding)
+                mbuilding = py3dmodel.modify.fix_close_solid(mbuilding)
+
+            bfaces = py3dmodel.fetch.geom_explorer(mbuilding, "face")
             gml_geometry_list =gml3dmodel.write_gml_srf_member(bfaces)
+            bldg_name = "bldg" + str(bcnt)
             pycitygml_writer.add_building("lod1",bldg_name, gml_geometry_list)
             bcnt+=1
             
@@ -110,12 +155,17 @@ class IdentifyTerrainMassings(BaseTemplateRule):
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
         terrain_list = super(IdentifyTerrainMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
+        tolerance = 1e-04
         tcnt = 0
         for terrain in terrain_list:
-            tname = "terrain" + str(tcnt)
-            tfaces =  py3dmodel.fetch.geom_explorer(terrain, "face")
+            xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(terrain)
+            zrange = zmax-zmin
+            if zrange <= tolerance:
+                terrain = py3dmodel.modify.simplify_shell(terrain, tolerance = tolerance)
             
+            tfaces =  py3dmodel.fetch.geom_explorer(terrain, "face")
             gml_triangle_list = gml3dmodel.write_gml_triangle(tfaces)
+            tname = "terrain" + str(tcnt)
             pycitygml_writer.add_tin_relief("lod1",tname,gml_triangle_list)
             tcnt+=1
             
@@ -136,11 +186,21 @@ class IdentifyLandUseMassings(BaseTemplateRule):
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
         landuse_list = super(IdentifyLandUseMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
+        tolerance = 1e-04
         lcnt = 0
         for landuse in landuse_list:
-            luse_name = "luse" + str(lcnt)
+            xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(landuse)
+            zrange = zmax-zmin
+            if zrange <= tolerance:
+                landuse = py3dmodel.modify.simplify_shell(landuse, tolerance = tolerance)
+            else:
+                mesh_faces = py3dmodel.construct.simple_mesh(landuse)
+                landuse = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
+                landuse = py3dmodel.modify.fix_shell_orientation(landuse)
+                
             lfaces =  py3dmodel.fetch.geom_explorer(landuse, "face")
             gml_geometry_list = gml3dmodel.write_gml_srf_member(lfaces)
+            luse_name = "luse" + str(lcnt)
             pycitygml_writer.add_landuse("lod1", luse_name, gml_geometry_list)
             lcnt +=1
 

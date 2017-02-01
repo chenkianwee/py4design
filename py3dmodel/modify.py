@@ -21,7 +21,7 @@
 from OCCUtils import Construct
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
 from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
-from OCC.ShapeFix import ShapeFix_Shell
+from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid
 from OCC.BRepLib import breplib
 from OCC.Geom import Geom_TrimmedCurve
 from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
@@ -87,16 +87,22 @@ def reverse_face(occ_face):
     occ_face_r = fetch.shape2shapetype(occ_face.Reversed())
     return occ_face_r
     
-def fix_shell_orientation(occ_shell):
-    shapefix = ShapeFix_Shell()
-    shapefix.FixFaceOrientation(occ_shell)
+def fix_shell_orientation(occshell):
+    shapefix = ShapeFix_Shell(occshell)
+    shapefix.FixFaceOrientation(occshell)
     shapefix.Perform()
     fix_shell = shapefix.Shell()
     return fix_shell
     
-def fix_close_solid(occ_solid):
-    breplib.OrientClosedSolid(occ_solid)
-    return occ_solid
+def fix_close_solid(occsolid):
+    shape_fix = ShapeFix_Solid(occsolid)
+    shape_fix.Perform()
+    fix_solid = shape_fix.Solid()
+    fix_solid = fetch.geom_explorer(fix_solid, "solid")[0]
+    #if len(shell_list) == 1:
+    #    fix_solid = construct.make_solid(shell_list[0])
+    breplib.OrientClosedSolid(fix_solid)
+    return fix_solid
     
 def fix_shape(occ_shape):
     fixed_shape = Construct.fix_shape(occ_shape)
@@ -181,13 +187,16 @@ def rmv_duplicated_pts(pyptlist, roundndigit = None):
     '''
     
     if roundndigit == None:
-        upyptlist = set(pyptlist)
-        return list(upyptlist)
+        u_pyptlist = []
+        for pypt in pyptlist:
+            if pypt not in u_pyptlist:
+                u_pyptlist.append(pypt)
+                
+        return u_pyptlist
         
     else:
-        upyptlist = set(pyptlist)
         round_pyptlist = []
-        for pypt in upyptlist:
+        for pypt in pyptlist:
             round_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
             if round_pypt not in round_pyptlist:
                 round_pyptlist.append(round_pypt)
@@ -279,24 +288,119 @@ def flatten_edge_z_value(occedge, z=0):
     flatten_edge = construct.make_edge(pyptlist_2d[0],pyptlist_2d[1])
     return flatten_edge
     
-def simplify_shell(occshell):
+def flatten_shell_z_value(occshell, z=0):
+    #face_list = fetch.faces_frm_solid(occshell)
+    xmin,ymin,zmin,xmax,ymax,zmax = calculate.get_bounding_box(occshell)
+    boundary_pyptlist = [[xmin,ymin,zmin], [xmax,ymin,zmin], [xmax,ymax,zmin], [xmin,ymax,zmin]]
+    boundary_face = construct.make_polygon(boundary_pyptlist)
+    b_mid_pt = calculate.face_midpt(boundary_face)
+    flatten_shell = fetch.shape2shapetype(uniform_scale(occshell, 1, 1, 0, b_mid_pt))
+    face_list = construct.simple_mesh(flatten_shell)
+    #face_list = fetch.geom_explorer(flatten_shell,"face")
+    nfaces = len(face_list)
+    merged_faces = construct.merge_faces(face_list)
+    dest_pt = [b_mid_pt[0], b_mid_pt[1], z]
+    #depending on how complicated is the shell we decide which is the best way to flatten it 
+    #1.) if it is an open shell and when everything is flatten it fits nicely as a flat surface 
+    if len(merged_faces) == 1:
+        flatten_face = fetch.shape2shapetype(move(b_mid_pt, dest_pt,merged_faces[0]))
+        return flatten_face
+       
+    #2.) if it is a complex shell with less than 500 faces we fused and create a single surface
+    if nfaces < 50:
+        try:
+            fused_shape = None
+            fcnt = 0
+            for face in face_list:
+                face_area = calculate.face_area(face)
+                if not face_area < 0.001:
+                    if fcnt == 0:
+                        fused_shape = face 
+                    else:
+                        #construct.visualise([[fused_shape], [face]], ['WHITE', 'RED'])
+                        fused_shape = construct.boolean_fuse(fused_shape, face)
+                    fcnt+=1
+                    
+            if fused_shape!=None:
+                fused_face_list = fetch.geom_explorer(fused_shape, "face")
+                merged_faces = construct.merge_faces(fused_face_list)
+                if len(merged_faces) == 1:
+                    flatten_face = fetch.shape2shapetype(move(b_mid_pt, dest_pt,merged_faces[0]))
+                    return flatten_face
+                else:
+                    flatten_vertex = fetch.geom_explorer(flatten_shell,"vertex")
+                    flatten_pts = fetch.vertex_list_2_point_list(flatten_vertex)
+                    flatten_pypts = fetch.occptlist2pyptlist(flatten_pts)
+                    dface_list = construct.delaunay3d(flatten_pypts)
+                    merged_faces = construct.merge_faces(dface_list)
+                    if len(merged_faces) == 1:
+                        flatten_face = fetch.shape2shapetype(move(b_mid_pt, dest_pt,merged_faces[0]))
+                        return flatten_face
+                    else:
+                        #construct.visualise([[occshell]],["WHITE"])
+                        return None
+        except RuntimeError:
+            flatten_vertex = fetch.geom_explorer(flatten_shell,"vertex")
+            flatten_pts = fetch.vertex_list_2_point_list(flatten_vertex)
+            flatten_pypts = fetch.occptlist2pyptlist(flatten_pts)
+            dface_list = construct.delaunay3d(flatten_pypts)
+            merged_faces = construct.merge_faces(dface_list)
+            if len(merged_faces) == 1:
+                flatten_face = fetch.shape2shapetype(move(b_mid_pt, dest_pt,merged_faces[0]))
+                return flatten_face
+            else:
+                #construct.visualise([[occshell]],["WHITE"])
+                return None
+    
+    #3.) if it is a complex shell with more than 500 faces we get the vertexes and create a triangulated srf with delaunay 
+        #and merge all the faces to make a single surface
+    if nfaces >=50:
+        flatten_vertex = fetch.geom_explorer(flatten_shell,"vertex")
+        flatten_pts = fetch.vertex_list_2_point_list(flatten_vertex)
+        flatten_pypts = fetch.occptlist2pyptlist(flatten_pts)
+        #flatten_pypts = rmv_duplicated_pts_by_distance(flatten_pypts, tolerance = 1e-04)
+        dface_list = construct.delaunay3d(flatten_pypts)
+        merged_faces = construct.merge_faces(dface_list)
+        if len(merged_faces) == 1:
+            flatten_face = fetch.shape2shapetype(move(b_mid_pt, dest_pt,merged_faces[0]))
+            return flatten_face
+        else:
+            #construct.visualise([[occshell]],["WHITE"])
+            return None
+    
+    
+def simplify_shell(occshell, tolerance = 1e-06):
     #this will merge any coincidental faces into a single surfaces to simplify the geometry
     fshell = fix_shell_orientation(occshell)
     #get all the faces from the shell and arrange them according to their normals
     sfaces = fetch.geom_explorer(fshell,"face")
     nf_dict = calculate.grp_faces_acc2normals(sfaces)
     merged_fullfacelist = []
-    #merge all the faces thats share edges into 1 face
+    #merge all the faces thats share edges into 1 face     
     for snfaces in nf_dict.values():
-        merged_facelist = construct.merge_faces(snfaces)
-        merged_fullfacelist.extend(merged_facelist)
-        
+        connected_face_shell_list = construct.make_shell_frm_faces(snfaces, tolerance=tolerance)
+        if connected_face_shell_list:
+            for shell in connected_face_shell_list:
+                shell_faces = fetch.geom_explorer(shell, "face")    
+                merged_facelist = construct.merge_faces(shell_faces,tolerance=tolerance)
+                if merged_facelist:
+                    merged_fullfacelist.extend(merged_facelist)
+                else:
+                    merged_fullfacelist.extend(shell_faces)
+        else:
+            merged_fullfacelist.extend(snfaces)
+            
+    nmerged_face = len(merged_fullfacelist)
+
     if len(merged_fullfacelist) >1:
-        simpleshell = construct.make_shell_frm_faces(merged_fullfacelist)
-        fshell2 = fix_shell_orientation(simpleshell[0])
-        
+        fshell2 = construct.make_shell_frm_faces(merged_fullfacelist, tolerance=tolerance)
+        fshell2 = fix_shell_orientation(fshell2[0])
+        nfshell2_face = len(fetch.geom_explorer(fshell2, "face"))
+        if nfshell2_face!= nmerged_face:
+            return occshell        
     else:
         #if there is only one face it means its an open shell
         fshell2 = construct.make_shell(merged_fullfacelist)
+
     return fshell2
     

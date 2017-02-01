@@ -441,13 +441,20 @@ def write_citygml(cityobjmembers, citygml_writer):
 #===========================================================================================================================
 def write_gml_srf_member(occface_list):
     gml_geometry_list = []
+    cnt = 0
     for face in occface_list:
         pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list)
+        face_nrml = py3dmodel.calculate.face_normal(face)
+        is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
+        if is_anticlockwise == False:
+            pypt_list.reverse()
+
         first_pt = pypt_list[0]
         pypt_list.append(first_pt)
-        pypt_list.reverse()
         srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
         gml_geometry_list.append(srf)
+        cnt+=1
     return gml_geometry_list
 
 def write_gml_triangle(occface_list):
@@ -477,9 +484,7 @@ def write_gml_linestring(occedge):
     gml_edge_list.append(linestring)
     return gml_edge_list
     
-def redraw_occ_shell_n_edge(occcompound):
-    #redraw the surfaces so the domain are right
-    #TODO: fix the scaling 
+def redraw_occ_shell(occcompound, tolerance):
     recon_shelllist = []
     shells = py3dmodel.fetch.geom_explorer(occcompound, "shell")
     for shell in shells:
@@ -493,27 +498,22 @@ def redraw_occ_shell_n_edge(occcompound):
         if nrecon_faces == 1:
             recon_shell = py3dmodel.construct.make_shell(recon_faces)
         if nrecon_faces > 1:
-            recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces)[0]
-        recon_shelllist.append(recon_shell)
+            #py3dmodel.construct.visualise([recon_faces], ['WHITE'])
+            recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces, tolerance = tolerance )[0]
+        recon_shelllist.append(recon_shell)    
         
-    #boolean the edges from the shell compound and edges compound and find the difference to get the network edges
-    shell_compound = py3dmodel.construct.make_compound(shells)
-    shell_edges = py3dmodel.fetch.geom_explorer(shell_compound, "edge")
-    shell_edge_compound = py3dmodel.construct.make_compound(shell_edges)
+    recon_compound = py3dmodel.construct.make_compound(recon_shelllist)
+    return recon_compound
     
+def redraw_occ_edge(occcompound, tolerance):
     edges = py3dmodel.fetch.geom_explorer(occcompound, "edge")
-    edge_compound = py3dmodel.construct.make_compound(edges)
-    network_edge_compound = py3dmodel.construct.boolean_difference(edge_compound,shell_edge_compound) 
-    
-    nw_edges = py3dmodel.fetch.geom_explorer(network_edge_compound,"edge")
     recon_edgelist = []
-    for edge in nw_edges:
+    for edge in edges:
         eptlist = py3dmodel.fetch.points_from_edge(edge)
         epyptlist = py3dmodel.fetch.occptlist2pyptlist(eptlist)
         recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
         
-    recon_compoundlist = recon_shelllist + recon_edgelist
-    recon_compound = py3dmodel.construct.make_compound(recon_compoundlist)
+    recon_compound = py3dmodel.construct.make_compound(recon_edgelist)
     return recon_compound
         
 def identify_open_close_shells(occshell_list):
@@ -546,3 +546,93 @@ def reconstruct_open_close_shells(occshell_list):
         return close_shell_list + recon_close_shell_list + open_shell_list2
     else:
         return occshell_list
+        
+def reconstruct_bldg_shell(bldg_occshell):
+    bldg_occsolid = py3dmodel.construct.make_solid(bldg_occshell)
+    bldg_occsolid = py3dmodel.modify.fix_close_solid(bldg_occsolid)
+    intersection_list = []
+    bounding_list = []
+    loc_pt  = get_building_location_pt(bldg_occsolid)
+    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
+    
+    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(bldg_occsolid)
+    height = zmax-zmin
+    flr_height = 3.0
+    remainder = height%flr_height
+    division = int(height/flr_height)
+    if remainder >0:
+        division = int(math.ceil(division))
+        flr_height = height/math.ceil(division)
+    
+    for scnt in range(division):
+        if scnt==0:
+            moved_pt = (loc_pt[0], loc_pt[1], loc_pt[2]-0.1)
+            moved_bldg_occsolid = py3dmodel.modify.move(loc_pt,moved_pt, bldg_occsolid)
+            #intersection_list.append(moved_bldg_occsolid)
+            flr1_list = py3dmodel.construct.boolean_common(moved_bldg_occsolid,bounding_footprint)
+            flr1_list = py3dmodel.fetch.geom_explorer(flr1_list, "face")
+            nflr1 = len(flr1_list)
+            if nflr1 > 1:
+                break
+            flr1 = flr1_list[0]
+            
+        if scnt !=0 or scnt !=division-1:
+            z = loc_pt[2]+((scnt)*flr_height)
+            moved_pt = (loc_pt[0], loc_pt[1], z)
+            moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+            bounding_list.append(py3dmodel.fetch.shape2shapetype(moved_f))
+            
+        if scnt == division-1:
+            z = loc_pt[2]+((scnt)*flr_height)
+            moved_pt = (loc_pt[0], loc_pt[1], z)
+            moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+            
+            moved_pt = (loc_pt[0], loc_pt[1], loc_pt[2]+0.1)
+            moved_bldg_occsolid = py3dmodel.modify.move(loc_pt,moved_pt, bldg_occsolid)
+            flr_last = py3dmodel.construct.boolean_common(moved_bldg_occsolid,moved_f )
+            flr_last = py3dmodel.fetch.geom_explorer(flr_last, "face")[0]
+        
+    if nflr1 ==1:
+        bounding_cmpd = py3dmodel.construct.make_compound(bounding_list)
+        floors = py3dmodel.construct.boolean_common(bounding_cmpd, bldg_occsolid)
+        floors = py3dmodel.fetch.geom_explorer(floors, "face")
+        intersection_list.append(flr1)
+        intersection_list.extend(floors)
+        intersection_list.append(flr_last)
+    
+        loft = py3dmodel.construct.make_loft(intersection_list)
+        loft = py3dmodel.fetch.shape2shapetype(loft)
+        lface_list = py3dmodel.fetch.geom_explorer(loft, "face")
+        
+        recon_faces = []
+        recon_faces.append(flr1)
+        recon_faces.extend(lface_list)
+        recon_faces.append(flr_last)
+        recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces)[0]
+        recon_shell = py3dmodel.modify.fix_shell_orientation(recon_shell)
+        r_loft_faces = py3dmodel.construct.simple_mesh(recon_shell)
+        recon_shell = py3dmodel.construct.make_shell_frm_faces(r_loft_faces)[0]
+        recon_shell = py3dmodel.modify.fix_shell_orientation(recon_shell)
+        return recon_shell
+    else:
+        return bldg_occshell
+        
+def is_shell_faces_planar(occshell):
+    face_list = py3dmodel.fetch.geom_explorer(occshell, "face")
+    for face in face_list:
+        is_face_planar = py3dmodel.calculate.is_face_planar(face, 1e-06)
+        if not is_face_planar:
+            return False
+    return True
+    
+def is_shell_simple(occshell):
+    #if the shell has more than triangle polygon and has more than 6 faces
+    #it is not simple
+    face_list = py3dmodel.fetch.geom_explorer(occshell, "face")
+    nface = len(face_list)
+    for face in face_list:
+        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        npypt = len(pypt_list)
+        if npypt == 3 and nface>6:
+            return False
+    return True

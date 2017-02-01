@@ -21,6 +21,7 @@
 import math
 import fetch
 import construct
+import modify
 
 from OCCUtils import face, Common, Construct, Topology, edge
 from OCC import BRepFeat 
@@ -37,6 +38,7 @@ from OCC.BRepIntCurveSurface import BRepIntCurveSurface_Inter
 from OCC.BRepExtrema import BRepExtrema_DistShapeShape
 
 def get_bounding_box(occ_shape):
+    """return xmin,ymin,zmin,xmax,ymax,zmax"""
     return Common.get_boundingbox(occ_shape)
     
 def get_centre_bbox(occ_shape):
@@ -66,11 +68,25 @@ def face_normal(occface):
     normal = (normal_dir.X(), normal_dir.Y(), normal_dir.Z())
     return normal
     
+def visualise_face_normal_as_edges(occface_list, normal_magnitude = 1):
+    nrml_list = []
+    for occcface in occface_list:
+        nrml = face_normal(occcface)
+        midpt = face_midpt(occcface)
+        for_edge_pt = modify.move_pt(midpt, nrml, normal_magnitude)
+        nrml_edge = construct.make_edge(midpt, for_edge_pt)
+        nrml_list.append(nrml_edge)
+    return nrml_list
+        
 def face_midpt(occface):
     fc = face.Face(occface)
     centre_uv,gpcentre_pt = fc.mid_point()
     centre_pt = (gpcentre_pt.X(), gpcentre_pt.Y(), gpcentre_pt.Z())
     return centre_pt
+    
+def is_face_planar(occface, tolerance):
+    fc = face.Face(occface)
+    return fc.is_planar(tol = tolerance)
     
 def edge_midpt(occedge):
     occutil_edge = edge.Edge(occedge)
