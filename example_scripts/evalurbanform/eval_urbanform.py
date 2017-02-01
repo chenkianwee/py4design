@@ -8,15 +8,15 @@ import read_collada_4_evalurbanform as read_collada
 #=========================================================================================================================================
 #specify the citygml file
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
 
-dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
-weatherfilepath = os.path.join(parent_path, "example_files", "weatherfile", "SGP_Singapore.486980_IWEC.epw" )
-shgfavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_dfavi")
-dfavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_dfavi")
-pvavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_pvavi")
-pveavi_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "py2radiance_pveavi")
-daysim_filepath = os.path.join(parent_path, "example_files","form_eval_example", "dae", "daysim_data")
+dae_file = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+weatherfilepath = os.path.join(parent_path, "pyliburo_example_files", "weatherfile", "SGP_Singapore.486980_IWEC.epw" )
+shgfavi_filepath = os.path.join(parent_path, "pyliburo_example_files","form_eval_example", "dae", "py2radiance_dfavi")
+dfavi_filepath = os.path.join(parent_path, "pyliburo_example_files","form_eval_example", "dae", "py2radiance_dfavi")
+pvavi_filepath = os.path.join(parent_path, "pyliburo_example_files","form_eval_example", "dae", "py2radiance_pvavi")
+pveavi_filepath = os.path.join(parent_path, "pyliburo_example_files","form_eval_example", "dae", "py2radiance_pveavi")
+daysim_filepath = os.path.join(parent_path, "pyliburo_example_files","form_eval_example", "dae", "daysim_data")
 
 irrad_threshold = (50*8760*1.5)/1000.0
 illum_threshold = 10000

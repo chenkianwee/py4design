@@ -6,9 +6,9 @@ import pyliburo
 #================================================================================
 #specify the citygml file
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_luse50_53.gml")
-result_citygml_filepath = os.path.join(parent_path, "example_files", "citygml", "punggol_variant.gml" )
+parent_path = parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "citygml", "punggol_luse50_53.gml")
+result_citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "citygml", "punggol_variant.gml" )
 
 '''citygml_filepath = "C://file2analyse.gml"
 result_citygml_filepath = "C://result.gml'''

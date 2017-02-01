@@ -13,13 +13,13 @@ import pyliburo
 #SPECIFY ALL THE NECCESSARY INPUTS
 #=========================================================================================================================================
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+parent_path = parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
 
 #specify all the shpfiles
-shpfile1 = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_buildings", "punggol_buildings.shp")
-shpfile2 = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_stations_stops", "punggol_stations_stops.shp")
-shpfile3 = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_trpst_network", "punggol_trpst_network.shp")
-shpfile4 = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_plots", "punggol_plots.shp")
+shpfile1 = os.path.join(parent_path, "pyliburo_example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_buildings", "punggol_buildings.shp")
+shpfile2 = os.path.join(parent_path, "pyliburo_example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_stations_stops", "punggol_stations_stops.shp")
+shpfile3 = os.path.join(parent_path, "pyliburo_example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_trpst_network", "punggol_trpst_network.shp")
+shpfile4 = os.path.join(parent_path, "pyliburo_example_files", "shp2citygml_punggol_example", "example_files","shp","punggol_plots", "punggol_plots.shp")
 
 #specify the result citygml file
 citygml_filepath = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "citygml","punggol_citygml_asim.gml")

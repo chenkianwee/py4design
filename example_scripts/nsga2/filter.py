@@ -2,11 +2,11 @@ import os
 import pyliburo
 
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
 
-xml_filepath = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "overall.xml")
-res1 = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "density_3.8_3.9.xml")
-res2 = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "dfai_91.5.xml")
+xml_filepath = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "overall.xml")
+res1 = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "density_3.8_3.9.xml")
+res2 = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "dfai_91.5.xml")
 inds = pyliburo.pyoptimise.analyse_xml.get_inds_frm_xml(xml_filepath)
 
 target_density_inds = []

@@ -7,8 +7,8 @@ import pyliburo
 #================================================================================
 #specify the citygml file
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "example_files", "collada2citygml_example", "citygml", "example2.gml" )
+parent_path = parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "collada2citygml_example", "citygml", "example2.gml" )
 
 #or just insert a citygml file you would like to analyse here 
 '''citygml_filepath = "C://file2analyse.gml"'''

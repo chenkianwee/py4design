@@ -6,9 +6,9 @@ from collada import *
 #==================================================
 resume = False
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-dae_file = os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
-base_citygml_file =  os.path.join(parent_path, "example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+dae_file = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "dae", "5x5ptblks.dae")
+base_citygml_file =  os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "dae", "5x5ptblks.dae")
 
 ngeneration = 3
 init_population = 2

@@ -7,15 +7,17 @@ import pyliburo
 #================================================================================
 #specify the citygml file
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-dae_file = os.path.join(parent_path, "example_files", "collada2citygml_example",  "dae", "example3_part4.dae")
-citygml_filepath = os.path.join(parent_path, "example_files", "collada2citygml_example", "citygml", "example3_part4.gml")
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+dae_file = os.path.join(parent_path, "pyliburo_example_files", "collada2citygml_example",  "dae", "example1.dae")
+citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "collada2citygml_example", "citygml", "example1.gml")
+
 #or just insert a dae and citygml file you would like to analyse here 
 '''dae_file = "C://file2analyse.gml"
 citygml_filepath = "C://file2analyse.gml"'''
 #================================================================================
 #INSTRUCTION: SPECIFY THE CITYGML FILE
 #================================================================================
+
 time1 = time.clock()
 
 #first set up the massing2citygml object

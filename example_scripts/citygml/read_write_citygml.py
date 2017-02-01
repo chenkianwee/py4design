@@ -6,9 +6,9 @@ import pyliburo
 #================================================================================
 #specify the citygml file
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-citygml_filepath = os.path.join(parent_path, "example_files", "shp2citygml_punggol_example", "citygml","punggol_citygml_asim_origlvl.gml")
-result_citygml_filepath = os.path.join(parent_path, "example_files", "citygml","punggol_luse50_53.gml")
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "shp2citygml_punggol_example", "citygml","punggol_citygml_asim_origlvl.gml")
+result_citygml_filepath = os.path.join(parent_path, "pyliburo_example_files", "citygml","punggol_luse50_53.gml")
 
 print "READING CITYGML FILE ... ..."
 #================================================================================

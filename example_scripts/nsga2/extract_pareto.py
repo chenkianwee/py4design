@@ -3,12 +3,12 @@ import pyliburo
 
 print "READING XML ..."
 current_path = os.path.dirname(__file__)
-parent_path = os.path.abspath(os.path.join(current_path, os.pardir))
-livexmlfile =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "live.xml")
-deadxmlfile =  os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "dead.xml")
-res_img_filepath = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "pareto_front.png")
+parent_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
+livexmlfile =  os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "live.xml")
+deadxmlfile =  os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "dead.xml")
+res_img_filepath = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "pareto_front.png")
 
-overallxmlfile = os.path.join(parent_path, "example_files","5x5ptblks", "nsga2_xml", "archive", "overall.xml")
+overallxmlfile = os.path.join(parent_path, "pyliburo_example_files","5x5ptblks", "nsga2_xml", "archive", "overall.xml")
 pyliburo.pyoptimise.analyse_xml.combine_xml_files(livexmlfile, deadxmlfile,overallxmlfile)
 pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds(overallxmlfile)
 inds = pyliburo.pyoptimise.analyse_xml.get_inds_frm_xml(overallxmlfile)
