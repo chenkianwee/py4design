@@ -526,7 +526,7 @@ def falsecolour(results, minval, maxval):
     res_colours = []
     for result in results:
         r,g,b = pseudocolor(result, minval, maxval)
-        colour = OCCViewer.color(r, g, b)
+        colour = OCCViewer.rgb_color(r, g, b)
         res_colours.append(colour)
     return res_colours
     
