@@ -29,16 +29,7 @@ class Parameterise(object):
         reader.load_filepath(citygmlfile)
         self.citygml = reader
         self.parm_obj_dict_list = []
-        self.nparameters = None
-        
-        self.buildings = self.citygml.get_buildings()
-        self.landuses = self.citygml.get_landuses()
-        self.stops = self.citygml.get_bus_stops()
-        self.roads = self.citygml.get_roads()
-        self.railways = self.citygml.get_railways()
-        self.building_footprints = None
-        
-        self.buildings2landuses = None
+        self.nparameters = None        
         
     def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None, parm_definition = None, 
                                       range_definition = True):
