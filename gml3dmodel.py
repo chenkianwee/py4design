@@ -182,19 +182,9 @@ def get_building_height_storey(gml_bldg, citygml_reader):
     return height, nstorey, storey_height
     
 def calculate_bldg_height(bldg_occsolid):
-    facade_list, roof_list, footprint_list = identify_building_surfaces(bldg_occsolid)
-    roof_compound = py3dmodel.construct.make_compound(roof_list)
-    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(roof_compound)
-    centre_roof_pypt = py3dmodel.calculate.get_centre_bbox(roof_compound)
-    top_pypt = (centre_roof_pypt[0],centre_roof_pypt[1],zmax)
-    
-    fp_compound =  py3dmodel.construct.make_compound(footprint_list)
-    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(fp_compound)
-    centre_fp_pypt = py3dmodel.calculate.get_centre_bbox(fp_compound)
-    bottom_pypt = (centre_fp_pypt[0],centre_fp_pypt[1],zmax)
-    
-    height = round(py3dmodel.calculate.distance_between_2_pts(bottom_pypt,top_pypt),2)
-    return height
+    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(bldg_occsolid)
+    height = zmax - zmin
+    return round(height,2)
     
 def calculate_bldg_height_n_nstorey(bldg_occsolid, storey_height):
     height = calculate_bldg_height(bldg_occsolid)
@@ -303,7 +293,8 @@ def construct_building_through_floorplates(bldg_occsolid, bldg_flr_area, storey_
 def rotate_bldg(gml_bldg, rot_angle, citygml_reader):
     bldg_occsolid = get_building_occsolid(gml_bldg,citygml_reader)
     loc_pt = get_building_location_pt(bldg_occsolid)
-    rot_bldg_occsolid = py3dmodel.modify.rotate(bldg_occsolid, loc_pt, (0,0,1), rot_angle)
+    rot_bldg_occshape = py3dmodel.modify.rotate(bldg_occsolid, loc_pt, (0,0,1), rot_angle)
+    rot_bldg_occsolid = py3dmodel.fetch.geom_explorer(rot_bldg_occshape, "solid")[0]
     return rot_bldg_occsolid
     
 def landuse_2_grid(landuse_occface, xdim, ydim):
@@ -399,10 +390,10 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     bfunction = citygml_reader.get_building_function(orgin_gml_building)
     rooftype = citygml_reader.get_building_rooftype(orgin_gml_building)
     stry_blw_grd = citygml_reader.get_building_storey_blw_grd(orgin_gml_building)
-    #generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)
+    #generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)        
+    new_bldg_occsolid = py3dmodel.fetch.geom_explorer(new_bldg_occsolid, "solid")[0]
+    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
     face_list = py3dmodel.fetch.faces_frm_solid(new_bldg_occsolid)
-    geometry_list = []
-    pt_list_list = []
     
     if new_height == None:
         new_height = calculate_bldg_height(new_bldg_occsolid)
@@ -413,19 +404,11 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
         nstorey = citygml_reader.get_building_storey(orgin_gml_building)
         if orig_height !=None and nstorey != None:
             storey_height = round(float(orig_height)/float(nstorey), 2)
-            
         else:
             storey_height = 3
-            
         new_nstorey = int(math.floor(new_height/storey_height))
         
-    for face in face_list:
-        pt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
-        first_pt = pt_list[0]
-        pt_list.append(first_pt)
-        pt_list_list.append(pt_list)
-        srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
-        geometry_list.append(srf)
+    geometry_list = write_gml_srf_member(face_list)
     
     citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                 function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),

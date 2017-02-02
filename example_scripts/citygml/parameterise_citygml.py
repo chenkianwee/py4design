@@ -31,7 +31,3 @@ parameterise.generate_design_variant(parameters, result_citygml_filepath)
 print parameters
 time2 = time.clock() 
 print "TIME TAKEN", (time2-time1)/60.0
-print "VISUALISING"  
-#display_2dlist.append(dlist)
-#colour_list.append("RED")
-#pyliburo.py3dmodel.construct.visualise(display_2dlist, colour_list)

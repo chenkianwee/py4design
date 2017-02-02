@@ -99,8 +99,6 @@ def fix_close_solid(occsolid):
     shape_fix.Perform()
     fix_solid = shape_fix.Solid()
     fix_solid = fetch.geom_explorer(fix_solid, "solid")[0]
-    #if len(shell_list) == 1:
-    #    fix_solid = construct.make_solid(shell_list[0])
     breplib.OrientClosedSolid(fix_solid)
     return fix_solid
     
