@@ -207,6 +207,7 @@ class BldgFlrAreaHeightParm(BaseParm):
         
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
         citymodel_node = citygml_writer.citymodelnode
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
@@ -361,6 +362,7 @@ class BldgOrientationParm(BaseParm):
         
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
         citymodel_node = citygml_writer.citymodelnode
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
@@ -462,7 +464,7 @@ class BldgPositionParm(BaseParm):
             gml_bldg_on_luse = gml3dmodel.buildings_on_landuse(gml_landuse,gml_bldg_list, pycitygml_reader)
             
             #check which buildings should this parameter be applied to
-            eligibility_bldg_list, non_eligibility_bldg_list  = self.eligibility_test(gml_bldg_on_luse, pycitygml_reader)
+            eligibility_bldg_list, non_eligible_bldg_list  = self.eligibility_test(gml_bldg_on_luse, pycitygml_reader)
             n_eligibility_bldgs = len(eligibility_bldg_list)
             
             #grid the plot
@@ -482,7 +484,7 @@ class BldgPositionParm(BaseParm):
                 bldg_occsolid_list.append(bldg_occsolid)
             
             non_bldg_occsolid_list = []
-            for non_eligible_gml_bldg in non_eligibility_bldg_list:
+            for non_eligible_gml_bldg in non_eligible_bldg_list:
                 non_bldg_occsolid = gml3dmodel.get_building_occsolid(non_eligible_gml_bldg, pycitygml_reader)
                 non_bldg_occsolid_list.append(non_bldg_occsolid)
                 
@@ -501,6 +503,7 @@ class BldgPositionParm(BaseParm):
         
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
         citymodel_node = citygml_writer.citymodelnode
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)

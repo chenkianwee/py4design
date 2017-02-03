@@ -208,12 +208,15 @@ def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
     shell_list = fetch.geom_explorer(sewing_shape, "shell")
     return shell_list
     
-def make_occsolid_frm_pypolygons(pypolygon_list):
+def make_occfaces_frm_pypolygons(pypolygon_list):
     face_list = []
     for polygon_pts in pypolygon_list:
         face = make_polygon(polygon_pts)
         face_list.append(face)
-
+    return face_list
+    
+def make_occsolid_frm_pypolygons(pypolygon_list):
+    face_list = make_occfaces_frm_pypolygons(pypolygon_list)
     #make shell
     shell = make_shell_frm_faces(face_list)[0]
     shell = modify.fix_shell_orientation(shell)
@@ -237,9 +240,6 @@ def make_compound(topo):
     return Construct.compound(topo)
     
 def extrude(occface, pydir, height):
-    #vec = make_vector((0,0,0),pydir)*height
-    #extrude = BRepPrimAPI_MakePrism(occface, vec)
-    #solid = fetch.shape2shapetype(extrude.Shape())
     orig_pt = calculate.face_midpt(occface)
     dest_pt = modify.move_pt(orig_pt, pydir, height)
     moved_face = modify.move(orig_pt,dest_pt, occface)

@@ -266,17 +266,38 @@ def calc_residential_parking_area(total_build_up):
 #=========================================================================================================================================
 #geometry related functions
 #=========================================================================================================================================
-def point2d_2_3d(point2d, z):
-    point3d = (point2d[0],point2d[1],z)
-    return point3d
+def pypt2d_2_3d(pypt2d, z):
+    pypt3d = (pypt2d[0],pypt2d[1],z)
+    return pypt3d
 
-def point_list2d_2_3d(point_list2d, z):
-    pt_list3d = []
-    for pt in point_list2d:
-        pt3d = point2d_2_3d(pt, z)
-        pt_list3d.append(pt3d)
+def pypt_list2d_2_3d(pypt_list2d, z):
+    pypt_list3d = []
+    for pt in pypt_list2d:
+        pt3d = pypt2d_2_3d(pt, z)
+        pypt_list3d.append(pt3d)
         
-    return pt_list3d
+    return pypt_list3d
+    
+def pypolygon_list2d_2_3d(pypolygon_list2d, z):
+    pypolygon_list3d = []
+    for pypolygon in pypolygon_list2d:
+        pypt_list3d = pypt_list2d_2_3d(pypolygon,z)
+        pypolygon_list3d.append(pypt_list3d)
+    return pypolygon_list3d
+    
+def create_transit_stop_geometry(occ_transit_box_shape, location_pt):
+    trsf_shp = py3dmodel.modify.move((0,0,0), location_pt, occ_transit_box_shape)
+    trsf_solid = py3dmodel.fetch.shape2shapetype(trsf_shp)
+    trsf_solid = py3dmodel.modify.fix_close_solid(trsf_solid)
+    return trsf_solid
+    
+def extrude_building_n_fetch_faces(building_footprint, height):
+    face_list = []
+    #polygons from shpfiles are always clockwise
+    #holes are always counter-clockwise
+    extrude = py3dmodel.construct.extrude(building_footprint,(0,0,1), height )
+    face_list = py3dmodel.fetch.faces_frm_solid(extrude)
+    return face_list
 
 def get_buildings(shpfile):
     building_list = []
@@ -311,7 +332,7 @@ def get_buildings(shpfile):
                     building_dict["building"] = building
                     face_list = []
                     for pt_list2d in geom:
-                        pt_list3d = point_list2d_2_3d(pt_list2d, 0.0)
+                        pt_list3d = pypt_list2d_2_3d(pt_list2d, 0.0)
                         face = py3dmodel.construct.make_polygon(pt_list3d)
                         face_list.append(face)
                     building_dict["geometry"] = face_list
@@ -343,6 +364,55 @@ def get_buildings(shpfile):
                 
     return building_list
     
+def buildings_on_plot(plot_rec, building_list):
+    #building_list is a list of dictionary from method get_buildings(shpfile)
+    #check which building belongs to this plot
+    buildings_on_plot_list = []
+    part_list = get_geometry(plot_rec)
+    if part_list:
+        for part in part_list:
+            part3d = pypt_list2d_2_3d(part,0.0)
+            luse_face = py3dmodel.construct.make_polygon(part3d)
+    
+            for building in building_list:
+                geometry_list = building["geometry"]
+                for building_face in geometry_list:
+                    face_inside = face_almost_inside(building_face, luse_face)
+                    if face_inside:
+                        buildings_on_plot_list.append(building)
+                    
+    return buildings_on_plot_list
+    
+def building2citygml(building, height, citygml, landuse, storey):
+    storey_blw_grd = "0"
+    bclass = map_osm2citygml_building_class(landuse)
+    if "name" in building:
+        name = building["name"]
+    else:
+        name = "building" + str(uuid.uuid1())
+        
+    if "amenity" in building:
+        function = map_osm2citygml_building_amenity_function(building["amenity"])
+    else:
+        function = map_osm2citygml_building_function(landuse)
+        
+    generic_attrib_dict = {"landuse":landuse}
+    if "amenity" in building:
+        generic_attrib_dict["amenity"] = building["amenity"]
+        
+    if "parking" in building:
+        generic_attrib_dict["parking"] = building["parking"]
+
+    bgeom_list = building["geometry"]
+    for bface in bgeom_list:
+        #extrude the buildings according to their height
+        face_list = extrude_building_n_fetch_faces(bface, height)
+        geometry_list = gml3dmodel.write_gml_srf_member(face_list)
+        
+    citygml.add_building("lod1", name,geometry_list, bldg_class = bclass, function = function, usage = function,
+                         rooftype = "1000", height = str(height),
+                         stry_abv_grd = str(storey), stry_blw_grd = storey_blw_grd, generic_attrib_dict = generic_attrib_dict)
+
 def face_almost_inside(occ_face, occ_boundary_face):
     '''
     this functions measures if occ_face is almost inside the boundary face. 
@@ -368,74 +438,16 @@ def face_almost_inside(occ_face, occ_boundary_face):
             return False
     else:
         return False
-    
-
-def buildings_on_plot(plot_rec, building_list):
-    #building_list is a list of dictionary from method get_buildings(shpfile)
-    #check which building belongs to this plot
-    buildings_on_plot_list = []
-    part_list = get_geometry(plot_rec)
-    if part_list:
-        for part in part_list:
-            part3d = point_list2d_2_3d(part,0.0)
-            luse_face = py3dmodel.construct.make_polygon(part3d)
-    
-            for building in building_list:
-                geometry_list = building["geometry"]
-                for building_face in geometry_list:
-                    face_inside = face_almost_inside(building_face, luse_face)
-                    if face_inside:
-                        buildings_on_plot_list.append(building)
-                    
-    return buildings_on_plot_list
 
 def get_plot_area(plot_rec):
     plot_area = 0
     part_list = get_geometry(plot_rec)
     if part_list:
         for part in part_list:
-            ptlist3d = point_list2d_2_3d(part,0.0)
+            ptlist3d = pypt_list2d_2_3d(part,0.0)
             luse_face = py3dmodel.construct.make_polygon(ptlist3d)
             plot_area = plot_area + py3dmodel.calculate.face_area(luse_face)
     return plot_area
-
-
-def building2citygml(building, height, citygml, landuse, storey):
-    storey_blw_grd = "0"
-    bclass = map_osm2citygml_building_class(landuse)
-    if "name" in building:
-        name = building["name"]
-    else:
-        name = "building" + str(uuid.uuid1())
-        
-    if "amenity" in building:
-        function = map_osm2citygml_building_amenity_function(building["amenity"])
-    else:
-        function = map_osm2citygml_building_function(landuse)
-        
-    generic_attrib_dict = {"landuse":landuse}
-    if "amenity" in building:
-        generic_attrib_dict["amenity"] = building["amenity"]
-        
-    if "parking" in building:
-        generic_attrib_dict["parking"] = building["parking"]
-
-    geometry_list = []
-    bgeom_list = building["geometry"]
-    for bface in bgeom_list:
-        #extrude the buildings according to their height
-        face_list = gml3dmodel.extrude_building(bface, height)
-        #get the surfaces from the solid 
-        for face in face_list:
-            pt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
-            first_pt = pt_list[0]
-            pt_list.append(first_pt)
-            srf = pycitygml.gmlgeometry.SurfaceMember(pt_list)
-            geometry_list.append(srf)
-        
-    citygml.add_building("lod1", name,geometry_list, bldg_class = bclass, function = function, usage = function,
-                         rooftype = "1000", height = str(height),
-                         stry_abv_grd = str(storey), stry_blw_grd = storey_blw_grd, generic_attrib_dict = generic_attrib_dict )
 
 
 def trpst2citygml(trpt_type, rec, name, trpst_attrib, generic_attrib_dict,citygml):
@@ -447,7 +459,7 @@ def trpst2citygml(trpt_type, rec, name, trpst_attrib, generic_attrib_dict,citygm
     part_list = get_geometry(rec)
     geometry_list = []
     for part in part_list:
-        linestring = pycitygml.gmlgeometry.LineString(point_list2d_2_3d(part,0.0))
+        linestring = pycitygml.gmlgeometry.LineString(pypt_list2d_2_3d(part,0.0))
         geometry_list.append(linestring)
         
     citygml.add_transportation(trpt_type, "lod0", name, geometry_list, rd_class = trpst_class, 
@@ -456,7 +468,6 @@ def trpst2citygml(trpt_type, rec, name, trpst_attrib, generic_attrib_dict,citygm
 def terrain2d23d_tin(terrain_shpfile, elev_attrib_name):
     sf = shapefile.Reader(terrain_shpfile)
     shapeRecs=sf.shapeRecords()
-    #shapeRecs = shapeRecs[0:100]
     shapetype = shapeRecs[0].shape.shapeType
     if shapetype !=5:
         raise Exception("this is not a polygonised shpfile")
@@ -471,7 +482,7 @@ def terrain2d23d_tin(terrain_shpfile, elev_attrib_name):
         part_list = get_geometry(rec)
         #if it is a close the first and the last vertex is the same
         for part in part_list:
-            point_list = point_list2d_2_3d(part, elev)
+            point_list = pypt_list2d_2_3d(part, elev)
             face = py3dmodel.construct.make_polygon(point_list)
             face_midpt = py3dmodel.calculate.face_midpt(face)
             elev_pts.append(face_midpt)
@@ -499,7 +510,7 @@ def terrain2d23d_contour_line(terrain_shpfile, elev_attrib_name):
         part_list = get_geometry(rec)
         #if it is a close the first and the last vertex is the same
         for part in part_list:
-            point_list = point_list2d_2_3d(part, elev)
+            point_list = pypt_list2d_2_3d(part, elev)
             face = py3dmodel.construct.make_polygon(point_list)
             elev_dict[elev].append(face)
             
@@ -519,7 +530,6 @@ def terrain2d23d_contour_line(terrain_shpfile, elev_attrib_name):
 def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
     sf = shapefile.Reader(building_shpfile)
     shapeRecs=sf.shapeRecords()
-    #shapeRecs = shapeRecs[0:10]
     shapetype = shapeRecs[0].shape.shapeType
     if shapetype !=5:
         raise Exception("this is not a polygon building shpfile")
@@ -546,7 +556,7 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
         #if it is a close the first and the last vertex is the same
         for part in part_list:
             #create a bounding box to boolean the terrain
-            point_list = point_list2d_2_3d(part, (min_z-10))
+            point_list = pypt_list2d_2_3d(part, (min_z-10))
             face = py3dmodel.construct.make_polygon(point_list)
             bbox = py3dmodel.construct.extrude(face, (0,0,1), (max_z+10))
             bbox_terrain = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(bbox,terrainshell))
@@ -561,7 +571,7 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
             else:
                 belev = 0
 
-            point_list3d = point_list2d_2_3d(part, belev)
+            point_list3d = pypt_list2d_2_3d(part, belev)
             face3d = py3dmodel.construct.make_polygon(point_list3d)
             building_extrude_shp = py3dmodel.construct.extrude(face3d, (0,0,1), height)
             building_extrude_solid = py3dmodel.fetch.shape2shapetype(building_extrude_shp)

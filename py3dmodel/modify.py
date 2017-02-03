@@ -1,5 +1,4 @@
 # ==================================================================================================
-#
 #    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
 #
 #    This file is part of pyliburo

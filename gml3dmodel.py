@@ -21,35 +21,6 @@
 import math
 import py3dmodel
 import pycitygml
-
-#==============================================================================================================================
-#shp2citygml functions
-#==============================================================================================================================
-def make_transit_stop_box(length, width, height):
-    box = py3dmodel.construct.make_box(length, width, height)
-    return box
-    
-def create_transit_stop_geometry(occ_transit_box_shape, location_pt):
-    trsf_shp = py3dmodel.modify.move((0,0,0), location_pt, occ_transit_box_shape)
-    return trsf_shp
-
-def extrude_building(building_footprint, height):
-    face_list = []
-    #polygons from shpfiles are always clockwise
-    #holes are always counter-clockwise
-    extrude = py3dmodel.construct.extrude(building_footprint,(0,0,1), height )
-    extrude = py3dmodel.fetch.shape2shapetype(extrude)
-    face_list = py3dmodel.fetch.faces_frm_solid(extrude)
-    return face_list
-    
-def landuse_surface_cclockwise(pypt_list):
-    luse_f = py3dmodel.construct.make_polygon(pypt_list)
-    n = py3dmodel.calculate.face_normal(luse_f)
-    if not py3dmodel.calculate.is_anticlockwise(pypt_list, n):
-        luse_f.Reverse()
-        
-    luse_pts = py3dmodel.fetch.pyptlist_frm_occface(luse_f)
-    return luse_pts
     
 #==============================================================================================================================
 #citygml2eval functions
@@ -127,17 +98,14 @@ def gml_landuse_2_occface(gml_landuse, citygml_reader):
     return landuse_occface
             
 def buildings_on_landuse(gml_landuse, gml_bldg_list, citygml_reader):
-    display_list = []
     buildings_on_plot_list = []
     landuse_occface = gml_landuse_2_occface(gml_landuse, citygml_reader)
     flatten_landuse_occface = py3dmodel.modify.flatten_face_z_value(landuse_occface)
-    display_list.append(landuse_occface)
     for gml_bldg in gml_bldg_list:
         bldg_fp_list = get_building_footprint(gml_bldg, citygml_reader)
         is_inside = False
         for bldg_fp in bldg_fp_list:
             flatten_fp = py3dmodel.modify.flatten_face_z_value(bldg_fp)
-            #display_list.append(flatten_fp)
             occface_area = py3dmodel.calculate.face_area(flatten_fp)
             common_cmpd = py3dmodel.construct.boolean_common(flatten_fp, flatten_landuse_occface)
             face_list = py3dmodel.fetch.geom_explorer(common_cmpd, "face")
@@ -157,9 +125,14 @@ def buildings_on_landuse(gml_landuse, gml_bldg_list, citygml_reader):
     
 def detect_clash(bldg_occsolid, other_occsolids):
     compound = py3dmodel.construct.make_compound(other_occsolids)
+    #extract all the faces as the boolean dun work well with just the solid
+    bldg_faces = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
+    face_cmpd = py3dmodel.construct.make_compound(bldg_faces)
     common_compound = py3dmodel.construct.boolean_common(bldg_occsolid, compound)
+    common_compound2 = py3dmodel.construct.boolean_common(face_cmpd, compound)
     is_cmpd_null = py3dmodel.fetch.is_compound_null(common_compound)
-    if is_cmpd_null:
+    is_cmpd_null2 = py3dmodel.fetch.is_compound_null(common_compound2)
+    if is_cmpd_null == True and is_cmpd_null2 == True:
         return False
     else:
         return True
@@ -310,6 +283,7 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
                                 boundary_detection = True):
     
     moved_buildings = []
+    n_other_occsolid = len(other_occsolids)
     moved_buildings.extend(other_occsolids)
     npypt_list = len(luse_gridded_pypt_list)
     nbldgs = len(bldg_occsolid_list)
@@ -329,6 +303,8 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
                 
             moved_pt = luse_gridded_pypt_list[mpt_index]
             moved_solid = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, moved_pt, bldg_occsolid))
+            #shell = py3dmodel.fetch.geom_explorer(moved_solid,"shell")[0]
+            moved_solid = py3dmodel.modify.fix_close_solid(moved_solid)
             #=======================================================================================
             if clash_detection == True and boundary_detection == False:
                 if moved_buildings:
@@ -353,7 +329,7 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
             elif boundary_detection == True and clash_detection == True:
                 #need to check if the moved building is within the boundaries of the landuse 
                 is_in_boundary = detect_in_boundary(moved_solid, luse_occface)
-                
+                    
                 if is_in_boundary:
                     #test if it clashes with the other buildings 
                     if moved_buildings:
@@ -380,6 +356,8 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
             #print "successfully positioned the building"
             moved_buildings.append(moved_solid)
             
+    if other_occsolids:
+        moved_buildings = moved_buildings[n_other_occsolid:]
     print "successfully positioned the buildings"
     return moved_buildings
     
@@ -419,23 +397,34 @@ def write_citygml(cityobjmembers, citygml_writer):
         for cityobj in cityobjmembers:
             citygml_root.append(cityobj)
             
+def write_non_eligible_bldgs(non_eligible_bldgs, citygml_writer):
+    citygml_root = citygml_writer.citymodelnode
+    for non_eligible_bldg in non_eligible_bldgs:
+        city_obj = citygml_writer.create_cityobjectmember()
+        city_obj.append(non_eligible_bldg)
+        citygml_root.append(city_obj)
+            
 #===========================================================================================================================
 #for massing2gml
 #===========================================================================================================================
+def write_a_gml_srf_member(occface):
+    pypt_list = py3dmodel.fetch.pyptlist_frm_occface(occface)
+    pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list)
+    face_nrml = py3dmodel.calculate.face_normal(occface)
+    is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
+    if is_anticlockwise == False:
+        pypt_list.reverse()
+
+    first_pt = pypt_list[0]
+    pypt_list.append(first_pt)
+    srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
+    return srf
+    
 def write_gml_srf_member(occface_list):
     gml_geometry_list = []
     cnt = 0
     for face in occface_list:
-        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
-        pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list)
-        face_nrml = py3dmodel.calculate.face_normal(face)
-        is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
-        if is_anticlockwise == False:
-            pypt_list.reverse()
-
-        first_pt = pypt_list[0]
-        pypt_list.append(first_pt)
-        srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
+        srf = write_a_gml_srf_member(face)
         gml_geometry_list.append(srf)
         cnt+=1
     return gml_geometry_list
