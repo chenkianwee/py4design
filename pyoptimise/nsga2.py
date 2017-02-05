@@ -83,9 +83,13 @@ class Genotype(object):
             gene_type = gene.gene_type
             value_range = gene.value_range
             if gene_type == "float_range":
-                gene_range = frange(value_range[0], value_range[1], value_range[2])#random.uniform( value_range[0], value_range[1])
-                gene_value = random.choice(gene_range)
-                self.values.append(gene_value)
+                if len(value_range) == 3:
+                    gene_range = frange(value_range[0], value_range[1], value_range[2])#random.uniform( value_range[0], value_range[1])
+                    gene_value = random.choice(gene_range)
+                    self.values.append(gene_value)
+                if len(value_range) == 2:
+                    gene_value = random.uniform(value_range[0], value_range[1])
+                    self.values.append(gene_value)
                 
             if gene_type == "float_choice":
                 gene_value = random.choice(value_range)
@@ -113,7 +117,10 @@ class Genotype(object):
                         value_range = gene.value_range
 
                 if gene_type == "float_range":
-                    self.values[c] = random.choice(frange(value_range[0], value_range[1], value_range[2]))
+                    if len(value_range) == 3:
+                        self.values[c] = random.choice(frange(value_range[0], value_range[1], value_range[2]))
+                    if len(value_range) == 2:
+                        self.values[c] = random.uniform(value_range[0], value_range[1])
                 
                 if gene_type == "float_choice":
                     self.values[c] = random.choice(value_range)

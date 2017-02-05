@@ -109,20 +109,19 @@ class BldgFlrAreaHeightParm(BaseParm):
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
-            bldg_class = pycitygml_reader.get_building_class(gml_bldg)
-            bldg_function = pycitygml_reader.get_building_function(gml_bldg)
-            bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
-            
             eligibility = True
             if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
                 if self.bldg_class != bldg_class:
                     eligibility = False
                     
             if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
                 if self.bldg_function != bldg_function:
                     eligibility = False
             
             if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
                 if self.bldg_usage != bldg_usage:
                     eligibility = False
                     
@@ -235,20 +234,19 @@ class BldgOrientationParm(BaseParm):
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
-            bldg_class = pycitygml_reader.get_building_class(gml_bldg)
-            bldg_function = pycitygml_reader.get_building_function(gml_bldg)
-            bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
-            
             eligibility = True
             if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
                 if self.bldg_class != bldg_class:
                     eligibility = False
                     
             if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
                 if self.bldg_function != bldg_function:
                     eligibility = False
             
             if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
                 if self.bldg_usage != bldg_usage:
                     eligibility = False
                     
@@ -392,20 +390,19 @@ class BldgPositionParm(BaseParm):
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
-            bldg_class = pycitygml_reader.get_building_class(gml_bldg)
-            bldg_function = pycitygml_reader.get_building_function(gml_bldg)
-            bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
-            
             eligibility = True
             if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
                 if self.bldg_class != bldg_class:
                     eligibility = False
                     
             if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
                 if self.bldg_function != bldg_function:
                     eligibility = False
             
             if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
                 if self.bldg_usage != bldg_usage:
                     eligibility = False
                     

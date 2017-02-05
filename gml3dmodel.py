@@ -151,8 +151,14 @@ def get_building_occsolid(gml_bldg, citygml_reader):
 def get_building_height_storey(gml_bldg, citygml_reader):
     height = citygml_reader.get_building_height(gml_bldg)
     nstorey = citygml_reader.get_building_storey(gml_bldg)
-    storey_height = height/nstorey
-    return height, nstorey, storey_height
+    if height == None or nstorey == None:
+        bldg_occsolid = get_building_occsolid(gml_bldg, citygml_reader)
+        storey_height = 3
+        height, nstorey = calculate_bldg_height_n_nstorey(bldg_occsolid, storey_height)        
+        return height, nstorey, storey_height
+    else:
+        storey_height = height/nstorey
+        return height, nstorey, storey_height
     
 def calculate_bldg_height(bldg_occsolid):
     xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(bldg_occsolid)
@@ -287,7 +293,6 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
     moved_buildings.extend(other_occsolids)
     npypt_list = len(luse_gridded_pypt_list)
     nbldgs = len(bldg_occsolid_list)
-    print 'NBUILDINGS', nbldgs
     for cnt in range(nbldgs):      
         bldg_occsolid = bldg_occsolid_list[cnt]
         pos_parm = parameters[cnt]

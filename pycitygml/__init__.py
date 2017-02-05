@@ -134,25 +134,53 @@ class Reader(object):
         return non_xtype_cityobject
     
     def get_building_height(self, building):
-        return float(building.find("bldg:measuredHeight", namespaces=self.namespaces).text)
+        height = building.find("bldg:measuredHeight", namespaces=self.namespaces)
+        if height != None:
+            return float(height.text)
+        else:
+            return None
         
     def get_building_storey(self, building):
-        return int(building.find("bldg:storeysAboveGround", namespaces=self.namespaces).text)
+        storey = building.find("bldg:storeysAboveGround", namespaces=self.namespaces)
+        if storey != None:
+            return int(storey.text)
+        else:
+            return None
         
     def get_building_function(self,building):
-        return building.find("bldg:function", namespaces=self.namespaces).text
+        function = building.find("bldg:function", namespaces=self.namespaces)
+        if function != None:
+            return function.text
+        else:
+            return None
         
     def get_building_usage(self, building):
-        return building.find("bldg:usage", namespaces=self.namespaces).text
+        usage = building.find("bldg:usage", namespaces=self.namespaces)
+        if usage != None:
+            return usage.text
+        else:
+            return None
         
     def get_building_class(self,building):
-        return building.find("bldg:class", namespaces=self.namespaces).text
+        bclass =  building.find("bldg:class", namespaces=self.namespaces)
+        if bclass != None:
+            return bclass.text
+        else:
+            return None
     
     def get_building_yr_constr(self,building):
-        return building.find("bldg:yearOfConstruction", namespaces=self.namespaces).text
+        constr = building.find("bldg:yearOfConstruction", namespaces=self.namespaces)
+        if constr != None:
+            return constr.text
+        else:
+            return None
         
     def get_building_rooftype(self, building):
-        return building.find("bldg:roofType", namespaces=self.namespaces).text
+        rooftype = building.find("bldg:roofType", namespaces=self.namespaces)
+        if rooftype != None:
+            return rooftype.text
+        else:
+            return None
         
     def get_building_epsg(self, building):
         envelope = building.find("gml:boundedBy//gml:Envelope", namespaces=self.namespaces)
@@ -160,7 +188,11 @@ class Reader(object):
         return epsg
     
     def get_building_storey_blw_grd(self, building):
-        return building.find("bldg:storeysBelowGround", namespaces=self.namespaces).text
+        sbg = building.find("bldg:storeysBelowGround", namespaces=self.namespaces)
+        if sbg != None:
+            return sbg.text
+        else:
+            return None
         
     def get_generic_attribs(self, cityobject):
         generic_attrib_dict = {}
@@ -206,10 +238,18 @@ class Reader(object):
         return landuses
         
     def get_landuse_name(self, landuse):
-        return landuse.find("gml:name", namespaces=self.namespaces).text
+        name = landuse.find("gml:name", namespaces=self.namespaces)
+        if name !=None:
+            return name.text
+        else:
+            return None
         
     def get_landuse_function(self, landuse):
-        return landuse.find("luse:function", namespaces=self.namespaces).text
+        lfunction = landuse.find("luse:function", namespaces=self.namespaces)
+        if lfunction != None:
+            return lfunction.text
+        else:
+            return None
         
     def get_bus_stops(self):
         stops = []
