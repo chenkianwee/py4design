@@ -295,8 +295,8 @@ class Population(object):
         #for each objective 
         for i in range(num_score):
             individuals = self.sort_objectives(individuals, i)
-            individuals[0].distance = 1E3000 #float("inf")
-            individuals[num_inds-1].distance = 1E3000 #float("inf")
+            individuals[0].distance = float("inf")
+            individuals[num_inds-1].distance = float("inf")
             norm = individuals[num_inds-1].scores[i] - individuals[0].scores[i]
             #print individuals[num_inds-1].scores[i], individuals[0].scores[i]
             for j in range(1, num_inds -1):
@@ -340,30 +340,20 @@ class Population(object):
     #=========================================================================
     def crossover(self, ind1, ind2, generation):
         g1 = Genotype(self.genotype_meta)
-        g2 = Genotype(self.genotype_meta)
         genotype_length = self.genotype_meta.length()
-        #print ind1, ind2
         if genotype_length == 2:
             z = 1
         else:
             z = random.randint(1, genotype_length-2)
         
-        for i in range(z):
-            g1.values.append(ind1.genotype.values[i])
-            g2.values.append(ind2.genotype.values[i])
-            
-        for i in range(z, genotype_length):
-            g1.values.append(ind2.genotype.values[i])
-            g2.values.append(ind1.genotype.values[i])
+        g1.values.extend(ind1.genotype.values[0:z])
+        g1.values.extend(ind2.genotype.values[z:])
 
         child_ind1 = Individual(self.get_max_id()+1,self.genotype_meta,self.score_meta)
         child_ind1.genotype = g1
-        child_ind2 = Individual(self.get_max_id()+2,self.genotype_meta,self.score_meta)
-        child_ind2.genotype = g2
         #add the generation
         child_ind1.add_generation(generation)
-        child_ind2.add_generation(generation)
-        return child_ind1, child_ind2
+        return child_ind1
         
     def reproduce(self, individuals, generation):
         new_pop = []
@@ -393,16 +383,13 @@ class Population(object):
 
             #individuals reproduce according to crossover rates
             if random.random() < self.crossover_rate:
-                child_solution1, child_solution2 = self.crossover(selected_solutions[0], selected_solutions[1], generation)
+                child_solution1 = self.crossover(selected_solutions[0], selected_solutions[1], generation)
                 
                 #mutation occurs when new individual is born
                 child_solution1.genotype.mutate(self.mutation_prob)
-                child_solution2.genotype.mutate(self.mutation_prob)
                     
                 new_pop.append(child_solution1)
-                new_pop.append(child_solution2)
                 self.individuals.append(child_solution1)
-                self.individuals.append(child_solution2)
 
     def get_max_id(self):
         #read the dead xml and count the number of individuals in it
