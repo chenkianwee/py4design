@@ -222,7 +222,7 @@ def make_occsolid_frm_pypolygons(pypolygon_list):
     shell = modify.fix_shell_orientation(shell)
     
     solid = make_solid(shell)
-    solid = modify.fix_shape(solid)
+    solid = modify.fix_close_solid(solid)
     return solid
     
 def make_solid(occ_shell):
@@ -561,7 +561,7 @@ def generate_falsecolour_bar(minval, maxval, export_path, display):
     display.set_bg_gradient_color(255, 255, 255, 255, 255, 255)
     display.View_Iso()
     display.FitAll()
-    display.ExportToImage(export_path)
+    #display.ExportToImage(export_path)
     display.EraseAll()
     
 def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, image_file=None, 
@@ -621,6 +621,6 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, ima
     display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
     display.View_Iso()
     display.FitAll()
-    if image_file !=None:
-        display.ExportToImage(image_file)
+    #if image_file !=None:
+    #    display.ExportToImage(image_file)
     start_display()

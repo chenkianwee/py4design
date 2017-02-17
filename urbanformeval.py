@@ -1013,7 +1013,6 @@ def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
     #a 60min weatherfile is generated
     rad.execute_epw2wea(epwweatherfile)
     sunuphrs = rad.sunuphrs
-    
     #ge the mean_illum_ress
     mean_illum_ress = []
     for illum in illum_ress:

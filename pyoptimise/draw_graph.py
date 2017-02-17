@@ -35,6 +35,7 @@ def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labelli
     
     if labellist:
         for i, txt in enumerate(labellist):
+            #print i, txt, len(x), len(y)
             plt.annotate(txt, (x[i],y[i]))
     
     if xlabel:
