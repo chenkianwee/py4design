@@ -691,18 +691,36 @@ class Rad(object):
         ill_path = os.path.join(self.daysimdir_res,self.hea_filename + ".ill")
         ill_file = open(ill_path, "r")
         ill_results = ill_file.readlines()
-        result_dict = {}
+        res_dict_list = [] 
         for ill_result in ill_results:
+            result_dict = {}
             ill_result = ill_result.replace("\n","")
             ill_resultlist = ill_result.split(" ")
             date = ill_resultlist[0] + " " + ill_resultlist[1] + " " + ill_resultlist[2]
+            result_dict["date"] = date
             resultlist = ill_resultlist[4:]
             resultlist_f = []
             for r in resultlist:
                 resultlist_f.append(float(r))
-            result_dict[date] = resultlist_f
+            result_dict["result_list"] = resultlist_f
+            res_dict_list.append(result_dict)
 
-        return result_dict
+        return res_dict_list
+    
+    def eval_ill_per_sensor(self):
+        """each row is a sensor srf with 8760 colume of hourly result"""
+        res_dict_list = self.eval_ill()
+        npts = len(res_dict_list[0]["result_list"])
+        sensorptlist = []
+        for _ in range(npts):
+            sensorptlist.append([])
+            
+        for res_dict in res_dict_list:
+            result_list = res_dict["result_list"]
+            for rnum in range(npts):
+                sensorptlist[rnum].append(result_list[rnum])
+        return sensorptlist
+            
 #==========================================================================================================================
 #==========================================================================================================================
 class Surface(object):
