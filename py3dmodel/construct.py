@@ -565,9 +565,10 @@ def generate_falsecolour_bar(minval, maxval, export_path, display):
     display.EraseAll()
     
 def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, image_file=None, 
-                               other_topo2dlist = None, other_colourlist = None, minval_range = None, maxval_range = None):
+                               other_topo2dlist = None, other_colourlist = None, 
+                               minval_range = None, maxval_range = None, backend = "qt-pyqt5"):
                                    
-    display, start_display, add_menu, add_function_to_menu = init_display()
+    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
     
     if minval_range == None: 
         minval = min(results)

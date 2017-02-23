@@ -481,11 +481,12 @@ def terrain2d23d_tin(terrain_shpfile, elev_attrib_name):
         elev = poly_attribs[elev_index]
         part_list = get_geometry(rec)
         #if it is a close the first and the last vertex is the same
-        for part in part_list:
-            point_list = pypt_list2d_2_3d(part, elev)
-            face = py3dmodel.construct.make_polygon(point_list)
-            face_midpt = py3dmodel.calculate.face_midpt(face)
-            elev_pts.append(face_midpt)
+        if elev:
+            for part in part_list:
+                point_list = pypt_list2d_2_3d(part, elev)
+                face = py3dmodel.construct.make_polygon(point_list)
+                face_midpt = py3dmodel.calculate.face_midpt(face)
+                elev_pts.append(face_midpt)
             
     occtriangles = py3dmodel.construct.delaunay3d(elev_pts)
     return occtriangles
