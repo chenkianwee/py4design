@@ -115,7 +115,7 @@ class Rad(object):
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(self.data_folder_path, weaweatherfilename)
         command1 =  "epw2wea" + " " + weatherfile_path + " " + weaweatherfile
-        proc = subprocess.Popen(command1, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
         site_headers = proc.stdout.read()
         site_headers_list = site_headers.split("\r\n")
         latitude = site_headers_list[1].split(" ")[1]
@@ -140,7 +140,8 @@ class Rad(object):
         f.write(cumulative_sky_command)
         f.write("\n")
         f.close()
-        os.system(cumulative_sky_command)#EXECUTE
+        #os.system(cumulative_sky_command)#EXECUTE
+        subprocess.call(cumulative_sky_command, shell = True)
         #create the sky file using the .cal file created
         cumulative_sky_file_path = os.path.join(self.data_folder_path, "cumulative_sky.rad")
         cumulative_sky_file = open(cumulative_sky_file_path,  "w")
@@ -173,8 +174,10 @@ class Rad(object):
         f.write(command2)
         f.write("\n")
         f.close()
-        os.system(command2) #EXECUTE!!
+        
         os.chdir(cur_dir)
+        subprocess.call(command2, shell= True)
+        #os.system(command2) #EXECUTE!!
         self.cumulative_oconv_file_path = cumulative_oconv_file_path
 
     def execute_cumulative_rtrace(self, ab):
@@ -192,7 +195,8 @@ class Rad(object):
         f.write(command)
         f.write("\n")
         f.close()
-        os.system(command)#EXECUTE!!
+        subprocess.call(command, shell=True)
+        #os.system(command)#EXECUTE!!
         os.chdir(cur_dir)
         self.cumulative_result_file_path = cumulative_result_file_path
 
@@ -249,14 +253,15 @@ class Rad(object):
         " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
         " " + self.oconv_file_path + " " + " < " + self.sensor_file_path +\
         " " + " > " + " " + result_file_path
-        #process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #result = process.communicate()
-        #print result
+        
         f = open(self.command_file, "a")
         f.write(command)
         f.write("\n")
         f.close()
-        os.system(command)#EXECUTE!!
+        #os.system(command)#EXECUTE!!
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        result = process.communicate()
+        print result
         self.result_file_path = result_file_path 
         
     def execute_rvu(self, vp, vd, dict_parm):
@@ -501,7 +506,7 @@ class Rad(object):
         f.write("\n")
         f.close()
         
-        proc = subprocess.Popen(command1, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
         site_headers = proc.stdout.read()
         site_headers_list = site_headers.split("\r\n")
         hea_filepath = self.hea_file

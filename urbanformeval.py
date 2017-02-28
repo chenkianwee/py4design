@@ -90,18 +90,32 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     fs_list = []
     wp_list = []
     os_list = []
-    
     gridded_boundary = py3dmodel.construct.grid_face(boundary_occface, xdim, ydim)
-    close_compound = py3dmodel.construct.make_compound(building_occsolids)
+
+    bldg_dict_list = []
+    for building_occsolid in building_occsolids:
+        bldg_dict = {}
+        footprints = gml3dmodel.get_bldg_footprint_frm_bldg_occsolid(building_occsolid)
+        bldg_dict["footprint"] = footprints
+        bldg_dict["solid"] = building_occsolid
+        bldg_dict_list.append(bldg_dict)
+        
     gcnt = 0
     for grid in gridded_boundary:
         grid_extrude = py3dmodel.construct.extrude(grid, (0,0,1), 10000)
+        bldg_list = []
+        for bldg_dict in bldg_dict_list:
+            footprints = bldg_dict["footprint"]
+            fp_cmpd = py3dmodel.construct.make_compound(footprints)
+            fp_common_shape = py3dmodel.construct.boolean_common(grid_extrude,fp_cmpd)
+            if not py3dmodel.fetch.is_compound_null(fp_common_shape):
+                bldg_list.append(bldg_dict["solid"])
+        close_compound = py3dmodel.construct.make_compound(bldg_list)
         common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
-        common_shape = py3dmodel.fetch.shape2shapetype(common_shape)
         compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
         facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
         if facade_list:
-            fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, (1,1,0))
+            fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, wind_dir)
             fai_list.append(fai)
             fs_list.extend(fuse_srfs)
             wp_list.append(wind_plane)
@@ -162,11 +176,6 @@ def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
     surfaces_projected = []
     projected_facet_faces = []
     for facade_face in facade_occpolygons:
-        #srf_dir = py3dmodel.calculate.face_normal(facade_face)
-        #angle = py3dmodel.calculate.angle_bw_2_vecs(wind_dir, srf_dir)
-        #interpt, interface = py3dmodel.calculate.intersect_shape_with_ptdir(wind_plane, srf_midpt, srf_dir)
-        #print "ANGLE",angle
-        #if angle<90:
         surfaces_projected.append(facade_face)
         projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facade_face)
         projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
@@ -244,7 +253,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #designate peripheral points
     #======================================================================
     peripheral_ptlist, pedgelist, interptlist = designate_peripheral_pts(boundary_occface, network_occedgelist, precision)
-        
+    print "NPLOTS", len(plot_occfacelist)
     #======================================================================
     #connect the street network: connect midpt of each plot to the street network
     #======================================================================
@@ -289,7 +298,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     fail_plots = []
     display_plots = []
     total_route_directness_aplot = []
-
+    
     plcnt = 0
     for midpt in plot_midptlist:
         midpt = py3dmodel.modify.round_pypt(midpt,ndecimal)
@@ -471,7 +480,6 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     return peripheral_ptlist, pedgelist, fused_interptlist
     
 def connect_street_network2plot(network_occedgelist, plot_occfacelist, peripheral_n_inter_ptlist, precision):
-    plot_edgeptlist = []
     plot_midptlist = []
     network_ptlist = []
     midpt2_network_edgelist = []
@@ -480,34 +488,23 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
     for plot_occface in plot_occfacelist:
         pymidpt = py3dmodel.calculate.face_midpt(plot_occface)
         plot_midptlist.append(pymidpt)
-        plot_edgeptlist.append([])
-        #get all the edges of the plot 
-        plotedgelist = py3dmodel.fetch.geom_explorer(plot_occface, "edge")
         #extrude the plot into a solid
         pextrude = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.extrude(plot_occface,(0,0,1), 10))
-        #face_list = py3dmodel.fetch.geom_explorer(pextrude, "face")
-        for pedge in plotedgelist:
-            #find the midpt of the edge 
-            pedge_midpypt = py3dmodel.calculate.edge_midpt(pedge)
-            #connect the midpt towards the pedge_midpypt
-            midpt2pedge = py3dmodel.construct.make_edge(pymidpt, pedge_midpypt)
-            midpt2_network_edgelist.append(midpt2pedge)
-            #get the normal direction of the edge, then use the normal direction 
-            #to project the point into network edges
-            gpvec = py3dmodel.construct.make_vector(pymidpt,pedge_midpypt)
-            pyvec = py3dmodel.modify.normalise_vec(gpvec)
-            inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(pextrude, pymidpt, pyvec) 
-            pydir = py3dmodel.calculate.face_normal(inter_face)
-            #project pedge_midpypt to the network edges
-            inter_occpt2, inter_face2 = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pydir)             
-            
-            if inter_occpt2 !=None:
-                #it means according to the normal direction of the surface it will hit a network edge
-                inter_pypt = py3dmodel.fetch.occpt2pypt(inter_occpt2)
-                pedge2network = py3dmodel.construct.make_edge(pedge_midpypt, inter_pypt)
+        pface_list = py3dmodel.fetch.geom_explorer(pextrude, "face")
+        for pface in pface_list:
+            xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(pface)
+            pface_nrml = py3dmodel.calculate.face_normal(pface)
+            pface_midpt = py3dmodel.calculate.face_midpt(pface)
+            pedge_midpypt = (pface_midpt[0],pface_midpt[1],round(zmin,4))
+            inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pface_nrml)
+            if inter_occpt != None:
+                #it means this is an open boundary edge
+                inter_pypt = py3dmodel.fetch.occpt2pypt(inter_occpt)
                 network_ptlist.append(inter_pypt)
+                midpt2pedge = py3dmodel.construct.make_edge(pymidpt, pedge_midpypt)
+                pedge2network = py3dmodel.construct.make_edge(pedge_midpypt, inter_pypt)
+                midpt2_network_edgelist.append(midpt2pedge)
                 midpt2_network_edgelist.append(pedge2network)
-                plot_edgeptlist[-1].append(pedge_midpypt)
                 #make sure the plot edge is a free edge
                 #if it cuts any of the plots it means it is not a free edge
                 for plot_occface2 in plot_occfacelist:
@@ -523,12 +520,7 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
                         midpt2_network_edgelist.remove(midpt2pedge)
                         midpt2_network_edgelist.remove(pedge2network)
                         network_ptlist.remove(inter_pypt)
-                        plot_edgeptlist[-1].remove(pedge_midpypt)
                         break
-
-            else:
-                #it means according to the normal direction of the surface this plot edge is a deadend 
-                midpt2_network_edgelist.remove(midpt2pedge)
 
     #reconstruct the network edges with the new network_ptlist
     new_network_occedgelist = network_occedgelist[:]
@@ -547,15 +539,24 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
                 domain_list = [dmin, dmax]
                 inter_parm = py3dmodel.calculate.pt2edgeparameter(networkpt, nedge)
                 domain_list.append(inter_parm)
+                #make domain_list unique
+                domain_list = list(set(domain_list))
                 domain_list.sort()
                 #reconstruct the edge 
-                pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
-                pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
-                pypt3 = py3dmodel.calculate.edgeparameter2pt(domain_list[2], nedge)
-                n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
-                new_network_occedgelist.append(n_nedge1)
-                n_nedge2 = py3dmodel.construct.make_edge(pypt2, pypt3)
-                new_network_occedgelist.append(n_nedge2)
+                if len(domain_list) == 2:
+                    pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
+                    pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
+                    n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
+                    new_network_occedgelist.append(n_nedge1)
+                if len(domain_list) == 3:
+                    pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
+                    pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
+                    pypt3 = py3dmodel.calculate.edgeparameter2pt(domain_list[2], nedge)
+                    #print pypt1, pypt2
+                    n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
+                    new_network_occedgelist.append(n_nedge1)
+                    n_nedge2 = py3dmodel.construct.make_edge(pypt2, pypt3)
+                    new_network_occedgelist.append(n_nedge2)
                 break
             
     return new_network_occedgelist, midpt2_network_edgelist, plot_midptlist

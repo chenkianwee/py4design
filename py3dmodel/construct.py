@@ -288,7 +288,7 @@ def grid_face(occ_face, udim, vdim):
             pt4 = pt_list[pcnt+1]
             occface = make_polygon([pt1, pt2, pt3, pt4])
             face_list.append(occface)
-            
+       
     #intersect the grids and the face so that those grids that are not in the face will be erase
     intersection_list = []
     for f in face_list:
@@ -298,7 +298,6 @@ def grid_face(occ_face, udim, vdim):
         if inter_face_list:
             for inter_face in inter_face_list:
                 intersection_list.append(inter_face)
-    #return face_list
     return intersection_list
 
 def boolean_common(occ_shape1, occ_shape2):

@@ -21,6 +21,7 @@
 import abc
 import gml3dmodel
 import pycitygml
+import py3dmodel
 import utility
 
 class BaseParm(object):
@@ -204,6 +205,124 @@ class BldgFlrAreaHeightParm(BaseParm):
                 
             bcnt += n_eligibility_bldgs
         
+        non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
+        gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
+        citymodel_node = citygml_writer.citymodelnode
+        reader = pycitygml.Reader()
+        reader.load_citymodel_node(citymodel_node)
+        return reader
+    
+class BldgHeightParm(BaseParm):
+    def __init__(self):
+        self.bldg_class = None
+        self.bldg_function = None
+        self.bldg_usage = None
+        self.parm_range = None
+        
+    def apply_2_bldg_class(self, bldg_class):
+        self.bldg_class = bldg_class
+        
+    def apply_2_bldg_function(self, bldg_function):
+        self.bldg_function = bldg_function
+        
+    def apply_2_bldg_usage(self, bldg_usage):
+        self.bldg_usage = bldg_usage
+        
+    def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        eligible_bldg_list = []
+        non_eligible_bldg_list = []
+        for gml_bldg in gml_bldg_list:
+            eligibility = True
+            if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
+                if self.bldg_class != bldg_class:
+                    eligibility = False
+                    
+            if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
+                if self.bldg_function != bldg_function:
+                    eligibility = False
+            
+            if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
+                if self.bldg_usage != bldg_usage:
+                    eligibility = False
+                    
+            if eligibility == True:
+                eligible_bldg_list.append(gml_bldg)
+                
+            if eligibility == False:
+                non_eligible_bldg_list.append(gml_bldg)
+                
+        return eligible_bldg_list, non_eligible_bldg_list
+        
+    def define_int_range(self, start, stop, step):
+        parm_range = super(BldgHeightParm, self).define_int_range(start, stop, step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def define_float_range(self, start, stop, step=None):
+        parm_range = super(BldgHeightParm, self).define_float_range(start, stop, step=step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def set_parm_range(self, parm_range):
+        self.parm_range = parm_range
+        
+    def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        if self.parm_range == None:
+            raise Exception("please define parm range")
+        parm_list = super(BldgHeightParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        return parm_list
+        
+    def define_nparameters(self,pycitygml_reader):
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        #filter through the eligible buildings
+        eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
+        #because each building has one building height parameter
+        nparameters = len(eligible_bldg_list)
+        return nparameters
+                
+    def execute(self, pycitygml_reader, nrmlised_parm_list):
+        parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        citygml_writer = pycitygml.Writer()
+        gml_landuses = pycitygml_reader.get_landuses()
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        bcnt = 0
+        for gml_landuse in gml_landuses:
+            #echeck which buildings are on this plot
+            gml_bldg_on_luse = gml3dmodel.buildings_on_landuse(gml_landuse,gml_bldg_list, pycitygml_reader)
+            
+            #check which buildings should this parameter be applied to
+            eligibility_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_on_luse, pycitygml_reader)
+            n_eligibility_bldgs = len(eligibility_bldg_list)
+            
+            #get the parameters for this landuse plot
+            parms_4_luse = parm_list[bcnt:bcnt+n_eligibility_bldgs]
+            
+            #change the bldgs height 
+            bcnt = 0
+            for eligible_gml_bldg in eligibility_bldg_list:
+                #get the height parm for the bldg
+                height_parm = parms_4_luse[bcnt]
+                
+                #extract the bldg solid
+                bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
+                
+                #change the height of each bldg according to the parameter
+                height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader)
+                bldg_bounding_footprint =  gml3dmodel.get_building_bounding_footprint(bldg_solid)
+                midpt = py3dmodel.calculate.face_midpt(bldg_bounding_footprint)
+                height_ratio = float(height_parm)/height
+                scaled_bldg = py3dmodel.modify.uniform_scale(bldg_solid,1,1,height_ratio,midpt)
+                new_bldg_occsolid = py3dmodel.fetch.geom_explorer(scaled_bldg, "solid")[0]
+                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
+                                               citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
+                
+                bcnt+=1
+                
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)

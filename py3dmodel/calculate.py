@@ -82,6 +82,9 @@ def face_midpt(occface):
     fc = face.Face(occface)
     centre_uv,gpcentre_pt = fc.mid_point()
     centre_pt = (gpcentre_pt.X(), gpcentre_pt.Y(), gpcentre_pt.Z())
+    #is_pt_in_face = point_in_face(centre_pt, occface)
+    #if not is_pt_in_face:
+        
     return centre_pt
     
 def is_face_planar(occface, tolerance):

@@ -124,14 +124,24 @@ class Evals(object):
         
         #get the land-use plot
         landuses = self.landuses
+        print "GML LANDUSE", len(landuses)
         lface_list = []
         for landuse in landuses:
             lpolygons = self.citygml.get_polygons(landuse)
             if lpolygons:
-                lpolygon = self.citygml.get_polygons(landuse)[0]
-                landuse_pts = self.citygml.polygon_2_pt_list(lpolygon)
-                lface = py3dmodel.construct.make_polygon(landuse_pts)
-                lface_list.append(lface)
+                lfaces = []
+                if len(lpolygons)>1:
+                    for lpolygon in lpolygons:
+                        landuse_pts = self.citygml.polygon_2_pt_list(lpolygon)
+                        lface = py3dmodel.construct.make_polygon(landuse_pts)
+                        lfaces.append(lface)
+                    merged_face = py3dmodel.construct.merge_faces(lfaces)[0]
+                if len(lpolygons)==1:
+                    landuse_pts = self.citygml.polygon_2_pt_list(lpolygons[0])
+                    lface = py3dmodel.construct.make_polygon(landuse_pts)
+                    merged_face = lface
+                    
+                lface_list.append(merged_face)
                 
         self.landuse_occpolygons = lface_list
         
@@ -240,6 +250,7 @@ class Evals(object):
         if self.relief_feature_occshells == None:
             self.initialise_occgeom()
             
+        
         if boundary_occface == None:
             rf_shells = self.relief_feature_occshells
             rf_compound = py3dmodel.construct.make_compound(rf_shells)
@@ -260,6 +271,7 @@ class Evals(object):
             boundary_occface = py3dmodel.construct.merge_faces(all_flatten_rf_faces)[0]
             
         bsolid_list = self.building_occsolids
+        print "ANALYSING FAI ..."
         avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list = urbanformeval.frontal_area_index(bsolid_list,
                                                                                                          boundary_occface,
                                                                                                          wind_dir,
