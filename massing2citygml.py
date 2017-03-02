@@ -136,7 +136,7 @@ class Massing2Citygml(object):
             occshp_attribs_obj = shapeattributes.ShapeAttributes()
             occshp_attribs_obj.set_shape(nw_edge)
             occshp_attribs_obj_list.append(occshp_attribs_obj)
-            
+        
         print len(shells), len(sewed_shells)
         self.occshp_attribs_obj_list = occshp_attribs_obj_list
 

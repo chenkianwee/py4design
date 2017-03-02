@@ -124,7 +124,6 @@ class Evals(object):
         
         #get the land-use plot
         landuses = self.landuses
-        print "GML LANDUSE", len(landuses)
         lface_list = []
         for landuse in landuses:
             lpolygons = self.citygml.get_polygons(landuse)
