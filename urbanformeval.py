@@ -93,16 +93,41 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     gridded_boundary = py3dmodel.construct.grid_face(boundary_occface, xdim, ydim)
 
     bldg_dict_list = []
+    bldg_fp = []
     for building_occsolid in building_occsolids:
         bldg_dict = {}
         footprints = gml3dmodel.get_bldg_footprint_frm_bldg_occsolid(building_occsolid)
+        
+        if not footprints:
+            face_list = py3dmodel.fetch.geom_explorer(building_occsolid, "face")
+            xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(building_occsolid)
+            bounding_footprint = py3dmodel.construct.make_polygon([(xmin,ymin,zmin),(xmin,ymax,zmin),(xmax, ymax, zmin),(xmax, ymin, zmin)])
+            bldg_footprint_list = []
+            for face in face_list:
+                normal = py3dmodel.calculate.face_normal(face)
+                print normal
+                if normal == (0,0,-1):
+                    print py3dmodel.calculate.face_is_inside(face,bounding_footprint)
+                    if py3dmodel.calculate.face_is_inside(face,bounding_footprint):
+                        bldg_footprint_list.append(face)
+                
+                
+            nrml_edges = py3dmodel.calculate.visualise_face_normal_as_edges(face_list, normal_magnitude = 10)
+            py3dmodel.construct.visualise([[building_occsolid], nrml_edges],["WHITE", "BLACK"])
+            
+        bldg_fp.extend(footprints)
         bldg_dict["footprint"] = footprints
         bldg_dict["solid"] = building_occsolid
         bldg_dict_list.append(bldg_dict)
         
+    
     gcnt = 0
     for grid in gridded_boundary:
-        grid_extrude = py3dmodel.construct.extrude(grid, (0,0,1), 10000)
+        grid_midpt = py3dmodel.calculate.face_midpt(grid)
+        dest_pt = py3dmodel.modify.move_pt(grid_midpt, (0,0,-1), 10)
+        m_grid = py3dmodel.modify.move(grid_midpt,dest_pt, grid)
+        m_grid = py3dmodel.fetch.shape2shapetype(m_grid)
+        grid_extrude = py3dmodel.construct.extrude(m_grid, (0,0,1), 10000)
         bldg_list = []
         for bldg_dict in bldg_dict_list:
             footprints = bldg_dict["footprint"]
@@ -110,16 +135,20 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
             fp_common_shape = py3dmodel.construct.boolean_common(grid_extrude,fp_cmpd)
             if not py3dmodel.fetch.is_compound_null(fp_common_shape):
                 bldg_list.append(bldg_dict["solid"])
-        close_compound = py3dmodel.construct.make_compound(bldg_list)
-        common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
-        compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
-        facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
-        if facade_list:
-            fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, wind_dir)
-            fai_list.append(fai)
-            fs_list.extend(fuse_srfs)
-            wp_list.append(wind_plane)
-            os_list.extend(origsrf_prj)
+                
+        if bldg_list:
+            close_compound = py3dmodel.construct.make_compound(bldg_list)
+            common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
+            compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
+            facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
+            if facade_list:
+                fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, wind_dir)
+                fai_list.append(fai)
+                fs_list.extend(fuse_srfs)
+                wp_list.append(wind_plane)
+                os_list.extend(origsrf_prj)
+            else:
+                fai_list.append(0)
         else:
             fai_list.append(0)
             
@@ -271,15 +300,16 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     for ne in edges4_networkx:
         edge_nodes = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(ne))
         edge_nodes = py3dmodel.modify.round_pyptlist(edge_nodes, ndecimal)
-        xdmin,xdmax = py3dmodel.fetch.edge_domain(ne)
-        length = py3dmodel.calculate.edgelength(xdmin,xdmax,ne)
-        node1 = edge_nodes[0]
-        node2 = edge_nodes[1]
-        G.add_edge(node1,node2, distance = length)
-        if node1 not in fused_ntpts:
-            fused_ntpts.append(node1)
-        if node2 not in fused_ntpts:
-            fused_ntpts.append(node2)
+        if len(edge_nodes) == 2:
+            xdmin,xdmax = py3dmodel.fetch.edge_domain(ne)
+            length = py3dmodel.calculate.edgelength(xdmin,xdmax,ne)
+            node1 = edge_nodes[0]
+            node2 = edge_nodes[1]
+            G.add_edge(node1,node2, distance = length)
+            if node1 not in fused_ntpts:
+                fused_ntpts.append(node1)
+            if node2 not in fused_ntpts:
+                fused_ntpts.append(node2)
             
     #======================================================================
     #measure route directness

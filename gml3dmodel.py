@@ -86,6 +86,7 @@ def get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid):
     bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
     for face in face_list:
         normal = py3dmodel.calculate.face_normal(face)
+        normal = py3dmodel.modify.round_pypt(normal,2)
         if normal == (0,0,-1):
             if py3dmodel.calculate.face_is_inside(face,bounding_footprint):
                 bldg_footprint_list.append(face)
