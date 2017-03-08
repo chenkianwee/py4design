@@ -144,7 +144,7 @@ class Evals(object):
                 
         self.landuse_occpolygons = lface_list
         
-    def shgfavi(self, irrad_threshold, epwweatherfile, xdim, ydim, shgfavi_threshold=None):
+    def shrfavi(self, irrad_threshold, epwweatherfile, xdim, ydim, shgfavi_threshold=None):
         """
         Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
         receives irradiation above a specified level over the building volume. 
@@ -154,14 +154,14 @@ class Evals(object):
             
         rf_occfaces = self.relief_feature_occfaces
         bsolid_list = self.building_occsolids
-        avg_shgfavi, shgfavi_percent, shgfai, topo_list, irrad_ress = urbanformeval.shgfavi(bsolid_list, irrad_threshold, 
+        avg_shrfavi, shrfavi_percent, shrfai, topo_list, irrad_ress = urbanformeval.shrfavi(bsolid_list, irrad_threshold, 
                                                                                             epwweatherfile, xdim, ydim, 
                                                                                             self.shgfavi_folderpath, 
                                                                                             shgfavi_threshold = shgfavi_threshold,
                                                                                             shading_occfaces = rf_occfaces)
         
         self.irrad_results = irrad_ress
-        return avg_shgfavi, shgfavi_percent, shgfai, topo_list, irrad_ress
+        return avg_shrfavi, shrfavi_percent, shrfai, topo_list, irrad_ress
         
     def dfavi(self, illum_threshold, epwweatherfile, xdim, ydim, dfavi_threshold=None):
         """

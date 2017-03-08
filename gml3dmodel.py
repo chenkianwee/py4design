@@ -443,10 +443,12 @@ def write_gml_triangle(occface_list):
         if n_pypt_list>3:
             occtriangles = py3dmodel.construct.simple_mesh(face)
             for triangle in occtriangles:
-                t_pypt_list = py3dmodel.fetch.pyptlist_frm_occface(triangle)
-                t_pypt_list.reverse()
-                gml_tri = pycitygml.gmlgeometry.Triangle(t_pypt_list)
-                gml_geometry_list.append(gml_tri)
+                is_face_null = py3dmodel.fetch.is_face_null(triangle)
+                if not is_face_null:
+                    t_pypt_list = py3dmodel.fetch.pyptlist_frm_occface(triangle)
+                    t_pypt_list.reverse()
+                    gml_tri = pycitygml.gmlgeometry.Triangle(t_pypt_list)
+                    gml_geometry_list.append(gml_tri)
         else:
             pypt_list.reverse()
             gml_tri = pycitygml.gmlgeometry.Triangle(pypt_list)
