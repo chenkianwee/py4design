@@ -30,6 +30,7 @@ import shp2citygml
 import urbanformeval
 import runopt
 import utility
+import utility3d
 import massing2citygml
 import analysisrulepalette
 import templaterulepalette

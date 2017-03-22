@@ -88,10 +88,6 @@ class IdentifyBuildingMassings(BaseTemplateRule):
         bcnt = 0
         for building in building_list:
             building = py3dmodel.modify.fix_shell_orientation(building)
-            #mesh the shell first so that it will be more accurate for pythonocc to process the geometries
-            #mesh_faces = py3dmodel.construct.simple_mesh(building)
-            #building = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
-            #building = py3dmodel.modify.fix_shell_orientation(building)
             #first try to simplify the solid as much as possible
             mbuilding = py3dmodel.modify.simplify_shell(building, tolerance = tolerance)
 

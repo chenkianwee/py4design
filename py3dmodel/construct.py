@@ -28,7 +28,7 @@ from OCC.Display.SimpleGui import init_display
 from OCCUtils import face, Construct, Topology, Common
 from OCC.Display import OCCViewer
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
-from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeBox
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
@@ -39,6 +39,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
+from OCC.Addons import text_to_brep, Font_FA_Bold
 
 import fetch
 import calculate
@@ -491,6 +492,10 @@ def delaunay3d(pyptlist):
         occtriangles.append(occtriangle)
     
     return occtriangles
+
+def make_brep_text(stri, font_size):
+    brepstr = text_to_brep(stri, "Arial", Font_FA_Bold, font_size, True)
+    return brepstr
     
 def visualise(shape2dlist, colour_list, backend = "qt-pyqt5"):
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
@@ -529,42 +534,7 @@ def falsecolour(results, minval, maxval):
         res_colours.append(colour)
     return res_colours
     
-def frange(start, stop, n):
-    L = [0.0] * n
-    nm1 = n - 1
-    nm1inv = 1.0 / nm1
-    for i in range(n):
-        L[i] = nm1inv * (start*(nm1 - i) + stop*i)
-    return L
-    
-def generate_falsecolour_bar(minval, maxval, export_path, display):
-    xdim = 1
-    ydim = 10
-    rectangle = make_rectangle(xdim, ydim)
-    grid_srfs = grid_face(rectangle, xdim, 1)
-    #generate uniform results between max and min
-    uni_res = frange(minval, maxval, 10)
-    bar_colour = falsecolour(uni_res, minval, maxval)
-    
-    for scnt in range(len(grid_srfs)):
-        srf = grid_srfs[scnt]
-        fcolour = bar_colour[scnt]
-        res = round(uni_res[scnt],2)
-        txt_pt = make_gppnt(calculate.face_midpt(srf))
-        display.DisplayColoredShape(srf, color=fcolour, update=True)
-        if scnt == len(grid_srfs)-1:
-            display.DisplayMessage(txt_pt, str(res) + "\nkWh/m2", height=None, message_color=(0,0,0), update=True)
-        else:
-            display.DisplayMessage(txt_pt, str(res), height=None, message_color=(0,0,0), update=True)
-    
-    display.set_bg_gradient_color(255, 255, 255, 255, 255, 255)
-    display.View_Iso()
-    display.FitAll()
-    #display.ExportToImage(export_path)
-    display.EraseAll()
-    
-def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, image_file=None, 
-                               other_topo2dlist = None, other_colourlist = None, 
+def visualise_falsecolour_topo(results, occtopo_list, other_topo2dlist = None, other_colourlist = None, 
                                minval_range = None, maxval_range = None, backend = "qt-pyqt5"):
                                    
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
@@ -580,8 +550,7 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, ima
         maxval = maxval_range
         
     res_colours = falsecolour(results, minval, maxval)
-    if falsecolour_file!=None:
-        falsecolour_bar = generate_falsecolour_bar(minval, maxval, falsecolour_file, display)
+
     colour_list = []
     c_srf_list = []
     for r_cnt in range(len(res_colours)):
@@ -621,6 +590,4 @@ def visualise_falsecolour_topo(results, occtopo_list, falsecolour_file=None, ima
     display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
     display.View_Iso()
     display.FitAll()
-    #if image_file !=None:
-    #    display.ExportToImage(image_file)
     start_display()

@@ -259,14 +259,13 @@ class Evals(object):
             for rfshell in rf_shells:
                 rffaces = py3dmodel.fetch.geom_explorer(rfshell, "face")
                 for rfface in rffaces:
-                    rf_nrml = py3dmodel.calculate.face_normal(rfface)
-                    ref_nrml = (0,0,1)
-                    angle = py3dmodel.calculate.angle_bw_2_vecs(rf_nrml,ref_nrml)
-                    if angle <90:
-                        #flatten the surfaces 
-                        flatten_face_z = py3dmodel.modify.flatten_face_z_value(rfface, z = zmin)
-                        all_flatten_rf_faces.append(flatten_face_z)
-                        
+                    #rf_nrml = py3dmodel.calculate.face_normal(rfface)
+                    #ref_nrml = (0,0,1)
+                    #print rf_nrml
+                    #angle = py3dmodel.calculate.angle_bw_2_vecs(rf_nrml,ref_nrml)
+                    #flatten the surfaces 
+                    flatten_face_z = py3dmodel.modify.flatten_face_z_value(rfface, z = zmin)
+                    all_flatten_rf_faces.append(flatten_face_z)         
             boundary_occface = py3dmodel.construct.merge_faces(all_flatten_rf_faces)[0]
             
         bsolid_list = self.building_occsolids
@@ -309,9 +308,15 @@ class Evals(object):
             boundary_occface = py3dmodel.modify.flatten_face_z_value(boundary_occface, z = zmin)
             
         f_redge_list = []
+        road_length_list = []
         for redge in road_occedges:
             f_redge = py3dmodel.modify.flatten_edge_z_value(redge, z = zmin)
+            lbound, ubound = py3dmodel.fetch.edge_domain(f_redge)
+            edge_length = py3dmodel.calculate.edgelength(lbound, ubound, f_redge)
+            road_length_list.append(edge_length)
             f_redge_list.append(f_redge)
+            
+        road_length = sum(road_length_list)
             
         f_p_face_list = []
         for p_face in plot_occfacelist:
@@ -323,7 +328,7 @@ class Evals(object):
             f_o_face = py3dmodel.modify.flatten_face_z_value(o_face, z = zmin)
             f_o_face_list.append(f_o_face)
                 
-            
+        print "ROAD LENGTH", road_length
         avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts = urbanformeval.route_directness(f_redge_list, 
                                                                                                            f_p_face_list, 
                                                                                                            boundary_occface,

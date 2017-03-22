@@ -19,6 +19,7 @@
 #
 # ==================================================================================================
 import math
+import utility3d
 import py3dmodel
 import pycitygml
     
@@ -416,23 +417,26 @@ def write_non_eligible_bldgs(non_eligible_bldgs, citygml_writer):
 def write_a_gml_srf_member(occface):
     pypt_list = py3dmodel.fetch.pyptlist_frm_occface(occface)
     pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list)
-    face_nrml = py3dmodel.calculate.face_normal(occface)
-    is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
-    if is_anticlockwise == False:
-        pypt_list.reverse()
-
-    first_pt = pypt_list[0]
-    pypt_list.append(first_pt)
-    srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
-    return srf
+    if len(pypt_list)>=3:
+        face_nrml = py3dmodel.calculate.face_normal(occface)
+        is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
+        if is_anticlockwise == False:
+            pypt_list.reverse()
+    
+        first_pt = pypt_list[0]
+        pypt_list.append(first_pt)
+        srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
+        return srf
+    else:
+        return None
     
 def write_gml_srf_member(occface_list):
     gml_geometry_list = []
-    cnt = 0
     for face in occface_list:
         srf = write_a_gml_srf_member(face)
-        gml_geometry_list.append(srf)
-        cnt+=1
+        if srf != None:
+            gml_geometry_list.append(srf)
+
     return gml_geometry_list
 
 def write_gml_triangle(occface_list):
@@ -446,11 +450,17 @@ def write_gml_triangle(occface_list):
                 is_face_null = py3dmodel.fetch.is_face_null(triangle)
                 if not is_face_null:
                     t_pypt_list = py3dmodel.fetch.pyptlist_frm_occface(triangle)
-                    t_pypt_list.reverse()
+                    #face_nrml = py3dmodel.calculate.face_normal(triangle)
+                    #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(t_pypt_list, face_nrml)
+                    #if is_anticlockwise == False:
+                    #    t_pypt_list.reverse()
                     gml_tri = pycitygml.gmlgeometry.Triangle(t_pypt_list)
                     gml_geometry_list.append(gml_tri)
         else:
-            pypt_list.reverse()
+            #face_nrml = py3dmodel.calculate.face_normal(face)
+            #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
+            #if is_anticlockwise == False:
+            #    pypt_list.reverse()
             gml_tri = pycitygml.gmlgeometry.Triangle(pypt_list)
             gml_geometry_list.append(gml_tri)
             
@@ -510,19 +520,30 @@ def identify_open_close_shells(occshell_list):
     
 def reconstruct_open_close_shells(occshell_list):
     close_shell_list, open_shell_list = identify_open_close_shells(occshell_list)
-            
     open_shell_compound = py3dmodel.construct.make_compound(open_shell_list)
     open_shell_faces = py3dmodel.fetch.geom_explorer(open_shell_compound, "face")
     #sew all the open shell faces together to check if there are solids among the open shells
     recon_shell_list = py3dmodel.construct.make_shell_frm_faces(open_shell_faces)
     recon_close_shell_list, recon_open_shell_list = identify_open_close_shells(recon_shell_list)
     if recon_close_shell_list:
-        recon_close_shell_compound = py3dmodel.construct.make_compound(recon_close_shell_list)
+        open_shell_list2 = []
+        open_shell_rmv_index = []
         #boolean difference the close shells from the open shells 
-        difference = py3dmodel.construct.boolean_difference(open_shell_compound, recon_close_shell_compound)
-        difference = py3dmodel.fetch.shape2shapetype(difference)
-        open_shell_faces2 = py3dmodel.fetch.geom_explorer(difference, "face")
-        open_shell_list2 = py3dmodel.construct.make_shell_frm_faces(open_shell_faces2)
+        for recon_close_shell in recon_close_shell_list:
+            os_cnt = 0
+            for open_shell in open_shell_list:
+                #common_cmpd = py3dmodel.construct.boolean_common(recon_close_shell, open_shell)
+                difference_cmpd = py3dmodel.construct.boolean_difference(open_shell, recon_close_shell)
+                is_diff_null = py3dmodel.fetch.is_compound_null(difference_cmpd)
+                if is_diff_null:
+                    open_shell_rmv_index.append(os_cnt)
+                os_cnt+=1
+                
+        for os_cnt2 in range(len(open_shell_list)):
+            if os_cnt2 not in open_shell_rmv_index:
+                open_shell2 = open_shell_list[os_cnt2]
+                open_shell_list2.append(open_shell2)
+                
         return close_shell_list + recon_close_shell_list + open_shell_list2
     else:
         return occshell_list
@@ -616,3 +637,67 @@ def is_shell_simple(occshell):
         if npypt == 3 and nface>6:
             return False
     return True
+
+def citygml2collada(citygml_filepath, collada_filepath):
+    reader = pycitygml.Reader()
+    reader.load_filepath(citygml_filepath)
+    buildings = reader.get_buildings()
+    landuses = reader.get_landuses()
+    stops = reader.get_bus_stops()
+    roads = reader.get_roads()
+    railways = reader.get_railways()
+    relief_features = reader.get_relief_feature()
+    occshell_list = []
+    occedge_list = []
+    
+    for building in buildings:
+        pypolgon_list = reader.get_pypolygon_list(building)
+        solid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
+        bldg_shell_list = py3dmodel.fetch.geom_explorer(solid, "shell")
+        occshell_list.extend(bldg_shell_list)
+
+    for landuse in landuses:
+        lpolygons = reader.get_polygons(landuse)
+        if lpolygons:
+            for lpolygon in lpolygons:
+                landuse_pts = reader.polygon_2_pt_list(lpolygon)
+                lface = py3dmodel.construct.make_polygon(landuse_pts)
+                occshell_list.append(lface)
+          
+    rf_face_list = []
+    for relief in relief_features:
+        pytri_list = reader.get_pytriangle_list(relief)
+        for pytri in pytri_list:
+            rface = py3dmodel.construct.make_polygon(pytri)
+            rf_face_list.append(rface)
+            
+    rf_cmpd = py3dmodel.construct.make_compound(rf_face_list)
+    centre_pt = py3dmodel.calculate.get_centre_bbox(rf_cmpd)
+    move_centre_pt = py3dmodel.modify.move_pt(centre_pt, (0,0,-1), 0.1)
+    moved_cmpd = py3dmodel.modify.move(centre_pt,move_centre_pt,rf_cmpd)
+    occshell_list.append(moved_cmpd)
+            
+    for road in roads:
+        polylines = reader.get_pylinestring_list(road)
+        for polyline in polylines:
+            occ_wire = py3dmodel.construct.make_wire(polyline)
+            edge_list = py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+            occedge_list.extend(edge_list)
+    
+    for rail in railways:
+        polylines = reader.get_pylinestring_list(rail)
+        for polyline in polylines:
+            occ_wire = py3dmodel.construct.make_wire(polyline)
+            edge_list = py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+            occedge_list.extend(edge_list)
+            
+    for stop in stops:
+        pypolgon_list = reader.get_pypolygon_list(stop)
+        solid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
+        stop_shell_list = py3dmodel.fetch.geom_explorer(solid, "shell")
+        occshell_list.extend(stop_shell_list)
+    
+    utility3d.write_2_collada(occshell_list, collada_filepath, occedge_list = occedge_list)
+    
+        
+    

@@ -105,9 +105,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
             bldg_footprint_list = []
             for face in face_list:
                 normal = py3dmodel.calculate.face_normal(face)
-                print normal
                 if normal == (0,0,-1):
-                    print py3dmodel.calculate.face_is_inside(face,bounding_footprint)
                     if py3dmodel.calculate.face_is_inside(face,bounding_footprint):
                         bldg_footprint_list.append(face)
                 
@@ -119,30 +117,40 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
         bldg_dict["footprint"] = footprints
         bldg_dict["solid"] = building_occsolid
         bldg_dict_list.append(bldg_dict)
-        
-    
     gcnt = 0
+    
     for grid in gridded_boundary:
         grid_midpt = py3dmodel.calculate.face_midpt(grid)
         dest_pt = py3dmodel.modify.move_pt(grid_midpt, (0,0,-1), 10)
         m_grid = py3dmodel.modify.move(grid_midpt,dest_pt, grid)
         m_grid = py3dmodel.fetch.shape2shapetype(m_grid)
-        grid_extrude = py3dmodel.construct.extrude(m_grid, (0,0,1), 10000)
+        grid_extrude = py3dmodel.construct.extrude(m_grid, (0,0,1), 1000)
         bldg_list = []
         for bldg_dict in bldg_dict_list:
             footprints = bldg_dict["footprint"]
             fp_cmpd = py3dmodel.construct.make_compound(footprints)
             fp_common_shape = py3dmodel.construct.boolean_common(grid_extrude,fp_cmpd)
-            if not py3dmodel.fetch.is_compound_null(fp_common_shape):
-                bldg_list.append(bldg_dict["solid"])
+            is_cmpd_null = py3dmodel.fetch.is_compound_null(fp_common_shape)
                 
+            if not is_cmpd_null:
+                bsolid = bldg_dict["solid"]
+                bldg_list.append(bsolid)
+                
+        
         if bldg_list:
-            close_compound = py3dmodel.construct.make_compound(bldg_list)
-            common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
-            compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
-            facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
-            if facade_list:
-                fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(facade_list, grid, wind_dir)
+            #close_compound = py3dmodel.construct.make_compound(bldg_list)
+            agrid_facade_list = []
+            for bldg in bldg_list:
+                common_shape = py3dmodel.construct.boolean_common(grid_extrude,bldg)
+                compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
+                facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
+                agrid_facade_list.extend(facade_list)
+            #common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
+            #py3dmodel.construct.visualise([[common_shape],gridded_boundary] ,[ "RED", "WHITE"])
+            #compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
+            #facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
+            if agrid_facade_list:
+                fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(agrid_facade_list, grid, wind_dir)
                 fai_list.append(fai)
                 fs_list.extend(fuse_srfs)
                 wp_list.append(wind_plane)
@@ -774,11 +782,12 @@ def shrfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     #calculate avg shgfavi 
-    avg_shgfavi, shgfavi_percent, shgfa_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, "shrfavi",
+    avg_shgfavi, shgfavi_percent, shgfa_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, "nshfavi",
                                                                              avi_threshold = shgfavi_threshold)
-              
+            
+    print "AVG SPHERICITY", sum(sphericity_list)/float(len(sphericity_list))
     #calculate shgfai
-    shgfai, shgfa, total_srfarea = calculate_facai(sorted_bldgdict_list,irrad_threshold, "shrfai")
+    shgfai, shgfa, total_srfarea = calculate_facai(sorted_bldgdict_list,irrad_threshold, "nshfai")
     
     return avg_shgfavi, shgfavi_percent, shgfai, sensor_srflist, irrad_ress
     
@@ -949,12 +958,12 @@ def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
     
     #calculate avg pvavi 
-    avg_pvravi, pvravi_percent, pvra_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold, "pveavi", 
+    avg_pvravi, pvravi_percent, pvra_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold,"pveavi",
                                                avi_threshold = pvravi_threshold)
                          
     avg_pvfavi, pvfavi_percent, pvfa_list, total_sa_list, sphericity_list  = calculate_avi(sorted_bldgdict_listf, facade_irrad_threshold, "pveavi",
                                                avi_threshold = pvfavi_threshold)
-                                               
+    
     pveavi_list = []
     compared_list = []
     for pv_cnt in range(len(pvra_list)):
@@ -1039,7 +1048,6 @@ def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
     for illum in illum_ress:
         mean_illum = illum/float(sunuphrs)
         mean_illum_ress.append(mean_illum)
-        
     sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     avg_dfavi, dfavi_percent, dfa_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, illum_threshold, "dfavi",
@@ -1174,12 +1182,11 @@ def calculate_avi(bldgdict_list, result_threshold, mode, avi_threshold = None):
         
         bradcnt = 0
         for res in result_list:
-            if mode == "shrfavi":
+            if mode == "nshfavi":
                 if res <= result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
-                    
-            if mode == "dfavi" or mode == "pveavi":
+            if mode == "pveavi" or mode == "dfavi":
                 if res >= result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
@@ -1195,14 +1202,25 @@ def calculate_avi(bldgdict_list, result_threshold, mode, avi_threshold = None):
         bldg_occsolid = bldgdict["solid"]
         sphericity = calculate_sphericity(bldg_occsolid)
         sphericity_list.append(sphericity)
-        avi = aai*sphericity
+        
+        if mode == "nshfavi":
+            avi = aai*(sphericity)
+            #print sphericity
+            #print aai
+            #print avi
+        if mode == "pveavi" or mode == "dfavi":
+            avi = aai*(1-sphericity)
+            
         avi_list.append(avi)
 
         if avi_threshold != None:
             if avi >= avi_threshold:
                 compared_avi_list.append(avi)
         
+        
     avg_avi = sum(avi_list)/float(len(avi_list))
+    #print sum(avi_list)
+    #print len(avi_list)
     if avi_threshold != None:
         avi_percent = float(len(compared_avi_list))/float(len(avi_list))
     else:
@@ -1220,7 +1238,7 @@ def calculate_facai(bldgdict_list, result_threshold, mode):
         sensor_srflist.extend(surface_list)
         bradcnt = 0
         for res in result_list:
-            if mode == "shrfai":
+            if mode == "nshfai":
                 if res <= result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
