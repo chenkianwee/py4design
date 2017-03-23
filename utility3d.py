@@ -153,7 +153,7 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None, 
     mesh.write(collada_filepath)
     
 def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepath, description_str = None, 
-                                minval = None, maxval=None):
+                                minval = None, maxval=None, other_occface_list = None, other_occedge_list = None):
     if minval == None:
         minval = min(result_list)
     if maxval == None:
@@ -162,83 +162,22 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
     #FOR CREATING THE FALSECOLOUR BAR AND LABELS
     topo_cmpd = py3dmodel.construct.make_compound(occface_list)
     xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(topo_cmpd)
+    topo_centre_pt = py3dmodel.calculate.get_centre_bbox(topo_cmpd)
+    otopo_centre_pt = (topo_centre_pt[0], topo_centre_pt[1], zmin)
+    topo_cmpd = py3dmodel.modify.move(otopo_centre_pt, (0,0,0), topo_cmpd)
+    xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(topo_cmpd)
     x_extend = xmax-xmin
     y_extend = ymax-ymin
-    interval = 10.0
-    xdim = y_extend/interval
-    ydim = y_extend
-    rectangle = py3dmodel.construct.make_rectangle(xdim, ydim)
-    
-    rec_mid_pt = py3dmodel.calculate.face_midpt(rectangle)
     topo_centre_pt = py3dmodel.calculate.get_centre_bbox(topo_cmpd)
     topo_centre_pt = (topo_centre_pt[0], topo_centre_pt[1], zmin)
     loc_pt = py3dmodel.modify.move_pt(topo_centre_pt, (1,0,0), x_extend/1.5)
-    moved_rectangle = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(rec_mid_pt, loc_pt, rectangle))
     
-    grid_srfs = py3dmodel.construct.grid_face(moved_rectangle, xdim, xdim)
-
-    #generate uniform results between max and min
-    inc1 = (maxval-minval)/(interval)
-    uni_res = utility.frange(minval, end=maxval+0.1, inc=inc1)
-    print len(uni_res), uni_res
-    inc2 = inc1/2.0
-    uni_res2 = utility.frange(minval+inc2, end=maxval, inc=inc1)
-    bar_colour = utility.falsecolour(uni_res2, minval, maxval)
-    grid_srfs2 = []
-    moved_str_face_list = []
-    srf_cnt = 0
-    for srf in grid_srfs:
-        reversed_srf = py3dmodel.modify.reverse_face(srf)
-        grid_srfs2.append(reversed_srf)
-        res_label = round(uni_res[srf_cnt],2)
-        brep_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(str(res_label), xdim))
-        orig_pt = py3dmodel.calculate.get_centre_bbox(brep_str)
-        loc_pt = py3dmodel.calculate.face_midpt(srf)
-        loc_pt = py3dmodel.modify.move_pt(loc_pt, (1,-0.2,0), xdim*3)
-        moved_str = py3dmodel.modify.move(orig_pt, loc_pt, brep_str)
-        moved_str_face_list.append(moved_str)
-        
-        if srf_cnt == len(grid_srfs)-1:
-            res_label = round(uni_res[srf_cnt+1],2)
-            brep_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(str(res_label), xdim))
-            orig_pt = py3dmodel.calculate.get_centre_bbox(brep_str)
-            loc_pt3 = py3dmodel.modify.move_pt(loc_pt, (0,1,0), xdim)
-            moved_str = py3dmodel.modify.move(orig_pt, loc_pt3, brep_str)
-            moved_str_face_list.append(moved_str)
-        
-            brep_str_unit = py3dmodel.construct.make_brep_text(str(unit_str), xdim)
-            orig_pt2 = py3dmodel.calculate.get_centre_bbox(brep_str_unit)
-            loc_pt2 = py3dmodel.modify.move_pt(loc_pt, (0,1,0), xdim*2)
-            moved_str = py3dmodel.modify.move(orig_pt2, loc_pt2, brep_str_unit)
-            moved_str_face_list.append(moved_str)
-            
-        if description_str !=None:    
-            if srf_cnt == 0:
-                d_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(description_str, xdim))
-                orig_pt2 = py3dmodel.calculate.get_centre_bbox(d_str)
-                loc_pt2 = py3dmodel.modify.move_pt(loc_pt, (0,-1,0), xdim*5)
-                moved_str = py3dmodel.modify.move(orig_pt2, loc_pt2, d_str)
-                moved_str_face_list.append(moved_str)
-            
-
-        srf_cnt+=1
-        
-    cmpd = py3dmodel.construct.make_compound(moved_str_face_list)
-    face_list = py3dmodel.fetch.geom_explorer(cmpd, "face")
-    meshed_list = []
-    for face in face_list:    
-        meshed_face_list = py3dmodel.construct.simple_mesh(face)
-        mface = py3dmodel.construct.make_shell(meshed_face_list)
-        #py3dmodel.construct.merge_faces(meshed_face_list)[0]
-        face_mid_pt =  py3dmodel.calculate.face_midpt(face)
-        str_mid_pt = py3dmodel.calculate.get_centre_bbox(mface)
-        moved_mface = py3dmodel.modify.move(str_mid_pt,face_mid_pt,mface)
-        meshed_list.append(moved_mface)
-        
-    meshed_cmpd = py3dmodel.construct.make_compound(meshed_list)
-    str_colour_list = [(0,0,0)]
-        
-    falsecolour_list = utility.falsecolour(result_list, min(result_list), max(result_list))
+    grid_srfs, bar_colour, str_cmpd, str_colour_list, value_midpts = generate_falsecolour_bar(minval, maxval, unit_str, y_extend, 
+                                                                                              description_str = description_str, 
+                                                                                              bar_pos = loc_pt)
+                                                                                       
+    
+    #DIVIDE THE RESULT INTO 10 DIVISION LIKE THE FALSECOLOUR BAR
     falsecolour_list = []
     for result in result_list:
         if result >= maxval:
@@ -248,9 +187,10 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
             falsecolour_list.append(bar_colour[0])
             
         else:
+            inc = (value_midpts[1]-value_midpts[0])/2.0
             ur_cnt=0
-            for u_res in uni_res2:
-                if u_res-inc2 <=result<= u_res+inc2:
+            for midpt in value_midpts:
+                if midpt-inc <=result<= midpt+inc:
                     falsecolour_list.append(bar_colour[ur_cnt])
                     break
                 ur_cnt+=1
@@ -261,6 +201,7 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
     for r_cnt in range(len(falsecolour_list)):
         fcolour = falsecolour_list[r_cnt]
         rf = occface_list[r_cnt]
+        rf = py3dmodel.modify.move(otopo_centre_pt, (0,0,0),rf)
         if fcolour not in colour_list:
             colour_list.append(fcolour)
             c_srf_list.append([rf])
@@ -275,38 +216,95 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
         c_srfs = c_srf_list[c_cnt]
         compound = py3dmodel.construct.make_compound(c_srfs)
         cmpd_list.append(compound)
+         
+    if other_occface_list !=None:
+        other_cmpd = py3dmodel.construct.make_compound(other_occface_list)
+        other_cmpd = py3dmodel.modify.move(otopo_centre_pt, (0,0,0), other_cmpd)
+        other_colour_list = [(1,1,1)]
+        to_be_written_occface_list = cmpd_list + grid_srfs + [str_cmpd]+[other_cmpd]
+        to_be_written_colour_list = colour_list+bar_colour+str_colour_list+other_colour_list
         
-    write_2_collada(cmpd_list + grid_srfs2 + [meshed_cmpd]  , dae_filepath, face_rgb_colour_list = colour_list+bar_colour+str_colour_list  )
+    else:
+        to_be_written_occface_list = cmpd_list + grid_srfs + [str_cmpd]
+        to_be_written_colour_list = colour_list+bar_colour+str_colour_list
+        
+    if other_occedge_list !=None:
+        edge_cmpd = py3dmodel.construct.make_compound(other_occedge_list)
+        edge_cmpd = py3dmodel.modify.move(otopo_centre_pt, (0,0,0), edge_cmpd)
+        other_occedge_list = py3dmodel.fetch.geom_explorer(edge_cmpd, "edge")
+        write_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list, 
+                        occedge_list = other_occedge_list)
+    else:
+        write_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list)
+                        
+        
     
-def generate_falsecolour_bar(minval, maxval, unit_str):
-    xdim = 1
-    ydim = 10
+def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_str = None, bar_pos = (0,0,0)):
+    interval = 10.0
+    xdim = bar_length/interval
+    ydim = bar_length
     rectangle = py3dmodel.construct.make_rectangle(xdim, ydim)
-    grid_srfs = py3dmodel.construct.grid_face(rectangle, xdim, 1)
-    #generate uniform results between max and min
-    uni_res = utility.frange(minval, end=maxval+0.1, inc=(maxval-minval)/9.0)
+    rec_mid_pt = py3dmodel.calculate.face_midpt(rectangle)
+    moved_rectangle = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(rec_mid_pt, bar_pos, rectangle))
+    
+    grid_srfs = py3dmodel.construct.grid_face(moved_rectangle, xdim, xdim)
 
-    bar_colour = utility.falsecolour(uni_res, minval, maxval)
+    #generate uniform results between max and min
+    inc1 = (maxval-minval)/(interval)
+    value_range = utility.frange(minval, end=maxval+0.1, inc=inc1)
+    inc2 = inc1/2.0
+    value_range_midpts = utility.frange(minval+inc2, end=maxval, inc=inc1)
+    bar_colour = utility.falsecolour(value_range_midpts, minval, maxval)
+    grid_srfs2 = []
     moved_str_face_list = []
-    str_colour_list= []
     srf_cnt = 0
     for srf in grid_srfs:
-        res_label = round(uni_res[srf_cnt],2)
-        brep_str = py3dmodel.construct.make_brep_text(str(res_label), 1)
+        reversed_srf = py3dmodel.modify.reverse_face(srf)
+        grid_srfs2.append(reversed_srf)
+        res_label = round(value_range[srf_cnt],2)
+        brep_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(str(res_label), xdim/2))
         orig_pt = py3dmodel.calculate.get_centre_bbox(brep_str)
         loc_pt = py3dmodel.calculate.face_midpt(srf)
-        loc_pt = py3dmodel.modify.move_pt(loc_pt, (1,0,0), 3)
+        loc_pt = py3dmodel.modify.move_pt(loc_pt, (1,-0.3,0), xdim*1.2)
         moved_str = py3dmodel.modify.move(orig_pt, loc_pt, brep_str)
         moved_str_face_list.append(moved_str)
-        str_colour_list.append((0,0,0))
+        
         if srf_cnt == len(grid_srfs)-1:
-            brep_str_unit = py3dmodel.construct.make_brep_text(str(unit_str), 1)
+            res_label = round(value_range[srf_cnt+1],2)
+            brep_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(str(res_label), xdim/2))
+            orig_pt = py3dmodel.calculate.get_centre_bbox(brep_str)
+            loc_pt3 = py3dmodel.modify.move_pt(loc_pt, (0,1,0), xdim)
+            moved_str = py3dmodel.modify.move(orig_pt, loc_pt3, brep_str)
+            moved_str_face_list.append(moved_str)
+        
+            brep_str_unit = py3dmodel.construct.make_brep_text(str(unit_str), xdim)
             orig_pt2 = py3dmodel.calculate.get_centre_bbox(brep_str_unit)
-            loc_pt2 = py3dmodel.modify.move_pt(loc_pt, (0,1,0), 1)
+            loc_pt2 = py3dmodel.modify.move_pt(loc_pt, (0,1,0), xdim*2)
             moved_str = py3dmodel.modify.move(orig_pt2, loc_pt2, brep_str_unit)
             moved_str_face_list.append(moved_str)
-            str_colour_list.append((0,0,0))
+            
+        if description_str !=None:    
+            if srf_cnt == 0:
+                d_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(description_str, xdim/2))
+                orig_pt2 = py3dmodel.calculate.get_centre_bbox(d_str)
+                loc_pt2 = py3dmodel.modify.move_pt(loc_pt, (0,-1,0), xdim*5)
+                moved_str = py3dmodel.modify.move(orig_pt2, loc_pt2, d_str)
+                moved_str_face_list.append(moved_str)
+            
+
         srf_cnt+=1
         
-    return grid_srfs, bar_colour, moved_str_face_list, str_colour_list
-    
+    cmpd = py3dmodel.construct.make_compound(moved_str_face_list)
+    face_list = py3dmodel.fetch.geom_explorer(cmpd, "face")
+    meshed_list = []
+    for face in face_list:    
+        meshed_face_list = py3dmodel.construct.simple_mesh(face)
+        mface = py3dmodel.construct.make_shell(meshed_face_list)
+        face_mid_pt =  py3dmodel.calculate.face_midpt(face)
+        str_mid_pt = py3dmodel.calculate.get_centre_bbox(mface)
+        moved_mface = py3dmodel.modify.move(str_mid_pt,face_mid_pt,mface)
+        meshed_list.append(moved_mface)
+        
+    meshed_str_cmpd = py3dmodel.construct.make_compound(meshed_list)
+    str_colour_list = [(0,0,0)]
+    return grid_srfs2, bar_colour, meshed_str_cmpd, str_colour_list, value_range_midpts

@@ -328,14 +328,13 @@ class Evals(object):
             f_o_face = py3dmodel.modify.flatten_face_z_value(o_face, z = zmin)
             f_o_face_list.append(f_o_face)
                 
-        print "ROAD LENGTH", road_length
         avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts = urbanformeval.route_directness(f_redge_list, 
                                                                                                            f_p_face_list, 
                                                                                                            boundary_occface,
                                                                                                            obstruction_occfacelist = f_o_face_list,
                                                                                                            rdi_threshold = rdi_threshold)
         
-        return avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts
+        return avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts, road_length
 
 
 #===================================================================================================================================================

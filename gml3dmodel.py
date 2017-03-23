@@ -671,11 +671,12 @@ def citygml2collada(citygml_filepath, collada_filepath):
             rface = py3dmodel.construct.make_polygon(pytri)
             rf_face_list.append(rface)
             
-    rf_cmpd = py3dmodel.construct.make_compound(rf_face_list)
-    centre_pt = py3dmodel.calculate.get_centre_bbox(rf_cmpd)
-    move_centre_pt = py3dmodel.modify.move_pt(centre_pt, (0,0,-1), 0.1)
-    moved_cmpd = py3dmodel.modify.move(centre_pt,move_centre_pt,rf_cmpd)
-    occshell_list.append(moved_cmpd)
+    if rf_face_list:
+        rf_cmpd = py3dmodel.construct.make_compound(rf_face_list)
+        centre_pt = py3dmodel.calculate.get_centre_bbox(rf_cmpd)
+        move_centre_pt = py3dmodel.modify.move_pt(centre_pt, (0,0,-1), 0.1)
+        moved_cmpd = py3dmodel.modify.move(centre_pt,move_centre_pt,rf_cmpd)
+        occshell_list.append(moved_cmpd)
             
     for road in roads:
         polylines = reader.get_pylinestring_list(road)
