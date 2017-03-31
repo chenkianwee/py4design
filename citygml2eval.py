@@ -50,9 +50,9 @@ class Evals(object):
         self.road_occedges = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
-        self.shgfavi_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'shgfavi_data')
-        self.dfavi_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'dfavi_data')
-        self.pvavi_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'pvavi_data')
+        self.nshffai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'nshffai_data')
+        self.dffai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'dffai_data')
+        self.pvefai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'pvefai_data')
         self.daysim_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'daysim_data')
         self.solarxdim = None
         self.solarydim = None
@@ -144,7 +144,7 @@ class Evals(object):
                 
         self.landuse_occpolygons = lface_list
         
-    def shrfavi(self, irrad_threshold, epwweatherfile, xdim, ydim, shgfavi_threshold=None):
+    def nshffai(self, irrad_threshold, epwweatherfile, xdim, ydim, nshffai_threshold=None):
         """
         Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
         receives irradiation above a specified level over the building volume. 
@@ -154,16 +154,13 @@ class Evals(object):
             
         rf_occfaces = self.relief_feature_occfaces
         bsolid_list = self.building_occsolids
-        avg_shrfavi, shrfavi_percent, shrfai, topo_list, irrad_ress = urbanformeval.shrfavi(bsolid_list, irrad_threshold, 
-                                                                                            epwweatherfile, xdim, ydim, 
-                                                                                            self.shgfavi_folderpath, 
-                                                                                            shgfavi_threshold = shgfavi_threshold,
-                                                                                            shading_occfaces = rf_occfaces)
+        result_dict = urbanformeval.nshffai(bsolid_list, irrad_threshold, epwweatherfile, xdim, ydim, self.nshffai_folderpath, 
+                                            nshffai_threshold = nshffai_threshold, shading_occfaces = rf_occfaces)
         
-        self.irrad_results = irrad_ress
-        return avg_shrfavi, shrfavi_percent, shrfai, topo_list, irrad_ress
+        self.irrad_results = result_dict["solar_results"]
+        return result_dict
         
-    def dfavi(self, illum_threshold, epwweatherfile, xdim, ydim, dfavi_threshold=None):
+    def dffai(self, illum_threshold, epwweatherfile, xdim, ydim, dffai_threshold=None):
         """
         Daylighting Facade Area to Volume Index (DFAI) calculates the ratio of facade area that 
         receives daylighting above a specified level, 
@@ -174,20 +171,14 @@ class Evals(object):
             
         rf_occfaces = self.relief_feature_occfaces
         bsolid_list = self.building_occsolids
-        avg_dfavi, dfavi_percent, dfai, topo_list, illum_ress = urbanformeval.dfavi(bsolid_list, illum_threshold, 
-                                                                                     epwweatherfile, xdim,ydim, 
-                                                                                     self.dfavi_folderpath, 
-                                                                                     self.daysim_folderpath,
-                                                                                     dfavi_threshold = dfavi_threshold,
-                                                                                     shading_occfaces = rf_occfaces)
-                                                                                     
+        result_dict = urbanformeval.dffai(bsolid_list, illum_threshold, epwweatherfile, xdim,ydim, self.dffai_folderpath, 
+                                          self.daysim_folderpath, dffai_threshold = dffai_threshold, 
+                                          shading_occfaces = rf_occfaces)
+
+        self.illum_results = result_dict["solar_results"]
+        return result_dict
         
-        self.illum_results = illum_ress
-        return avg_dfavi, dfavi_percent, dfai, topo_list, illum_ress
-        
-   
-        
-    def pvavi(self, irrad_threshold, epwweatherfile, xdim, ydim, surface = "roof", pvavi_threshold = None):
+    def pvafai(self, irrad_threshold, epwweatherfile, xdim, ydim, surface = "roof", pvafai_threshold = None):
         '''
         epv calculates the potential electricity 
         that can be generated on the roof of buildings annually.
@@ -202,18 +193,13 @@ class Evals(object):
             
         rf_occfaces = self.relief_feature_occfaces
         bsolid_list = self.building_occsolids
-        avg_pvavi, pvavi_percent, pvai, epv, topo_list, irrad_ress = urbanformeval.pvavi(bsolid_list, 
-                                                                                           irrad_threshold, 
-                                                                                           epwweatherfile, xdim, ydim, 
-                                                                                           self.pvavi_folderpath, 
-                                                                                           mode = surface,
-                                                                                           pvavi_threshold = pvavi_threshold,
-                                                                                           shading_occfaces = rf_occfaces )
-        
-        return avg_pvavi, pvavi_percent, pvai, epv, topo_list, irrad_ress
+        result_dict = urbanformeval.pvafai(bsolid_list, irrad_threshold, epwweatherfile, xdim, ydim, self.pvefai_folderpath, 
+                                          mode = surface, pvafai_threshold = pvafai_threshold, shading_occfaces = rf_occfaces )
+
+        return result_dict
     
-    def pveavi(self, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim, 
-               pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None):
+    def pvefai(self, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim, 
+               pvrfai_threshold = None, pvffai_threshold = None, pvefai_threshold = None):
         '''
         epv calculates the potential electricity 
         that can be generated on the roof of buildings annually.
@@ -230,16 +216,12 @@ class Evals(object):
             
         rf_occfaces = self.relief_feature_occfaces
         bsolid_list = self.building_occsolids
-        avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress = urbanformeval.pveavi(bsolid_list, 
-                                                                                             roof_irrad_threshold, 
-                                                                                             facade_irrad_threshold, 
-                                                                                             epwweatherfile, xdim, ydim, 
-                                                                                             self.pvavi_folderpath, 
-                                                                                             pvravi_threshold = pvravi_threshold, 
-                                                                                             pvfavi_threshold = pvfavi_threshold, 
-                                                                                             pveavi_threshold = pveavi_threshold,
-                                                                                             shading_occfaces = rf_occfaces)
-        return avg_pvfavi, pvavi_percent, pvfai, epv, topo_list, irrad_ress
+        result_dict = urbanformeval.pvefai(bsolid_list, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim, 
+                                           self.pvefai_folderpath, pvrfai_threshold = pvrfai_threshold,
+                                           pvffai_threshold = pvffai_threshold, pvefai_threshold = pvefai_threshold,
+                                           shading_occfaces = rf_occfaces)
+                                                                                             
+        return result_dict
 
     def fai(self, wind_dir, boundary_occface = None):
         """
@@ -270,12 +252,9 @@ class Evals(object):
             
         bsolid_list = self.building_occsolids
         print "ANALYSING FAI ..."
-        avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list = urbanformeval.frontal_area_index(bsolid_list,
-                                                                                                         boundary_occface,
-                                                                                                         wind_dir,
-                                                                                                         xdim = 100, ydim = 100)
-
-        return avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list
+        res_dict = urbanformeval.frontal_area_index(bsolid_list, boundary_occface,wind_dir,xdim = 100, ydim = 100)
+                                                                                                         
+        return res_dict
         
     def rdi(self, boundary_occface = None, obstruction_occfacelist = [], rdi_threshold = 1.6):
         """
@@ -328,13 +307,12 @@ class Evals(object):
             f_o_face = py3dmodel.modify.flatten_face_z_value(o_face, z = zmin)
             f_o_face_list.append(f_o_face)
                 
-        avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts = urbanformeval.route_directness(f_redge_list, 
-                                                                                                           f_p_face_list, 
-                                                                                                           boundary_occface,
-                                                                                                           obstruction_occfacelist = f_o_face_list,
-                                                                                                           rdi_threshold = rdi_threshold)
+        res_dict = urbanformeval.route_directness(f_redge_list, f_p_face_list, boundary_occface,
+                                                  obstruction_occfacelist = f_o_face_list,rdi_threshold = rdi_threshold)
         
-        return avg_rdi,rdi_per,plts,pass_plts,fail_plts,rdi_list,edges,peri_pts, road_length
+        res_dict["road_length"] = road_length
+                                                                                                        
+        return res_dict
 
 
 #===================================================================================================================================================

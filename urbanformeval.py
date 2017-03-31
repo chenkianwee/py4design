@@ -163,7 +163,15 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
         gcnt+=1
         
     avg_fai = float(sum(fai_list))/float(len(fai_list))
-    return avg_fai, gridded_boundary,fai_list, fs_list, wp_list, os_list
+    res_dict = {}
+    res_dict["average"] = avg_fai
+    res_dict["grids"] = gridded_boundary
+    res_dict["fai_list"] = fai_list
+    res_dict["projected_surface_list"] = fs_list
+    res_dict["wind_plane_list"] = wp_list
+    res_dict["vertical_surface_list"] = os_list
+    
+    return res_dict
     
 def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
     '''
@@ -363,7 +371,16 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     rdi_percentage = float(len(pass_plots))/float((len(fail_plots) + len(pass_plots))) * 100
     circles_peri_pts = py3dmodel.construct.circles_frm_pyptlist(peripheral_ptlist, 5)    
     #circles_inter_pts = py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(midptlist), 5)  
-    return avg_rdi, rdi_percentage, display_plots, pass_plots, fail_plots, total_route_directness_aplot, edges4_networkx, circles_peri_pts 
+    res_dict = {}
+    res_dict["average"] = avg_rdi
+    res_dict["percent"] = rdi_percentage
+    res_dict["plots"] = display_plots
+    res_dict["pass_plots"] = pass_plots
+    res_dict["fail_plots"] = fail_plots
+    res_dict["rdi_list"] = total_route_directness_aplot
+    res_dict["network_edges"] = edges4_networkx
+    res_dict["peripheral_points"] = circles_peri_pts
+    return res_dict
 
 def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelist,G, plot_area = None):
     crow_wire = py3dmodel.construct.make_wire([startpypt, peripheralpypt])   
@@ -722,8 +739,8 @@ def draw_street_graph(networkx_graph, node_index):
 #================================================================================================================
 #SOLAR ANALYSES
 #================================================================================================================
-def shrfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, shgfavi_threshold = None, shading_occfaces = []):
+def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, nshffai_threshold = None, shading_occfaces = []):
     '''
     Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
     
@@ -782,14 +799,20 @@ def shrfavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     #calculate avg shgfavi 
-    avg_shgfavi, shgfavi_percent, shgfa_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, "nshfavi",
-                                                                             avi_threshold = shgfavi_threshold)
+    total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, irrad_threshold, "nshffai",
+                                                                                                                       afi_threshold = nshffai_threshold)
             
-    print "AVG SPHERICITY", sum(sphericity_list)/float(len(sphericity_list))
-    #calculate shgfai
-    shgfai, shgfa, total_srfarea = calculate_facai(sorted_bldgdict_list,irrad_threshold, "nshfai")
+
+    res_dict = {}
+    res_dict["afi"] = total_afi
+    res_dict["ai"] = ai
+    res_dict["percent"] = afi_percent
+    res_dict["sensor_surfaces"] = sensor_srflist
+    res_dict["solar_results"] = irrad_ress
+    res_dict["building_solids"] = bsolid_list
+    res_dict["afi_list"] = afi_list
     
-    return avg_shgfavi, shgfavi_percent, shgfai, sensor_srflist, irrad_ress
+    return res_dict
     
 def calculate_epv(sensor_srflist,irrad_ress):
     '''
@@ -811,8 +834,8 @@ def calculate_epv(sensor_srflist,irrad_ress):
     epv = apv*fpv*gt*nmod*ninv
     return epv
     
-def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, mode = "roof", pvavi_threshold = None, shading_occfaces = []):
+def pvafai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, mode = "roof", pvafai_threshold = None, shading_occfaces = []):
                 
     """
     PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
@@ -864,6 +887,7 @@ def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
     :rtype: list(float)
     """    
+    
     #sort and process the surfaces into radiance ready surfaces
     rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
                                                                                                xdim, ydim, rad_folderpath, 
@@ -875,20 +899,26 @@ def pvavi(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
     
     #calculate avg pvavi 
-    avg_pvavi, pvavi_percent, pva_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, irrad_threshold, "pveavi", avi_threshold = None)
+    total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, irrad_threshold, "pvefai", afi_threshold = pvafai_threshold)
               
-    #calculate pvai
-    pvai, pva, total_area = calculate_facai(sorted_bldgdict_list,irrad_threshold, "pveai")
-    
     #calculate the potential energy generated from pv 
     epv = calculate_epv(sensor_srflist,irrad_ress)
     
-    
-    return avg_pvavi, pvavi_percent, pvai, epv, sensor_srflist, irrad_ress
+    res_dict = {}
+    res_dict["afi"] = total_afi
+    res_dict["ai"] = ai
+    res_dict["percent"] = afi_percent
+    res_dict["sensor_surfaces"] = sensor_srflist
+    res_dict["solar_results"] = irrad_ress
+    res_dict["building_solids"] = bsolid_list
+    res_dict["afi_list"] = afi_list
+    res_dict["epv"] = epv
+        
+    return res_dict
     
             
-def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, pvravi_threshold = None, pvfavi_threshold = None, pveavi_threshold = None, shading_occfaces = []):
+def pvefai(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, pvrfai_threshold = None, pvffai_threshold = None, pvefai_threshold = None, shading_occfaces = []):
                 
     """
     PV Envelope Area to Volume  Index (PVEAVI) calculates the ratio of envelope area that 
@@ -946,6 +976,8 @@ def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
     :rtype: list(float)
     """    
+    flr2flr_height = 3.0
+    
     #sort and process the surfaces into radiance ready surfaces
     rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids,
                                                                                                xdim, ydim, rad_folderpath, 
@@ -958,36 +990,46 @@ def pveavi(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
     
     #calculate avg pvavi 
-    avg_pvravi, pvravi_percent, pvra_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_listr, roof_irrad_threshold,"pveavi",
-                                               avi_threshold = pvravi_threshold)
+    rtotal_afi,rai, rafi_percent, rhigh_perf_area_list, rsa_list, shape_factor_list, bsolid_list, rafi_list  = calculate_afi(sorted_bldgdict_listr, roof_irrad_threshold,"pvefai",
+                                                                                                                      afi_threshold = pvrfai_threshold)
                          
-    avg_pvfavi, pvfavi_percent, pvfa_list, total_sa_list, sphericity_list  = calculate_avi(sorted_bldgdict_listf, facade_irrad_threshold, "pveavi",
-                                               avi_threshold = pvfavi_threshold)
+    ftotal_afi,fai, fafi_percent, fhigh_perf_area_list, fsa_list, shape_factor_list, bsolid_list, fafi_list  = calculate_afi(sorted_bldgdict_listf, facade_irrad_threshold, "pvefai",
+                                                                                                                     afi_threshold = pvffai_threshold)
     
-    pveavi_list = []
+    total_bld_up_area = calculate_bld_up_area(bsolid_list,flr2flr_height)
+    eafi_list = []
     compared_list = []
-    for pv_cnt in range(len(pvra_list)):
-        pveavi = ((pvra_list[pv_cnt] + pvfa_list[pv_cnt])/total_sa_list[pv_cnt])* sphericity_list[pv_cnt]
-        pveavi_list.append(pveavi)
-        if pveavi_threshold != None:
-            if pveavi >= pveavi_threshold:
-                compared_list.append(pveavi)
+    for pv_cnt in range(len(bsolid_list)):
+        bldg_flr_area = calculate_bldg_flr_area(bsolid_list[pv_cnt], flr2flr_height)
+        eafi = ((rhigh_perf_area_list[pv_cnt] + fhigh_perf_area_list[pv_cnt])/bldg_flr_area)
+        eafi_list.append(eafi)
         
+        if pvefai_threshold != None:
+            if eafi >= pvefai_threshold:
+                compared_list.append(eafi)
+        
+    eafi_percent = (float(len(compared_list))/float(len(eafi_list)))*100
     
-    avg_pveavi = float(sum(pveavi_list))/float(len(pveavi_list))
-    pveavi_percent = (float(len(compared_list))/float(len(pveavi_list)))*100
-    
+    etotal_afi = (sum(rhigh_perf_area_list) + sum(fhigh_perf_area_list))/total_bld_up_area
     #calculate pvai
-    pvrai, pvra, total_rarea = calculate_facai(sorted_bldgdict_listr,roof_irrad_threshold, "pveai")
-    pvfai, pvfa, total_farea = calculate_facai(sorted_bldgdict_listf,facade_irrad_threshold, "pveai")
-    pveai = ((pvra+pvfa)/(total_rarea + total_farea))
+    eai = (sum(rhigh_perf_area_list) + sum(fhigh_perf_area_list))/(sum(rsa_list) + sum(fsa_list))
     #calculate the potential energy generated from pv 
     epv = calculate_epv(sensor_srflist,irrad_ress)
     
-    return [avg_pveavi, avg_pvravi,avg_pvfavi],[pveavi_percent,pvravi_percent,pvfavi_percent], [pveai, pvrai,pvfai], epv, sensor_srflist, irrad_ress
+    res_dict = {}
+    res_dict["afi"] = [etotal_afi, rtotal_afi,ftotal_afi]
+    res_dict["ai"] = [eai, rai,fai]
+    res_dict["percent"] = [eafi_percent,rafi_percent,fafi_percent]
+    res_dict["sensor_surfaces"] = sensor_srflist
+    res_dict["solar_results"] = irrad_ress
+    res_dict["building_solids"] = bsolid_list
+    res_dict["afi_list"] = [eafi_list, rafi_list, fafi_list]
+    res_dict["epv"] = epv
     
-def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath,daysim_folderpath, dfavi_threshold = None, shading_occfaces = []):
+    return res_dict
+    
+def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath,daysim_folderpath, dffai_threshold = None, shading_occfaces = []):
     '''
     Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
     receives daylighting above a specified level over the volume of the building. 
@@ -1048,14 +1090,22 @@ def dfavi(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
     for illum in illum_ress:
         mean_illum = illum/float(sunuphrs)
         mean_illum_ress.append(mean_illum)
+        
     sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
-    avg_dfavi, dfavi_percent, dfa_list, total_sa_list, sphericity_list = calculate_avi(sorted_bldgdict_list, illum_threshold, "dfavi",
-                                                                       avi_threshold = None)
-                                                                       
-    dfai, dfa, total_area = calculate_facai(sorted_bldgdict_list,illum_threshold, "dfai")
+    total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, illum_threshold, "dffai",
+                                                                                                                       afi_threshold = dffai_threshold)
     
-    return avg_dfavi, dfavi_percent, dfai, sensor_srflist, mean_illum_ress
+    res_dict = {}
+    res_dict["afi"] = total_afi
+    res_dict["ai"] = ai
+    res_dict["percent"] = afi_percent
+    res_dict["sensor_surfaces"] = sensor_srflist
+    res_dict["solar_results"] = mean_illum_ress
+    res_dict["building_solids"] = bsolid_list
+    res_dict["afi_list"] = afi_list
+    
+    return res_dict
     
 def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surface = "facade", shading_occfaces = []):
     #initialise py2radiance 
@@ -1118,7 +1168,7 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
         if surface == "envelope":
             bldg_dict["surface_index"] = [gsrf_range1, gsrf_range2,roof_index1,roof_index2,facade_index1,facade_index2]
         else:
-             bldg_dict["surface_index"] = [gsrf_range1, gsrf_range2]
+            bldg_dict["surface_index"] = [gsrf_range1, gsrf_range2]
              
         bldg_dictlist.append(bldg_dict)
         gsrf_index_cnt +=  gsrf_cnt 
@@ -1158,22 +1208,51 @@ def execute_cummulative_radiance(rad,start_mth,end_mth, start_date,end_date,star
         #retrieve the results
         illum_ress = rad.eval_cumulative_rad(output = "illuminance")   
         return illum_ress
-    
-def calculate_sphericity(bldg_occsolid):
-    bldg_vol = py3dmodel.calculate.solid_volume(bldg_occsolid)
-    bldg_surface_list = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
-    bldg_surface_area = gml3dmodel.faces_surface_area(bldg_surface_list)
-    a = 1.0/3.0
-    b = 2.0/3.0
-    sphericity = (math.pi**a)*((6*bldg_vol)**b)/bldg_surface_area
-    return sphericity
 
-def calculate_avi(bldgdict_list, result_threshold, mode, avi_threshold = None):
-    avi_list = []
-    compared_avi_list = []
+def calculate_bldg_flr_area(bldg_occsolid, flr2flr_height):
+    bldg_height, nstorey = gml3dmodel.calculate_bldg_height_n_nstorey(bldg_occsolid, flr2flr_height)
+    bldg_flr_plates = gml3dmodel.get_bulding_flrplates(bldg_occsolid, nstorey, flr2flr_height)
+    flr_area = 0
+    for flr in bldg_flr_plates:
+        flr_area = flr_area + py3dmodel.calculate.face_area(flr)
+    return flr_area
+
+def calculate_bld_up_area(bldg_occsolid_list, flr2flr_height):
+    flr_area_list = []
+    for bldg_occsolid in bldg_occsolid_list:
+        flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        flr_area_list.append(flr_area)
+        
+    return sum(flr_area_list)
+
+def calculate_shape_factor(bldg_occsolid_list, flr2flr_height):
+    shape_factor_list = []
+    for bldg_occsolid in bldg_occsolid_list:
+        flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        bldg_occfaces = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
+        bldg_surface_area = gml3dmodel.faces_surface_area(bldg_occfaces)
+        shape_factor = bldg_surface_area/flr_area
+        shape_factor_list.append(shape_factor)
+        
+    return shape_factor_list
+
+def calculate_urban_vol(bldg_occsolid_list):
+    bvol_list = []
+    for bldg_occsolid in bldg_occsolid_list:
+        bvol = py3dmodel.calculate.solid_volume(bldg_occsolid)
+        bvol_list.append(bvol)
+        
+    return bvol_list
+
+def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  afi_threshold = None):
+    """calculate area 2 floor area index"""
+    afi_list = []
+    compared_afi_list = []
     high_perf_area_list = []
     sa_list = []
-    sphericity_list = []
+    shape_factor_list = []
+    total_bld_up = []
+    bsolid_list = []
     for bldgdict in bldgdict_list:
         result_list = bldgdict["result"]
         surface_list = bldgdict["surface"]
@@ -1182,11 +1261,11 @@ def calculate_avi(bldgdict_list, result_threshold, mode, avi_threshold = None):
         
         bradcnt = 0
         for res in result_list:
-            if mode == "nshfavi":
+            if mode == "nshffai":
                 if res <= result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
-            if mode == "pveavi" or mode == "dfavi":
+            if mode == "pvefai" or mode == "dffai":
                 if res >= result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
@@ -1197,61 +1276,29 @@ def calculate_avi(bldgdict_list, result_threshold, mode, avi_threshold = None):
         high_perf_area_list.append(high_perf_area)
         surface_area = gml3dmodel.faces_surface_area(surface_list)
         sa_list.append(surface_area)
-        aai = high_perf_area/surface_area
-        #calc the sphericity of the geometry 
         bldg_occsolid = bldgdict["solid"]
-        sphericity = calculate_sphericity(bldg_occsolid)
-        sphericity_list.append(sphericity)
-        
-        if mode == "nshfavi":
-            avi = aai*(sphericity)
-            #print sphericity
-            #print aai
-            #print avi
-        if mode == "pveavi" or mode == "dfavi":
-            avi = aai*(1-sphericity)
-            
-        avi_list.append(avi)
+        bsolid_list.append(bldg_occsolid)
+        bldg_flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        total_bld_up.append(bldg_flr_area)
+        shape_factor = surface_area/bldg_flr_area
+        shape_factor_list.append(shape_factor)
+        #the higher the shape factor the less compact
+        afi = high_perf_area/bldg_flr_area 
+        afi_list.append(afi)
 
-        if avi_threshold != None:
-            if avi >= avi_threshold:
-                compared_avi_list.append(avi)
-        
-        
-    avg_avi = sum(avi_list)/float(len(avi_list))
-    #print sum(avi_list)
-    #print len(avi_list)
-    if avi_threshold != None:
-        avi_percent = float(len(compared_avi_list))/float(len(avi_list))
-    else:
-        avi_percent = None
-    return avg_avi, avi_percent, high_perf_area_list, sa_list, sphericity_list
+        if afi_threshold != None:
+            if afi >= afi_threshold:
+                compared_afi_list.append(afi)
     
-def calculate_facai(bldgdict_list, result_threshold, mode):
-    high_perf = []
-    high_perf_srf = []
-    sensor_srflist = []
-
-    for bldgdict in bldgdict_list:
-        result_list = bldgdict["result"]
-        surface_list = bldgdict["surface"]
-        sensor_srflist.extend(surface_list)
-        bradcnt = 0
-        for res in result_list:
-            if mode == "nshfai":
-                if res <= result_threshold:
-                    high_perf.append(res)
-                    high_perf_srf.append(surface_list[bradcnt])
-            if mode == "dfai" or mode == "pveai":
-                if res >= result_threshold:
-                    high_perf.append(res)
-                    high_perf_srf.append(surface_list[bradcnt])
-            bradcnt+=1
+    total_afi = sum(high_perf_area_list)/sum(total_bld_up)
+    ai = sum(high_perf_area_list)/sum(sa_list)
+    
+    if afi_threshold != None:
+        afi_percent = float(len(compared_afi_list))/float(len(afi_list))
+    else:
+        afi_percent = None
         
-    total_area = gml3dmodel.faces_surface_area(sensor_srflist)
-    high_perf_area = gml3dmodel.faces_surface_area(high_perf_srf)
-    fai = (high_perf_area/total_area)
-    return fai, high_perf_area, total_area
+    return total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list
     
 def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all_surfaces"):
     """
