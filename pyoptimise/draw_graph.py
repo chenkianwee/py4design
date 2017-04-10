@@ -19,6 +19,7 @@
 #
 # ==================================================================================================
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labellist = [], xlabel = "", ylabel = "", title = "", 
                  savefile = ""):
@@ -49,3 +50,53 @@ def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labelli
         
     plt.tick_params(axis='both', which='major', labelsize=label_size)
     plt.show()
+    
+def scatter_plot3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel = "", ylabel = "", zlabel = "", title = "", 
+                 savefile = "", elev=30, azim = -45, surface_pts = None):
+    
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x =[]
+    y = []
+    z=[]
+
+    cnt = 0
+    for pt in pt3d_list:
+        x.append(pt[0])
+        y.append(pt[1])
+        z.append(pt[2])
+        cnt +=1
+        
+    ax.scatter(x, y, z, c=colour_list)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_zlabel(zlabel)
+    plt.title(title )
+    ax.view_init(elev=elev, azim=-azim)
+    plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+    
+def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel = "", ylabel = "", zlabel = "", title = "", 
+                 savefile = "", elev=30, azim = -45):
+    
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x =[]
+    y = []
+    z=[]
+
+    cnt = 0
+    for pt in pt3d_list:
+        x.append(pt[0])
+        y.append(pt[1])
+        z.append(pt[2])
+        cnt +=1
+        
+    ax.plot_trisurf(x, y, z, linewidth=0.2, antialiased=True)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_zlabel(zlabel)
+    plt.title(title )
+    ax.view_init(elev=elev, azim=-azim)
+    plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+    
+    

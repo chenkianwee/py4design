@@ -368,6 +368,7 @@ class Population(object):
             
         while len(new_pop) != len(dist_fronts):
             selected_solutions = [None, None]
+            
             while selected_solutions[0] == selected_solutions[1]:
                 for i in range(2):
                     s1 = random.choice(dist_fronts)
