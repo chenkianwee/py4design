@@ -1,0 +1,4 @@
+lxml
+pyshp
+pycollada
+OCCUtils>=0.1-dev
