@@ -34,13 +34,14 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
     srfs_shp_attribs_obj_list = calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = mode)
     srfs_shp_attribs_obj_list = glazing_sc2(srfs_shp_attribs_obj_list,epwweatherfile)
     cf_list = []
-    
     #find all the unique cfs
     for srf_shp_attribs in srfs_shp_attribs_obj_list:
-        cf = srf_shp_attribs.get_value("cf")
-        if cf not in cf_list:
-            cf_list.append(cf)
-    
+        srf_type = srf_shp_attribs.get_value("type")
+        if srf_type == "wall" or srf_type == "roof" or srf_type == "window" or srf_type == "skylight":
+            cf = srf_shp_attribs.get_value("cf")
+            if cf not in cf_list:
+                cf_list.append(cf)
+
     ettv_area_list = []
     cf_env_area_list = []
     rttv_area_list = []
@@ -57,7 +58,7 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
         
         for srf_shp_attribs in srfs_shp_attribs_obj_list:
             srf_type = srf_shp_attribs.get_value("type")
-            if srf_type != "footprint" or srf_type != "shade" or srf_type != "surrounding":
+            if srf_type == "wall" or srf_type == "roof" or srf_type == "window" or srf_type == "skylight":
                 cf = srf_shp_attribs.get_value("cf")
                 
                 if cf == ref_cf:
@@ -86,28 +87,31 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
                         sc = srf_shp_attribs.get_value("sc")
                         skylight_area_sc = area*sc
                         skylight_area_sc_list.append(skylight_area_sc)
-                 
-        cf_rttv_wallcon = (sum(roof_area_uvalue_list) * 3.4)/ref_cf_rf_area
-        cf_rttv_wincon = (sum(win_area_uvalue_list) * 1.3)/ref_cf_rf_area
-        cf_rttv_winrad = (sum(win_area_sc_list) * 58.6 * ref_cf)/ref_cf_rf_area 
-        cf_rttv = cf_rttv_wallcon + cf_rttv_wincon + cf_rttv_winrad
-        rttv_area_list.append(cf_rttv * ref_cf_rf_area)
-        cf_rf_area_list.append(ref_cf_rf_area)
+           
+        if ref_cf_rf_area !=0:
+            cf_rttv_wallcon = (sum(roof_area_uvalue_list) * 12.5)/ref_cf_rf_area
+            cf_rttv_wincon = (sum(skylight_area_uvalue_list) * 4.8)/ref_cf_rf_area
+            cf_rttv_winrad = (sum(skylight_area_sc_list) * 485 * ref_cf)/ref_cf_rf_area 
+            cf_rttv = cf_rttv_wallcon + cf_rttv_wincon + cf_rttv_winrad
+            rttv_area_list.append(cf_rttv * ref_cf_rf_area)
+            cf_rf_area_list.append(ref_cf_rf_area)
             
         if mode == "ettv":
-            cf_ettv_wallcon = (sum(wall_area_uvalue_list) * 12)/ref_cf_env_area
-            cf_ettv_wincon = (sum(win_area_uvalue_list) * 3.4)/ref_cf_env_area
-            cf_ettv_winrad = (sum(win_area_sc_list) * 211 * ref_cf)/ref_cf_env_area 
-            cf_ettv = cf_ettv_wallcon + cf_ettv_wincon + cf_ettv_winrad
-            ettv_area_list.append(cf_ettv * ref_cf_env_area)
-            cf_env_area_list.append(ref_cf_env_area)
+            if ref_cf_env_area !=0:
+                cf_ettv_wallcon = (sum(wall_area_uvalue_list) * 12)/ref_cf_env_area
+                cf_ettv_wincon = (sum(win_area_uvalue_list) * 3.4)/ref_cf_env_area
+                cf_ettv_winrad = (sum(win_area_sc_list) * 211 * ref_cf)/ref_cf_env_area 
+                cf_ettv = cf_ettv_wallcon + cf_ettv_wincon + cf_ettv_winrad
+                ettv_area_list.append(cf_ettv * ref_cf_env_area)
+                cf_env_area_list.append(ref_cf_env_area)
         if mode == "retv":
-            cf_retv_wallcon = (sum(wall_area_uvalue_list) * 3.4)/ref_cf_env_area
-            cf_retv_wincon = (sum(win_area_uvalue_list) * 1.3)/ref_cf_env_area
-            cf_retv_winrad = (sum(win_area_sc_list) * 58.6 * ref_cf)/ref_cf_env_area 
-            cf_retv = cf_retv_wallcon + cf_retv_wincon + cf_retv_winrad
-            ettv_area_list.append(cf_retv * ref_cf_env_area)
-            cf_env_area_list.append(ref_cf_env_area)
+            if ref_cf_env_area !=0:
+                cf_retv_wallcon = (sum(wall_area_uvalue_list) * 3.4)/ref_cf_env_area
+                cf_retv_wincon = (sum(win_area_uvalue_list) * 1.3)/ref_cf_env_area
+                cf_retv_winrad = (sum(win_area_sc_list) * 58.6 * ref_cf)/ref_cf_env_area 
+                cf_retv = cf_retv_wallcon + cf_retv_wincon + cf_retv_winrad
+                ettv_area_list.append(cf_retv * ref_cf_env_area)
+                cf_env_area_list.append(ref_cf_env_area)
 
     total_env_area = sum(cf_env_area_list)
     ettv = sum(ettv_area_list)/total_env_area
@@ -144,18 +148,20 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
         pypolygon = py3dmodel.fetch.pyptlist_frm_occface(occ_face)
         srfname = "srf" + str(scnt)
         if srf_type == "window" or srf_type == "skylight":
-            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(occ_face, 0.5, 0.5)
+            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(occ_face, 1, 1)
             sensor_ptlist.extend(sensor_pts)
             sensor_dirlist.extend(sensor_dirs)
             sensor_surfacelist.extend(sensor_surfaces)
             n_sensor_srfs = len(sensor_ptlist)
-            srf_shp_attribs.set_key_value("sensor_indices", [pcnt, pcnt+n_sensor_srfs])
+            
+            srf_shp_attribs.set_key_value("sensor_indices", [n_sensor_srfs-len(sensor_pts), n_sensor_srfs])
+            
             py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
             py2radiance.RadSurface(srfname, pypolygon, srfmat, rad2)
+            pcnt+=n_sensor_srfs
         else:
             py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
             
-        pcnt+=n_sensor_srfs
         scnt += 1
             
     time = str(0) + " " + str(24)
@@ -197,7 +203,7 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
                 glz_area_list.append(glz_area)
                 glz_area_res_list1.append(glz_area_res1)
                 glz_area_res_list2.append(glz_area_res2)
-            
+                
             total_glz_area = sum(glz_area_list)
             total_glz_area_res1 = sum(glz_area_res_list1)
             total_glz_area_res2 = sum(glz_area_res_list2)
@@ -216,14 +222,13 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
 def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
     for srf_shp_attribs in srfs_shp_attribs_obj_list:
         srf_type = srf_shp_attribs.get_value("type")
-        if srf_type != "footprint" or srf_type != "shade" or srf_type != "surrounding":
+        if srf_type == "wall" or srf_type == "roof" or srf_type == "window" or srf_type == "skylight":
             occ_face = srf_shp_attribs.shape
             #calculate the correction factor
             nrml = py3dmodel.calculate.face_normal(occ_face)
             #measure the pitch angle
             ref_pitch_vec = (0,0,1)
             pitch_angle = py3dmodel.calculate.angle_bw_2_vecs(ref_pitch_vec, nrml)
-            
             if pitch_angle !=0:
                 #measure direction
                 ref_dir_vec = (0,1,0)
@@ -242,13 +247,13 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                     direction = "west"
                 if 157.5>dir_angle>112.5:
                     direction = "southwest"
-                if 157.5>=dir_angle>=202.5:
+                if 202.>=dir_angle>=157.5:
                     direction = "south"
-                if 202.5>dir_angle>247.5:
+                if 247.5>dir_angle>202.5:
                     direction = "southeast"
-                if 247.5>=dir_angle>=292.5:
+                if 292.5>=dir_angle>=247.5:
                     direction = "east"
-                if 292.5>dir_angle>337.5:
+                if 337.5>dir_angle>292.5:
                     direction = "northeast"
             else:
                 direction = "north"
@@ -258,6 +263,7 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                 cf_filepath = os.path.join(os.path.dirname(__file__),'databases','ettv','rttv_correctionfactor_roof.csv')
                 pitch_angle = utility.round2nearest_base(pitch_angle)
                 if pitch_angle < 0:
+                    
                     print "error: pitch angle out of range... choosing the nearest angle 0"
                     cf = read_cf_file(cf_filepath, 0, direction)
                 elif pitch_angle > 65:
