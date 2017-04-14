@@ -25,21 +25,6 @@ import matplotlib.pyplot as plt
 import py3dmodel
 import gml3dmodel
 import py2radiance
-
-
-def calculate_srfs_area(occ_srflist):
-    area = 0
-    for srf in occ_srflist:
-        area = area + py3dmodel.calculate.face_area(srf)
-        
-    return area
-    
-def pyptlist2vertlist(pyptlist):
-    vertlist = []
-    for pypt in pyptlist:
-        vert = py3dmodel.construct.make_vertex(pypt)
-        vertlist.append(vert)
-    return vertlist
     
 #================================================================================================================
 #FRONTAL AREA INDEX
@@ -145,10 +130,6 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
                 compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
                 facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
                 agrid_facade_list.extend(facade_list)
-            #common_shape = py3dmodel.construct.boolean_common(grid_extrude,close_compound)
-            #py3dmodel.construct.visualise([[common_shape],gridded_boundary] ,[ "RED", "WHITE"])
-            #compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
-            #facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
             if agrid_facade_list:
                 fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(agrid_facade_list, grid, wind_dir)
                 fai_list.append(fai)
@@ -241,7 +222,7 @@ def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
         fuse_srfs = py3dmodel.fetch.geom_explorer(fuse_compound,"face")
     
     #calculate the frontal area index
-    facet_area = calculate_srfs_area(fuse_srfs)
+    facet_area = gml3dmodel.faces_surface_area(fuse_srfs)
     plane_area = py3dmodel.calculate.face_area(plane_occpolygon)
     fai = facet_area/plane_area
     
@@ -737,7 +718,7 @@ def draw_street_graph(networkx_graph, node_index):
     plt.show()
 
 #================================================================================================================
-#SOLAR ANALYSES
+#NSHFAI
 #================================================================================================================
 def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, nshffai_threshold = None, shading_occfaces = []):
@@ -833,7 +814,10 @@ def calculate_epv(sensor_srflist,irrad_ress):
     ninv = 0.9
     epv = apv*fpv*gt*nmod*ninv
     return epv
-    
+
+#================================================================================================================
+#PVAFAI AND PVEFAI
+#================================================================================================================
 def pvafai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, mode = "roof", pvafai_threshold = None, shading_occfaces = []):
                 
@@ -1028,6 +1012,9 @@ def pvefai(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     
     return res_dict
     
+#================================================================================================================
+#DFFAI
+#================================================================================================================
 def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath,daysim_folderpath, dffai_threshold = None, shading_occfaces = []):
     '''
@@ -1107,6 +1094,9 @@ def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
     
     return res_dict
     
+#================================================================================================================
+#SOLAR SIM FUNCTIONS
+#================================================================================================================
 def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surface = "facade", shading_occfaces = []):
     #initialise py2radiance 
     rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
@@ -1302,7 +1292,7 @@ def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  
     
 def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all_surfaces"):
     """
-    rearrange the surfaces of a building accordingly for calculate_avi function 
+    rearrange the surfaces of a building accordingly for calculate_afi function 
     """
     sorted_bldgdict_list = []
     for bldgdict in bldgdict_list:
@@ -1322,3 +1312,4 @@ def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all
         sorted_bldgdict_list.append(sorted_bldgdict)
             
     return sorted_bldgdict_list
+

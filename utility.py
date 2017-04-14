@@ -78,3 +78,6 @@ def falsecolour(results, minval, maxval):
         colour = (r, g, b)
         res_colours.append(colour)
     return res_colours
+
+def round2nearest_base(x, base=5):
+    return int(base * round(float(x)/base))

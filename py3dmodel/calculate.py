@@ -281,6 +281,17 @@ def srf_nrml_facing_solid_inward(occ_face, occ_solid):
     else:
         return False
         
+def angle_bw_2_vecs_w_ref(pyvec1, pyvec2, pyref_vec):
+    vec1 = gp_Vec(pyvec1[0], pyvec1[1], pyvec1[2])
+    vec2 = gp_Vec(pyvec2[0], pyvec2[1], pyvec2[2])
+    ref_vec = gp_Vec(pyref_vec[0], pyref_vec[1], pyref_vec[2])
+    radangle = vec1.AngleWithRef(vec2, ref_vec)
+    angle = radangle * (180.0/math.pi)
+    if angle <0:
+        angle = 360+angle
+    #the angle is measured in counter-clockwise direction
+    return angle
+
 def angle_bw_2_vecs(pyvec1, pyvec2):
     vec1 = gp_Vec(pyvec1[0], pyvec1[1], pyvec1[2])
     vec2 = gp_Vec(pyvec2[0], pyvec2[1], pyvec2[2])
