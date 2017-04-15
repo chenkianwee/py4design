@@ -43,11 +43,11 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
                 cf_list.append(cf)
 
     ettv_area_list = []
-    cf_env_area_list = []
+    cf_facade_area_list = []
     rttv_area_list = []
     cf_rf_area_list = []
     for ref_cf in cf_list:
-        ref_cf_env_area = 0
+        ref_cf_facade_area = 0
         ref_cf_rf_area = 0
         wall_area_uvalue_list = []
         roof_area_uvalue_list = []
@@ -66,7 +66,7 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
                     area = py3dmodel.calculate.face_area(occ_face)
                     uvalue = srf_shp_attribs.get_value("uvalue")
                     if srf_type == "wall":
-                        ref_cf_env_area+=area
+                        ref_cf_facade_area+=area
                         wall_area_uvalue = area*uvalue
                         wall_area_uvalue_list.append(wall_area_uvalue)
                     if srf_type == "roof":
@@ -74,7 +74,7 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
                         roof_area_uvalue = area*uvalue
                         roof_area_uvalue_list.append(roof_area_uvalue)
                     if srf_type == "window":
-                        ref_cf_env_area+=area
+                        ref_cf_facade_area+=area
                         win_area_uvalue = area*uvalue
                         win_area_uvalue_list.append(win_area_uvalue)
                         sc = srf_shp_attribs.get_value("sc")
@@ -97,30 +97,30 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
             cf_rf_area_list.append(ref_cf_rf_area)
             
         if mode == "ettv":
-            if ref_cf_env_area !=0:
-                cf_ettv_wallcon = (sum(wall_area_uvalue_list) * 12)/ref_cf_env_area
-                cf_ettv_wincon = (sum(win_area_uvalue_list) * 3.4)/ref_cf_env_area
-                cf_ettv_winrad = (sum(win_area_sc_list) * 211 * ref_cf)/ref_cf_env_area 
+            if ref_cf_facade_area !=0:
+                cf_ettv_wallcon = (sum(wall_area_uvalue_list) * 12)/ref_cf_facade_area
+                cf_ettv_wincon = (sum(win_area_uvalue_list) * 3.4)/ref_cf_facade_area
+                cf_ettv_winrad = (sum(win_area_sc_list) * 211 * ref_cf)/ref_cf_facade_area 
                 cf_ettv = cf_ettv_wallcon + cf_ettv_wincon + cf_ettv_winrad
-                ettv_area_list.append(cf_ettv * ref_cf_env_area)
-                cf_env_area_list.append(ref_cf_env_area)
+                ettv_area_list.append(cf_ettv * ref_cf_facade_area)
+                cf_facade_area_list.append(ref_cf_facade_area)
         if mode == "retv":
-            if ref_cf_env_area !=0:
-                cf_retv_wallcon = (sum(wall_area_uvalue_list) * 3.4)/ref_cf_env_area
-                cf_retv_wincon = (sum(win_area_uvalue_list) * 1.3)/ref_cf_env_area
-                cf_retv_winrad = (sum(win_area_sc_list) * 58.6 * ref_cf)/ref_cf_env_area 
+            if ref_cf_facade_area !=0:
+                cf_retv_wallcon = (sum(wall_area_uvalue_list) * 3.4)/ref_cf_facade_area
+                cf_retv_wincon = (sum(win_area_uvalue_list) * 1.3)/ref_cf_facade_area
+                cf_retv_winrad = (sum(win_area_sc_list) * 58.6 * ref_cf)/ref_cf_facade_area 
                 cf_retv = cf_retv_wallcon + cf_retv_wincon + cf_retv_winrad
-                ettv_area_list.append(cf_retv * ref_cf_env_area)
-                cf_env_area_list.append(ref_cf_env_area)
+                ettv_area_list.append(cf_retv * ref_cf_facade_area)
+                cf_facade_area_list.append(ref_cf_facade_area)
 
-    total_env_area = sum(cf_env_area_list)
-    ettv = sum(ettv_area_list)/total_env_area
+    total_facade_area = sum(cf_facade_area_list)
+    ettv = sum(ettv_area_list)/total_facade_area
     total_rf_area = sum(cf_rf_area_list)
     rttv = sum(rttv_area_list)/total_rf_area
     result_dict = {}
 
     result_dict[mode] = ettv
-    result_dict["envelope_area"] = total_env_area
+    result_dict["facade_area"] = total_facade_area
     result_dict["rttv"] = rttv
     result_dict["roof_area"] = total_rf_area
     return result_dict
@@ -139,7 +139,7 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
     sensor_ptlist = []
     sensor_dirlist = []
     sensor_surfacelist = []
-    
+    other_occface_list = []
     scnt = 0
     pcnt = 0
     for srf_shp_attribs in srfs_shp_attribs_obj_list:
@@ -161,6 +161,7 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
             pcnt+=n_sensor_srfs
         else:
             py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
+            other_occface_list.append(occ_face)
             
         scnt += 1
             
@@ -359,4 +360,224 @@ def read_cf_file(filepath, pitch_angle, direction):
 
 #================================================================================================================
 #ETTV END
+#================================================================================================================
+#================================================================================================================
+#SIMPLIFIED COOLING ENERGY CONSUMPTION CALCULATION
+#================================================================================================================
+def calc_cooling_energy_consumption(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = 25.0, 
+                                    occ_load_per_person = 75.0, light_load_per_area = 15.0, area_per_person = 10.0,
+                                    m3_sec_per_person = 0.006, operation_hrs = 3120):
+    #calculate the loads
+    sensible_load = calc_sensible_load(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = equip_load_per_area, 
+                       occ_load_per_person = occ_load_per_person, light_load_per_area = light_load_per_area, 
+                       area_per_person = area_per_person)
+    
+    latent_load = calc_latent_load(floor_area, area_per_person = area_per_person, m3_sec_per_person = m3_sec_per_person)
+    
+    #calculate the consumption if different systems are used
+    system_dict_list = []
+    rp_dvu_consumption = radiant_panel_dvu_system(sensible_load, latent_load, floor_area, area_per_person = area_per_person, 
+                                                  m3_sec_per_person = m3_sec_per_person, operation_hrs = operation_hrs)
+    system_dict_list.append(rp_dvu_consumption)
+    
+    all_air_consumption = central_all_air_system(sensible_load, latent_load, floor_area, operation_hrs = operation_hrs)
+    
+    system_dict_list.append(all_air_consumption)
+    return system_dict_list
+
+def choose_efficient_cooling_system(system_dict_list):
+    chosen_systems = []
+    energy_consumption = float("inf")
+    for system_dict in system_dict_list:
+        is_feasible = system_dict["feasible"]
+        if is_feasible:
+            energy_consumed_yr_m2 = system_dict["energy_consumed_yr_m2"]
+            if energy_consumed_yr_m2 <= energy_consumption:
+                energy_consumption = energy_consumed_yr_m2
+                chosen_systems.append(system_dict)
+        
+    return chosen_systems
+
+def radiant_panel_dvu_system(sensible_load, latent_load, floor_area, area_per_person = 10.0, m3_sec_per_person = 0.006, 
+                             operation_hrs = 3120, dvu_airflow_rate_m3_sec = 0.02):
+    #calculate the amount of sensible cooling that will be provided by the ventilation 
+    occupancy = floor_area/area_per_person
+    mass_of_air = calc_mass_of_air(occupancy, m3_sec_per_person)
+    specific_heat_capcity = 1005 #j/kgk
+    delta_t = 25-14 #k
+    sens_load_vu = (mass_of_air*specific_heat_capcity*delta_t)
+    #calculate number of dvu required
+    vol_air_required = m3_sec_per_person*occupancy
+    n_dvu = int(vol_air_required/dvu_airflow_rate_m3_sec)
+    
+    #calculate the sensible load that needs to be removed by the radiant panels
+    
+    sensible_panels = sensible_load - sens_load_vu
+    panel_srf_area = floor_area*0.9 #assume 90% of the ceiling is available for radiant cooling
+    
+    #calculate the total cooling capacity of the cooling panels
+    #The chilled water cooling the surface needs to be 1.5K above the dew-point temperature of the space to avoid condensation
+    #space with 50% RH, 25 dry bulb temp has dew point of 13 assuming AUST is 25
+    sens_supply_temp_kelvin1 = 18.5+273.15
+    sens_supply_temp_kelvin2 = 17.5+273.15
+    sens_supply_temp_kelvin3 = 16.5+273.15
+    sens_supply_temp_kelvin4 = 15.5+273.15
+    sens_supply_temp_kelvin5 = 14.5+273.15
+    
+    cooling_r1 = calc_radiant_panel_cooling_rate(sens_supply_temp_kelvin1)
+    cooling_r2 = calc_radiant_panel_cooling_rate(sens_supply_temp_kelvin2)
+    cooling_r3 = calc_radiant_panel_cooling_rate(sens_supply_temp_kelvin3)
+    cooling_r4 = calc_radiant_panel_cooling_rate(sens_supply_temp_kelvin4)
+    cooling_r5 = calc_radiant_panel_cooling_rate(sens_supply_temp_kelvin5)
+
+    max_cap1 = ((panel_srf_area * cooling_r1) + sens_load_vu)
+    max_cap2 = ((panel_srf_area * cooling_r2) + sens_load_vu)
+    max_cap3 = ((panel_srf_area * cooling_r3) + sens_load_vu)
+    max_cap4 = ((panel_srf_area * cooling_r4) + sens_load_vu)
+    max_cap5 = ((panel_srf_area * cooling_r5) + sens_load_vu)
+
+    latent_supply_temp = 8.0 + 273.15
+    heat_rejection_temp = 28.0 + 273.15
+    
+    #check which supply temperature is enuf for removing the sensible load
+    if sensible_load <= max_cap1:
+        req_panel_srf_area = sensible_panels/cooling_r1
+        panel_temp = sens_supply_temp_kelvin1
+        
+    elif sensible_load <= max_cap2:
+        req_panel_srf_area = sensible_panels/cooling_r2 
+        panel_temp = sens_supply_temp_kelvin2
+        
+    elif sensible_load <= max_cap3:
+        req_panel_srf_area = sensible_panels/cooling_r3
+        panel_temp = sens_supply_temp_kelvin3
+        
+    elif sensible_load <= max_cap4:
+        req_panel_srf_area = sensible_panels/cooling_r4
+        panel_temp = sens_supply_temp_kelvin4
+        
+    elif sensible_load <= max_cap5:
+        req_panel_srf_area = sensible_panels/cooling_r5
+        panel_temp = sens_supply_temp_kelvin5
+        
+    else:
+        result_dict = {}
+        result_dict["feasible"] = False
+        result_dict["cooling_system"] = "Radiant Panels & DVUs"
+        result_dict["sensible_load"] = sensible_load
+        result_dict["latent_load"] = latent_load
+        result_dict["panel_max_capacity"] = max_cap5
+        return result_dict
+        
+    sens_cop = calc_cooling_cop(panel_temp, heat_rejection_temp)
+    latent_cop = calc_cooling_cop(latent_supply_temp, heat_rejection_temp)
+    energy_consumed_hr = (sensible_panels/sens_cop) + ((latent_load + sens_load_vu)/latent_cop)#wh
+    overall_cop = (sensible_load + latent_load)/energy_consumed_hr
+    energy_consumed_yr = (energy_consumed_hr*operation_hrs)/1000 #kwh
+    energy_consumed_yr_m2 = energy_consumed_yr/floor_area #kwh
+    
+    result_dict = {}
+    result_dict["feasible"] = True
+    result_dict["energy_consumed_hr"] = energy_consumed_hr
+    result_dict["energy_consumed_yr"] = energy_consumed_yr
+    result_dict["energy_consumed_yr_m2"] = energy_consumed_yr_m2
+    
+    result_dict["sensible_cop"] = sens_cop
+    result_dict["latent_cop"] = latent_cop
+    result_dict["overall_cop"] = overall_cop
+    
+    result_dict["required_panel_area"] = req_panel_srf_area
+    result_dict["available_panel_area"] = panel_srf_area
+    result_dict["supply_temperature_for_panels"] = panel_temp
+    
+    result_dict["sensible_load"] = sensible_load
+    result_dict["latent_load"] = latent_load
+    result_dict["sensible_load_dvu"] = sens_load_vu
+    result_dict["sensible_panel"] = sensible_panels
+    result_dict["panel_max_capacity"] = max_cap5
+    
+    result_dict["required_dvus"] = n_dvu
+    
+    result_dict["cooling_system"] = "Radiant Panels & DVUs"
+    return result_dict
+
+def calc_radiant_panel_cooling_rate(supply_temp_kelvin, aust_kelvin = 298.15, indoor_air_temp_kelvin = 298.15):
+    #aust is the area weighted temperature of all indoor surfaces
+
+    tp = supply_temp_kelvin + 3.0
+    tp_aust = (tp**4) - (aust_kelvin**4)
+    qr_constant = 5*10**-8 
+    qr = qr_constant*tp_aust
+    
+    tp_ta_pos = supply_temp_kelvin - indoor_air_temp_kelvin
+    if tp_ta_pos <0:
+        tp_ta_pos = tp_ta_pos*-1
+        
+    tp_ta_032 = tp_ta_pos**0.32 
+    
+    tp_ta = supply_temp_kelvin - indoor_air_temp_kelvin
+    qc = 1.78*tp_ta_032*tp_ta
+    cooling_rate  = qr+qc
+    return cooling_rate*-1
+
+def central_all_air_system(sensible_load, latent_load, floor_area, operation_hrs = 3120):
+    supply_temp = 8.0 + 273.15
+    heat_rejection_temp = 28.0 + 273.15
+    cooling_cop = calc_cooling_cop(supply_temp, heat_rejection_temp)
+    total_load = sensible_load+latent_load
+    energy_consumed_hr = total_load/cooling_cop
+    energy_consumed_yr = (energy_consumed_hr*operation_hrs)/1000  #kwh
+    energy_consumed_yr_m2 =  energy_consumed_yr/floor_area #kwh
+    
+    result_dict = {}
+    result_dict["feasible"] = True
+    result_dict["energy_consumed_hr"] = energy_consumed_hr
+    result_dict["energy_consumed_yr"] = energy_consumed_yr
+    result_dict["energy_consumed_yr_m2"] = energy_consumed_yr_m2
+    
+    result_dict["sensible_load"] = sensible_load
+    result_dict["latent_load"] = latent_load
+    
+    result_dict["overall_cop"] = cooling_cop    
+    result_dict["cooling_system"] = "Central All-Air System"
+    
+    return result_dict
+
+def calc_cooling_cop(supply_temp_kelvin, heat_rej_temp_kelvin , chiller_efficiency = 0.4):
+    tr_ts = heat_rej_temp_kelvin - supply_temp_kelvin
+    cooling_cop = chiller_efficiency*(supply_temp_kelvin/tr_ts)
+    return cooling_cop
+    
+def calc_sensible_load(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = 25.0, 
+                       occ_load_per_person = 75.0, light_load_per_area = 15.0, area_per_person = 10.0):
+    #calc equipment load
+    equip_load = equip_load_per_area*floor_area
+    #calc occupancy load
+    occupancy = floor_area/area_per_person
+    occ_load = occ_load_per_person*occupancy
+    #calc lighting load
+    light_load = light_load_per_area*floor_area
+    #calc envelope load
+    env_load = ettv*facade_area
+    #calc roof load
+    roof_load = rttv*roof_area
+    #calc total load
+    sensible_load = env_load + roof_load + equip_load + occ_load + light_load
+    return sensible_load
+
+def calc_latent_load(floor_area, area_per_person = 10.0, m3_sec_per_person = 0.006):
+    #airflow_per_person is in m3/s/person
+    occupancy = floor_area/area_per_person
+    mass_of_air = calc_mass_of_air(occupancy, m3_sec_per_person)
+    # energy to remove humidity 40KJ/kg 
+    latent_load = mass_of_air*40000
+    return latent_load
+
+def calc_mass_of_air(occupancy, m3_sec_per_person):
+    vol_of_air = m3_sec_per_person*occupancy
+    air_density = 1.225 #kg/m3
+    mass_of_air = air_density * vol_of_air
+    return mass_of_air
+#================================================================================================================
+#SIMPLIFIED COOLING ENERGY CONSUMPTION CALCULATION END
 #================================================================================================================
