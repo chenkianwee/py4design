@@ -241,6 +241,7 @@ def make_compound(topo):
     return Construct.compound(topo)
     
 def extrude(occface, pydir, height):
+    #TODO: it doesnt work well with faces with holes
     orig_pt = calculate.face_midpt(occface)
     dest_pt = modify.move_pt(orig_pt, pydir, height)
     moved_face = modify.move(orig_pt,dest_pt, occface)

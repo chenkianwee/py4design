@@ -265,10 +265,11 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                 pitch_angle = utility.round2nearest_base(pitch_angle)
                 if pitch_angle < 0:
                     
-                    print "error: pitch angle out of range... choosing the nearest angle 0"
+                    print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 0"
                     cf = read_cf_file(cf_filepath, 0, direction)
                 elif pitch_angle > 65:
-                    print "error: pitch angle out of range... choosing the nearest angle 65"
+                    print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 65"
+                    py3dmodel.construct.visualise([[occ_face]],["WHITE"])
                     cf = read_cf_file(cf_filepath, 65, direction)#TODO: fix this 
                 else:
                     cf = read_cf_file(cf_filepath, pitch_angle, direction)
@@ -278,10 +279,10 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                     cf_filepath = os.path.join(os.path.dirname(__file__),'databases','ettv','ettv_correctionfactor_wall.csv')
                     pitch_angle = utility.round2nearest_base(pitch_angle)
                     if pitch_angle < 70:
-                        print "error: pitch angle out of range... choosing the nearest angle 70"
+                        print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 70"
                         cf = read_cf_file(cf_filepath, 70, direction)
                     elif pitch_angle > 120:
-                        print "error: pitch angle out of range... choosing the nearest angle 120"
+                        print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 120"
                         cf = read_cf_file(cf_filepath, 120, direction)#TODO: fix this 
                     else:
                         cf = read_cf_file(cf_filepath, pitch_angle, direction)
@@ -290,10 +291,10 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                     cf_filepath = os.path.join(os.path.dirname(__file__),'databases','ettv','retv_correctionfactor_wall.csv')
                     pitch_angle = utility.round2nearest_base(pitch_angle, base=10)
                     if pitch_angle < 70:
-                        print "error: pitch angle out of range... choosing the nearest angle 70"
+                        print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 70"
                         cf = read_cf_file(cf_filepath, 70, direction)
                     elif pitch_angle > 90:
-                        print "error: pitch angle out of range... choosing the nearest angle 90"
+                        print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 90"
                         cf = read_cf_file(cf_filepath, 90, direction)#TODO: fix this 
                     else:
                         cf = read_cf_file(cf_filepath, pitch_angle, direction)

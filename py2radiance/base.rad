@@ -8,6 +8,31 @@
 # X=32.4 Y=22.7 Z=7.6
 # reflectance 0.204
 #
+void  glass       single_clr_6mm_uvalue_5.25_sc0.9_glass
+0
+0
+3     0.934     0.973     0.957
+
+void  glass       bca_dblglz_fritted_lowe_glass
+0
+0
+3     0.266     0.357     0.306
+
+void  glass       bca_dblglz_hard_lowe_glass
+0
+0
+3     0.756     0.811     0.757
+
+void  glass       bca_dblglz_reflective_lowe_glass
+0
+0
+3     0.541     0.591     0.501
+
+void  glass       bca_dblglz_uncoated_glass
+0
+0
+3     0.807     0.875     0.849
+
 void plastic RAL2012
 0
 0
