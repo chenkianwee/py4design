@@ -23,7 +23,8 @@ import utility
 import numpy
 from collada import *
 
-def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None, occedge_list = None):
+def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None, 
+                    occedge_list = None):
     mesh = Collada()
     mesh.assetInfo.upaxis = asset.UP_AXIS.Z_UP
     mesh.assetInfo.unitmeter = 1.0
@@ -145,13 +146,42 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None, 
                 geomnode_list.append(geomnode)
                 edge_cnt+=1
         
-                
     vis_node = scene.Node("node0", children=geomnode_list)
     myscene = scene.Scene("myscene", [vis_node])
     mesh.scenes.append(myscene)
     mesh.scene = myscene
     mesh.write(collada_filepath)
     
+def write_2_collada_text_string(occshell_list, text_string, collada_filepath, 
+                                face_rgb_colour_list=None, occedge_list = None):
+
+    overall_cmpd = py3dmodel.construct.make_compound(occshell_list)
+    xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(overall_cmpd)
+    xdim = xmax-xmin
+    d_str = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.make_brep_text(text_string,xdim/10))
+    xmin1, ymin1, zmin1, xmax1, ymax1, zmax1 = py3dmodel.calculate.get_bounding_box(d_str)
+    corner_pt = (xmin1,ymax1,zmin1)
+    corner_pt2 = (xmin,ymin,zmin)
+    moved_str = py3dmodel.modify.move(corner_pt, corner_pt2, d_str)
+    face_list = py3dmodel.fetch.geom_explorer(moved_str, "face")
+    meshed_list = []
+    for face in face_list:    
+        meshed_face_list = py3dmodel.construct.simple_mesh(face)
+        mface = py3dmodel.construct.make_shell(meshed_face_list)
+        face_mid_pt =  py3dmodel.calculate.face_midpt(face)
+        str_mid_pt = py3dmodel.calculate.get_centre_bbox(mface)
+        moved_mface = py3dmodel.modify.move(str_mid_pt,face_mid_pt,mface)
+        meshed_list.append(moved_mface)
+    
+    meshed_str_cmpd = py3dmodel.construct.make_compound(meshed_list)
+    occshell_list.append(meshed_str_cmpd)
+    if face_rgb_colour_list !=None:
+        face_rgb_colour_list.append((0,0,0))
+        
+    write_2_collada(occshell_list, collada_filepath, 
+                    face_rgb_colour_list=face_rgb_colour_list, 
+                    occedge_list = occedge_list)
+        
 def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepath, description_str = None, 
                                 minval = None, maxval=None, other_occface_list = None, other_occedge_list = None):
     if minval == None:
