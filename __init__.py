@@ -35,3 +35,4 @@ import massing2citygml
 import analysisrulepalette
 import templaterulepalette
 import shapeattributes
+import buildingformeval

@@ -12,6 +12,9 @@ instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.htm
     f.) conda install scipy (0.17.0) (BSD accepted license)
     g.) easy_install pycollada (BSD)
     h.) conda install networkx (BSD)
+    i.) conda install scikit-learn
+    j.) pip install pymf
+    k.) pip install cvxopt 
 
 3.) install Daysim from http://daysim.ning.com/ for the daylighting analysis
     a.) if c:/daysim/radiance/bin on env path, delete it

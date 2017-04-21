@@ -24,16 +24,6 @@ from xml.dom.minidom import Document
 #================================================================================
 #xml functions
 #================================================================================
-def findmedian(lst):
-    sortedLst = sorted(lst)
-    lstLen = len(lst)
-    index = (lstLen - 1) // 2
-
-    if (lstLen % 2):
-        return sortedLst[index]
-    else:
-        return (sortedLst[index] + sortedLst[index + 1])/2.0
-        
 def get_childnode_values(node_name, parent_node):
     values = []
     for node in parent_node.getElementsByTagName(node_name):
@@ -176,6 +166,20 @@ def get_score(ind):
         score_list_f.append(float(score))
     return score_list_f
     
+def get_inputparam(ind):
+    input_list = get_childnode_values("inputparam", ind)
+    input_list_f = []
+    for inputx in input_list:
+        input_list_f.append(float(inputx))
+    return input_list_f
+
+def get_derivedparam(ind):
+    derived_list = get_childnode_values("derivedparam", ind)
+    derived_list_f = []
+    for derived in derived_list:
+        derived_list_f.append(float(derived))
+    return derived_list_f
+
 def get_id(ind):
     identity = get_childnode_value("identity", ind)
     return identity
@@ -261,3 +265,193 @@ def extract_pareto_front(inds, min_max_list):
             else:
                 non_pareto_front.append(ind)
     return pareto_front, non_pareto_front
+
+def calc_min_max_range(data_2dlist):
+    min_max_range = list()
+    for m in zip(*data_2dlist):
+        mn = min(m)
+        mx = max(m)
+        if mn == mx:
+            mn -= 0.5
+            mx = mn + 1.
+        r  = float(mx - mn)
+        min_max_range.append((mn, mx, r))
+    return min_max_range
+
+def normalise(data_2dlist):
+    #data is in array [nsamples][dimensions]
+    min_max_range = calc_min_max_range(data_2dlist)
+    # Normalize the data sets
+    norm_data_sets = list()
+    #for ds in ind_score_list:
+    for ds in data_2dlist:
+        nds = [(value - min_max_range[dimension][0]) / 
+                min_max_range[dimension][2] 
+                for dimension,value in enumerate(ds)]
+        norm_data_sets.append(nds)
+        
+    return norm_data_sets
+
+def denormalise(data_2dlist, orig_data_2dlist):
+    #data is in array [nsamples][dimensions]
+    min_max_range = calc_min_max_range(orig_data_2dlist)
+    denorm_2dlist = []
+    for dx in data_2dlist:
+        dx_ip_cnt = 0
+        real_input_parm = []
+        for dx_ip in dx:
+            real_range = dx_ip*min_max_range[dx_ip_cnt][2]
+            real_parm = min_max_range[dx_ip_cnt][0] + real_range
+            real_input_parm.append(real_parm)
+            dx_ip_cnt = dx_ip_cnt + 1
+            
+        denorm_2dlist.append(real_input_parm)
+    return denorm_2dlist
+    
+def kmeans_inds(inds, attribs_2_cluster, n_clusters = None):
+    from sklearn.cluster import KMeans
+    import numpy as np
+    
+    #attribs_2_cluster =  "score", "inputparam", "derivedparam"  
+    #read the inds and get the attribs ready for clustering
+    ind_att_list = []
+    for ind in inds:
+        if attribs_2_cluster == "score":
+            score_list = get_score(ind)
+            ind_att_list.append(score_list)
+        if attribs_2_cluster == "inputparam":
+            input_list = get_inputparam(ind)
+            ind_att_list.append(input_list)
+        if attribs_2_cluster == "derivedparam":
+            derived_list = get_derivedparam(ind)
+            ind_att_list.append(derived_list)
+            
+    #process the data accordingly 
+    #normalise the attributes
+    normalised_ind_att_list = normalise(ind_att_list)
+    X = np.array(normalised_ind_att_list)
+    
+    cluster_list = []
+    if n_clusters == None:
+        #do the elbow test 
+        n_clusters = elbow_test(X, 6)
+        
+    k_means = KMeans(n_clusters=n_clusters)
+    k_means.fit(X)
+    k_means_labels = k_means.labels_
+    k_means_labels_unique = np.unique(k_means_labels)
+    
+    for i in k_means_labels_unique:
+        cluster_list.append([])
+        cnt = 0
+        for j in k_means_labels:
+            if j == i:
+                cluster_list[-1].append(inds[cnt])
+            cnt = cnt + 1
+        
+    centroids = k_means.cluster_centers_
+    denorm_centroids = denormalise(centroids, ind_att_list)
+    result_dict = {}
+    result_dict["cluster_list"] = cluster_list
+    result_dict["centroids"] = denorm_centroids
+    return result_dict
+    
+def kmeans(np_array, n_clusters):
+    from sklearn.cluster import KMeans
+    import numpy as np
+    k_means = KMeans(n_clusters=n_clusters)
+    k_means.fit(np_array)
+    k_means_labels = k_means.labels_
+    k_means_labels_unique = np.unique(k_means_labels)
+    centroids = k_means.cluster_centers_
+    cluster_list = []
+    
+    for i in k_means_labels_unique:
+        cluster_list.append([])
+        cnt = 0
+        for j in k_means_labels:
+            if j == i:
+                cluster_list[-1].append(np_array[cnt])
+            cnt = cnt + 1
+            
+    result_dict = {}
+    result_dict["cluster_list"] = cluster_list
+    result_dict["centroids"] = centroids
+    return result_dict
+
+#run through a series kmeans to determine the elbow
+def elbow_test(X, max_cluster):
+    from sklearn.cluster import KMeans
+    from sklearn import metrics
+    inertia_list = []
+    s_list = []
+    for cluster_cnt in range(max_cluster-1):
+        k_means = KMeans(n_clusters=cluster_cnt+2)
+        k_means.fit(X)
+        k_means_labels = k_means.labels_
+        s_factor = metrics.silhouette_score(X, k_means_labels, metric='euclidean')
+        s_list.append(s_factor)
+        kmeans_inertia = k_means.inertia_
+        inertia_list.append(kmeans_inertia)
+
+    inertia_cnt = 0
+    i_diff_list = []
+    for inertia in inertia_list:
+        #look for the difference between each difference in cluster number
+        if inertia_cnt != len(inertia_list) - 1:
+            i_diff = inertia - inertia_list[inertia_cnt + 1]
+            i_diff_list.append(i_diff)
+        inertia_cnt = inertia_cnt + 1
+
+    #find the biggest difference and use that number for the best number of cluster
+    max_diff = max(i_diff_list)
+    max_diff_index = i_diff_list.index(max_diff)
+    #+3 because of the counting 
+    best_no_cluster = max_diff_index + 3
+    return best_no_cluster
+
+def archetypal_analysis_inds(inds, attribs_2_cluster, max_archetypes, niter = 200):
+    import numpy as np
+    
+    #attribs_2_cluster =  "score", "inputparam", "derivedparam"  
+    #read the inds and get the attribs ready for clustering
+    ind_att_list = []
+    for ind in inds:
+        if attribs_2_cluster == "score":
+            score_list = get_score(ind)
+            ind_att_list.append(score_list)
+        if attribs_2_cluster == "inputparam":
+            input_list = get_inputparam(ind)
+            ind_att_list.append(input_list)
+        if attribs_2_cluster == "derivedparam":
+            derived_list = get_derivedparam(ind)
+            ind_att_list.append(derived_list)
+            
+    #process the data accordingly 
+    #normalise the attributes
+    normalised_ind_att_list = normalise(ind_att_list)
+    X = np.array(normalised_ind_att_list)
+    A = X.T
+    archetypes = archetypal_analysis(A, max_archetypes, niter = niter)
+    denorm_archetypes = denormalise(archetypes, ind_att_list)
+    return denorm_archetypes
+
+def archetypal_analysis(np_array, max_archetypes, niter = 200):
+    import pymf
+    m = pymf.AA(np_array, num_bases=max_archetypes)
+    #m.initialization()      
+    m.factorize()
+    data_t = np_array.T
+
+    #find archetypes
+    beta = m.beta
+    beta_shape = beta.shape
+    archetypes = []
+    for k in range(beta_shape[0]):
+        zk = 0
+        for j in range(beta_shape[1]):
+            z = beta[k][j]*data_t[j]
+            zk = zk + z
+        archetypes.append(zk)
+    #f = m.ferr[-1]/(np_array.shape[0] + np_array.shape[1])
+    return archetypes

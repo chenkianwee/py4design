@@ -38,3 +38,6 @@ class ShapeAttributes(object):
         
     def get_value(self, key):
         return self.dictionary[key]
+    
+    def set_key_value(self, key, value):
+        self.dictionary[key] = value
