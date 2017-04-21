@@ -20,6 +20,7 @@
 # ==================================================================================================
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.ticker as ticker
 
 def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labellist = [], xlabel = "", ylabel = "", title = "", 
                  savefile = ""):
@@ -99,4 +100,131 @@ def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], 
     ax.view_init(elev=elev, azim=-azim)
     plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
     
+def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
+
+    dims = len(data_sets[0])
+    x    = range(dims)
+    fig, axes = plt.subplots(1, dims-1, sharey=False)
+
+    if style is None:
+        style = ['black']*len(data_sets)
+
+    # Calculate the limits on the data
+    min_max_range = list()
+    for m in zip(*data_sets):
+        #check if the data are whole numbers or float
+        num_d = len(m)
+        is_integer = []
+        is_int_data = False
+        for d in m:
+            if d.is_integer():
+                is_integer.append(1)
+
+        if is_integer.count(1) == num_d:
+            is_int_data = True
+        
+        mn = min(m)
+        mx = max(m)
+        if mn == mx:
+            mn -= 0.5
+            mx = mn + 1.
+        r  = float(mx - mn)
+        min_max_range.append((mn, mx, r, is_int_data))
+
+    # Normalize the data sets
+    norm_data_sets = list()
+    for ds in data_sets:
+        nds = [(value - min_max_range[dimension][0]) / 
+                min_max_range[dimension][2] 
+                for dimension,value in enumerate(ds)]
+        norm_data_sets.append(nds)
+    data_sets = norm_data_sets
+    # Plot the datasets on all the subplots
+    for i, ax in enumerate(axes):
+        for dsi, d in enumerate(data_sets):
+            ax.plot(x, d, style[dsi])
+        ax.set_xlim([x[i], x[i+1]])
+        #set the x tick labels for first few dimensions 
+        ax.set_xticks([0])
+        ax.set_xticklabels([parmlabels[i]])
+
+    # Set the x axis ticks 
+    for dimension, (axx,xx) in enumerate(zip(axes, x[:-1])):
+        axx.xaxis.set_major_locator(ticker.FixedLocator([xx]))
+        ticks = len(axx.get_yticklabels())
+        labels = list()
+        data_range = min_max_range[dimension][2]
+        is_it_int = min_max_range[dimension][3]
+        if is_it_int:
+            if data_range <=25:
+                axx.set_yticks(create_int_normalise(data_range))
+                ticks = len(axx.get_yticklabels())
+                
+        step = min_max_range[dimension][2] / (ticks - 1)
+        mn   = min_max_range[dimension][0]
+        if is_it_int:
+            if data_range <=25:
+                for i in xrange(ticks):
+                    v = int(mn + i*step)
+                    labels.append('%4.0f' % v)
+            else:
+                for i in xrange(ticks):
+                    v = mn + i*step
+                    labels.append('%4.2f' % v)
+        else:
+            for i in xrange(ticks):
+                v = mn + i*step
+                labels.append('%4.2f' % v)
+        axx.set_yticklabels(labels)
+        for yticklabel in axx.get_yticklabels():
+            yticklabel.set_fontsize(16)
+        for xticklabel in axx.get_xticklabels():
+            xticklabel.set_fontsize(14)
+            xticklabel.set_y(-0.01)
+        
+    # Move the final axis' ticks to the right-hand side
+    axx = plt.twinx(axes[-1])
+    dimension += 1
+    axx.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
+    #set the x tick labels for last 2 dimension 
+    ax.set_xticklabels([parmlabels[-2],parmlabels[-1]])
+    ticks = len(axx.get_yticklabels())
+    data_range = min_max_range[dimension][2]
+    is_it_int = min_max_range[dimension][3]
+    if is_it_int:
+            if data_range <=25:
+                axx.set_yticks(create_int_normalise(data_range))
+                ticks = len(axx.get_yticklabels())
+                
+    step = min_max_range[dimension][2] / (ticks - 1)
+    mn   = min_max_range[dimension][0]
+    if is_it_int:
+        if data_range <=25:
+            labels = ['%4.0f' % (int(mn + i*step)) for i in xrange(ticks)]
+        else:
+            labels = ['%4.2f' % (mn + i*step) for i in xrange(ticks)]
+    else:
+        labels = ['%4.2f' % (mn + i*step) for i in xrange(ticks)]
+        
+    axx.set_yticklabels(labels)
+    for yticklabel in axx.get_yticklabels():
+        yticklabel.set_fontsize(16)
+
+    for xticklabel in ax.get_xticklabels():
+        xticklabel.set_fontsize(14)
+        xticklabel.set_y(-0.01)
+
+
+    # Stack the subplots 
+    plt.subplots_adjust(wspace=0)
+    if savefile:
+        plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+    plt.show()
+
+def create_int_normalise(r):
+    step = 1/r
+    norm_list = []
+    for i in range(int(r+1)):
+        norm_list.append(i*step)
+    return norm_list
     
