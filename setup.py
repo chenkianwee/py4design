@@ -2,7 +2,6 @@
 import os
 from setuptools import setup, find_packages
 
-import cea
 
 __author__ = "Chen Kian Wee"
 __copyright__ = "Copyright 2016, Chen Kian Wee"
