@@ -230,7 +230,11 @@ def write_ground_temp_bldg_srf(ground_temp):
 def write_shadow_calc(calc_frequency, max_figures):
     
     shadow_calc_str = "! ==== SHADOW CALCULATION\n" +\
-    "ShadowCalculation,"+calc_frequency+","+max_figures+";\n\n"
+    "ShadowCalculation,AverageOverDaysInFrequency,\n" +\
+    calc_frequency+",\n"+\
+    max_figures+ ",\n" +\
+    "SutherlandHodgman,\n" +\
+    "SimpleSkyDiffuseModeling;\n\n"
     
     return shadow_calc_str
     

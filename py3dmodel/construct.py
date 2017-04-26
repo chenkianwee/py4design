@@ -39,7 +39,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
-from OCC.Addons import text_to_brep, Font_FA_Bold
+
 
 import fetch
 import calculate
@@ -495,6 +495,7 @@ def delaunay3d(pyptlist):
     return occtriangles
 
 def make_brep_text(stri, font_size):
+    from OCC.Addons import text_to_brep, Font_FA_Bold
     brepstr = text_to_brep(stri, "Arial", Font_FA_Bold, font_size, True)
     return brepstr
     
