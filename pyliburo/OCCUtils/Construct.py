@@ -609,7 +609,7 @@ def boolean_cut(shapeToCutFrom, cuttingShape):
     from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
     try:
         cut = BRepAlgoAPI_Cut(shapeToCutFrom, cuttingShape)
-        print("Can work?", cut.BuilderCanWork())
+        #print("Can work?", cut.BuilderCanWork())
         _error = {0: '- Ok',
                   1: '- The Object is created but Nothing is Done',
                   2: '- Null source shapes is not allowed',
@@ -619,7 +619,7 @@ def boolean_cut(shapeToCutFrom, cuttingShape):
                   6: '- Unknown operation is not allowed',
                   7: '- Can not allocate memory for the Builder',
                   }
-        print("Error status:", _error[cut.ErrorStatus()])
+        #print("Error status:", _error[cut.ErrorStatus()])
         cut.RefineEdges()
         cut.FuseEdges()
         shp = cut.Shape()

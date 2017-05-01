@@ -59,7 +59,7 @@ class DiffGeomSurface(object):
 
         _domain = self.instance.domain()
         if u in _domain or v in _domain:
-            print('<<<CORRECTING DOMAIN...>>>')
+            #print('<<<CORRECTING DOMAIN...>>>')
             div = 1000
             delta_u, delta_v = (_domain[0] - _domain[1])/div, (_domain[2] - _domain[3])/div
 

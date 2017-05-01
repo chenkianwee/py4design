@@ -501,7 +501,6 @@ def make_brep_text(stri, font_size):
     
 def visualise(shape2dlist, colour_list, backend = "qt-pyqt5"):
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
-    
     sc_cnt = 0
     for shape_list in shape2dlist:
         compound = make_compound(shape_list)
