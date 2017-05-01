@@ -19,6 +19,7 @@
 #
 # ==================================================================================================
 import py2radiance
+import py2energyplus
 import pycitygml
 import py3dmodel
 import pyoptimise
@@ -35,3 +36,4 @@ import massing2citygml
 import analysisrulepalette
 import templaterulepalette
 import shapeattributes
+import buildingformeval

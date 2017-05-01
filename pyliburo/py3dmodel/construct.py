@@ -39,7 +39,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
-from OCC.Addons import text_to_brep, Font_FA_Bold
+
 
 import fetch
 import calculate
@@ -241,6 +241,7 @@ def make_compound(topo):
     return Construct.compound(topo)
     
 def extrude(occface, pydir, height):
+    #TODO: it doesnt work well with faces with holes
     orig_pt = calculate.face_midpt(occface)
     dest_pt = modify.move_pt(orig_pt, pydir, height)
     moved_face = modify.move(orig_pt,dest_pt, occface)
@@ -494,6 +495,7 @@ def delaunay3d(pyptlist):
     return occtriangles
 
 def make_brep_text(stri, font_size):
+    from OCC.Addons import text_to_brep, Font_FA_Bold
     brepstr = text_to_brep(stri, "Arial", Font_FA_Bold, font_size, True)
     return brepstr
     
