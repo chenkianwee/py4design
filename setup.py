@@ -1,36 +1,27 @@
-
-import os
 from setuptools import setup, find_packages
-
 
 __author__ = "Chen Kian Wee"
 __copyright__ = "Copyright 2016, Chen Kian Wee"
 __credits__ = ["Chen Kian Wee"]
-__license__ = "MIT"
+__license__ = "GPL3"
 __version__ = "0.1a0"
 __maintainer__ = "Chen Kian Wee"
 __email__ = "chenkianwee@gmail.com"
 __status__ = "Development"
 
-
-with open('readme.txt', 'r') as f:
-    LONG_DESCRIPTION = f.read()
-
-INSTALL_REQUIRES = ['lxml', 'pyshp', 'pycollada', 'OCCUtils>=0.1-dev']
-
+INSTALL_REQUIRES = ['lxml', 'pyshp', 'numpy', 'scipy', 'pycollada', 'networkx', 'scikit-learn', 'pymf', 'cvxopt', 'matplotlib']
 
 setup(name='pyliburo',
+      packages = find_packages(),
       version=__version__,
       description='Python Library for Urban Optimization',
-      license='GPL3',
       author=__author__,
       author_email=__email__,
       url='https://github.com/chenkianwee/pyliburo',
-      long_description=LONG_DESCRIPTION,
-      py_modules=[''],
-      packages=find_packages(),
-      package_data={},
-      dependency_links = ['https://github.com/tpaviot/pythonocc-utils/tarball/master#egg=OCCUtils-0.1-dev'],
+      download_url = 'https://github.com/chenkianwee/pyliburo/archive/0.12.tar.gz',
+      keywords = ["urban design", "architecture design", "design optimisation"],
       install_requires=INSTALL_REQUIRES,
-      include_package_data=True,
+      classifiers = ['Development Status :: 3 - Alpha',
+                     'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+                     'Programming Language :: Python :: 2.7',],
       )

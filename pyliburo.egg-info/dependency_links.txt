@@ -1,1 +1,0 @@
-https://github.com/tpaviot/pythonocc-utils/tarball/master#egg=OCCUtils-0.1-dev
