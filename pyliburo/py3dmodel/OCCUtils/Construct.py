@@ -56,11 +56,11 @@ from OCC.TColgp import TColgp_SequenceOfVec, TColgp_HArray1OfPnt
 from OCC.gp import (gp_Vec, gp_Pnt, gp_Dir, gp_Trsf, gp_Ax1, gp_Quaternion,
                     gp_Circ, gp_Pln)
 
-from OCCUtils.Common import (TOLERANCE, assert_isdone, to_tcol_, to_adaptor_3d,
+from Common import (TOLERANCE, assert_isdone, to_tcol_, to_adaptor_3d,
                              vertex2pnt, smooth_pnts, points_to_bspline,
                              project_point_on_curve)
-from OCCUtils.types_lut import ShapeToTopology
-from OCCUtils.Topology import Topo
+from types_lut import ShapeToTopology
+from Topology import Topo
 
 
 EPSILON = TOLERANCE = 1e-6

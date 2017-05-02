@@ -19,7 +19,7 @@
 
 from OCC.TopoDS import TopoDS_Wire
 
-from OCCUtils.base import BaseObject
+from base import BaseObject
 
 
 class Wire(TopoDS_Wire, BaseObject):

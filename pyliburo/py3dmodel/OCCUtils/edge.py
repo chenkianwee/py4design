@@ -31,10 +31,10 @@ from OCC.BRep import BRep_Tool, BRep_Tool_Continuity
 from OCC.BRepIntCurveSurface import BRepIntCurveSurface_Inter
 
 # high-level
-from OCCUtils.Common import vertex2pnt, minimum_distance, assert_isdone, fix_continuity
-from OCCUtils.Construct import make_edge
-from OCCUtils.types_lut import geom_lut
-from OCCUtils.base import BaseObject
+from Common import vertex2pnt, minimum_distance, assert_isdone, fix_continuity
+from Construct import make_edge
+from types_lut import geom_lut
+from base import BaseObject
 
 
 class IntersectCurve(object):

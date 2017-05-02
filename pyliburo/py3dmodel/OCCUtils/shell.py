@@ -18,8 +18,8 @@
 from OCC.TopoDS import TopoDS_Shell
 from OCC.ShapeAnalysis import ShapeAnalysis_Shell
 
-from OCCUtils.Topology import Topo
-from OCCUtils.base import BaseObject, GlobalProperties
+from Topology import Topo
+from base import BaseObject, GlobalProperties
 
 
 class Shell(TopoDS_Shell, BaseObject):
