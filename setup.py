@@ -4,11 +4,14 @@ __author__ = "Chen Kian Wee"
 __copyright__ = "Copyright 2016, Chen Kian Wee"
 __credits__ = ["Chen Kian Wee"]
 __license__ = "GPL3"
-__version__ = "0.1a4"
+__version__ = "0.1a5"
 __maintainer__ = "Chen Kian Wee"
 __email__ = "chenkianwee@gmail.com"
 __status__ = "Development"
 
+with open('readme.txt', 'r') as f:
+    LONG_DESCRIPTION = f.read()
+    
 INSTALL_REQUIRES = ['lxml', 'pyshp', 'numpy', 'pycollada', 'networkx', 'scikit-learn', 'pymf', 'cvxopt', 'matplotlib']
 
 setup(name='pyliburo',
@@ -18,6 +21,7 @@ setup(name='pyliburo',
           },
       version=__version__,
       description='Python Library for Urban Optimization',
+      long_description=LONG_DESCRIPTION,
       author=__author__,
       author_email=__email__,
       url='https://github.com/chenkianwee/pyliburo',
