@@ -47,3 +47,5 @@ Temporary Items
 .apdisk
 examples/citygmlenv_examples/shapefile2daysim.py
 *.pyc
+dist/
+pyliburo.egg-info/
