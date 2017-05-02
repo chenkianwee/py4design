@@ -17,6 +17,9 @@ to run the environment:
 	
 5.) conda install spyder (for editing the scripts)
 
+6.) download example files from 
+(https://github.com/chenkianwee/pyliburo_example_files)
+
 #========================================================
 
 #list of libraries used in pyliburo
