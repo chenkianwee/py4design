@@ -39,7 +39,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
-from OCC.Addons import text_to_brep, Font_FA_Bold
+
 
 import fetch
 import calculate
@@ -495,12 +495,12 @@ def delaunay3d(pyptlist):
     return occtriangles
 
 def make_brep_text(stri, font_size):
+    from OCC.Addons import text_to_brep, Font_FA_Bold
     brepstr = text_to_brep(stri, "Arial", Font_FA_Bold, font_size, True)
     return brepstr
     
 def visualise(shape2dlist, colour_list, backend = "qt-pyqt5"):
     display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
-    
     sc_cnt = 0
     for shape_list in shape2dlist:
         compound = make_compound(shape_list)

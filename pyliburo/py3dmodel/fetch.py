@@ -18,7 +18,8 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Topology,edge
+from OCCUtils import Topology
+from OCCUtils import edge
 from OCC.BRep import BRep_Tool
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX, TopAbs_REVERSED

@@ -172,14 +172,14 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
     rad.create_sensor_input_file()
     rad.create_rad_input_file()
     rad.execute_cumulative_oconv(time, date, epwweatherfile)
-    rad.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+    rad.execute_cumulative_rtrace(str(1))#EXECUTE!! 
     irrad_ress = rad.eval_cumulative_rad()
     #calculate the unshaded windows and skylight
     rad2.set_sensor_points(sensor_ptlist, sensor_dirlist)
     rad2.create_sensor_input_file()
     rad2.create_rad_input_file()
     rad2.execute_cumulative_oconv(time, date, epwweatherfile)
-    rad2.execute_cumulative_rtrace(str(2))#EXECUTE!! 
+    rad2.execute_cumulative_rtrace(str(1))#EXECUTE!! 
     irrad_ress2 = rad2.eval_cumulative_rad()
     
     #calculate the avg solar irradiance and the sc2 
