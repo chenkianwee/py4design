@@ -175,10 +175,10 @@ def get_inputparam(ind):
 
 def get_derivedparam(ind):
     derived_list = get_childnode_values("derivedparam", ind)
-    derived_list_f = []
-    for derived in derived_list:
-        derived_list_f.append(float(derived))
-    return derived_list_f
+    #derived_list_f = []
+    #for derived in derived_list:
+    #    derived_list_f.append(float(derived))
+    return derived_list
 
 def get_id(ind):
     identity = get_childnode_value("identity", ind)
