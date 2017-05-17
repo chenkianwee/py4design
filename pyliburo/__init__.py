@@ -37,3 +37,4 @@ import analysisrulepalette
 import templaterulepalette
 import shapeattributes
 import buildingformeval
+import skyviewfactor
