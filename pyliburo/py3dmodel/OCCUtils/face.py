@@ -259,7 +259,7 @@ class Face(TopoDS_Face, BaseObject):
         '''checks if the surface is planar within a tolerance
         :return: bool, gp_Pln
         '''
-        print(self.surface_handle)
+        #print(self.surface_handle)
         is_planar_surface = GeomLib_IsPlanarSurface(self.surface_handle, tol)
         return is_planar_surface.IsPlanar()
 

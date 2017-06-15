@@ -54,6 +54,7 @@ class Massing2Citygml(object):
                         if type(children_node2[0]) == scene.NodeNode:
                             print children_node2[0].children
         '''
+        
         tolerance = 1e-04
         edgelist = []
         shelllist = []
@@ -62,6 +63,7 @@ class Massing2Citygml(object):
         geoms = mesh.scene.objects('geometry')
         geoms = list(geoms)
         gcnt = 0
+        
         for geom in geoms:
             if gcnt >= 0: #and gcnt <= 45:
                 prim2dlist = list(geom.primitives())
@@ -72,9 +74,11 @@ class Massing2Citygml(object):
                     edges = []
                     if primlist:
                         for prim in primlist:
+                            
                             if type(prim) == polylist.Polygon or type(prim) == triangleset.Triangle:
                                 pyptlist = prim.vertices.tolist()
                                 sorted_pyptlist = sorted(pyptlist)
+                                
                                 if sorted_pyptlist not in spyptlist:
                                     spyptlist.append(sorted_pyptlist)
                                     occpolygon = py3dmodel.construct.make_polygon(pyptlist)
@@ -102,28 +106,28 @@ class Massing2Citygml(object):
                             edgelist.extend(edges)
             gcnt +=1
         
-        cmpd_shell = py3dmodel.construct.make_compound(shelllist)  
-        
+        cmpd_shell = py3dmodel.construct.make_compound(shelllist) 
         cmpd_edge = py3dmodel.construct.make_compound(edgelist)
         cmpd_list = [cmpd_shell, cmpd_edge]
         #find the midpt of all the geometry
         compound = py3dmodel.construct.make_compound(cmpd_list)
+        
         xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(compound)
         ref_pt = py3dmodel.calculate.get_centre_bbox(compound)
         ref_pt = (ref_pt[0],ref_pt[1],zmin)
         #scale all the geometries into metre
         scaled_shell_shape = py3dmodel.modify.uniform_scale(cmpd_shell, unit, unit, unit,ref_pt)
         scaled_edge_shape = py3dmodel.modify.uniform_scale(cmpd_edge, unit, unit, unit,ref_pt)
-        
         scaled_shell_compound = py3dmodel.fetch.shape2shapetype(scaled_shell_shape)
         scaled_edge_compound = py3dmodel.fetch.shape2shapetype(scaled_edge_shape)
         
         recon_shell_compound = gml3dmodel.redraw_occ_shell(scaled_shell_compound, tolerance)
         recon_edge_compound = gml3dmodel.redraw_occ_edge(scaled_edge_compound, tolerance)
+        
         #sort and recompose the shells 
         shells  = py3dmodel.fetch.geom_explorer(recon_shell_compound,"shell")
         sewed_shells = gml3dmodel.reconstruct_open_close_shells(shells)
-                
+        
         nw_edges = py3dmodel.fetch.geom_explorer(recon_edge_compound,"edge")
 
         occshp_attribs_obj_list = []
@@ -136,7 +140,7 @@ class Massing2Citygml(object):
             occshp_attribs_obj = shapeattributes.ShapeAttributes()
             occshp_attribs_obj.set_shape(nw_edge)
             occshp_attribs_obj_list.append(occshp_attribs_obj)
-        
+
         print len(shells), len(sewed_shells)
         self.occshp_attribs_obj_list = occshp_attribs_obj_list
 

@@ -520,31 +520,34 @@ def identify_open_close_shells(occshell_list):
     
 def reconstruct_open_close_shells(occshell_list):
     close_shell_list, open_shell_list = identify_open_close_shells(occshell_list)
-    open_shell_compound = py3dmodel.construct.make_compound(open_shell_list)
-    open_shell_faces = py3dmodel.fetch.geom_explorer(open_shell_compound, "face")
-    #sew all the open shell faces together to check if there are solids among the open shells
-    recon_shell_list = py3dmodel.construct.make_shell_frm_faces(open_shell_faces)
-    recon_close_shell_list, recon_open_shell_list = identify_open_close_shells(recon_shell_list)
-    if recon_close_shell_list:
-        open_shell_list2 = []
-        open_shell_rmv_index = []
-        #boolean difference the close shells from the open shells 
-        for recon_close_shell in recon_close_shell_list:
-            os_cnt = 0
-            for open_shell in open_shell_list:
-                #common_cmpd = py3dmodel.construct.boolean_common(recon_close_shell, open_shell)
-                difference_cmpd = py3dmodel.construct.boolean_difference(open_shell, recon_close_shell)
-                is_diff_null = py3dmodel.fetch.is_compound_null(difference_cmpd)
-                if is_diff_null:
-                    open_shell_rmv_index.append(os_cnt)
-                os_cnt+=1
-                
-        for os_cnt2 in range(len(open_shell_list)):
-            if os_cnt2 not in open_shell_rmv_index:
-                open_shell2 = open_shell_list[os_cnt2]
-                open_shell_list2.append(open_shell2)
-                
-        return close_shell_list + recon_close_shell_list + open_shell_list2
+    if open_shell_list:
+        open_shell_compound = py3dmodel.construct.make_compound(open_shell_list)
+        open_shell_faces = py3dmodel.fetch.geom_explorer(open_shell_compound, "face")
+        #sew all the open shell faces together to check if there are solids among the open shells
+        recon_shell_list = py3dmodel.construct.make_shell_frm_faces(open_shell_faces)
+        recon_close_shell_list, recon_open_shell_list = identify_open_close_shells(recon_shell_list)
+        if recon_close_shell_list:
+            open_shell_list2 = []
+            open_shell_rmv_index = []
+            #boolean difference the close shells from the open shells 
+            for recon_close_shell in recon_close_shell_list:
+                os_cnt = 0
+                for open_shell in open_shell_list:
+                    #common_cmpd = py3dmodel.construct.boolean_common(recon_close_shell, open_shell)
+                    difference_cmpd = py3dmodel.construct.boolean_difference(open_shell, recon_close_shell)
+                    is_diff_null = py3dmodel.fetch.is_compound_null(difference_cmpd)
+                    if is_diff_null:
+                        open_shell_rmv_index.append(os_cnt)
+                    os_cnt+=1
+                    
+            for os_cnt2 in range(len(open_shell_list)):
+                if os_cnt2 not in open_shell_rmv_index:
+                    open_shell2 = open_shell_list[os_cnt2]
+                    open_shell_list2.append(open_shell2)
+                    
+            return close_shell_list + recon_close_shell_list + open_shell_list2
+        else:
+            return occshell_list
     else:
         return occshell_list
         
