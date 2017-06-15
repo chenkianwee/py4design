@@ -21,7 +21,6 @@
 import random
 
 import pycitygml
-import gmlparmpalette
 
 class Parameterise(object):
     def __init__(self, citygmlfile):
@@ -30,109 +29,6 @@ class Parameterise(object):
         self.citygml = reader
         self.parm_obj_dict_list = []
         self.nparameters = None        
-        
-    def add_bldg_flr_area_height_parm(self, bldg_class= None, bldg_function = None, bldg_usage = None, parm_definition = None, 
-                                      range_definition = True):
-        """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
-        this parameter will apply to all buildings"""
-
-        parm = gmlparmpalette.BldgFlrAreaHeightParm()
-        
-        if parm_definition!=None:
-            if range_definition == True:
-                is_it_int = True
-                for ele in parm_definition:
-                    if type(ele) == float:
-                        is_it_int = False
-                        
-                if is_it_int:        
-                    parm.define_int_range(parm_definition[0],parm_definition[1],parm_definition[2])
-                else:
-                    n_p_define = len(parm_definition)
-                    if n_p_define == 2:
-                        parm.define_float_range(parm_definition[0],parm_definition[1])
-                    if n_p_define == 3:
-                        parm.define_float_range(parm_definition[0],parm_definition[1], parm_definition[2])
-                        
-            if range_definition == False:
-                parm.set_parm_range(parm_definition)
-            
-            
-        if bldg_class !=None:
-            parm.apply_2_bldg_class(bldg_class)
-        if bldg_function != None:
-            parm.apply_2_bldg_function(bldg_function)
-        if bldg_usage != None:
-            parm.apply_2_bldg_usage(bldg_usage)
-            
-        bldg_parm_dict = {}
-        bldg_parm_dict["parameter_object"] = parm
-        self.parm_obj_dict_list.append(bldg_parm_dict)
-        
-    def add_bldg_orientation_parm(self, parm_definition, range_definition = True, bldg_class= None, 
-                                  bldg_function = None, bldg_usage = None, clash_detection = True, boundary_detection = True):
-        """specify the class, function and usage of the buildings this parameter will be applied to, if none are given, 
-        this parameter will apply to all buildings
-        
-        parm definition can either be a [start, stop, step] or a list of the parameters"""
-
-        parm = gmlparmpalette.BldgOrientationParm()
-        
-        if range_definition == True:
-            is_it_int = True
-            for ele in parm_definition:
-                if type(ele) == float:
-                    is_it_int = False
-                    
-            if is_it_int:        
-                parm.define_int_range(parm_definition[0],parm_definition[1],parm_definition[2])
-            else:
-                n_p_define = len(parm_definition)
-                if n_p_define == 2:
-                    parm.define_float_range(parm_definition[0],parm_definition[1])
-                if n_p_define == 3:
-                    parm.define_float_range(parm_definition[0],parm_definition[1], parm_definition[2])
-                    
-        if range_definition == False:
-            parm.set_parm_range(parm_definition)
-            
-        if bldg_class !=None:
-            parm.apply_2_bldg_class(bldg_class)
-        if bldg_function != None:
-            parm.apply_2_bldg_function(bldg_function)
-        if bldg_usage != None:
-            parm.apply_2_bldg_usage(bldg_usage)
-            
-        if clash_detection == False:
-            parm.set_clash_detection(clash_detection)
-        if boundary_detection == False:
-            parm.set_boundary_detection(boundary_detection)
-    
-        bldg_parm_dict = {}
-        bldg_parm_dict["parameter_object"] = parm
-        self.parm_obj_dict_list.append(bldg_parm_dict)
-        
-    def add_bldg_pos_parm(self, xdim = 10, ydim=10, bldg_class= None, bldg_function = None, bldg_usage = None, 
-                          clash_detection = True, boundary_detection = True):
-        
-        parm = gmlparmpalette.BldgPositionParm()
-        parm.set_xdim_ydim(xdim, ydim)
-        
-        if bldg_class !=None:
-            parm.apply_2_bldg_class(bldg_class)
-        if bldg_function != None:
-            parm.apply_2_bldg_function(bldg_function)
-        if bldg_usage != None:
-            parm.apply_2_bldg_usage(bldg_usage)
-            
-        if clash_detection == False:
-            parm.set_clash_detection(clash_detection)
-        if boundary_detection == False:
-            parm.set_boundary_detection(boundary_detection)
-            
-        bldg_parm_dict = {}
-        bldg_parm_dict["parameter_object"] = parm
-        self.parm_obj_dict_list.append(bldg_parm_dict)
         
     def add_parm(self, parm_obj):
         bldg_parm_dict = {}
