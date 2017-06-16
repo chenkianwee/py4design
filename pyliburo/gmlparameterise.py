@@ -65,6 +65,7 @@ class Parameterise(object):
             parm_obj = parm_obj_dict["parameter_object"]
             parm_cnt = parm_obj_dict["parameter_count"]
             parm_object_parms = parameters[parm_cnt[0]:parm_cnt[1]]
+            print parm_obj
             citygml_reader = parm_obj.execute(citygml_reader, parm_object_parms)
             
         citygml_writer = pycitygml.Writer()
