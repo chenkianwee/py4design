@@ -317,6 +317,7 @@ class BldgHeightParm(BaseParm):
                 height_ratio = float(height_parm)/height
                 scaled_bldg = py3dmodel.modify.uniform_scale(bldg_solid,1,1,height_ratio,midpt)
                 new_bldg_occsolid = py3dmodel.fetch.geom_explorer(scaled_bldg, "solid")[0]
+                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["WHITE"])
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
@@ -708,7 +709,7 @@ class BldgTwistParm(BaseParm):
         flr2flr_height = self.flr2flr_height
         bcnt = 0
         for gml_landuse in gml_landuses:
-            #echeck which buildings are on this plot
+            #check which buildings are on this plot
             gml_bldg_on_luse = gml3dmodel.buildings_on_landuse(gml_landuse,gml_bldg_list, pycitygml_reader)
             
             #check which buildings should this parameter be applied to
@@ -731,7 +732,7 @@ class BldgTwistParm(BaseParm):
                 #first get all the floorplates 
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
                                                                                        flr2flr_height = flr2flr_height)
-                
+
                 plates_occface_2dlist = gml3dmodel.get_building_flrplates_by_level(bldg_solid, nstorey, storey_height)
                 
                 rf_plates_occface_list = gml3dmodel.get_building_roofplates(bldg_solid, nstorey, storey_height)
@@ -751,8 +752,6 @@ class BldgTwistParm(BaseParm):
                         
                     nxt_plate_list = plates_occface_2dlist[pcnt+1]
                     plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
-                    plate_cmpd_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
-                    
                     rot_plate_shape = py3dmodel.modify.rotate(plate_cmpd, bldg_solid_centre, (0,0,1), twist_angle)
                     rot_nxt_plate_list = py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")
                     n_cur_plates = len(cur_plate_list)
@@ -770,7 +769,8 @@ class BldgTwistParm(BaseParm):
                             nxt_plate_area = py3dmodel.calculate.face_area(nxt_plate)
                             diff_area = abs(nxt_plate_area-cur_plate_area)
                             if diff_area/cur_plate_area >= 0.5:
-                                external_horz_plate_list1.extend(rot_nxt_plate_list)
+                                external_horz_plate_list1.append([])
+                                external_horz_plate_list1[-1].append(nxt_plate)
                                 
                                 cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
@@ -778,7 +778,7 @@ class BldgTwistParm(BaseParm):
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
                                 
-                                external_horz_plate_list1.append(rot_cur_plate)
+                                external_horz_plate_list1[-1].append(rot_cur_plate)
                                 
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
@@ -790,7 +790,8 @@ class BldgTwistParm(BaseParm):
                             
                     if n_cur_plates != n_nxt_plates:
                         #move the cur plate up and rotate them 
-                        external_horz_plate_list1.extend(rot_nxt_plate_list)
+                        external_horz_plate_list1.append([])
+                        external_horz_plate_list1[-1].extend(rot_nxt_plate_list)
                         for cur_plate in cur_plate_list:
                             cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                             m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
@@ -800,7 +801,7 @@ class BldgTwistParm(BaseParm):
                             if common_plate:
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
-                                external_horz_plate_list1.append(rot_cur_plate)
+                                external_horz_plate_list1[-1].append(rot_cur_plate)
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
                                 lvl_shell_list.append(lvl_shell)
@@ -810,38 +811,48 @@ class BldgTwistParm(BaseParm):
                     cur_plate_list = rot_nxt_plate_list
                     
                 #need to union all the volumes
-                #py3dmodel.construct.visualise([lvl_shell_list, external_horz_plate_list1, external_horz_plate_list], 
-                #                              ["WHITE", "RED", "BLUE", "WHITE"])
                 diff_list = []
-                hcnt = 0
-                for horz_plate in external_horz_plate_list1:
-                    external_horz_plate_list2 = external_horz_plate_list1[:]
-                    del external_horz_plate_list2[hcnt]
-                    horz_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list2)
-                    diff_cmpd = py3dmodel.construct.boolean_difference(horz_plate, horz_cmpd)
-                    diff_face_list = py3dmodel.fetch.geom_explorer(diff_cmpd, "face")
-                    if diff_face_list:
-                        diff_list.extend(diff_face_list)
-                    hcnt+=1
-                    
+                for horz_plate_list in external_horz_plate_list1:
+                    hcnt = 0
+                    for lvl in horz_plate_list:
+                        external_horz_plate_list2 = horz_plate_list[:]
+                        del external_horz_plate_list2[hcnt]
+                        external_horz_plate_extruded_list = gml3dmodel.extrude_move_down_occ_faces(external_horz_plate_list2)
+                        hplate2_cmpd = py3dmodel.construct.make_compound(external_horz_plate_extruded_list)
+                        diff_cmpd = py3dmodel.construct.boolean_difference(lvl, hplate2_cmpd)
+                        diff_face_list = py3dmodel.construct.simple_mesh(diff_cmpd)
+                        if diff_face_list:
+                            diff_list.extend(diff_face_list)
+                        hcnt+=1
+                
                 lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
-                lvl_edge = py3dmodel.fetch.geom_explorer(lvl_shell_cmpd, "edge")
-                lvl_faces = py3dmodel.fetch.geom_explorer(lvl_shell_cmpd, "face")
+                lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
                 
+                external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
+                external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
-                new_building_shell2 = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                print len(new_building_shell2)
-                
-                new_building_shell2 = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)[0]
-                py3dmodel.construct.visualise([[new_building_shell2]],[ "WHITE"])
-                new_building_face_list = [rot_plates[0]]
-                shell_face_list = py3dmodel.fetch.geom_explorer(new_building_shell, "face")
-                new_building_face_list.extend(shell_face_list)
-                new_building_face_list.append(rot_plates[-1])
-                
-                
-                new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell2)
-                new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                if len(new_building_shell_list)>1:
+                    scnt =0
+                    for shell in new_building_shell_list:
+                        if scnt == 0:
+                            fshell = shell
+                        if scnt != 0:
+                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
+                        scnt+=1
+                    
+                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
+                    
+                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    
+                else:
+                    new_building_shell =new_building_shell_list[0]
+                    new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    
+                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)

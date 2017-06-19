@@ -746,7 +746,7 @@ def mirror_axe2(brep, axe2, copy=False):
         return brep_trns.Shape()
 
 
-def rotate(brep, axe, degree, copy=False):
+def rotate(brep, axe, degree, copy=True):
     '''
     @param brep:
     @param axe:

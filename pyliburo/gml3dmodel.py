@@ -416,7 +416,8 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pypt_list, luse
     return moved_buildings
     
 #===========================================================================================================================
-def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, citygml_writer, new_height = None, new_nstorey = None):
+def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, citygml_writer, 
+                        new_height = None, new_nstorey = None):
     building_name = citygml_reader.get_gml_id(orgin_gml_building)
     bclass = citygml_reader.get_building_class(orgin_gml_building)
     bfunction = citygml_reader.get_building_function(orgin_gml_building)
@@ -426,25 +427,18 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     new_bldg_occsolid = py3dmodel.fetch.geom_explorer(new_bldg_occsolid, "solid")[0]
     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
     face_list = py3dmodel.fetch.faces_frm_solid(new_bldg_occsolid)
-    
+    geometry_list = write_gml_srf_member(face_list)
     if new_height == None:
         new_height = calculate_bldg_height(new_bldg_occsolid)
         
-    if new_nstorey == None:
-        #check if there is an existing 
-        orig_height = citygml_reader.get_building_height(orgin_gml_building)
-        nstorey = citygml_reader.get_building_storey(orgin_gml_building)
-        if orig_height !=None and nstorey != None:
-            storey_height = round(float(orig_height)/float(nstorey), 2)
-        else:
-            storey_height = 3
-        new_nstorey = int(math.floor(new_height/storey_height))
-        
-    geometry_list = write_gml_srf_member(face_list)
-    
-    citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
-                                function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd)
+    if new_nstorey !=None:
+        citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
+                                    function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
+                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd)
+    if new_nstorey ==None:
+        citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
+                                    function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
+                                    stry_blw_grd = stry_blw_grd)
         
 def write_citygml(cityobjmembers, citygml_writer):
         citygml_root = citygml_writer.citymodelnode
@@ -463,7 +457,7 @@ def write_non_eligible_bldgs(non_eligible_bldgs, citygml_writer):
 #===========================================================================================================================
 def write_a_gml_srf_member(occface):
     pypt_list = py3dmodel.fetch.pyptlist_frm_occface(occface)
-    pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list)
+    pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list, roundndigit = 3)
     if len(pypt_list)>=3:
         face_nrml = py3dmodel.calculate.face_normal(occface)
         is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
@@ -521,6 +515,27 @@ def write_gml_linestring(occedge):
     gml_edge_list.append(linestring)
     return gml_edge_list
     
+def extrude_move_down_occ_faces(occface_list):
+    extrude_list = []
+    for occface in occface_list:
+        midpt = py3dmodel.calculate.face_midpt(occface)
+        loc_pt = py3dmodel.modify.move_pt(midpt, (0,0,-1),1)
+        #move the face down
+        m_occface = py3dmodel.modify.move(midpt, loc_pt, occface)
+        m_occface = py3dmodel.fetch.shape2shapetype(m_occface)
+        #extrude the face
+        extrude = py3dmodel.construct.extrude(m_occface, (0,0,1), 2)
+        extrude_list.append(extrude)
+    return extrude_list
+    
+def redraw_occ_faces(occface_list):
+    recon_faces = []
+    for occface in occface_list:
+        pyptlist = py3dmodel.fetch.pyptlist_frm_occface(occface)
+        recon_face = py3dmodel.construct.make_polygon(pyptlist)
+        recon_faces.append(recon_face)
+    return recon_faces
+            
 def redraw_occ_shell(occcompound, tolerance):
     recon_shelllist = []
     shells = py3dmodel.fetch.geom_explorer(occcompound, "shell")

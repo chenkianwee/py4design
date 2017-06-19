@@ -49,9 +49,14 @@ def normalise_vec(gpvec):
     ngpvec = gpvec.Normalized()
     return (ngpvec.X(), ngpvec.Y(), ngpvec.Z())
     
-def rotate(shape, rot_pt, axis, degree):
+def rotate(occshape, rot_pt, axis, degree):
+    from math import radians
     gp_ax3 = gp_Ax1(gp_Pnt(rot_pt[0], rot_pt[1], rot_pt[2]), gp_Dir(axis[0], axis[1], axis[2]))
-    rot_shape = Construct.rotate(shape, gp_ax3, degree, copy=False)
+    aTrsf = gp_Trsf()
+    aTrsf.SetRotation(gp_ax3, radians(degree))
+    rot_brep = BRepBuilderAPI_Transform(aTrsf)
+    rot_brep.Perform(occshape, True)
+    rot_shape = rot_brep.Shape()
     return rot_shape
     
 def move_pt(orig_pt, direction2move, magnitude):
