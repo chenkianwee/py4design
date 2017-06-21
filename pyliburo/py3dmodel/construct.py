@@ -31,7 +31,7 @@ from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFa
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Common
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt
@@ -122,14 +122,14 @@ def make_loft_with_wires(occ_wire_list):
     loft = Construct.make_loft(occ_wire_list, ruled = False)
     return loft
     
-def make_loft(occ_face_list, rule_face = True):
+def make_loft(occ_face_list, rule_face = True, tolerance = 1e-06):
     #get the wires from the face_list
     wire_list = []
     for f in occ_face_list:
         wires = fetch.wires_frm_face(f)
         wire_list.extend(wires)
         
-    loft = Construct.make_loft(wire_list, ruled = rule_face)
+    loft = Construct.make_loft(wire_list, ruled = rule_face, tolerance = tolerance )
     return loft
     
 def make_rectangle(xdim, ydim):
@@ -219,7 +219,8 @@ def make_occfaces_frm_pypolygons(pypolygon_list):
 def make_occsolid_frm_pypolygons(pypolygon_list):
     face_list = make_occfaces_frm_pypolygons(pypolygon_list)
     #make shell
-    shell = make_shell_frm_faces(face_list)[0]
+    shell_list = make_shell_frm_faces(face_list)
+    shell = shell_list[0]
     shell = modify.fix_shell_orientation(shell)
     
     solid = make_solid(shell)
@@ -316,6 +317,14 @@ def boolean_difference(occshape2cutfrm, occ_cuttingshape):
     difference = Construct.boolean_cut(occshape2cutfrm, occ_cuttingshape)
     compound = fetch.shape2shapetype(difference)
     return compound
+
+def boolean_section(section_occface, occshape, roundndigit = 6, distance = 0.1):
+    section = BRepAlgoAPI_Section(section_occface, occshape).Shape()
+    edges = fetch.geom_explorer(section, "edge")
+    face_list = wire_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
+    compound = make_compound(face_list)
+    #visualise([[compound]], ["BLUE"])
+    return compound
     
 def make_face_frm_wire(occwire):
     occface = BRepBuilderAPI_MakeFace(occwire).Face()
@@ -337,7 +346,40 @@ def wire_frm_loose_edges(occedge_list):
     for edge in occedge_list: edges.Append(edge)
                 
     # A wire is formed by connecting the edges
-    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-20, True, wires_handle)
+    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-05, False, wires_handle)
+    wires = wires_handle.GetObject()
+        
+    # From each wire a face is created
+    face_list = []
+    for i in range(wires.Length()):
+        wire_shape = wires.Value(i+1)
+        wire_shape = modify.fix_shape(wire_shape)
+        wire = fetch.shape2shapetype(wire_shape)            
+        #visualise([edges], ['BLUE'])
+        occface = BRepBuilderAPI_MakeFace(wire).Face()
+        
+        if not occface.IsNull():
+            f_occface = modify.fix_face(occface)
+            face_list.append(f_occface)
+    return face_list
+
+def wire_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
+    '''
+    wire_frm_loose_edges2 are for more complex geometries
+    the edges need to be able to form a close face. IT does not work with a group of open edges
+    need to change name to face from loose edges
+    '''
+    edges = TopTools_HSequenceOfShape()
+    edges_handle = Handle_TopTools_HSequenceOfShape(edges)
+    
+    wires = TopTools_HSequenceOfShape()
+    wires_handle = Handle_TopTools_HSequenceOfShape(wires)
+    
+    # The edges are copied to the sequence
+    for edge in occedge_list: edges.Append(edge)
+                
+    # A wire is formed by connecting the edges
+    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-05, False, wires_handle)
     wires = wires_handle.GetObject()
         
     # From each wire a face is created
@@ -345,10 +387,17 @@ def wire_frm_loose_edges(occedge_list):
     for i in range(wires.Length()):
         wire_shape = wires.Value(i+1)
         wire = fetch.shape2shapetype(wire_shape)
-        face = BRepBuilderAPI_MakeFace(wire).Face()
-        if not face.IsNull():
-            face_list.append(face)
-        
+        #occface = BRepBuilderAPI_MakeFace(wire).Face()
+        #occface = modify.fix_face(occface)
+        #fixed_wire = modify.fix_closed_wire(wire, occface, tolerance = 1e-06)
+        pyptlist = fetch.pyptlist_frm_occwire(wire)
+        pyptlist = modify.rmv_duplicated_pts(pyptlist, roundndigit = roundndigit)
+        pyptlist = modify.rmv_duplicated_pts_by_distance(pyptlist, distance = distance)
+        npts = len(pyptlist)
+        if npts >=3:
+            occface = make_polygon(pyptlist)
+            if not occface.IsNull():
+                face_list.append(occface)
     return face_list
     
 def arrange_edges_2_wires(occedgelist, isclosed = False):
@@ -370,7 +419,8 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
     -10:"failure on reorder"}
     
     mode3d = True
-    SAWO = ShapeAnalysis_WireOrder(mode3d, precision.PConfusion())
+    tolerance = 1e-06
+    SAWO = ShapeAnalysis_WireOrder(mode3d, tolerance) #precision.PConfusion()
     
     for edge in occedgelist:
         V1 = topexp.FirstVertex(topods.Edge(edge))
@@ -387,7 +437,7 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
     else:
         if SAWO.Status() not in [0, -1]:
             pass # not critical, wirebuilder will handle this
-        SAWO.SetChains(precision.PConfusion())
+        SAWO.SetChains(tolerance)
         wirelist = []
         #print "Number of chains: ", SAWO.NbChains()
         
@@ -412,7 +462,8 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
                             wirelist.append(aWire)
                         except Exception, err:
                             raise RuntimeError, "Overlay2D: build wire: Creation of Wire number " + str(i) + " from edge(s) failed. \n" + str(err)
-        
+            
+            print wirebuilder
             wirebuilder.Build()
             aWire = wirebuilder.Wire()
             wirelist.append(aWire)
@@ -462,7 +513,7 @@ def simple_mesh(occshape, mesh_incremental_float = 0.8):
                 occface_list.append(occface)
     return occface_list
     
-def delaunay3d(pyptlist):
+def delaunay3d(pyptlist, tolerance = 1e-06):
     pyptlistx = []
     pyptlisty = []
     pyptlistz = []
@@ -490,8 +541,9 @@ def delaunay3d(pyptlist):
         pt2 = list(xyz[verts[1]])
         pt3 = list(xyz[verts[2]])
         occtriangle = make_polygon([pt1,pt2,pt3])
-        occtriangles.append(occtriangle)
-    
+        tri_area = calculate.face_area(occtriangle)
+        if tri_area > tolerance:
+            occtriangles.append(occtriangle)
     return occtriangles
 
 def make_brep_text(stri, font_size):

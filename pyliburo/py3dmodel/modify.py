@@ -17,10 +17,10 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Construct
+from OCCUtils import Construct, Common
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
 from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
-from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid
+from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid, ShapeFix_Wire, ShapeFix_Face
 from OCC.BRepLib import breplib
 from OCC.Geom import Geom_TrimmedCurve
 from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
@@ -110,13 +110,27 @@ def fix_close_solid(occsolid):
         breplib.OrientClosedSolid(fix_solid)
         return fix_solid
     
+def fix_closed_wire(occwire,occface, tolerance = 1e-06):
+    shapefix = ShapeFix_Wire(occwire, occface, tolerance)
+    shapefix.FixClosed()
+    shapefix.FixSmall(True)
+    shapefix.FixDegenerated()
+    shapefix.FixSelfIntersection()
+    shapefix.FixReorder()
+    shapefix.Perform()
+    fix_wire = shapefix.Wire()
+    return fix_wire
+
 def fix_shape(occ_shape):
     fixed_shape = Construct.fix_shape(occ_shape)
     return fixed_shape
     
 def fix_face(occ_face):
-    fixed_face = Construct.fix_face(occ_face)
-    return fixed_face
+    fix = ShapeFix_Face(occ_face)
+    #fix.FixMissingSeam()
+    fix.FixOrientation()
+    fix.Perform()
+    return fix.Face()
     
 def rmv_duplicated_faces(occfacelist):
     fcnt = 0
@@ -163,9 +177,15 @@ def rmv_duplicated_edges(occedgelist):
         non_dup_edges.append(unique_f)
     return non_dup_edges
     
-def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
+def rmv_duplicated_pts_by_distance(pyptlist, distance = 1e-06):
     '''
-    fuse all pts in the list within a certain tolerance
+    fuse all pts in the list within a certain distance
+    '''
+    vert_list = fetch.pyptlist2vertlist(pyptlist)
+    occpt_list = fetch.vertex_list_2_point_list(vert_list)
+    
+    filtered_pt_list = Common.filter_points_by_distance(occpt_list, distance = distance)
+    f_pyptlist = fetch.occptlist2pyptlist(filtered_pt_list)
     '''
     npyptlist = len(pyptlist)
     total_ptlist = []
@@ -175,10 +195,10 @@ def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
         for ptcnt2 in range(npyptlist):
             if ptcnt != ptcnt2:
                 ptdist = calculate.distance_between_2_pts(pyptlist[ptcnt], pyptlist[ptcnt2])
-                if ptdist <= tolerance:
+                if ptdist <= distance:
                     ptlist.append(ptcnt2)
                     
-        ptlist.sort()
+        #ptlist.sort()
         if ptlist not in total_ptlist:
             total_ptlist.append(ptlist)
             
@@ -186,6 +206,8 @@ def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
     for upt in total_ptlist:
         upyptlist.append(pyptlist[upt[0]])
     return upyptlist
+    '''
+    return f_pyptlist
     
 def rmv_duplicated_pts(pyptlist, roundndigit = None):
     '''
@@ -274,6 +296,10 @@ def wire_2_bsplinecurve_edge(occwire):
     bspline_handle = approx.Curve()
     occedge = BRepBuilderAPI_MakeEdge(bspline_handle)
     return occedge.Edge()
+
+def resample_wire(occwire):
+    resample_curve = Common.resample_curve_with_uniform_deflection(occwire)
+    print resample_curve
     
 def flatten_face_z_value(occface, z=0):
     pyptlist = fetch.pyptlist_frm_occface(occface)
@@ -281,6 +307,7 @@ def flatten_face_z_value(occface, z=0):
     for pypt in pyptlist:
         pypt2d = (pypt[0],pypt[1],z)
         pyptlist_2d.append(pypt2d)
+    
     flatten_face = construct.make_polygon(pyptlist_2d)
     return flatten_face
         

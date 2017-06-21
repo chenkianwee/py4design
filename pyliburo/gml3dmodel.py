@@ -81,28 +81,102 @@ def get_building_footprint(gml_bldg, citygml_reader):
     bldg_footprint_list = get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid)
     return bldg_footprint_list
             
-def get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid, tolerance = 1e-05):
+def get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid, tolerance = 1e-05, roundndigit = 6, distance = 0.1):
     bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
     b_midpt = py3dmodel.calculate.face_midpt(bounding_footprint)
     loc_pt = (b_midpt[0], b_midpt[1], b_midpt[2]+tolerance)
     bounding_footprint = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(b_midpt, loc_pt, bounding_footprint))
-    bldg_footprint_cmpd = py3dmodel.construct.boolean_common(bldg_occsolid, bounding_footprint)
+    bldg_footprint_cmpd = py3dmodel.construct.boolean_section(bldg_occsolid, bounding_footprint, roundndigit = roundndigit, distance = distance)
     bldg_footprint_cmpd = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, b_midpt, bldg_footprint_cmpd))
     bldg_footprint_list = py3dmodel.fetch.geom_explorer(bldg_footprint_cmpd, "face")
-    '''
-    face_list = py3dmodel.fetch.faces_frm_solid(bldg_occsolid)
-    bldg_footprint_list = []
-    for face in face_list:
-        normal = py3dmodel.calculate.face_normal(face)
-        normal = py3dmodel.modify.round_pypt(normal,2)
-        if normal == (0,0,-1):
-            
-            if py3dmodel.calculate.face_is_inside(face,bounding_footprint):
-                bldg_footprint_list.append(face)
-                
-    '''
     return bldg_footprint_list
+
+def get_building_roofplates(bldg_occsolid, nstorey, storey_height, tolerance = 1e-05, roundndigit = 6, distance = 0.1):
+    loc_pt = get_building_location_pt(bldg_occsolid)
+    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
+    z = loc_pt[2]+(nstorey*storey_height)
+    moved_pt = (loc_pt[0], loc_pt[1], z)
+    moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+           
+    moved_pt2 = (loc_pt[0], loc_pt[1], loc_pt[2] + tolerance)
+    moved_occsolid = py3dmodel.modify.move(loc_pt, moved_pt2, bldg_occsolid)
+    floors = py3dmodel.construct.boolean_section(moved_f, moved_occsolid, roundndigit = roundndigit, distance = distance)
+    inter_face_list = py3dmodel.fetch.geom_explorer(floors, "face")
+    return inter_face_list#, bounding_list
+    
+def get_building_flrplates(bldg_occsolid, nstorey, storey_height):
+    intersection_list = []
+    bounding_list = []
+    loc_pt = get_building_location_pt(bldg_occsolid)
+    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
+    bldg_footprint_list = get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid)
+    intersection_list.extend(bldg_footprint_list)
+    for scnt in range(nstorey):
+        z = loc_pt[2]+(scnt*storey_height)
+        moved_pt = (loc_pt[0], loc_pt[1], z)
+        moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+        bounding_list.append(moved_f)
+           
+    bounding_compound = py3dmodel.construct.make_compound(bounding_list)
+    floors = py3dmodel.construct.boolean_common(bldg_occsolid, bounding_compound)
+    common_compound = py3dmodel.fetch.shape2shapetype(floors)
+    inter_face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
+    if inter_face_list:
+        for inter_face in inter_face_list:
+            intersection_list.append(inter_face)
+    return intersection_list#, bounding_list
+
+def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndigit = 6, distance = 0.1):
+    intersection_2dlist = []
+    bounding_list = []
+    
+    loc_pt = get_building_location_pt(bldg_occsolid)
+    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
+    bldg_footprint_list = get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid, roundndigit = roundndigit, distance = distance)
+    intersection_2dlist.append(bldg_footprint_list)
+    
+    for scnt in range(nstorey):
+        if scnt!=0:
+            z = loc_pt[2]+(scnt*storey_height)
+            moved_pt = (loc_pt[0], loc_pt[1], z)
+            moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+            floor_cmpd = py3dmodel.construct.boolean_section(moved_f, bldg_occsolid, roundndigit = roundndigit, distance = distance)
+            floor_list = py3dmodel.fetch.geom_explorer(floor_cmpd, "face")
+            intersection_2dlist.append(floor_list)
+            bounding_list.append(moved_f)
             
+    bldg_roof_list = get_building_roofplates(bldg_occsolid, nstorey, storey_height, roundndigit = roundndigit, distance = distance)
+    intersection_2dlist.append(bldg_roof_list)
+
+    new_2d_list = []
+    for intersection_list in intersection_2dlist:
+        new_flr_list = []
+        #
+        for floor in intersection_list:
+            #pyptlist = py3dmodel.fetch.pyptlist_frm_occface(floor)
+            wire = py3dmodel.fetch.geom_explorer(floor, "wire")[0]
+            bspline_edge = py3dmodel.modify.wire_2_bsplinecurve_edge(wire)
+            lbound, ubound = py3dmodel.fetch.edge_domain(bspline_edge)
+            bound = ubound - lbound
+            n_interval = 30
+            b_interval = bound/float(n_interval)
+            pyptlist = []
+            for i in range(n_interval):
+                u = lbound + (i*b_interval)
+                e_pypt = py3dmodel.calculate.edgeparameter2pt(u, bspline_edge)
+                pyptlist.append(e_pypt)
+                
+            pyref_vec = (0,0,1)
+            is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pyptlist, pyref_vec)
+            if not is_anticlockwise:
+                pyptlist.reverse()
+                
+            new_floor = py3dmodel.construct.make_polygon(pyptlist)
+            new_flr_list.append(new_floor)
+        new_2d_list.append(new_flr_list)
+            
+    return new_2d_list#, bounding_list
+
 def gml_landuse_2_occface(gml_landuse, citygml_reader):
     lpolygon = citygml_reader.get_polygons(gml_landuse)[0]
     landuse_pts = citygml_reader.polygon_2_pt_list(lpolygon)
@@ -191,65 +265,6 @@ def get_building_location_pt(bldg_occsolid):
     bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
     loc_pt = py3dmodel.calculate.face_midpt(bounding_footprint)
     return loc_pt
-    
-def get_building_roofplates(bldg_occsolid, nstorey, storey_height):
-    bounding_list = []
-    loc_pt = get_building_location_pt(bldg_occsolid)
-    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
-    nstorey*storey_height
-    z = loc_pt[2]+(nstorey*storey_height)
-    moved_pt = (loc_pt[0], loc_pt[1], z)
-    moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-    bounding_list.append(moved_f)
-           
-    bounding_compound = py3dmodel.construct.make_compound(bounding_list)
-    m_pt2 = (loc_pt[0], loc_pt[1], loc_pt[2]+0.1)
-    m_bldg_occsolid = py3dmodel.modify.move(loc_pt, m_pt2, bldg_occsolid)
-    floors = py3dmodel.construct.boolean_common(m_bldg_occsolid, bounding_compound)
-    common_compound = py3dmodel.fetch.shape2shapetype(floors)
-    inter_face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
-    return inter_face_list#, bounding_list
-    
-def get_building_flrplates(bldg_occsolid, nstorey, storey_height):
-    intersection_list = []
-    bounding_list = []
-    loc_pt = get_building_location_pt(bldg_occsolid)
-    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
-    bldg_footprint_list = get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid)
-    intersection_list.extend(bldg_footprint_list)
-    for scnt in range(nstorey):
-        z = loc_pt[2]+(scnt*storey_height)
-        moved_pt = (loc_pt[0], loc_pt[1], z)
-        moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-        bounding_list.append(moved_f)
-           
-    bounding_compound = py3dmodel.construct.make_compound(bounding_list)
-    floors = py3dmodel.construct.boolean_common(bldg_occsolid, bounding_compound)
-    common_compound = py3dmodel.fetch.shape2shapetype(floors)
-    inter_face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
-    if inter_face_list:
-        for inter_face in inter_face_list:
-            intersection_list.append(inter_face)
-    return intersection_list#, bounding_list
-
-def get_building_flrplates_by_level(bldg_occsolid, nstorey, storey_height):
-    intersection_2dlist = []
-    bounding_list = []
-    loc_pt = get_building_location_pt(bldg_occsolid)
-    bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
-    bldg_footprint_list = get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid)
-    intersection_2dlist.append(bldg_footprint_list)
-    for scnt in range(nstorey):
-        if scnt!=0:
-            z = loc_pt[2]+(scnt*storey_height)
-            moved_pt = (loc_pt[0], loc_pt[1], z)
-            moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-            floor_cmpd = py3dmodel.construct.boolean_common(bldg_occsolid, moved_f)
-            floor_list = py3dmodel.fetch.geom_explorer(floor_cmpd, "face")
-            intersection_2dlist.append(floor_list)
-            bounding_list.append(moved_f)
-
-    return intersection_2dlist#, bounding_list
     
 def get_bulding_floor_area(gml_bldg, nstorey, storey_height, citygml_reader):
     bldg_occsolid = get_building_occsolid(gml_bldg,citygml_reader)
@@ -457,7 +472,7 @@ def write_non_eligible_bldgs(non_eligible_bldgs, citygml_writer):
 #===========================================================================================================================
 def write_a_gml_srf_member(occface):
     pypt_list = py3dmodel.fetch.pyptlist_frm_occface(occface)
-    pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list, roundndigit = 3)
+    #pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list, roundndigit = 6)
     if len(pypt_list)>=3:
         face_nrml = py3dmodel.calculate.face_normal(occface)
         is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)

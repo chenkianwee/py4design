@@ -63,7 +63,7 @@ from types_lut import ShapeToTopology
 from Topology import Topo
 
 
-EPSILON = TOLERANCE = 1e-6
+EPSILON = TOLERANCE = 1e-5
 ST = ShapeToTopology()
 
 
