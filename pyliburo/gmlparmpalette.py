@@ -755,9 +755,6 @@ class BldgTwistParm(BaseParm):
                     rot_nxt_plate_list = py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(rot_nxt_plate_list)
-                    #the last level append the roof
-                    if pcnt == nlvl-2:
-                        external_horz_plate_list.extend(rot_nxt_plate_list)
                     
                     #twist the next plates
                     if n_cur_plates == n_nxt_plates:
@@ -780,30 +777,37 @@ class BldgTwistParm(BaseParm):
                             cur_plate_area = py3dmodel.calculate.face_area(cur_plate)
                             nxt_plate_area = py3dmodel.calculate.face_area(nxt_plate)
                             diff_area = abs(nxt_plate_area-cur_plate_area)
+                            
                             if diff_area/cur_plate_area >= 0.5:
-                                external_horz_plate_list1.append([])
-                                external_horz_plate_list1[-1].append(nxt_plate)
-                                
                                 cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
-                                
-                                external_horz_plate_list1[-1].append(rot_cur_plate)
-                                
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(rot_cur_plate)
+                                else:
+                                    external_horz_plate_list1.append([])
+                                    external_horz_plate_list1[-1].append(nxt_plate)
+                                    external_horz_plate_list1[-1].append(rot_cur_plate)
                             else:
                                 plates2loft = [cur_plate, nxt_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(nxt_plate)
                             
                     if n_cur_plates != n_nxt_plates:
                         #move the cur plate up and rotate them 
-                        external_horz_plate_list1.append([])
-                        external_horz_plate_list1[-1].extend(rot_nxt_plate_list)
+                        if pcnt!=nlvl-2:
+                            external_horz_plate_list1.append([])
+                            external_horz_plate_list1[-1].extend(rot_nxt_plate_list)
+                            
                         for cur_plate in cur_plate_list:
                             cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                             m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
@@ -813,10 +817,14 @@ class BldgTwistParm(BaseParm):
                             if common_plate:
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
-                                external_horz_plate_list1[-1].append(rot_cur_plate)
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(rot_cur_plate)
+                                else:
+                                    external_horz_plate_list1[-1].append(rot_cur_plate)
                             else:
                                 external_horz_plate_list.append(cur_plate)
                                 
@@ -824,6 +832,7 @@ class BldgTwistParm(BaseParm):
                     
                 #need to union all the volumes
                 diff_list = []
+                
                 for horz_plate_list in external_horz_plate_list1:
                     hcnt = 0
                     for lvl in horz_plate_list:
@@ -833,19 +842,27 @@ class BldgTwistParm(BaseParm):
                         hplate2_cmpd = py3dmodel.construct.make_compound(external_horz_plate_extruded_list)
                         diff_cmpd = py3dmodel.construct.boolean_difference(lvl, hplate2_cmpd)
                         diff_face_list = py3dmodel.construct.simple_mesh(diff_cmpd)
+                        #py3dmodel.construct.visualise([[lvl], [hplate2_cmpd], diff_face_list],['RED','GREEN', 'BLUE'])
+                        
                         if diff_face_list:
                             diff_list.extend(diff_face_list)
                         hcnt+=1
                 
                 lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
                 lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
-                
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
                 new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                #print len(new_building_shell_list)
+                
+                
                 if len(new_building_shell_list)>1:
+                    print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    if external_horz_plate_list1:
+                        external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        
+                    #new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
                     scnt =0
                     for shell in new_building_shell_list:
                         if scnt == 0:
@@ -855,17 +872,16 @@ class BldgTwistParm(BaseParm):
                         scnt+=1
                     
                     new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
-                    
+                    print "NUMBER OF SOLIDS:", len(new_building_shell_list)
                     new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
-                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
                     
                 else:
                     new_building_shell =new_building_shell_list[0]
+                    #py3dmodel.construct.visualise([[new_building_shell]], ["RED"])
                     new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell)
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
-                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
@@ -960,10 +976,6 @@ class BldgBendParm(BaseParm):
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
         gml_bldg_list = pycitygml_reader.get_buildings()
-        #bldg_solid = gml3dmodel.get_building_occsolid(gml_bldg_list[0], pycitygml_reader)
-        #solid_faces = py3dmodel.fetch.geom_explorer(bldg_solid, "face")
-        #edges = py3dmodel.calculate.visualise_face_normal_as_edges(solid_faces, normal_magnitude = 10)
-        #py3dmodel.construct.visualise([[bldg_solid], edges], ["BLUE", "BLACK"])
         flr2flr_height = self.flr2flr_height
         bcnt = 0
         for gml_landuse in gml_landuses:
@@ -996,7 +1008,6 @@ class BldgBendParm(BaseParm):
                                                                                 roundndigit = 4, distance = 0.2)
                 
                 #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
-                #print "NUM OF FLOOR PLATES", len(plates_occface_list)
                 #py3dmodel.construct.visualise([plates_occface_list], ["BLUE"])
 
                 nlvl = len(plates_occface_2dlist)
@@ -1006,9 +1017,7 @@ class BldgBendParm(BaseParm):
                 external_horz_plate_list = []
                 external_horz_plate_list1 = []
                 #print "NUM OF LEVELS", nlvl
-                for pcnt in range(nlvl-1):
-                    print pcnt
-                    
+                for pcnt in range(nlvl-1):                    
                     bend_angle = bend_interval*(pcnt+1)
                     if pcnt == 0:
                         cur_plate_list = plates_occface_2dlist[pcnt]
@@ -1025,20 +1034,6 @@ class BldgBendParm(BaseParm):
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(rot_nxt_plate_list)
                     
-                    #the last level append the roof
-                    if pcnt == nlvl-2:
-                        external_horz_plate_list.extend(rot_nxt_plate_list)
-                    
-                    '''
-                    #if pcnt == 14:
-                    for cur_p in range(n_cur_plates):
-                        pyptlist1 = py3dmodel.fetch.pyptlist_frm_occface(cur_plate_list[cur_p])
-                        pyptlist2 = py3dmodel.fetch.pyptlist_frm_occface(rot_nxt_plate_list[cur_p])
-                        circles1 = py3dmodel.construct.circles_frm_pyptlist(pyptlist1, 2)
-                        circles2 = py3dmodel.construct.circles_frm_pyptlist(pyptlist2, 2)
-                        print len(pyptlist1), len(pyptlist2)
-                    #py3dmodel.construct.visualise([cur_plate_list, rot_nxt_plate_list, circles1+circles2 ],["BLUE", "RED", "BLACK"])
-                    '''
                     #twist the next plates
                     if n_cur_plates == n_nxt_plates:
                         for pcnt2 in range(n_cur_plates):
@@ -1061,29 +1056,35 @@ class BldgBendParm(BaseParm):
                             diff_area = abs(nxt_plate_area-cur_plate_area)
                             
                             if diff_area/cur_plate_area >= 0.5:
-                                external_horz_plate_list1.append([])
-                                external_horz_plate_list1[-1].append(nxt_plate)
-                                
                                 cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, edge_pt, (0,1,0), bend_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
                                 
-                                external_horz_plate_list1[-1].append(rot_cur_plate)
-                                
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(rot_cur_plate)
+                                else:
+                                    external_horz_plate_list1.append([])
+                                    external_horz_plate_list1[-1].append(nxt_plate)
+                                    external_horz_plate_list1[-1].append(rot_cur_plate)
                             else:
                                 plates2loft = [cur_plate, nxt_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(nxt_plate)
                             
                     if n_cur_plates != n_nxt_plates:
                         #move the cur plate up and rotate them 
-                        external_horz_plate_list1.append([])
-                        external_horz_plate_list1[-1].extend(rot_nxt_plate_list)
+                        if pcnt!=nlvl-2:
+                            external_horz_plate_list1.append([])
+                            external_horz_plate_list1[-1].extend(rot_nxt_plate_list)
                         for cur_plate in cur_plate_list:
                             cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                             m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
@@ -1093,10 +1094,14 @@ class BldgBendParm(BaseParm):
                             if common_plate:
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, edge_pt, (0,1,0), bend_interval)
                                 rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
-                                external_horz_plate_list1[-1].append(rot_cur_plate)
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(rot_cur_plate)
+                                else:
+                                    external_horz_plate_list1[-1].append(rot_cur_plate)
                             else:
                                 external_horz_plate_list.append(cur_plate)
                                 
@@ -1127,6 +1132,571 @@ class BldgBendParm(BaseParm):
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    if external_horz_plate_list1:
+                        external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        
+                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    scnt =0
+                    for shell in new_building_shell_list:
+                        if scnt == 0:
+                            fshell = shell
+                        if scnt != 0:
+                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
+                        scnt+=1
+                    
+                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
+                    
+                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    
+                else:
+                    new_building_shell =new_building_shell_list[0]
+                    new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    
+                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
+                                               citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
+                
+                bcnt+=1
+                
+        non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
+        gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
+        citymodel_node = citygml_writer.citymodelnode
+        reader = pycitygml.Reader()
+        reader.load_citymodel_node(citymodel_node)
+        return reader
+    
+class BldgSlantParm(BaseParm):
+    def __init__(self):
+        self.bldg_class = None
+        self.bldg_function = None
+        self.bldg_usage = None
+        self.parm_range = None
+        self.flr2flr_height = 3
+        
+    def define_flr2flr_height(self, flr2flr_height):
+        self.flr2flr_height = flr2flr_height
+        
+    def apply_2_bldg_class(self, bldg_class):
+        self.bldg_class = bldg_class
+        
+    def apply_2_bldg_function(self, bldg_function):
+        self.bldg_function = bldg_function
+        
+    def apply_2_bldg_usage(self, bldg_usage):
+        self.bldg_usage = bldg_usage
+        
+    def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        eligible_bldg_list = []
+        non_eligible_bldg_list = []
+        for gml_bldg in gml_bldg_list:
+            eligibility = True
+            if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
+                if self.bldg_class != bldg_class:
+                    eligibility = False
+                    
+            if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
+                if self.bldg_function != bldg_function:
+                    eligibility = False
+            
+            if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
+                if self.bldg_usage != bldg_usage:
+                    eligibility = False
+                    
+            if eligibility == True:
+                eligible_bldg_list.append(gml_bldg)
+                
+            if eligibility == False:
+                non_eligible_bldg_list.append(gml_bldg)
+                
+        return eligible_bldg_list, non_eligible_bldg_list
+        
+    def define_int_range(self, start, stop, step):
+        parm_range = super(BldgSlantParm, self).define_int_range(start, stop, step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def define_float_range(self, start, stop, step=None):
+        parm_range = super(BldgSlantParm, self).define_float_range(start, stop, step=step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def set_parm_range(self, parm_range):
+        self.parm_range = parm_range
+        
+    def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        if self.parm_range == None:
+            raise Exception("please define parm range")
+        parm_list = super(BldgSlantParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        return parm_list
+        
+    def define_nparameters(self,pycitygml_reader):
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        #filter through the eligible buildings
+        eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
+        #because each building has one building height parameter
+        nparameters = len(eligible_bldg_list)
+        return nparameters
+                
+    def execute(self, pycitygml_reader, nrmlised_parm_list):
+        parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        citygml_writer = pycitygml.Writer()
+        gml_landuses = pycitygml_reader.get_landuses()
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        flr2flr_height = self.flr2flr_height
+        bcnt = 0
+        for gml_landuse in gml_landuses:
+            #check which buildings are on this plot
+            gml_bldg_on_luse = gml3dmodel.buildings_on_landuse(gml_landuse,gml_bldg_list, pycitygml_reader)
+            
+            #check which buildings should this parameter be applied to
+            eligibility_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_on_luse, pycitygml_reader)
+            n_eligibility_bldgs = len(eligibility_bldg_list)
+            
+            #get the parameters for this landuse plot
+            parms_4_luse = parm_list[bcnt:bcnt+n_eligibility_bldgs]
+            
+            #twist the bldg
+            bcnt = 0
+            for eligible_gml_bldg in eligibility_bldg_list:
+                #get the twist parm for the bldg
+                parm = parms_4_luse[bcnt]
+                
+                #extract the bldg solid
+                bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
+                
+                xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(bldg_solid)
+                #bend each bldg according to the parameter
+                #first get all the floorplates 
+                height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
+                                                                                       flr2flr_height = flr2flr_height)
+
+                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                                                                                roundndigit = 4, distance = 0.2)
+                
+                #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
+                #print "NUM OF FLOOR PLATES", len(plates_occface_list)
+                #py3dmodel.construct.visualise([plates_occface_list], ["BLUE"])
+
+                nlvl = len(plates_occface_2dlist)
+                interval = float(parm)/float(nlvl)
+                
+                lvl_shell_list = []
+                external_horz_plate_list = []
+                external_horz_plate_list1 = []
+                #print "NUM OF LEVELS", nlvl
+                for pcnt in range(nlvl-1):                    
+                    magnitude = interval*(pcnt+1)
+                    if pcnt == 0:
+                        cur_plate_list = plates_occface_2dlist[pcnt]
+                        external_horz_plate_list.extend(cur_plate_list)
+                        
+                    nxt_plate_list = plates_occface_2dlist[pcnt+1]
+                    plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
+                    plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
+                    #slant towards the right
+                    m_plate_midpt = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), magnitude)
+                    
+                    trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_plate_midpt, plate_cmpd)
+                    trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
+                    n_cur_plates = len(cur_plate_list)
+                    n_nxt_plates = len(trsf_nxt_plate_list)
+                    
+                    #slant the next plates
+                    if n_cur_plates == n_nxt_plates:
+                        for pcnt2 in range(n_cur_plates):
+                            cur_plate = cur_plate_list[pcnt2]
+                            #find the nearest face to loft 
+                            if len(trsf_nxt_plate_list) > 1:
+                                min_dist_list = []
+                                for trsf_nxt_plate in trsf_nxt_plate_list:
+                                    min_dist = py3dmodel.calculate.minimum_distance(cur_plate, trsf_nxt_plate)
+                                    min_dist_list.append(min_dist)
+                                    
+                                min_min_dist = min(min_dist_list)
+                                min_index = min_dist_list.index(min_min_dist)
+                                nxt_plate = trsf_nxt_plate_list[min_index]
+                            else:
+                                nxt_plate = trsf_nxt_plate_list[pcnt2]
+                            
+                            cur_plate_area = py3dmodel.calculate.face_area(cur_plate)
+                            nxt_plate_area = py3dmodel.calculate.face_area(nxt_plate)
+                            diff_area = abs(nxt_plate_area-cur_plate_area)
+                            
+                            if diff_area/cur_plate_area >= 0.5:
+                                cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
+                                m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
+                                m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
+                                trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
+                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                
+                                plates2loft = [cur_plate, trsf_cur_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(trsf_cur_plate)
+                                else:
+                                    external_horz_plate_list1.append([])
+                                    external_horz_plate_list1[-1].append(nxt_plate)
+                                    external_horz_plate_list1[-1].append(trsf_cur_plate)
+                            else:
+                                plates2loft = [cur_plate, nxt_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(nxt_plate)
+                            
+                    if n_cur_plates != n_nxt_plates:
+                        #move the cur plate up and rotate them 
+                        if pcnt!=nlvl-2:
+                            external_horz_plate_list1.append([])
+                            external_horz_plate_list1[-1].extend(trsf_nxt_plate_list)
+                        for cur_plate in cur_plate_list:
+                            cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
+                            m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
+                            m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
+                            #if there is a boolean it means it is connected to the upper floor in some way
+                            common_plate = py3dmodel.construct.boolean_common(m_cur_plate, plate_cmpd)
+                            if common_plate:
+                                m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
+                                trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
+                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                
+                                plates2loft = [cur_plate, trsf_cur_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(trsf_cur_plate)
+                                else:
+                                    external_horz_plate_list1[-1].append(trsf_cur_plate)
+                            else:
+                                external_horz_plate_list.append(cur_plate)
+                                
+                    cur_plate_list = trsf_nxt_plate_list
+                
+                #need to union all the volumes
+                diff_list = []
+                for horz_plate_list in external_horz_plate_list1:
+                    hcnt = 0
+                    for lvl in horz_plate_list:
+                        external_horz_plate_list2 = horz_plate_list[:]
+                        del external_horz_plate_list2[hcnt]
+                        external_horz_plate_extruded_list = gml3dmodel.extrude_move_down_occ_faces(external_horz_plate_list2)
+                        hplate2_cmpd = py3dmodel.construct.make_compound(external_horz_plate_extruded_list)
+                        diff_cmpd = py3dmodel.construct.boolean_difference(lvl, hplate2_cmpd)
+                        diff_face_list = py3dmodel.construct.simple_mesh(diff_cmpd)
+                        if diff_face_list:
+                            diff_list.extend(diff_face_list)
+                        hcnt+=1
+                
+                lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
+                lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
+                
+                external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
+                external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
+                new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
+                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                
+                if len(new_building_shell_list)>1:
+                    print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    if external_horz_plate_list1:
+                        external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        
+                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    scnt =0
+                    for shell in new_building_shell_list:
+                        if scnt == 0:
+                            fshell = shell
+                        if scnt != 0:
+                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
+                        scnt+=1
+                    
+                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
+                    
+                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    
+                else:
+                    new_building_shell =new_building_shell_list[0]
+                    new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell)
+                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    
+                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
+                                               citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
+                
+                bcnt+=1
+                
+        non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
+        gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
+        gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
+        citymodel_node = citygml_writer.citymodelnode
+        reader = pycitygml.Reader()
+        reader.load_citymodel_node(citymodel_node)
+        return reader
+    
+class BldgTaperParm(BaseParm):
+    def __init__(self):
+        self.bldg_class = None
+        self.bldg_function = None
+        self.bldg_usage = None
+        self.parm_range = None
+        self.flr2flr_height = 3
+        
+    def define_flr2flr_height(self, flr2flr_height):
+        self.flr2flr_height = flr2flr_height
+        
+    def apply_2_bldg_class(self, bldg_class):
+        self.bldg_class = bldg_class
+        
+    def apply_2_bldg_function(self, bldg_function):
+        self.bldg_function = bldg_function
+        
+    def apply_2_bldg_usage(self, bldg_usage):
+        self.bldg_usage = bldg_usage
+        
+    def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        eligible_bldg_list = []
+        non_eligible_bldg_list = []
+        for gml_bldg in gml_bldg_list:
+            eligibility = True
+            if self.bldg_class != None: 
+                bldg_class = pycitygml_reader.get_building_class(gml_bldg)
+                if self.bldg_class != bldg_class:
+                    eligibility = False
+                    
+            if self.bldg_function != None:
+                bldg_function = pycitygml_reader.get_building_function(gml_bldg)
+                if self.bldg_function != bldg_function:
+                    eligibility = False
+            
+            if self.bldg_usage != None:
+                bldg_usage = pycitygml_reader.get_building_usage(gml_bldg)
+                if self.bldg_usage != bldg_usage:
+                    eligibility = False
+                    
+            if eligibility == True:
+                eligible_bldg_list.append(gml_bldg)
+                
+            if eligibility == False:
+                non_eligible_bldg_list.append(gml_bldg)
+                
+        return eligible_bldg_list, non_eligible_bldg_list
+        
+    def define_int_range(self, start, stop, step):
+        parm_range = super(BldgTaperParm, self).define_int_range(start, stop, step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def define_float_range(self, start, stop, step=None):
+        parm_range = super(BldgTaperParm, self).define_float_range(start, stop, step=step)
+        self.parm_range = parm_range
+        return parm_range
+        
+    def set_parm_range(self, parm_range):
+        self.parm_range = parm_range
+        
+    def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        if self.parm_range == None:
+            raise Exception("please define parm range")
+        parm_list = super(BldgTaperParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        return parm_list
+        
+    def define_nparameters(self,pycitygml_reader):
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        #filter through the eligible buildings
+        eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
+        #because each building has one building height parameter
+        nparameters = len(eligible_bldg_list)
+        return nparameters
+                
+    def execute(self, pycitygml_reader, nrmlised_parm_list):
+        parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
+        citygml_writer = pycitygml.Writer()
+        gml_landuses = pycitygml_reader.get_landuses()
+        gml_bldg_list = pycitygml_reader.get_buildings()
+        flr2flr_height = self.flr2flr_height
+        bcnt = 0
+        for gml_landuse in gml_landuses:
+            #check which buildings are on this plot
+            gml_bldg_on_luse = gml3dmodel.buildings_on_landuse(gml_landuse,gml_bldg_list, pycitygml_reader)
+            
+            #check which buildings should this parameter be applied to
+            eligibility_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_on_luse, pycitygml_reader)
+            n_eligibility_bldgs = len(eligibility_bldg_list)
+            
+            #get the parameters for this landuse plot
+            parms_4_luse = parm_list[bcnt:bcnt+n_eligibility_bldgs]
+            
+            #twist the bldg
+            bcnt = 0
+            for eligible_gml_bldg in eligibility_bldg_list:
+                #get the twist parm for the bldg
+                parm = parms_4_luse[bcnt]
+                parm = parm-1.0
+                
+                #extract the bldg solid
+                bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
+                
+                xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(bldg_solid)
+                #bend each bldg according to the parameter
+                #first get all the floorplates 
+                height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
+                                                                                       flr2flr_height = flr2flr_height)
+
+                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                                                                                roundndigit = 4, distance = 0.2)
+                
+                #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
+                #print "NUM OF FLOOR PLATES", len(plates_occface_list)
+                #py3dmodel.construct.visualise([plates_occface_list], ["BLUE"])
+
+                nlvl = len(plates_occface_2dlist)
+                interval = float(parm)/float(nlvl)
+                
+                lvl_shell_list = []
+                external_horz_plate_list = []
+                external_horz_plate_list1 = []
+                #print "NUM OF LEVELS", nlvl
+                for pcnt in range(nlvl-1):                    
+                    magnitude = interval*(pcnt+1)
+                    magnitude = 1.0 + magnitude
+                    if pcnt == 0:
+                        cur_plate_list = plates_occface_2dlist[pcnt]
+                        external_horz_plate_list.extend(cur_plate_list)
+                        
+                    nxt_plate_list = plates_occface_2dlist[pcnt+1]
+                    plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
+                    plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
+                    #taper
+                    m_plate_midpt = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), magnitude)
+                    trsf_plate_shape = py3dmodel.modify.uniform_scale(plate_cmpd, magnitude, magnitude, magnitude, m_plate_midpt)
+                    trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
+                    n_cur_plates = len(cur_plate_list)
+                    n_nxt_plates = len(trsf_nxt_plate_list)
+                    
+                    #taper the next plates
+                    if n_cur_plates == n_nxt_plates:
+                        for pcnt2 in range(n_cur_plates):
+                            cur_plate = cur_plate_list[pcnt2]
+                            #find the nearest face to loft 
+                            if len(trsf_nxt_plate_list) > 1:
+                                min_dist_list = []
+                                for trsf_nxt_plate in trsf_nxt_plate_list:
+                                    min_dist = py3dmodel.calculate.minimum_distance(cur_plate, trsf_nxt_plate)
+                                    min_dist_list.append(min_dist)
+                                    
+                                min_min_dist = min(min_dist_list)
+                                min_index = min_dist_list.index(min_min_dist)
+                                nxt_plate = trsf_nxt_plate_list[min_index]
+                            else:
+                                nxt_plate = trsf_nxt_plate_list[pcnt2]
+                            
+                            cur_plate_area = py3dmodel.calculate.face_area(cur_plate)
+                            nxt_plate_area = py3dmodel.calculate.face_area(nxt_plate)
+                            diff_area = abs(nxt_plate_area-cur_plate_area)
+                            
+                            if diff_area/cur_plate_area >= 0.5:
+                                cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
+                                m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
+                                m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
+                                trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
+                                                                                  1+interval, m_cur_midpt)
+                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                
+                                plates2loft = [cur_plate, trsf_cur_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(trsf_cur_plate)
+                                else:
+                                    external_horz_plate_list1.append([])
+                                    external_horz_plate_list1[-1].append(nxt_plate)
+                                    external_horz_plate_list1[-1].append(trsf_cur_plate)
+                            else:
+                                plates2loft = [cur_plate, nxt_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(nxt_plate)
+                            
+                    if n_cur_plates != n_nxt_plates:
+                        #move the cur plate up and rotate them 
+                        if pcnt!=nlvl-2:
+                            external_horz_plate_list1.append([])
+                            external_horz_plate_list1[-1].extend(trsf_nxt_plate_list)
+                        for cur_plate in cur_plate_list:
+                            cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
+                            m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
+                            m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
+                            #if there is a boolean it means it is connected to the upper floor in some way
+                            common_plate = py3dmodel.construct.boolean_common(m_cur_plate, plate_cmpd)
+                            if common_plate:
+                                m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
+                                trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
+                                trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
+                                                                                  1+interval, cur_midpt)
+                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                
+                                plates2loft = [cur_plate, trsf_cur_plate]
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell_list.append(lvl_shell)
+                                #the last level append the roof
+                                if pcnt == nlvl-2:
+                                    external_horz_plate_list.append(trsf_cur_plate)
+                                else:
+                                    external_horz_plate_list1[-1].append(trsf_cur_plate)
+                            else:
+                                external_horz_plate_list.append(cur_plate)
+                                
+                    cur_plate_list = trsf_nxt_plate_list
+                
+                #need to union all the volumes
+                diff_list = []
+                for horz_plate_list in external_horz_plate_list1:
+                    hcnt = 0
+                    for lvl in horz_plate_list:
+                        external_horz_plate_list2 = horz_plate_list[:]
+                        del external_horz_plate_list2[hcnt]
+                        external_horz_plate_extruded_list = gml3dmodel.extrude_move_down_occ_faces(external_horz_plate_list2)
+                        hplate2_cmpd = py3dmodel.construct.make_compound(external_horz_plate_extruded_list)
+                        diff_cmpd = py3dmodel.construct.boolean_difference(lvl, hplate2_cmpd)
+                        diff_face_list = py3dmodel.construct.simple_mesh(diff_cmpd)
+                        if diff_face_list:
+                            diff_list.extend(diff_face_list)
+                        hcnt+=1
+                
+                lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
+                lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
+                
+                external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
+                external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
+                new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
+                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                
+                if len(new_building_shell_list)>1:
+                    print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    if external_horz_plate_list1:
+                        external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        
+                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
                     scnt =0
                     for shell in new_building_shell_list:
                         if scnt == 0:

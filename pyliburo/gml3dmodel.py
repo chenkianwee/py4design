@@ -136,26 +136,29 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
     intersection_2dlist.append(bldg_footprint_list)
     
     for scnt in range(nstorey):
-        if scnt!=0:
-            z = loc_pt[2]+(scnt*storey_height)
-            moved_pt = (loc_pt[0], loc_pt[1], z)
-            moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-            floor_cmpd = py3dmodel.construct.boolean_section(moved_f, bldg_occsolid, roundndigit = roundndigit, distance = distance)
-            floor_list = py3dmodel.fetch.geom_explorer(floor_cmpd, "face")
+        #if scnt!=0:
+        z = loc_pt[2]+((scnt+1)*storey_height)
+        moved_pt = (loc_pt[0], loc_pt[1], z)
+        moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
+        floor_cmpd = py3dmodel.construct.boolean_section(moved_f, bldg_occsolid, roundndigit = roundndigit, distance = distance)
+        floor_list = py3dmodel.fetch.geom_explorer(floor_cmpd, "face")
+        if floor_list:
             intersection_2dlist.append(floor_list)
-            bounding_list.append(moved_f)
+        bounding_list.append(moved_f)
             
-    bldg_roof_list = get_building_roofplates(bldg_occsolid, nstorey, storey_height, roundndigit = roundndigit, distance = distance)
-    intersection_2dlist.append(bldg_roof_list)
+    #bldg_roof_list = get_building_roofplates(bldg_occsolid, nstorey, storey_height, roundndigit = roundndigit, distance = distance)
+    #intersection_2dlist.append(bldg_roof_list)
 
     new_2d_list = []
     for intersection_list in intersection_2dlist:
         new_flr_list = []
-        #
         for floor in intersection_list:
-            #pyptlist = py3dmodel.fetch.pyptlist_frm_occface(floor)
+            #pyptlist2 = py3dmodel.fetch.pyptlist_frm_occface(floor)
             wire = py3dmodel.fetch.geom_explorer(floor, "wire")[0]
             bspline_edge = py3dmodel.modify.wire_2_bsplinecurve_edge(wire)
+            #pyptlist = py3dmodel.fetch.poles_from_bsplinecurve_edge(bspline_edge)
+            #print len(pyptlist)
+            
             lbound, ubound = py3dmodel.fetch.edge_domain(bspline_edge)
             bound = ubound - lbound
             n_interval = 30
@@ -165,7 +168,8 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
                 u = lbound + (i*b_interval)
                 e_pypt = py3dmodel.calculate.edgeparameter2pt(u, bspline_edge)
                 pyptlist.append(e_pypt)
-                
+            
+            #print "POLES VS PTS:", len(pyptlist), len(pyptlist2)
             pyref_vec = (0,0,1)
             is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pyptlist, pyref_vec)
             if not is_anticlockwise:
