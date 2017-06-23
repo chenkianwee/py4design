@@ -860,28 +860,34 @@ class BldgTwistParm(BaseParm):
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
                     if external_horz_plate_list1:
                         external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    else:
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    #new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
                     new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                    scnt =0
-                    for shell in new_building_shell_list:
-                        if scnt == 0:
-                            fshell = shell
-                        if scnt != 0:
-                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
-                        scnt+=1
-                    
-                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
-                    print "NUMBER OF SOLIDS:", len(new_building_shell_list)
-                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
-                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    if len(new_building_shell_list) == 1:
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    else:
+                        vol_list = []
+                        for shell in new_building_shell_list:
+                            bldg_solid = py3dmodel.construct.make_solid(shell)
+                            bldg_solid = py3dmodel.modify.fix_close_solid(bldg_solid)
+                            solid_vol = py3dmodel.calculate.solid_volume(bldg_solid)
+                            vol_list.append(solid_vol)
+                            
+                        max_vol = max(vol_list)
+                        max_index = vol_list.index(max_vol)
+                        new_bldg_shell = new_building_shell_list[max_index]
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_bldg_shell)
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 else:
                     new_building_shell =new_building_shell_list[0]
-                    #py3dmodel.construct.visualise([[new_building_shell]], ["RED"])
                     new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell)
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
-                    
+                   
+                #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
@@ -1134,22 +1140,27 @@ class BldgBendParm(BaseParm):
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
                     if external_horz_plate_list1:
                         external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    else:
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
                     new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                    scnt =0
-                    for shell in new_building_shell_list:
-                        if scnt == 0:
-                            fshell = shell
-                        if scnt != 0:
-                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
-                        scnt+=1
-                    
-                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
-                    
-                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
-                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
-                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    if len(new_building_shell_list) == 1:
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    else:
+                        vol_list = []
+                        for shell in new_building_shell_list:
+                            bldg_solid = py3dmodel.construct.make_solid(shell)
+                            bldg_solid = py3dmodel.modify.fix_close_solid(bldg_solid)
+                            solid_vol = py3dmodel.calculate.solid_volume(bldg_solid)
+                            vol_list.append(solid_vol)
+                            
+                        max_vol = max(vol_list)
+                        max_index = vol_list.index(max_vol)
+                        new_bldg_shell = new_building_shell_list[max_index]
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_bldg_shell)
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 else:
                     new_building_shell =new_building_shell_list[0]
@@ -1272,8 +1283,8 @@ class BldgSlantParm(BaseParm):
                 
                 #extract the bldg solid
                 bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
-                
-                xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(bldg_solid)
+                bldg_bf = gml3dmodel.get_building_bounding_footprint(bldg_solid)
+                bf_midpt = py3dmodel.calculate.face_midpt(bldg_bf)
                 #bend each bldg according to the parameter
                 #first get all the floorplates 
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
@@ -1301,7 +1312,8 @@ class BldgSlantParm(BaseParm):
                         
                     nxt_plate_list = plates_occface_2dlist[pcnt+1]
                     plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
-                    plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
+                    level_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
+                    plate_midpt = (bf_midpt[0],bf_midpt[1],level_midpt[2])
                     #slant towards the right
                     m_plate_midpt = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), magnitude)
                     
@@ -1334,8 +1346,11 @@ class BldgSlantParm(BaseParm):
                             if diff_area/cur_plate_area >= 0.5:
                                 cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
-                                m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
-                                trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
+                                m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
+                                
+                                m_cur_midpt2 = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), interval)
+                                
+                                trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_cur_midpt2, m_cur_plate)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
@@ -1368,8 +1383,9 @@ class BldgSlantParm(BaseParm):
                             #if there is a boolean it means it is connected to the upper floor in some way
                             common_plate = py3dmodel.construct.boolean_common(m_cur_plate, plate_cmpd)
                             if common_plate:
-                                m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
-                                trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
+                                m_cur_midpt2 = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), interval)
+                                
+                                trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_cur_midpt2, m_cur_plate)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
@@ -1410,24 +1426,31 @@ class BldgSlantParm(BaseParm):
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    #py3dmodel.construct.visualise([new_building_shell_list], ["RED"])
                     if external_horz_plate_list1:
                         external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    else:
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
                     new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                    scnt =0
-                    for shell in new_building_shell_list:
-                        if scnt == 0:
-                            fshell = shell
-                        if scnt != 0:
-                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
-                        scnt+=1
-                    
-                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
-                    
-                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
-                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
-                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    if len(new_building_shell_list) == 1:
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    else:
+                        vol_list = []
+                        for shell in new_building_shell_list:
+                            bldg_solid = py3dmodel.construct.make_solid(shell)
+                            bldg_solid = py3dmodel.modify.fix_close_solid(bldg_solid)
+                            solid_vol = py3dmodel.calculate.solid_volume(bldg_solid)
+                            vol_list.append(solid_vol)
+                            
+                        max_vol = max(vol_list)
+                        max_index = vol_list.index(max_vol)
+                        new_bldg_shell = new_building_shell_list[max_index]
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_bldg_shell)
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                        #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
                     
                 else:
                     new_building_shell =new_building_shell_list[0]
@@ -1551,7 +1574,7 @@ class BldgTaperParm(BaseParm):
                 
                 #extract the bldg solid
                 bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
-                
+                bldg_solid_midpt = py3dmodel.calculate.get_centre_bbox(bldg_solid)
                 xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(bldg_solid)
                 #bend each bldg according to the parameter
                 #first get all the floorplates 
@@ -1581,11 +1604,11 @@ class BldgTaperParm(BaseParm):
                         
                     nxt_plate_list = plates_occface_2dlist[pcnt+1]
                     plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
-                    plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
+                    #plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
                     #taper
-                    m_plate_midpt = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), magnitude)
-                    trsf_plate_shape = py3dmodel.modify.uniform_scale(plate_cmpd, magnitude, magnitude, magnitude, m_plate_midpt)
+                    trsf_plate_shape = py3dmodel.modify.uniform_scale(plate_cmpd, magnitude, magnitude, 1, bldg_solid_midpt)
                     trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
+                    
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(trsf_nxt_plate_list)
                     
@@ -1615,11 +1638,11 @@ class BldgTaperParm(BaseParm):
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
-                                                                                  1+interval, m_cur_midpt)
+                                                                                  1, bldg_solid_midpt)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
-                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
                                 lvl_shell_list.append(lvl_shell)
                                 #the last level append the roof
                                 if pcnt == nlvl-2:
@@ -1630,7 +1653,7 @@ class BldgTaperParm(BaseParm):
                                     external_horz_plate_list1[-1].append(trsf_cur_plate)
                             else:
                                 plates2loft = [cur_plate, nxt_plate]
-                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
                                 lvl_shell_list.append(lvl_shell)
                                 #the last level append the roof
                                 if pcnt == nlvl-2:
@@ -1651,11 +1674,11 @@ class BldgTaperParm(BaseParm):
                                 m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
                                 trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
                                 trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
-                                                                                  1+interval, cur_midpt)
+                                                                                  1, bldg_solid_midpt)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
-                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
+                                lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
                                 lvl_shell_list.append(lvl_shell)
                                 #the last level append the roof
                                 if pcnt == nlvl-2:
@@ -1684,7 +1707,7 @@ class BldgTaperParm(BaseParm):
                 
                 lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
                 lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
-                
+                #py3dmodel.construct.visualise([lvl_faces], ["RED"])
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
@@ -1692,24 +1715,30 @@ class BldgTaperParm(BaseParm):
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
+                    
                     if external_horz_plate_list1:
                         external_horz_plate_list2 = reduce(lambda x,y :x+y ,external_horz_plate_list1)
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
+                    else:
+                        new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_bldg_face_list = lvl_faces + external_horz_plate_list + external_horz_plate_list2
                     new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
-                    scnt =0
-                    for shell in new_building_shell_list:
-                        if scnt == 0:
-                            fshell = shell
-                        if scnt != 0:
-                            fshell = py3dmodel.construct.boolean_fuse(fshell,shell)
-                        scnt+=1
-                    
-                    new_building_shell_list = py3dmodel.fetch.geom_explorer(fshell, "shell")
-                    
-                    new_bldg_occsolid = py3dmodel.construct.make_solid_from_shell_list(new_building_shell_list)
-                    new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
-                    #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
+                    if len(new_building_shell_list) == 1:
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
+                    else:
+                        vol_list = []
+                        for shell in new_building_shell_list:
+                            bldg_solid = py3dmodel.construct.make_solid(shell)
+                            bldg_solid = py3dmodel.modify.fix_close_solid(bldg_solid)
+                            solid_vol = py3dmodel.calculate.solid_volume(bldg_solid)
+                            vol_list.append(solid_vol)
+                            
+                        max_vol = max(vol_list)
+                        max_index = vol_list.index(max_vol)
+                        new_bldg_shell = new_building_shell_list[max_index]
+                        new_bldg_occsolid = py3dmodel.construct.make_solid(new_bldg_shell)
+                        new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 else:
                     new_building_shell =new_building_shell_list[0]
