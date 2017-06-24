@@ -795,6 +795,82 @@ def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     
     return res_dict
     
+def nshffai2(building_occsolids, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, nshffai_threshold = None, shading_occfaces = []):
+    '''
+    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
+    
+    Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
+    receives irradiation above a specified level over the building volume.    
+    
+    Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
+    receives irradiation below a specified level over the net facade area. 
+    
+    PARAMETERS
+    ----------
+    :param building_occsolids : a list of buildings occsolids
+    :ptype: list(occsolid)
+    
+    :param irrad_threshold: a solar irradiance threshold value
+    :ptype: float
+    
+    :param epwweatherfile: file path of the epw weatherfile
+    :ptype: string
+    
+    :param xdim: x dimension grid size
+    :ptype: float
+    
+    :param ydim: y dimension grid size
+    :ptype: float
+    
+    :param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent
+    :ptype: float
+    
+    RETURNS
+    -------
+    :returns shgfavi: average solar heat gain facade area volume index
+    :rtype: float
+    
+    :returns shgfavi_percent: percentage of buildings achieving the shgfavi_threshold
+    :rtype: float
+    
+    :returns shgfai: shgfai value 
+    :rtype: float
+    
+    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
+    :rtype: list(occface)
+    
+    :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
+    :rtype: list(float)
+    '''
+    #sort and process the surfaces into radiance ready surfaces
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+                                                                                               xdim, ydim, 
+                                                                                               rad_folderpath, 
+                                                                                               shading_occfaces = shading_occfaces)   
+    
+    #execute gencumulative sky rtrace
+    irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
+    
+    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    
+    #calculate avg shgfavi 
+    total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi2(sorted_bldgdict_list, lower_irrad_threshold,
+                                                                                                                       upper_irrad_threshold, "nshffai2",
+                                                                                                                       afi_threshold = nshffai_threshold)
+            
+
+    res_dict = {}
+    res_dict["afi"] = total_afi
+    res_dict["ai"] = ai
+    res_dict["percent"] = afi_percent
+    res_dict["sensor_surfaces"] = sensor_srflist
+    res_dict["solar_results"] = irrad_ress
+    res_dict["building_solids"] = bsolid_list
+    res_dict["afi_list"] = afi_list
+    
+    return res_dict
+
 def calculate_epv(sensor_srflist,irrad_ress):
     '''
     epv is energy produced by pv (kwh/yr)
@@ -1116,33 +1192,77 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
         #separate the solid into facade footprint and roof
         bldg_dict = {}
         facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
+        total_surface_list = facades + roofs
+        nsrfs = len(total_surface_list)
         bsrflist = facades + roofs + footprints
         bldg_dict["solid"] = bsolid
-        if surface == "roof" or surface == "envelope":
-            for roof in roofs:
-                sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
-                sensor_ptlist.extend(sensor_pts)
-                sensor_dirlist.extend(sensor_dirs)
-                sensor_surfacelist.extend(sensor_surfaces)
-                
-                gsrf_cnt += len(sensor_surfaces)
-                
-            if surface == "envelope":
-                roof_index1 = gsrf_index_cnt
-                roof_index2 = gsrf_index_cnt + gsrf_cnt
-             
-        if surface == "facade" or surface == "envelope":
-            for facade in facades:
-                sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
-                sensor_ptlist.extend(sensor_pts)
-                sensor_dirlist.extend(sensor_dirs)
-                sensor_surfacelist.extend(sensor_surfaces)
-                
-                gsrf_cnt += len(sensor_surfaces)
-                
-            if surface == "envelope":
-                facade_index1 = roof_index2
-                facade_index2 = gsrf_index_cnt + gsrf_cnt
+        #TO DO: NEED TO PROPERLY DEFINE THE CONDITION THIS IS TOO ARBITRARY 
+        if nsrfs < 50:
+            if surface == "roof" or surface == "envelope":
+                for roof in roofs:
+                    sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
+                    sensor_ptlist.extend(sensor_pts)
+                    sensor_dirlist.extend(sensor_dirs)
+                    sensor_surfacelist.extend(sensor_surfaces)
+                    
+                    gsrf_cnt += len(sensor_surfaces)
+                    
+                if surface == "envelope":
+                    roof_index1 = gsrf_index_cnt
+                    roof_index2 = gsrf_index_cnt + gsrf_cnt
+                 
+            if surface == "facade" or surface == "envelope":
+                for facade in facades:
+                    sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
+                    sensor_ptlist.extend(sensor_pts)
+                    sensor_dirlist.extend(sensor_dirs)
+                    sensor_surfacelist.extend(sensor_surfaces)
+                    
+                    gsrf_cnt += len(sensor_surfaces)
+                    
+                if surface == "envelope":
+                    facade_index1 = roof_index2
+                    facade_index2 = gsrf_index_cnt + gsrf_cnt
+        else:
+            if surface == "roof" or surface == "envelope":
+                for roof in roofs:
+                    sensor_surfaces = []
+                    area = py3dmodel.calculate.face_area(roof)
+                    if area > 0.01:
+                        sensor_pt = py3dmodel.calculate.face_midpt(roof)
+                        sensor_dir = py3dmodel.calculate.face_normal(roof)
+                        sensor_pt = py3dmodel.modify.move_pt(sensor_pt, sensor_dir, 0.05)
+                        
+                        sensor_ptlist.append(sensor_pt)
+                        sensor_dirlist.append(sensor_dir)
+                        sensor_surfacelist.append(roof)
+                        sensor_surfaces.append(roof)
+
+                    gsrf_cnt += len(sensor_surfaces)
+                    
+                if surface == "envelope":
+                    roof_index1 = gsrf_index_cnt
+                    roof_index2 = gsrf_index_cnt + gsrf_cnt
+                 
+            if surface == "facade" or surface == "envelope":
+                for facade in facades:
+                    sensor_surfaces = []
+                    area = py3dmodel.calculate.face_area(facade)
+                    if area > 0.01:
+                        sensor_pt = py3dmodel.calculate.face_midpt(facade)
+                        sensor_dir = py3dmodel.calculate.face_normal(facade)
+                        sensor_pt = py3dmodel.modify.move_pt(sensor_pt, sensor_dir, 0.05)
+                        
+                        sensor_ptlist.append(sensor_pt)
+                        sensor_dirlist.append(sensor_dir)
+                        sensor_surfacelist.append(facade)
+                        sensor_surfaces.append(facade)
+                                            
+                    gsrf_cnt += len(sensor_surfaces)
+                    
+                if surface == "envelope":
+                    facade_index1 = roof_index2
+                    facade_index2 = gsrf_index_cnt + gsrf_cnt
              
         bsrf_cnt = 0
         for bsrf in bsrflist:
@@ -1201,7 +1321,9 @@ def execute_cummulative_radiance(rad,start_mth,end_mth, start_date,end_date,star
 
 def calculate_bldg_flr_area(bldg_occsolid, flr2flr_height):
     bldg_height, nstorey = gml3dmodel.calculate_bldg_height_n_nstorey(bldg_occsolid, flr2flr_height)
-    bldg_flr_plates = gml3dmodel.get_bulding_flrplates(bldg_occsolid, nstorey, flr2flr_height)
+    bldg_flr_plates = gml3dmodel.get_building_plates_by_level(bldg_occsolid, nstorey, flr2flr_height)
+    bldg_flr_plates = reduce(lambda x,y :x+y ,bldg_flr_plates)
+    #py3dmodel.construct.visualise([bldg_flr_plates], ["RED"])
     flr_area = 0
     for flr in bldg_flr_plates:
         flr_area = flr_area + py3dmodel.calculate.face_area(flr)
@@ -1260,6 +1382,60 @@ def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])
                 
+            bradcnt+=1
+
+        high_perf_area = gml3dmodel.faces_surface_area(high_perf_srf)
+        high_perf_area_list.append(high_perf_area)
+        surface_area = gml3dmodel.faces_surface_area(surface_list)
+        sa_list.append(surface_area)
+        bldg_occsolid = bldgdict["solid"]
+        bsolid_list.append(bldg_occsolid)
+        bldg_flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        total_bld_up.append(bldg_flr_area)
+        shape_factor = surface_area/bldg_flr_area
+        shape_factor_list.append(shape_factor)
+        #the higher the shape factor the less compact
+        afi = high_perf_area/bldg_flr_area 
+        afi_list.append(afi)
+
+        if afi_threshold != None:
+            if afi >= afi_threshold:
+                compared_afi_list.append(afi)
+    
+    total_afi = sum(high_perf_area_list)/sum(total_bld_up)
+    if sum(sa_list) !=0:
+        ai = sum(high_perf_area_list)/sum(sa_list)
+    else:
+        ai = 0.0
+    
+    if afi_threshold != None:
+        afi_percent = float(len(compared_afi_list))/float(len(afi_list))
+    else:
+        afi_percent = None
+        
+    return total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list
+
+def calculate_afi2(bldgdict_list, lower_result_threshold, upper_result_threshold, mode, flr2flr_height = 3.0,  afi_threshold = None):
+    """calculate area 2 floor area index for nshffai2"""
+    afi_list = []
+    compared_afi_list = []
+    high_perf_area_list = []
+    sa_list = []
+    shape_factor_list = []
+    total_bld_up = []
+    bsolid_list = []
+    for bldgdict in bldgdict_list:
+        result_list = bldgdict["result"]
+        surface_list = bldgdict["surface"]
+        high_perf = []
+        high_perf_srf = []
+        
+        bradcnt = 0
+        for res in result_list:
+            if mode == "nshffai2":
+                if lower_result_threshold <= res <= upper_result_threshold:
+                    high_perf.append(res)
+                    high_perf_srf.append(surface_list[bradcnt])                
             bradcnt+=1
 
         high_perf_area = gml3dmodel.faces_surface_area(high_perf_srf)

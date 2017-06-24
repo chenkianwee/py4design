@@ -52,12 +52,11 @@ def identify_srfs_according_2_angle(occface_list):
         n = py3dmodel.calculate.face_normal(f)
         angle = py3dmodel.calculate.angle_bw_2_vecs(vec1, n)
         #means its a facade
-        if angle>45 and angle<135:
+        if angle>45 and angle<170:
             facade_list.append(f)
         elif angle<=45:
-            
             roof_list.append(f)
-        elif angle>=135:
+        elif angle>=170:
             footprint_list.append(f)
     return facade_list, roof_list, footprint_list
             
