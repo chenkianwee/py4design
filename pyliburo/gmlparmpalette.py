@@ -849,7 +849,9 @@ class BldgTwistParm(BaseParm):
                         hcnt+=1
                 
                 lvl_shell_cmpd = py3dmodel.construct.make_compound(lvl_shell_list)
+                #py3dmodel.construct.visualise([[lvl_shell_cmpd]],['RED'])
                 lvl_faces = py3dmodel.construct.simple_mesh(lvl_shell_cmpd)
+                
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list

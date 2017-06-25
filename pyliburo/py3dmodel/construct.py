@@ -398,7 +398,32 @@ def wire_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
             occface = make_polygon(pyptlist)
             if not occface.IsNull():
                 face_list.append(occface)
-    return face_list
+                
+    diff_list = []
+    cnt =0
+    for occface in face_list:
+        face_list2 = face_list[:]
+        del face_list2[cnt]
+        extrude_list = []
+        for face2 in face_list2:
+            midpt = calculate.face_midpt(face2)
+            loc_pt = modify.move_pt(midpt, (0,0,-1),0.3)
+            #move the face down
+            m_occface = modify.move(midpt, loc_pt, face2)
+            m_occface = fetch.shape2shapetype(m_occface)
+            #extrude the face
+            extrude_solid = extrude(m_occface, (0,0,1), 0.6)
+            extrude_list.append(extrude_solid)
+            
+        cmpd = make_compound(extrude_list)
+        diff_cmpd = boolean_difference(occface, cmpd)
+        diff_face_list = fetch.geom_explorer(diff_cmpd, "face")
+        #diff_face_list = simple_mesh(diff_cmpd)
+        if diff_face_list:
+            diff_list.extend(diff_face_list)
+        cnt+=1
+                        
+    return diff_list
     
 def arrange_edges_2_wires(occedgelist, isclosed = False):
     from OCC.TopoDS import topods 

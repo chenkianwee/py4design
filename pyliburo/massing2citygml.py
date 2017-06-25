@@ -113,9 +113,11 @@ class Massing2Citygml(object):
         compound = py3dmodel.construct.make_compound(cmpd_list)
         
         xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(compound)
-        ref_pt = py3dmodel.calculate.get_centre_bbox(compound)
-        ref_pt = (ref_pt[0],ref_pt[1],zmin)
+        #ref_pt = py3dmodel.calculate.get_centre_bbox(compound)
+        #ref_pt = (ref_pt[0],ref_pt[1],zmin)
+        ref_pt = (0,0,0)
         #scale all the geometries into metre
+        #TO DO: THIS HAS A PROBLEM WHEN YOU HAVE TWO FILES WITH DIFF MIDPTS
         scaled_shell_shape = py3dmodel.modify.uniform_scale(cmpd_shell, unit, unit, unit,ref_pt)
         scaled_edge_shape = py3dmodel.modify.uniform_scale(cmpd_edge, unit, unit, unit,ref_pt)
         scaled_shell_compound = py3dmodel.fetch.shape2shapetype(scaled_shell_shape)
