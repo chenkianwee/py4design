@@ -31,7 +31,7 @@ from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFa
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Fuse
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt

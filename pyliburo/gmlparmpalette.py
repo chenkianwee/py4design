@@ -309,7 +309,7 @@ class BldgHeightParm(BaseParm):
                 
                 #extract the bldg solid
                 bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
-                
+                print 'OCCSOLID', bldg_solid
                 #change the height of each bldg according to the parameter
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader)
                 bldg_bounding_footprint =  gml3dmodel.get_building_bounding_footprint(bldg_solid)
@@ -318,7 +318,9 @@ class BldgHeightParm(BaseParm):
                 scaled_bldg = py3dmodel.modify.uniform_scale(bldg_solid,1,1,height_ratio,midpt)
                 new_bldg_occsolid = py3dmodel.fetch.geom_explorer(scaled_bldg, "solid")[0]
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["WHITE"])
+                
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -1608,7 +1610,7 @@ class BldgTaperParm(BaseParm):
                     plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
                     #plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
                     #taper
-                    trsf_plate_shape = py3dmodel.modify.uniform_scale(plate_cmpd, magnitude, magnitude, 1, bldg_solid_midpt)
+                    trsf_plate_shape = py3dmodel.modify.scale(plate_cmpd, magnitude, bldg_solid_midpt)
                     trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
                     
                     n_cur_plates = len(cur_plate_list)
@@ -1639,8 +1641,7 @@ class BldgTaperParm(BaseParm):
                                 cur_midpt = py3dmodel.calculate.face_midpt(cur_plate)
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
-                                trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
-                                                                                  1, bldg_solid_midpt)
+                                trsf_plate_shape = py3dmodel.modify.scale(m_cur_plate, 1+interval, bldg_solid_midpt)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
@@ -1675,8 +1676,7 @@ class BldgTaperParm(BaseParm):
                             if common_plate:
                                 m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
                                 trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
-                                trsf_plate_shape = py3dmodel.modify.uniform_scale(m_cur_plate, 1+interval, 1+interval, 
-                                                                                  1, bldg_solid_midpt)
+                                trsf_plate_shape = py3dmodel.modify.scale(m_cur_plate, 1+interval, bldg_solid_midpt)
                                 trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]

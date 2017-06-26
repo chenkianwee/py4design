@@ -118,8 +118,11 @@ class Massing2Citygml(object):
         ref_pt = (0,0,0)
         #scale all the geometries into metre
         #TO DO: THIS HAS A PROBLEM WHEN YOU HAVE TWO FILES WITH DIFF MIDPTS
-        scaled_shell_shape = py3dmodel.modify.uniform_scale(cmpd_shell, unit, unit, unit,ref_pt)
-        scaled_edge_shape = py3dmodel.modify.uniform_scale(cmpd_edge, unit, unit, unit,ref_pt)
+        #scaled_shell_shape = py3dmodel.modify.uniform_scale(cmpd_shell, unit, unit, unit,ref_pt)
+        #scaled_edge_shape = py3dmodel.modify.uniform_scale(cmpd_edge, unit, unit, unit,ref_pt)
+        scaled_shell_shape = py3dmodel.modify.scale(cmpd_shell, unit,ref_pt)
+        scaled_edge_shape = py3dmodel.modify.scale(cmpd_edge, unit,ref_pt)
+        
         scaled_shell_compound = py3dmodel.fetch.shape2shapetype(scaled_shell_shape)
         scaled_edge_compound = py3dmodel.fetch.shape2shapetype(scaled_edge_shape)
         

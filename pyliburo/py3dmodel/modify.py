@@ -68,6 +68,7 @@ def move_pt(orig_pt, direction2move, magnitude):
     
 def uniform_scale(occshape, tx, ty, tz, ref_pypt):
     moved_shape = move(ref_pypt, (0,0,0),occshape)
+    occshape.ShapeType()
     xform = gp_GTrsf()
     xform.SetVectorialPart(gp_Mat(
       tx, 0, 0,
@@ -80,6 +81,15 @@ def uniform_scale(occshape, tx, ty, tz, ref_pypt):
     trsfshape = brep.Shape()
     move_back_shp = move((0,0,0), ref_pypt,trsfshape)
     return move_back_shp
+
+def scale(occshape, scale_factor, ref_pypt):
+    xform = gp_Trsf()
+    gp_pnt = construct.make_gppnt(ref_pypt)
+    xform.SetScale(gp_pnt, scale_factor)
+    brep = BRepBuilderAPI_Transform(xform)
+    brep.Perform(occshape, True)
+    trsfshape = brep.Shape()
+    return trsfshape
 
 def reverse_vector(vec):
     gp_rev_vec = gp_Vec(vec[0], vec[1], vec[2]).Reversed()
@@ -322,14 +332,22 @@ def flatten_edge_z_value(occedge, z=0):
     return flatten_edge
     
 def flatten_shell_z_value(occshell, z=0):
-    #face_list = fetch.faces_frm_solid(occshell)
+    face_list = fetch.faces_frm_solid(occshell)
     xmin,ymin,zmin,xmax,ymax,zmax = calculate.get_bounding_box(occshell)
     boundary_pyptlist = [[xmin,ymin,zmin], [xmax,ymin,zmin], [xmax,ymax,zmin], [xmin,ymax,zmin]]
     boundary_face = construct.make_polygon(boundary_pyptlist)
     b_mid_pt = calculate.face_midpt(boundary_face)
-    flatten_shell = fetch.shape2shapetype(uniform_scale(occshell, 1, 1, 0, b_mid_pt))
-    face_list = construct.simple_mesh(flatten_shell)
-    #face_list = fetch.geom_explorer(flatten_shell,"face")
+    
+    #flatten_shell = fetch.shape2shapetype(uniform_scale(occshell, 1, 1, 0, b_mid_pt))
+    
+    face_list = construct.simple_mesh(occshell)
+    f_face_list = []
+    for occface in face_list:
+        f_face = flatten_face_z_value(occface, z=zmin)
+        f_face_list.append(f_face)
+        
+    face_list = f_face_list
+    flatten_shell = construct.make_compound(face_list)
     nfaces = len(face_list)
     merged_faces = construct.merge_faces(face_list)
     dest_pt = [b_mid_pt[0], b_mid_pt[1], z]
@@ -364,6 +382,7 @@ def flatten_shell_z_value(occshell, z=0):
                     flatten_vertex = fetch.geom_explorer(flatten_shell,"vertex")
                     flatten_pts = fetch.vertex_list_2_point_list(flatten_vertex)
                     flatten_pypts = fetch.occptlist2pyptlist(flatten_pts)
+                    
                     dface_list = construct.delaunay3d(flatten_pypts)
                     merged_faces = construct.merge_faces(dface_list)
                     if len(merged_faces) == 1:

@@ -623,7 +623,7 @@ def boolean_cut(shapeToCutFrom, cuttingShape):
         cut.RefineEdges()
         cut.FuseEdges()
         shp = cut.Shape()
-        cut.Destroy()
+        #cut.Destroy()
         return shp
     except:
         print("Failed to boolean cut")
@@ -636,7 +636,7 @@ def boolean_fuse(shapeToCutFrom, joiningShape):
     join.RefineEdges()
     join.FuseEdges()
     shape = join.Shape()
-    join.Destroy()
+    #join.Destroy()
     return shape
 
 
