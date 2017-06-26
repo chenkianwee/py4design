@@ -63,7 +63,7 @@ from types_lut import ShapeToTopology
 from Topology import Topo
 
 
-EPSILON = TOLERANCE = 1e-6
+EPSILON = TOLERANCE = 1e-5
 ST = ShapeToTopology()
 
 
@@ -623,7 +623,7 @@ def boolean_cut(shapeToCutFrom, cuttingShape):
         cut.RefineEdges()
         cut.FuseEdges()
         shp = cut.Shape()
-        cut.Destroy()
+        #cut.Destroy()
         return shp
     except:
         print("Failed to boolean cut")
@@ -636,7 +636,7 @@ def boolean_fuse(shapeToCutFrom, joiningShape):
     join.RefineEdges()
     join.FuseEdges()
     shape = join.Shape()
-    join.Destroy()
+    #join.Destroy()
     return shape
 
 
@@ -746,7 +746,7 @@ def mirror_axe2(brep, axe2, copy=False):
         return brep_trns.Shape()
 
 
-def rotate(brep, axe, degree, copy=False):
+def rotate(brep, axe, degree, copy=True):
     '''
     @param brep:
     @param axe:

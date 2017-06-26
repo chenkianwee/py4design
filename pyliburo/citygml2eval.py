@@ -48,6 +48,7 @@ class Evals(object):
         self.relief_feature_occshells = None
         self.relief_feature_occfaces = None
         self.road_occedges = None
+        self.shading_faces = None
         #radiance parameters
         self.rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
         self.nshffai_folderpath = os.path.join(os.path.dirname(self.citygmlfilepath), 'nshffai_data')
@@ -144,22 +145,104 @@ class Evals(object):
                 
         self.landuse_occpolygons = lface_list
         
+    def add_shadings_4_solar_analysis(self, shading_citygml_file):
+        shading_faces = []
+        reader = pycitygml.Reader()
+        reader.load_filepath(shading_citygml_file)
+        gml_bldgs = reader.get_buildings()
+        for gml_bldg in gml_bldgs:
+            pypolygonlist = reader.get_pypolygon_list(gml_bldg) 
+            bsolid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygonlist)
+            bldg_face_list = py3dmodel.fetch.geom_explorer(bsolid, "face")
+            shading_faces.extend(bldg_face_list)
+            
+        reliefs = reader.get_relief_feature()
+        for rf in reliefs:
+            pytrianglelist = reader.get_pytriangle_list(rf)
+            for pytriangle in pytrianglelist:
+                occtriangle = py3dmodel.construct.make_polygon(pytriangle)
+                shading_faces.append(occtriangle)
+                
+        self.shading_faces = shading_faces
+        
+    def calculate_far(self, flr2flr_height):
+        if self.building_occsolids == None:
+            self.initialise_occgeom()
+            
+        reader = self.citygml
+        luse_polygons = self.landuse_occpolygons
+        gmlluses = self.landuses
+        gmlbldgs = self.buildings
+        nluse = len(gmlluses)
+        far_list = []
+        for gcnt in range(nluse):
+            gmlluse = gmlluses[gcnt]
+            luse = luse_polygons[gcnt]
+            luse_area = py3dmodel.calculate.face_area(luse)
+            gmlbldg_on_luse = gml3dmodel.buildings_on_landuse(gmlluse, gmlbldgs, reader)
+            flr_area_list = []
+            for gmlbldg in gmlbldg_on_luse:
+                pypolygon = reader.get_pypolygon_list(gmlbldg)
+                bsolid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygon)
+                b_flr_area = urbanformeval.calculate_bldg_flr_area(bsolid, flr2flr_height)
+                flr_area_list.append(b_flr_area)
+                
+            far = sum(flr_area_list)/luse_area
+            far_list.append(far)
+        return far_list
+        
     def nshffai(self, irrad_threshold, epwweatherfile, xdim, ydim, nshffai_threshold=None):
         """
         Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
-        receives irradiation above a specified level over the building volume. 
+        receives irradiation above a specified level over the floor area. 
         """
         if self.building_occsolids == None:
             self.initialise_occgeom()
             
         rf_occfaces = self.relief_feature_occfaces
+        #get all the shading srfs
+        if self.shading_faces !=None:
+            shading_faces = self.shading_faces
+            shading_faces = shading_faces + rf_occfaces
+        else:
+            shading_faces = rf_occfaces
+        
+        
         bsolid_list = self.building_occsolids
         result_dict = urbanformeval.nshffai(bsolid_list, irrad_threshold, epwweatherfile, xdim, ydim, self.nshffai_folderpath, 
-                                            nshffai_threshold = nshffai_threshold, shading_occfaces = rf_occfaces)
+                                            nshffai_threshold = nshffai_threshold, shading_occfaces = shading_faces)
         
         self.irrad_results = result_dict["solar_results"]
         return result_dict
         
+    def nshffai2(self, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, xdim, ydim, nshffai_threshold=None):
+        """
+        Solar Heat Gain Facade Area to Volume Index 2 (SHGFAVI) calculates the ratio of facade area that 
+        receives irradiation within a specified level over the building floor area. 
+        """
+        if self.building_occsolids == None:
+            self.initialise_occgeom()
+            
+        rf_occfaces = self.relief_feature_occfaces
+        if self.building_occsolids == None:
+            self.initialise_occgeom()
+            
+        rf_occfaces = self.relief_feature_occfaces
+        #get all the shading srfs
+        if self.shading_faces !=None:
+            shading_faces = self.shading_faces
+            shading_faces = shading_faces + rf_occfaces
+        else:
+            shading_faces = rf_occfaces
+            
+        bsolid_list = self.building_occsolids
+        result_dict = urbanformeval.nshffai2(bsolid_list, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, 
+                                             xdim, ydim, self.nshffai_folderpath, nshffai_threshold = nshffai_threshold, 
+                                             shading_occfaces = shading_faces)
+        
+        self.irrad_results = result_dict["solar_results"]
+        return result_dict
+    
     def dffai(self, illum_threshold, epwweatherfile, xdim, ydim, dffai_threshold=None):
         """
         Daylighting Facade Area to Volume Index (DFAI) calculates the ratio of facade area that 
@@ -170,10 +253,17 @@ class Evals(object):
             self.initialise_occgeom()
             
         rf_occfaces = self.relief_feature_occfaces
+        #get all the shading srfs
+        if self.shading_faces !=None:
+            shading_faces = self.shading_faces
+            shading_faces = shading_faces + rf_occfaces
+        else:
+            shading_faces = rf_occfaces
+            
         bsolid_list = self.building_occsolids
         result_dict = urbanformeval.dffai(bsolid_list, illum_threshold, epwweatherfile, xdim,ydim, self.dffai_folderpath, 
                                           self.daysim_folderpath, dffai_threshold = dffai_threshold, 
-                                          shading_occfaces = rf_occfaces)
+                                          shading_occfaces = shading_faces)
 
         self.illum_results = result_dict["solar_results"]
         return result_dict
@@ -192,9 +282,17 @@ class Evals(object):
             self.initialise_occgeom()
             
         rf_occfaces = self.relief_feature_occfaces
+        #get all the shading srfs
+        if self.shading_faces !=None:
+            shading_faces = self.shading_faces
+            shading_faces = shading_faces + rf_occfaces
+        else:
+            shading_faces = rf_occfaces
+            
+        
         bsolid_list = self.building_occsolids
         result_dict = urbanformeval.pvafai(bsolid_list, irrad_threshold, epwweatherfile, xdim, ydim, self.pvefai_folderpath, 
-                                          mode = surface, pvafai_threshold = pvafai_threshold, shading_occfaces = rf_occfaces )
+                                          mode = surface, pvafai_threshold = pvafai_threshold, shading_occfaces = shading_faces )
 
         return result_dict
     
@@ -215,11 +313,18 @@ class Evals(object):
             self.initialise_occgeom()
             
         rf_occfaces = self.relief_feature_occfaces
+        #get all the shading srfs
+        if self.shading_faces !=None:
+            shading_faces = self.shading_faces
+            shading_faces = shading_faces + rf_occfaces
+        else:
+            shading_faces = rf_occfaces
+            
         bsolid_list = self.building_occsolids
         result_dict = urbanformeval.pvefai(bsolid_list, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim, 
                                            self.pvefai_folderpath, pvrfai_threshold = pvrfai_threshold,
                                            pvffai_threshold = pvffai_threshold, pvefai_threshold = pvefai_threshold,
-                                           shading_occfaces = rf_occfaces)
+                                           shading_occfaces = shading_faces)
                                                                                              
         return result_dict
 

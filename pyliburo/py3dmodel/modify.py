@@ -17,10 +17,10 @@
 #    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-from OCCUtils import Construct
+from OCCUtils import Construct, Common
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
 from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
-from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid
+from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid, ShapeFix_Wire, ShapeFix_Face
 from OCC.BRepLib import breplib
 from OCC.Geom import Geom_TrimmedCurve
 from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
@@ -49,9 +49,14 @@ def normalise_vec(gpvec):
     ngpvec = gpvec.Normalized()
     return (ngpvec.X(), ngpvec.Y(), ngpvec.Z())
     
-def rotate(shape, rot_pt, axis, degree):
+def rotate(occshape, rot_pt, axis, degree):
+    from math import radians
     gp_ax3 = gp_Ax1(gp_Pnt(rot_pt[0], rot_pt[1], rot_pt[2]), gp_Dir(axis[0], axis[1], axis[2]))
-    rot_shape = Construct.rotate(shape, gp_ax3, degree, copy=False)
+    aTrsf = gp_Trsf()
+    aTrsf.SetRotation(gp_ax3, radians(degree))
+    rot_brep = BRepBuilderAPI_Transform(aTrsf)
+    rot_brep.Perform(occshape, True)
+    rot_shape = rot_brep.Shape()
     return rot_shape
     
 def move_pt(orig_pt, direction2move, magnitude):
@@ -63,6 +68,7 @@ def move_pt(orig_pt, direction2move, magnitude):
     
 def uniform_scale(occshape, tx, ty, tz, ref_pypt):
     moved_shape = move(ref_pypt, (0,0,0),occshape)
+    occshape.ShapeType()
     xform = gp_GTrsf()
     xform.SetVectorialPart(gp_Mat(
       tx, 0, 0,
@@ -75,6 +81,15 @@ def uniform_scale(occshape, tx, ty, tz, ref_pypt):
     trsfshape = brep.Shape()
     move_back_shp = move((0,0,0), ref_pypt,trsfshape)
     return move_back_shp
+
+def scale(occshape, scale_factor, ref_pypt):
+    xform = gp_Trsf()
+    gp_pnt = construct.make_gppnt(ref_pypt)
+    xform.SetScale(gp_pnt, scale_factor)
+    brep = BRepBuilderAPI_Transform(xform)
+    brep.Perform(occshape, True)
+    trsfshape = brep.Shape()
+    return trsfshape
 
 def reverse_vector(vec):
     gp_rev_vec = gp_Vec(vec[0], vec[1], vec[2]).Reversed()
@@ -105,13 +120,27 @@ def fix_close_solid(occsolid):
         breplib.OrientClosedSolid(fix_solid)
         return fix_solid
     
+def fix_closed_wire(occwire,occface, tolerance = 1e-06):
+    shapefix = ShapeFix_Wire(occwire, occface, tolerance)
+    shapefix.FixClosed()
+    shapefix.FixSmall(True)
+    shapefix.FixDegenerated()
+    shapefix.FixSelfIntersection()
+    shapefix.FixReorder()
+    shapefix.Perform()
+    fix_wire = shapefix.Wire()
+    return fix_wire
+
 def fix_shape(occ_shape):
     fixed_shape = Construct.fix_shape(occ_shape)
     return fixed_shape
     
 def fix_face(occ_face):
-    fixed_face = Construct.fix_face(occ_face)
-    return fixed_face
+    fix = ShapeFix_Face(occ_face)
+    #fix.FixMissingSeam()
+    fix.FixOrientation()
+    fix.Perform()
+    return fix.Face()
     
 def rmv_duplicated_faces(occfacelist):
     fcnt = 0
@@ -158,9 +187,15 @@ def rmv_duplicated_edges(occedgelist):
         non_dup_edges.append(unique_f)
     return non_dup_edges
     
-def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
+def rmv_duplicated_pts_by_distance(pyptlist, distance = 1e-06):
     '''
-    fuse all pts in the list within a certain tolerance
+    fuse all pts in the list within a certain distance
+    '''
+    vert_list = fetch.pyptlist2vertlist(pyptlist)
+    occpt_list = fetch.vertex_list_2_point_list(vert_list)
+    
+    filtered_pt_list = Common.filter_points_by_distance(occpt_list, distance = distance)
+    f_pyptlist = fetch.occptlist2pyptlist(filtered_pt_list)
     '''
     npyptlist = len(pyptlist)
     total_ptlist = []
@@ -170,10 +205,10 @@ def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
         for ptcnt2 in range(npyptlist):
             if ptcnt != ptcnt2:
                 ptdist = calculate.distance_between_2_pts(pyptlist[ptcnt], pyptlist[ptcnt2])
-                if ptdist <= tolerance:
+                if ptdist <= distance:
                     ptlist.append(ptcnt2)
                     
-        ptlist.sort()
+        #ptlist.sort()
         if ptlist not in total_ptlist:
             total_ptlist.append(ptlist)
             
@@ -181,6 +216,8 @@ def rmv_duplicated_pts_by_distance(pyptlist, tolerance = 1e-06):
     for upt in total_ptlist:
         upyptlist.append(pyptlist[upt[0]])
     return upyptlist
+    '''
+    return f_pyptlist
     
 def rmv_duplicated_pts(pyptlist, roundndigit = None):
     '''
@@ -269,6 +306,10 @@ def wire_2_bsplinecurve_edge(occwire):
     bspline_handle = approx.Curve()
     occedge = BRepBuilderAPI_MakeEdge(bspline_handle)
     return occedge.Edge()
+
+def resample_wire(occwire):
+    resample_curve = Common.resample_curve_with_uniform_deflection(occwire)
+    print resample_curve
     
 def flatten_face_z_value(occface, z=0):
     pyptlist = fetch.pyptlist_frm_occface(occface)
@@ -276,6 +317,7 @@ def flatten_face_z_value(occface, z=0):
     for pypt in pyptlist:
         pypt2d = (pypt[0],pypt[1],z)
         pyptlist_2d.append(pypt2d)
+    
     flatten_face = construct.make_polygon(pyptlist_2d)
     return flatten_face
         
@@ -290,14 +332,22 @@ def flatten_edge_z_value(occedge, z=0):
     return flatten_edge
     
 def flatten_shell_z_value(occshell, z=0):
-    #face_list = fetch.faces_frm_solid(occshell)
+    face_list = fetch.faces_frm_solid(occshell)
     xmin,ymin,zmin,xmax,ymax,zmax = calculate.get_bounding_box(occshell)
     boundary_pyptlist = [[xmin,ymin,zmin], [xmax,ymin,zmin], [xmax,ymax,zmin], [xmin,ymax,zmin]]
     boundary_face = construct.make_polygon(boundary_pyptlist)
     b_mid_pt = calculate.face_midpt(boundary_face)
-    flatten_shell = fetch.shape2shapetype(uniform_scale(occshell, 1, 1, 0, b_mid_pt))
-    face_list = construct.simple_mesh(flatten_shell)
-    #face_list = fetch.geom_explorer(flatten_shell,"face")
+    
+    #flatten_shell = fetch.shape2shapetype(uniform_scale(occshell, 1, 1, 0, b_mid_pt))
+    
+    face_list = construct.simple_mesh(occshell)
+    f_face_list = []
+    for occface in face_list:
+        f_face = flatten_face_z_value(occface, z=zmin)
+        f_face_list.append(f_face)
+        
+    face_list = f_face_list
+    flatten_shell = construct.make_compound(face_list)
     nfaces = len(face_list)
     merged_faces = construct.merge_faces(face_list)
     dest_pt = [b_mid_pt[0], b_mid_pt[1], z]
@@ -332,6 +382,7 @@ def flatten_shell_z_value(occshell, z=0):
                     flatten_vertex = fetch.geom_explorer(flatten_shell,"vertex")
                     flatten_pts = fetch.vertex_list_2_point_list(flatten_vertex)
                     flatten_pypts = fetch.occptlist2pyptlist(flatten_pts)
+                    
                     dface_list = construct.delaunay3d(flatten_pypts)
                     merged_faces = construct.merge_faces(dface_list)
                     if len(merged_faces) == 1:
