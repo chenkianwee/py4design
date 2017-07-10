@@ -229,6 +229,9 @@ def get_geometry(shape_record):
             part_list.append(part_points)
             count_parts+=1
         return part_list
+    if shapetype == 1:
+        points=shape.points
+        return points
          
 def get_shpfile_epsg(shpfile):
     #read the qpj file and find out wat epsg is the file base on 
