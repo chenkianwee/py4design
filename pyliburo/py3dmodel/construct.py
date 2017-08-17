@@ -669,3 +669,14 @@ def visualise_falsecolour_topo(results, occtopo_list, other_topo2dlist = None, o
     display.View_Iso()
     display.FitAll()
     start_display()
+    
+def write_2_stl(occshape, stl_filepath, mesh_incremental_float = 0.8):
+    from OCC.StlAPI import StlAPI_Writer
+    from OCC.BRepMesh import BRepMesh_IncrementalMesh
+    # Export to STL
+    stl_writer = StlAPI_Writer()
+    stl_writer.SetASCIIMode(True)
+    mesh = BRepMesh_IncrementalMesh(occshape, mesh_incremental_float)
+    mesh.Perform()
+    assert mesh.IsDone()
+    stl_writer.Write(occshape,stl_filepath)

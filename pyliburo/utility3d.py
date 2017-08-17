@@ -338,3 +338,6 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
     meshed_str_cmpd = py3dmodel.construct.make_compound(meshed_list)
     str_colour_list = [(0,0,0)]
     return grid_srfs2, bar_colour, meshed_str_cmpd, str_colour_list, value_range_midpts
+
+def write_2_stl(occshape, stl_filepath, mesh_incremental_float = 0.8):
+    py3dmodel.construct.write_2_stl(occshape, stl_filepath, mesh_incremental_float = mesh_incremental_float)
