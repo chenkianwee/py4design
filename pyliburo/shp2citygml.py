@@ -582,3 +582,35 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
             solid_list.append(building_extrude_solid)
 
     return solid_list
+
+def shp_pypolygon_list3d_2_occface_list(pypolygon_list):
+    clockwise = []
+    anti_clockwise = []#hole
+    for pyptlist in pypolygon_list:
+        is_anti_clockwise = py3dmodel.calculate.is_anticlockwise(pyptlist, (0,0,1))
+        if is_anti_clockwise:
+            anti_clockwise.append(pyptlist)
+        else:
+            clockwise.append(pyptlist)
+            
+    nholes = len(anti_clockwise)
+    if nholes > 0:
+        occface_list_holes = py3dmodel.construct.make_occfaces_frm_pypolygons(anti_clockwise)
+        occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
+        
+        hole_solid_list = []
+        for hole in occface_list_holes:
+            hole_midpt = py3dmodel.calculate.face_midpt(hole)
+            hole_solid = py3dmodel.construct.extrude(hole,(0,0,1),1)
+            hole_midpt_mv = py3dmodel.modify.move_pt(hole_midpt, (0,0,-1), 0.5)
+            hole_solid_mv = py3dmodel.modify.move(hole_midpt, hole_midpt_mv, hole_solid)
+            hole_solid_list.append(hole_solid_mv)
+            
+        occface_list_cmpd = py3dmodel.construct.make_compound(occface_list)
+        hole_solid_list_cmpd = py3dmodel.construct.make_compound(hole_solid_list)
+        diff_cmpd = py3dmodel.construct.boolean_difference(occface_list_cmpd, hole_solid_list_cmpd)
+        diff_occface_list = py3dmodel.fetch.geom_explorer(diff_cmpd, "face")
+        return diff_occface_list
+    else:
+        occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
+        return occface_list

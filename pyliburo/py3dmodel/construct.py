@@ -28,7 +28,7 @@ from OCC.Display.SimpleGui import init_display
 from OCCUtils import face, Construct, Topology, Common
 from OCC.Display import OCCViewer
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakePrism
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Fuse
@@ -39,6 +39,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
+
 
 
 import fetch
@@ -245,15 +246,54 @@ def extrude(occface, pydir, height):
     #TODO: it doesnt work well with faces with holes
     orig_pt = calculate.face_midpt(occface)
     dest_pt = modify.move_pt(orig_pt, pydir, height)
-    moved_face = modify.move(orig_pt,dest_pt, occface)
-    loft = make_loft([occface, moved_face])
-    face_list = fetch.geom_explorer(loft, "face")
-    face_list.append(occface)
-    face_list.append(moved_face)
-    shell = make_shell_frm_faces(face_list)[0]
-    solid = make_solid(shell)
-    solid = modify.fix_close_solid(solid)
-    return solid
+    wire_list =  fetch.geom_explorer(occface,"wire")
+    nwire = len(wire_list)
+    if nwire > 1:
+        #clockwise = hole
+        #anticlockwise = face
+        hole_solid_list = []
+        face_extrude_list = []
+        face_nrml = calculate.face_normal(occface)
+        
+        for wire in wire_list:
+            #first check if there are holes and which wire are holes
+            pyptlist = fetch.pyptlist_frm_occwire(wire)
+            is_anticlockwise = calculate.is_anticlockwise(pyptlist, face_nrml)
+            #create face from the wires
+            wire_face = make_face_frm_wire(wire)
+            
+            moved_face = modify.move(orig_pt,dest_pt, wire_face)
+            moved_face = fetch.shape2shapetype(moved_face)
+            #create solid from the faces
+            loft = make_loft([wire_face, moved_face])
+            face_list = fetch.geom_explorer(loft, "face")
+            face_list.append(wire_face)
+            face_list.append(moved_face)
+            
+            shell = make_shell_frm_faces(face_list)[0]
+            solid = make_solid(shell)
+            solid = modify.fix_close_solid(solid)
+            
+            if not is_anticlockwise:
+                hole_solid_list.append(solid)
+            else:
+                face_extrude_list.append(solid)
+                
+        extrude_cmpd = make_compound(face_extrude_list)
+        hole_cmpd = make_compound(hole_solid_list)
+        diff_cmpd = boolean_difference(extrude_cmpd, hole_cmpd)
+        solid_list = fetch.geom_explorer(diff_cmpd, "solid")
+        return solid_list[0]
+    else:
+        moved_face = modify.move(orig_pt,dest_pt, occface)
+        loft = make_loft([occface, moved_face])
+        face_list = fetch.geom_explorer(loft, "face")
+        face_list.append(occface)
+        face_list.append(moved_face)
+        shell = make_shell_frm_faces(face_list)[0]
+        solid = make_solid(shell)
+        solid = modify.fix_close_solid(solid)
+        return solid
     
 def extrude_edge(occedge, pydirection, height):
     edge_midpt = calculate.edge_midpt(occedge)

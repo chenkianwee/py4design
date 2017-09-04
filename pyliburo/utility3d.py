@@ -63,21 +63,43 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None,
         face_list = py3dmodel.fetch.geom_explorer(occshell, "face")
         vert_cnt = 0
         for face in face_list:
-            pyptlist = py3dmodel.fetch.pyptlist_frm_occface(face)
-            vcnt.append(len(pyptlist))
-            face_nrml = py3dmodel.calculate.face_normal(face)
-            pyptlist.reverse()
-            for pypt in pyptlist:
-                vert_floats.append(pypt[0])
-                vert_floats.append(pypt[1])
-                vert_floats.append(pypt[2])
-                
-                normal_floats.append(face_nrml[0])
-                normal_floats.append(face_nrml[1])
-                normal_floats.append(face_nrml[2])
-                
-                indices.append(vert_cnt)
-                vert_cnt+=1
+            wire_list = py3dmodel.fetch.geom_explorer(face, "wire")
+            nwire = len(wire_list)
+            if nwire == 1:
+                pyptlist = py3dmodel.fetch.pyptlist_frm_occface(face)
+                vcnt.append(len(pyptlist))
+                face_nrml = py3dmodel.calculate.face_normal(face)
+                pyptlist.reverse()
+                for pypt in pyptlist:
+                    vert_floats.append(pypt[0])
+                    vert_floats.append(pypt[1])
+                    vert_floats.append(pypt[2])
+                    
+                    normal_floats.append(face_nrml[0])
+                    normal_floats.append(face_nrml[1])
+                    normal_floats.append(face_nrml[2])
+                    
+                    indices.append(vert_cnt)
+                    vert_cnt+=1
+                    
+            if nwire >1:
+                tri_face_list = py3dmodel.construct.simple_mesh(face)
+                for tface in tri_face_list:
+                    pyptlist = py3dmodel.fetch.pyptlist_frm_occface(tface)
+                    vcnt.append(len(pyptlist))
+                    face_nrml = py3dmodel.calculate.face_normal(tface)
+                    pyptlist.reverse()
+                    for pypt in pyptlist:
+                        vert_floats.append(pypt[0])
+                        vert_floats.append(pypt[1])
+                        vert_floats.append(pypt[2])
+                        
+                        normal_floats.append(face_nrml[0])
+                        normal_floats.append(face_nrml[1])
+                        normal_floats.append(face_nrml[2])
+                        
+                        indices.append(vert_cnt)
+                        vert_cnt+=1
                 
         vert_id = "ID"+str(shell_cnt) + "1"
         vert_src = source.FloatSource(vert_id, numpy.array(vert_floats), ('X', 'Y', 'Z'))
