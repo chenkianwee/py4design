@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 import py3dmodel
 import gml3dmodel
 import py2radiance
+import utility3d
     
 #================================================================================================================
 #FRONTAL AREA INDEX
@@ -1323,6 +1324,7 @@ def calculate_bldg_flr_area(bldg_occsolid, flr2flr_height):
     bldg_height, nstorey = gml3dmodel.calculate_bldg_height_n_nstorey(bldg_occsolid, flr2flr_height)
     bldg_flr_plates = gml3dmodel.get_building_plates_by_level(bldg_occsolid, nstorey, flr2flr_height)
     bldg_flr_plates = reduce(lambda x,y :x+y ,bldg_flr_plates)
+    utility3d.write_2_collada(bldg_flr_plates, "F:\\kianwee_work\\smart\\journal\\integrating_evo_workflow\\dae\\floorplates.dae")
     #py3dmodel.construct.visualise([bldg_flr_plates], ["RED"])
     flr_area = 0
     for flr in bldg_flr_plates:
