@@ -225,10 +225,10 @@ def rmv_unevaluated_inds(xmlfile):
             
     write_inds_2_xml(eval_inds, xmlfile)
         
-def dominates(ind1, ind2, min_max_list):
+def dominates(result_list1, result_list2, min_max_list):
     equal = True
-    score1 = get_score(ind1)
-    score2 = get_score(ind2)
+    score1 = result_list1
+    score2 = result_list2
     num_scores = len(score1)
     for i in range(num_scores):
         #print ind1
@@ -244,23 +244,83 @@ def dominates(ind1, ind2, min_max_list):
     if equal: return False
     return True
 
-def on_pareto_front(ind, inds, min_max_list):
-    for ind2 in inds:
-        if dominates(ind2, ind, min_max_list):
+def on_pareto_front(score_list, score_2dlist, min_max_list):
+    for score_list2 in score_2dlist:
+        if dominates(score_list2, score_list, min_max_list):
             return False
     return True
     
-def extract_pareto_front(inds, min_max_list):
+def extract_pareto_front(score_2dlist, min_max_list):
+    pareto_front = []
+    non_pareto_front = []
+    for score_list in score_2dlist:
+        if (len(score_list)-1) !=0:     
+            if on_pareto_front(score_list, score_2dlist, min_max_list):
+                pareto_front.append(score_list)
+            else:
+                non_pareto_front.append(score_list)
+    return pareto_front, non_pareto_front
+
+def c_measures (score_2dlist1,score_2dlist2, min_max_list):
+    num_inds2 = len(score_2dlist2)
+    ind_list = []
+    for score_list2 in score_2dlist2:
+        if not on_pareto_front(score_list2, score_2dlist1, min_max_list):
+            #if it is not dominating means it is dominated
+            ind_list.append(score_list2)
+    
+    num_dominated_inds = len(ind_list)
+    print num_dominated_inds, num_inds2
+    return float(num_dominated_inds)/float(num_inds2)
+
+def minimise_score_4_hypervolume(score_list, min_max_list):
+    score_list_f = []
+    scnt = 0
+    for score in score_list:
+        min_max = min_max_list[scnt]
+        if min_max == 1:
+            score_new = float(score)*-1
+        if min_max == 0:
+            score_new = float(score)
+        score_list_f.append(score_new)
+        scnt = scnt + 1
+    return score_list_f
+
+def prepare_front_4_hypervolume(score_2dlist, min_max_list):
+    front = []
+    for score_list in score_2dlist:
+        score_list = minimise_score_4_hypervolume(score_list,min_max_list)
+        front.append(score_list)
+    return front
+
+def hyper_volume(score_2dlist, ref_pt, min_max_list):
+    import hv
+    hypervolume = hv.HyperVolume(ref_pt)
+    min_front = prepare_front_4_hypervolume(score_2dlist, min_max_list)
+    volume = hypervolume.compute(min_front)
+    return volume
+    
+
+def inds_2_score_2dlist(inds):
+    score_2dlist = []
+    for ind in inds:
+        scorelist = get_score(ind)
+        score_2dlist.append(scorelist)
+    return score_2dlist
+        
+def extract_pareto_front_inds(inds, min_max_list):
     '''
     min_max_list = [0,1]
-    0 = min
-    1 = max
+    0 = minimise
+    1 = maximise
     '''
     pareto_front = []
     non_pareto_front = []
+    score_2dlist = inds_2_score_2dlist(inds)
     for ind in inds:
-        if (len(get_score(ind))-1) !=0:     
-            if on_pareto_front(ind, inds, min_max_list):
+        score_list = get_score(ind)
+        if (len(score_list)-1) !=0:     
+            if on_pareto_front(score_list, score_2dlist, min_max_list):
                 pareto_front.append(ind)
             else:
                 non_pareto_front.append(ind)
