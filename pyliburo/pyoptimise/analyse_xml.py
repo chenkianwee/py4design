@@ -270,7 +270,7 @@ def c_measures (score_2dlist1,score_2dlist2, min_max_list):
             ind_list.append(score_list2)
     
     num_dominated_inds = len(ind_list)
-    print num_dominated_inds, num_inds2
+    #print num_dominated_inds, num_inds2
     return float(num_dominated_inds)/float(num_inds2)
 
 def minimise_score_4_hypervolume(score_list, min_max_list):
