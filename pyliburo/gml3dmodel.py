@@ -59,6 +59,32 @@ def identify_srfs_according_2_angle(occface_list):
         elif angle>=170:
             footprint_list.append(f)
     return facade_list, roof_list, footprint_list
+
+def identify_surface_direction(occface_list):
+    vec1 = (0,1,0)
+    pyref_vec = (0,0,1)
+    north_list = []
+    south_list = []
+    east_list = []
+    west_list = []
+    
+    for f in occface_list:
+        #get the normal of each face
+        n = py3dmodel.calculate.face_normal(f)
+        n = (n[0],n[1],0.0)
+        angle = py3dmodel.calculate.angle_bw_2_vecs_w_ref(vec1, n, pyref_vec)
+        #means its a facade
+        if angle>=0 and angle<=45:
+            north_list.append(f)
+        elif angle>=315:
+            north_list.append(f)
+        elif angle>45 and angle<135:
+            west_list.append(f)
+        elif angle>=135 and angle<=225:
+            south_list.append(f)
+        elif angle>225 and angle<315:
+            east_list.append(f)
+    return north_list, south_list, east_list, west_list
             
 def identify_building_surfaces(bldg_occsolid):
     face_list = py3dmodel.fetch.faces_frm_solid(bldg_occsolid)
@@ -823,6 +849,3 @@ def citygml2collada(citygml_filepath, collada_filepath):
         occshell_list.extend(stop_shell_list)
     
     utility3d.write_2_collada(occshell_list, collada_filepath, occedge_list = occedge_list)
-    
-        
-    
