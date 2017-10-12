@@ -4,7 +4,7 @@ __author__ = "Chen Kian Wee"
 __copyright__ = "Copyright 2016, Chen Kian Wee"
 __credits__ = ["Chen Kian Wee"]
 __license__ = "GPL3"
-__version__ = "0.1a9"
+__version__ = "0.1a13"
 __maintainer__ = "Chen Kian Wee"
 __email__ = "chenkianwee@gmail.com"
 __status__ = "Development"
@@ -17,6 +17,7 @@ setup(name='pyliburo',
       packages = find_packages(),
       package_data={
           'pyliburo': ['databases/ettv/*.csv'],
+		  'pyliburo': ['py2radiance/*.rad']
           },
       version=__version__,
       description='Python Library for Urban Optimization',

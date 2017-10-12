@@ -19,7 +19,6 @@
 #
 # ==================================================================================================
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.ticker as ticker
 
 def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labellist = [], xlabel = "", ylabel = "", title = "", 
