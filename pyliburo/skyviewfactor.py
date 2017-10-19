@@ -3,11 +3,7 @@ PART 1 - DISCRETIZATION OF 4-PI SPACE
 @author: Tiangang Yin
 Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J., 2013. A new approach of direction discretization and oversampling for 3D anisotropic radiative transfer modeling. Remote Sensing of Environment, 135, pp.213-223.
 '''
-
-import argparse
 import math
-import numpy as np
-
 import py3dmodel
 
 pi2 = math.pi*2

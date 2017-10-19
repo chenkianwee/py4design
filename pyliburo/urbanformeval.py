@@ -21,11 +21,9 @@
 import os
 import math
 import networkx as nx
-import matplotlib.pyplot as plt
 import py3dmodel
 import gml3dmodel
 import py2radiance
-import utility3d
     
 #================================================================================================================
 #FRONTAL AREA INDEX
@@ -707,6 +705,7 @@ def construct_network_compound(network_occedgelist, extrusion_height):
     return network_compound
     
 def draw_street_graph(networkx_graph, node_index):
+    import matplotlib.pyplot as plt
     node_pos = {}
     ntcnt = 0
     for np in node_index:

@@ -20,7 +20,7 @@
 # ==================================================================================================
 import py2radiance
 import py2energyplus
-import pycitygml
+#import pycitygml
 import py3dmodel
 import pyoptimise
 
