@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py3dmodel.OCCUtils.vertex module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py3dmodel.OCCUtils.vertex">
+<span id="pyliburo-py3dmodel-occutils-vertex-module"></span><h1>pyliburo.py3dmodel.OCCUtils.vertex module<a class="headerlink" href="#module-pyliburo.py3dmodel.OCCUtils.vertex" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.vertex.</code><code class="descname">Vertex</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">OCC.TopoDS.TopoDS_Vertex</span></code>, <a class="reference internal" href="pyliburo.py3dmodel.OCCUtils.base.html#pyliburo.py3dmodel.OCCUtils.base.BaseObject" title="pyliburo.py3dmodel.OCCUtils.base.BaseObject"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.py3dmodel.OCCUtils.base.BaseObject</span></code></a></p>
+<p>wraps gp_Pnt</p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_2d">
+<code class="descname">as_2d</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a gp_Pnt2d version of self</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_dir">
+<code class="descname">as_dir</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a gp_Dir version of self</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_pnt">
+<code class="descname">as_pnt</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_pnt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_vec">
+<code class="descname">as_vec</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a gp_Vec version of self</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_xyz">
+<code class="descname">as_xyz</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.as_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a gp_XYZ version of self</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.from_pnt">
+<em class="property">static </em><code class="descname">from_pnt</code><span class="sig-paren">(</span><em>pnt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.from_pnt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.x">
+<code class="descname">x</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.xyz">
+<code class="descname">xyz</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.xyz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.y">
+<code class="descname">y</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.vertex.Vertex.z">
+<code class="descname">z</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.vertex.Vertex.z" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py3dmodel.OCCUtils.vertex.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

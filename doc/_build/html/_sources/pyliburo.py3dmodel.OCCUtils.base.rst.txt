@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.base module
+==========================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.base
+    :members:
+    :undoc-members:
+    :show-inheritance:

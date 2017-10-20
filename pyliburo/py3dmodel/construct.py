@@ -15,23 +15,21 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 import math
-import colorsys
 
-import numpy as np
-from scipy.spatial import Delaunay
+import fetch
+import calculate
+import modify
 
-from OCC.Display.SimpleGui import init_display
-from OCCUtils import face, Construct, Topology, Common
-from OCC.Display import OCCViewer
+from OCCUtils import face, Construct, Common
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakePrism
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Fuse
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt
@@ -40,13 +38,371 @@ from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
 
+#========================================================================================================
+#NUMERIC & TEXT INPUTS
+#========================================================================================================
+def make_rectangle(xdim, ydim):
+    """
+    This function constructs an OCCface rectangle from the rectangle's breath and height.
+ 
+    Parameters
+    ----------
+    xdim : float
+        Breath of the rectangle.
+        
+    ydim : ydim
+        Height of the rectangle.
+        
+    Returns
+    -------
+    rectangle : OCCface
+        An OCCface rectangle constructed from the breath and height.
+    """
+    point_list = [((xdim/2.0)*-1, ydim/2.0, 0), (xdim/2.0, ydim/2.0, 0), (xdim/2.0, (ydim/2.0)*-1, 0), ((xdim/2.0)*-1, (ydim/2.0)*-1, 0)]
+    face = make_polygon(point_list)
+    return face
 
+def make_box(length, width, height):
+    """
+    This function constructs a box based on the length, width and height.
+ 
+    Parameters
+    ----------
+    length : float
+        Length of box
+        
+    width : float
+        Width of box
+        
+    height : float
+        Height of box.
+        
+    Returns
+    -------
+    box : OCCsolid
+        OCCsolid box constructed based on the length, width and height.
+    """
+    box = fetch.shape2shapetype(BRepPrimAPI_MakeBox(length,width,height).Shape())
+    return box
 
-import fetch
-import calculate
-import modify
+def make_brep_text(text_string, font_size):
+    """
+    This function constructs a OCCcompound 3D text from a string.
+ 
+    Parameters
+    ----------
+    text_string : str
+        The string to be converted.
+        
+    font_size : int
+        The font size.
+ 
+    Returns
+    -------
+    3D text : OCCcompound
+        An OCCcompound of the 3D text.
+    """
+    from OCC.Addons import text_to_brep, Font_FA_Bold
+    brepstr = text_to_brep(text_string, "Arial", Font_FA_Bold, font_size, True)
+    return brepstr
 
-def make_polygon(pyptlist):   
+#========================================================================================================
+#POINT INPUTS
+#========================================================================================================
+def occpt_2_pypt(occpt):
+    """
+    This function constructs a point (pypt) from an OCC point (gp_pnt).
+ 
+    Parameters
+    ----------
+    occpt : OCC point (gp_pnt)
+        OCC point (gp_pnt) to be converted to a pypt.
+        
+    Returns
+    -------
+    point : pypt
+        A pypt constructed from the OCC point (gp_pnt).
+    """
+    pypt = (occpt.X(), occpt.Y(), occpt.Z())
+    return pypt
+
+def occpt_list_2_pyptlist(occpt_list):
+    """
+    This function constructs a list of points (pyptlist) from a list of OCC points (gp_pnt).
+ 
+    Parameters
+    ----------
+    occpt_list : list of OCC points (gp_pnt)
+        list of OCC points (gp_pnt) to be converted to a pyptlist.
+        
+    Returns
+    -------
+    list of points : pyptlist
+        A pyptlist constructed from the list of OCC points (gp_pnt).
+    """
+    pyptlist = []
+    for occpt in occpt_list:
+        pypt = occpt_2_pypt(occpt)
+        pyptlist.append(pypt)
+    return pyptlist
+
+def occvertex_2_occpt(occvertex):
+    """
+    This function constructs an OCC point (gp_pnt) from an OCCvertex.
+ 
+    Parameters
+    ----------
+    occvertex : OCCvertex
+        OCCvertex to be converted to a OCC point (gp_pnt).
+        
+    Returns
+    -------
+    point : OCC point (gp_pnt)
+        An OCC point constructed from the OCCvertex.
+    """
+    occ_pnt = BRep_Tool.Pnt(occvertex)
+    return occ_pnt
+
+def occvertex_list_2_occpt_list(occvertex_list):
+    """
+    This function constructs a list of OCC points (gp_pnt) from a list of OCCvertices.
+ 
+    Parameters
+    ----------
+    occvertex_list : list of OCCvertices
+        List of OCCvertices to be converted to a list of OCC points (gp_pnt).
+        
+    Returns
+    -------
+    list of points : list of OCC points (gp_pnt)
+        A list of OCC points (gp_pnt) constructed from the list of OCCvertices.
+    """
+    point_list = []
+    for vert in occvertex_list:
+        point_list.append(BRep_Tool.Pnt(vert))
+    return point_list
+    
+def make_occvertex_list(pyptlist):
+    """
+    This function constructs a list of OCCvertices.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    list of points : list of OCCvertices.
+        A list of OCCvertices converted from the list of points.
+    """
+    vertlist = []
+    for pypt in pyptlist:
+        vert = make_vertex(pypt)
+        vertlist.append(vert)
+    return vertlist
+
+def make_gppnt_list(pyptlist):
+    """
+    This function constructs a list of OCC points (gp_pnt).
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    list of OCC points : list of OCC points (gp_pnt)
+        A list of OCC points (gp_pnt) converted from the list of points.
+    """
+    gpptlist = []
+    for pypt in pyptlist:
+        gpptlist.append(make_gppnt(pypt))
+    return gpptlist
+
+def make_vertex(pypt):
+    """
+    This function constructs an OCCvertex.
+ 
+    Parameters
+    ----------
+    pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+ 
+    Returns
+    -------
+    vertex : OCCvertex
+        An OCCvertex constructed from the point
+    """
+    gppt = make_gppnt(pypt)
+    vert = Construct.make_vertex(gppt)
+    return vert
+
+def make_plane_w_dir(centre_pypt, normal_pydir):
+    """
+    This function constructs a OCCface plane from a centre pt and the normal direction of the plane.
+ 
+    Parameters
+    ----------
+    centre_pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    normal_pydir : tuple of floats
+        A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    Returns
+    -------
+    plane : OCCface
+        An OCCface constructed from the point and direction
+    """
+    plane_face = Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
+                         vec_normal = gp_Vec(normal_pydir[0], normal_pydir[1], normal_pydir[2]))
+    return plane_face
+
+def make_circle(centre_pypt, normal_pydir, radius):
+    """
+    This function constructs an OCCedge circle based on the centre point, the orientation direction and the radius.
+ 
+    Parameters
+    ----------
+    centre_pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    normal_pydir : tuple of floats
+        A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    radius : float
+        Radius of the circle.
+        
+    Returns
+    -------
+    circle : OCCedge
+        An OCCedge circle.
+    """
+    circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), radius)
+    circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
+    return circle_edge.Edge()
+
+def make_edge(pypt1, pypt2):
+    """
+    This function constructs an OCCedge from two points.
+ 
+    Parameters
+    ----------
+    pypt1 : tuple of floats
+        The starting pt of the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    pypt2 : tuple of floats
+        The last pt of the edge. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    Returns
+    -------
+    edge : OCCedge
+        An OCCedge constructed from the two points
+    """
+    gp_point1 = gp_Pnt(pypt1[0], pypt1[1], pypt1[2])
+    gp_point2 = gp_Pnt(pypt2[0], pypt2[1], pypt2[2])
+        
+    make_edge = BRepBuilderAPI_MakeEdge(gp_point1, gp_point2)
+    return make_edge.Edge()
+
+def make_vector(pypt1,pypt2):
+    """
+    This function create a OCCvector from two points.
+ 
+    Parameters
+    ----------
+    pypt1 : tuple of floats
+        The starting pt of the vector. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    pypt2 : tuple of floats
+        The last pt of the vector. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+    
+    Returns
+    -------
+    vector : OCCvector(gp_Vec)
+        The OCCvector(gp_Vec).
+    """
+    gp_pt1 = gp_Pnt(pypt1[0],pypt1[1],pypt1[2])
+    gp_pt2 = gp_Pnt(pypt2[0],pypt2[1],pypt2[2])
+    gp_vec = gp_Vec(gp_pt1, gp_pt2)
+    return gp_vec
+
+def make_gp_ax3(pypt, pydir):  
+    """
+    This function constructs a OCC coordinate system (gp_ax3) with a point and direction.
+ 
+    Parameters
+    ----------
+    pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    pydir : tuple of floats
+        A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    Returns
+    -------
+    coordinate system : OCC coordinate (gp_ax3)
+        An OCC coordinate system (gp_ax3) constructed from the point and direction.
+    """
+    gp_ax3 = gp_Ax3(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2]))
+    return gp_ax3
+
+def make_gppnt(pypt):
+    """
+    This function constructs a OCC point (gp_pnt) with a point.
+ 
+    Parameters
+    ----------
+    pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    Returns
+    -------
+    OCC point : OCC point (gp_pnt)
+        An OCC point (gp_pnt) constructed from the point.
+    """
+    return gp_Pnt(pypt[0], pypt[1], pypt[2])
+    
+    
+def make_line(pypt, pydir):
+    """
+    This function constructs a OCC line (gp_lin) with a point and direction.
+ 
+    Parameters
+    ----------
+    pypt : tuple of floats
+        The starting point of the line. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    pydir : tuple of floats
+        The direction of the line. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    Returns
+    -------
+    line : OCC line (gp_lin)
+        An OCC line (gp_lin) constructed from the point and direction.
+    """
+    occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
+    return occ_line
+
+def make_polygon(pyptlist):
+    """
+    This function constructs a OCCface polygon from a list of points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+ 
+    Returns
+    -------
+    polygon : OCCface
+        An OCCface constructed from the list of points
+    """
     array = []
     for pt in pyptlist:
         array.append(gp_Pnt(pt[0],pt[1],pt[2]))
@@ -60,24 +416,28 @@ def make_polygon(pyptlist):
     occface = BRepBuilderAPI_MakeFace(wire)
     return occface.Face()
     
-def make_vertex(pypt):
-    gppt = make_gppnt(pypt)
-    vert = Construct.make_vertex(gppt)
-    return vert
-
-def make_plane_w_dir(centre_pypt, normal_pydir):
-    plane_face = Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
-                         vec_normal = gp_Vec(normal_pydir[0], normal_pydir[1], normal_pydir[2]))
-    return plane_face
-    
-def make_edge(pypt1, pypt2):
-    gp_point1 = gp_Pnt(pypt1[0], pypt1[1], pypt1[2])
-    gp_point2 = gp_Pnt(pypt2[0], pypt2[1], pypt2[2])
-        
-    make_edge = BRepBuilderAPI_MakeEdge(gp_point1, gp_point2)
-    return make_edge.Edge()
     
 def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
+    """
+    This function constructs an bspline OCCedge from a list of points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    mindegree : int
+        The minimun degree of the bspline curve. Default = 3.
+        
+    maxdegree : int
+        The maximum degree of the bspline curve. Default = 8. 
+        
+    Returns
+    -------
+    edge : OCCedge
+        An OCCedge constructed from the list of points
+    """
     array = TColgp_Array1OfPnt(1, len(pyptlist))
     pcnt = 1
     for pypt in pyptlist:
@@ -89,22 +449,43 @@ def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
     return curve_edge.Edge()
     
 def make_bspline_edge_interpolate(pyptlist, is_closed):
-    '''
-    pyptlist: list of pypt
-    type: list(tuple)
-    
-    is_closed: is the curve open or close
-    type: bool, True or False
-    '''
-    gpptlist = make_gppntlist(pyptlist)
+    """
+    This function constructs an bspline OCCedge from a list of points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    is_closed : bool
+        True or False whether the edge constructed should be opened or closed.
+        
+    Returns
+    -------
+    edge : OCCedge
+        An OCCedge constructed from the list of points. The edge is opened or closed as specified.
+    """
+    gpptlist = make_gppnt_list(pyptlist)
     bcurve = Common.interpolate_points_to_spline_no_tangency(gpptlist, closed=is_closed)
     curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
     return curve_edge.Edge()
     
 def make_wire(pyptlist):
-    '''
-    if you want a close wire, make sure the pts the first pts too
-    '''
+    """
+    This function constructs an OCCwire from a list of points.For a closed wire, the last point needs to be the same as the first point.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points for constructing the wire. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z),
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    wire : OCCwire
+        An OCCwire constructed from the list of points.
+    """
     array = []
     for pt in pyptlist:
         array.append(gp_Pnt(pt[0],pt[1],pt[2]))
@@ -114,268 +495,147 @@ def make_wire(pyptlist):
     poly.Build()
     wire = poly.Wire()
     return wire
-    
-def make_wire_frm_edges(occ_edge_list):
-    wire = Construct.make_wire(occ_edge_list)
-    return wire
-    
-def make_loft_with_wires(occ_wire_list):
-    loft = Construct.make_loft(occ_wire_list, ruled = False)
-    return loft
-    
-def make_loft(occ_face_list, rule_face = True, tolerance = 1e-06):
-    #get the wires from the face_list
-    wire_list = []
-    for f in occ_face_list:
-        wires = fetch.wires_frm_face(f)
-        wire_list.extend(wires)
-        
-    loft = Construct.make_loft(wire_list, ruled = rule_face, tolerance = tolerance )
-    return loft
-    
-def make_rectangle(xdim, ydim):
-    point_list = [((xdim/2.0)*-1, ydim/2.0, 0), (xdim/2.0, ydim/2.0, 0), (xdim/2.0, (ydim/2.0)*-1, 0), ((xdim/2.0)*-1, (ydim/2.0)*-1, 0)]
-    face = make_polygon(point_list)
-    return face
-    
-def make_circle(pycentre_pt, pydirection, radius):
-    circle = gp_Circ(gp_Ax2(gp_Pnt(pycentre_pt[0], pycentre_pt[1], pycentre_pt[2]), gp_Dir(pydirection[0], pydirection[1], pydirection[2])), radius)
-    circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
-    return circle_edge.Edge()
-    
+
 def circles_frm_pyptlist(pyptlist, radius):
+    """
+    This function constructs a list of OCCedge circles based on the list of centre points and the radius.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    radius : float
+        Radius of the circles.
+        
+    Returns
+    -------
+    list of circles : list of OCCedge
+        List of  OCCedge circles.
+    """
     circlelist = []
-    gpptlist = make_gppntlist(pyptlist)
+    gpptlist = make_gppnt_list(pyptlist)
     for gppt in gpptlist:
         circle = make_circle((gppt.X(),gppt.Y(),gppt.Z()), (0,0,1), radius)
         circlelist.append(circle)
     return circlelist
-            
-def make_box(length, width, height):
-    box = fetch.shape2shapetype(BRepPrimAPI_MakeBox(length,width,height).Shape())
-    return box
     
-def make_offset(occ_face, offset_value):
-    o_wire = Construct.make_offset(occ_face, offset_value)
-    occface = BRepBuilderAPI_MakeFace(o_wire)
-    return occface.Face()
+def delaunay3d(pyptlist, tolerance = 1e-06):
+    """
+    This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    tolerance : float
+        The minimal surface area of each triangulated face, Default = 1e-06.. Any faces smaller than the tolerance will be deleted.
+ 
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of meshed OCCfaces (triangles) constructed from the meshing.
+    """
+    import numpy as np
+    from scipy.spatial import Delaunay
+    pyptlistx = []
+    pyptlisty = []
+    pyptlistz = []
     
-def make_offset_face2wire(occ_face, offset_value):
-    o_wire = Construct.make_offset(occ_face, offset_value)
-    return fetch.shape2shapetype(o_wire)
-    
-def make_vector(pypt1,pypt2):
-    gp_pt1 = gp_Pnt(pypt1[0],pypt1[1],pypt1[2])
-    gp_pt2 = gp_Pnt(pypt2[0],pypt2[1],pypt2[2])
-    gp_vec = gp_Vec(gp_pt1, gp_pt2)
-    return gp_vec
-
-def make_gp_ax3(pypt, pydir):    
-    gp_ax3 = gp_Ax3(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2]))
-    return gp_ax3
-
-def make_gppnt(pypt):
-    return gp_Pnt(pypt[0], pypt[1], pypt[2])
-    
-def make_gppntlist(pyptlist):
-    gpptlist = []
     for pypt in pyptlist:
-        gpptlist.append(make_gppnt(pypt))
-    return gpptlist
-    
-def make_line(pypt, pydir):
-    occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
-    return occ_line
-    
-def make_shell(occfacelist):
-    builder = BRep_Builder()
-    shell = TopoDS_Shell()
-    builder.MakeShell(shell)
-    for occface in occfacelist:
-        builder.Add(shell, occface)
+        pyptlistx.append(pypt[0])
+        pyptlisty.append(pypt[1])
+        pyptlistz.append(pypt[2])
         
-    return shell
+    # u, v are parameterisation variables
+    u = np.array(pyptlistx) 
+    v = np.array(pyptlisty) 
     
-def make_shell_frm_faces(occ_face_list, tolerance = 1e-06):
-    #make shell
-    sewing = BRepBuilderAPI_Sewing()
-    sewing.SetTolerance(tolerance)
-    for f in occ_face_list:
-        sewing.Add(f)
+    x = u
+    y = v
+    z = np.array(pyptlistz)
+    
+    # Triangulate parameter space to determine the triangles
+    tri = Delaunay(np.array([u,v]).T)
+    
+    occtriangles = []
+    xyz = np.array([x,y,z]).T
+    for verts in tri.simplices:
+        pt1 = list(xyz[verts[0]])
+        pt2 = list(xyz[verts[1]])
+        pt3 = list(xyz[verts[2]])
+        occtriangle = make_polygon([pt1,pt2,pt3])
+        tri_area = calculate.face_area(occtriangle)
+        if tri_area > tolerance:
+            occtriangles.append(occtriangle)
+    return occtriangles
+#========================================================================================================
+#EDGE INPUTS
+#========================================================================================================
+def extrude_edge(occedge, pydir, magnitude):
+    """
+    This function creates an extruded OCCface from an OCCedge.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be extruded.
         
-    sewing.Perform()
-    sewing_shape = fetch.shape2shapetype(sewing.SewedShape())
-    #topo_dict = fetch.topos_frm_compound(sewing_shape)
-    #shell_list = topo_dict["shell"]
-    shell_list = fetch.geom_explorer(sewing_shape, "shell")
-    return shell_list
+    pydir : tuple of floats
+        The direction of the extrusion. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
     
-def make_occfaces_frm_pypolygons(pypolygon_list):
-    face_list = []
-    for polygon_pts in pypolygon_list:
-        face = make_polygon(polygon_pts)
-        face_list.append(face)
-    return face_list
-    
-def make_occsolid_frm_pypolygons(pypolygon_list):
-    face_list = make_occfaces_frm_pypolygons(pypolygon_list)
-    #make shell
-    shell_list = make_shell_frm_faces(face_list)
-    shell = shell_list[0]
-    shell = modify.fix_shell_orientation(shell)
-    
-    solid = make_solid(shell)
-    solid = modify.fix_close_solid(solid)
-    return solid
-    
-def make_solid(occ_shell):
-    ms = BRepBuilderAPI_MakeSolid()
-    ms.Add(occ_shell)
-    return ms.Solid()
-    
-def make_solid_from_shell_list(occ_shell_list):
-    ms = BRepBuilderAPI_MakeSolid()
-    for occ_shell in occ_shell_list:
-        ms.Add(occ_shell)
-    return ms.Solid()
-    
-def make_compound(topo):
-    return Construct.compound(topo)
-    
-def extrude(occface, pydir, height):
-    #TODO: it doesnt work well with faces with holes
-    orig_pt = calculate.face_midpt(occface)
-    dest_pt = modify.move_pt(orig_pt, pydir, height)
-    wire_list =  fetch.geom_explorer(occface,"wire")
-    nwire = len(wire_list)
-    if nwire > 1:
-        #clockwise = hole
-        #anticlockwise = face
-        hole_solid_list = []
-        face_extrude_list = []
-        face_nrml = calculate.face_normal(occface)
+    magnitude : float
+        The magnitude of the extrusion.
         
-        for wire in wire_list:
-            #first check if there are holes and which wire are holes
-            pyptlist = fetch.pyptlist_frm_occwire(wire)
-            is_anticlockwise = calculate.is_anticlockwise(pyptlist, face_nrml)
-            #create face from the wires
-            wire_face = make_face_frm_wire(wire)
-            
-            moved_face = modify.move(orig_pt,dest_pt, wire_face)
-            moved_face = fetch.shape2shapetype(moved_face)
-            #create solid from the faces
-            loft = make_loft([wire_face, moved_face])
-            face_list = fetch.geom_explorer(loft, "face")
-            face_list.append(wire_face)
-            face_list.append(moved_face)
-            
-            shell = make_shell_frm_faces(face_list)[0]
-            solid = make_solid(shell)
-            solid = modify.fix_close_solid(solid)
-            
-            if not is_anticlockwise:
-                hole_solid_list.append(solid)
-            else:
-                face_extrude_list.append(solid)
-                
-        extrude_cmpd = make_compound(face_extrude_list)
-        hole_cmpd = make_compound(hole_solid_list)
-        diff_cmpd = boolean_difference(extrude_cmpd, hole_cmpd)
-        solid_list = fetch.geom_explorer(diff_cmpd, "solid")
-        return solid_list[0]
-    else:
-        moved_face = modify.move(orig_pt,dest_pt, occface)
-        loft = make_loft([occface, moved_face])
-        face_list = fetch.geom_explorer(loft, "face")
-        face_list.append(occface)
-        face_list.append(moved_face)
-        shell = make_shell_frm_faces(face_list)[0]
-        solid = make_solid(shell)
-        solid = modify.fix_close_solid(solid)
-        return solid
-    
-def extrude_edge(occedge, pydirection, height):
+    Returns
+    -------
+    face : OCCface
+        An OCCface constructed from the extrusion.
+    """
     edge_midpt = calculate.edge_midpt(occedge)
-    location_pt = modify.move_pt(edge_midpt, pydirection, height)
+    location_pt = modify.move_pt(edge_midpt, pydir, magnitude)
     edge2 = fetch.shape2shapetype(modify.move(edge_midpt, location_pt, occedge))
     edge_wire = make_wire_frm_edges([occedge])
     edge_wire2 = make_wire_frm_edges([edge2])
     edgeface = make_loft_with_wires([edge_wire,edge_wire2])
     facelist = fetch.geom_explorer(edgeface, "face")
     return facelist[0]
-    
-def grid_face(occ_face, udim, vdim):
-    #returns a series of polygons 
-    pt_list = []
-    face_list = []
-    fc = face.Face(occ_face)
-    umin, umax, vmin, vmax = fc.domain()
-    u_div = int(math.ceil((umax-umin)/udim))
-    v_div = int(math.ceil((vmax-vmin)/vdim))
-    for ucnt in range(u_div+1):
-        for vcnt in range(v_div+1):
-            u = umin + (ucnt*udim)
-            v = vmin + (vcnt*vdim)
-            occpt = fc.parameter_to_point(u,v)
-            pt = [occpt.X(),occpt.Y(),occpt.Z()]
-            pt_list.append(pt)
 
-    for pucnt in range(u_div):
-        for pvcnt in range(v_div):
-            pcnt = pucnt*(v_div+1) + pvcnt
-            #print pcnt
-            pt1 = pt_list[pcnt]
-            pt2 = pt_list[pcnt+v_div+1]
-            pt3 = pt_list[pcnt+v_div+2]
-            pt4 = pt_list[pcnt+1]
-            occface = make_polygon([pt1, pt2, pt3, pt4])
-            face_list.append(occface)
-       
-    #intersect the grids and the face so that those grids that are not in the face will be erase
-    intersection_list = []
-    for f in face_list:
-        intersection = BRepAlgoAPI_Common(f, occ_face).Shape()
-        compound = fetch.shape2shapetype(intersection)
-        inter_face_list = fetch.topos_frm_compound(compound)["face"]
-        if inter_face_list:
-            for inter_face in inter_face_list:
-                intersection_list.append(inter_face)
-    return intersection_list
+def make_wire_frm_edges(occedge_list):
+    """
+    This function constructs an OCCwire from a list of OCCedges.
+ 
+    Parameters
+    ----------
+    occedge_list : a list of OCCedges
+        List of OCCedge for constructing the wire.
+        
+    Returns
+    -------
+    wire : OCCwire
+        An OCCwire constructed from the list of OCCedge.
+    """
+    wire = Construct.make_wire(occedge_list)
+    return wire
 
-def boolean_common(occ_shape1, occ_shape2):
-    intersection = BRepAlgoAPI_Common(occ_shape1, occ_shape2).Shape()
-    compound = fetch.shape2shapetype(intersection)
-    return compound
-    
-def boolean_fuse(occshape1, occshape2):
-    fused = Construct.boolean_fuse(occshape1, occshape2)
-    compound = fetch.shape2shapetype(fused)
-    return compound
-
-def boolean_difference(occshape2cutfrm, occ_cuttingshape):
-    difference = Construct.boolean_cut(occshape2cutfrm, occ_cuttingshape)
-    compound = fetch.shape2shapetype(difference)
-    return compound
-
-def boolean_section(section_occface, occshape, roundndigit = 6, distance = 0.1):
-    section = BRepAlgoAPI_Section(section_occface, occshape).Shape()
-    edges = fetch.geom_explorer(section, "edge")
-    face_list = wire_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
-    compound = make_compound(face_list)
-    #visualise([[compound]], ["BLUE"])
-    return compound
-    
-def make_face_frm_wire(occwire):
-    occface = BRepBuilderAPI_MakeFace(occwire).Face()
-    if not occface.IsNull():    
-        return occface
-
-def wire_frm_loose_edges(occedge_list):
-    '''
-    the edges need to be able to form a close face. IT does not work with a group of open edges
-    need to change name to face from loose edges
-    '''
+def faces_frm_loose_edges(occedge_list):
+    """
+    This function creates a list of OCCfaces from a list of OCCedges. The edges need to be able to form a close face. 
+    It does not work with a group of open edges.
+ 
+    Parameters
+    ----------
+    occedge_list : list of OCCedges
+        The list of OCCedges for creating the list of OCCfaces. 
+        
+    Returns
+    -------
+    list of faces : list of OCCfaces
+        A list of OCCfaces constructed from the list of OCCedges.
+    """
     edges = TopTools_HSequenceOfShape()
     edges_handle = Handle_TopTools_HSequenceOfShape(edges)
     
@@ -403,12 +663,29 @@ def wire_frm_loose_edges(occedge_list):
             face_list.append(f_occface)
     return face_list
 
-def wire_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
-    '''
-    wire_frm_loose_edges2 are for more complex geometries
-    the edges need to be able to form a close face. IT does not work with a group of open edges
-    need to change name to face from loose edges
-    '''
+def faces_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
+    """
+    This function creates a list of OCCfaces from a list of OCCedges. The edges need to be able to form a close face. 
+    It does not work with a group of open edges. wire_frm_loose_edges2 are for more complex geometries.
+ 
+    Parameters
+    ----------
+    occedge_list : list of OCCedges
+        The list of OCCedges for creating the list of OCCfaces.
+    
+    roundndigit : int
+        The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
+        Depending on the precision of the points, it will decide whether the edges are connected.
+        
+    distance : float
+        The smallest distance between two points from the edges, Default = 0.01. 
+        The further the distance the less precise is the resultant faces.
+        
+    Returns
+    -------
+    list of faces : list of OCCfaces
+        A list of OCCfaces constructed from the list of OCCedges.
+    """
     edges = TopTools_HSequenceOfShape()
     edges_handle = Handle_TopTools_HSequenceOfShape(edges)
     
@@ -465,12 +742,27 @@ def wire_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
                         
     return diff_list
     
-def arrange_edges_2_wires(occedgelist, isclosed = False):
+def arrange_edges_2_wires(occedge_list, isclosed = False):
+    """
+    This function creates a list of OCCwires from a list of OCCedges. The edges does not need to form a close face. 
+ 
+    Parameters
+    ----------
+    occedge_list : list of OCCedges
+        The list of OCCedges for creating the list of OCCwires.
+    
+    isclosed : bool
+        True or False, is the resultant wires suppose to be closed or opened.
+        
+    Returns
+    -------
+    list of wires : list of OCCwires
+        A list of OCCwires constructed from the list of OCCedges.
+    """
     from OCC.TopoDS import topods 
     from OCC.TopExp import topexp
     from OCC.BRep import BRep_Tool
     from OCC.ShapeAnalysis import ShapeAnalysis_WireOrder
-    from OCC.Precision import precision
     from OCC.BRepBuilderAPI import BRepBuilderAPI_WireDone, BRepBuilderAPI_EmptyWire, BRepBuilderAPI_DisconnectedWire, BRepBuilderAPI_NonManifoldWire
     
     wb_errdict={BRepBuilderAPI_WireDone:"No error", BRepBuilderAPI_EmptyWire:"Empty wire", BRepBuilderAPI_DisconnectedWire:"disconnected wire",
@@ -487,7 +779,7 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
     tolerance = 1e-06
     SAWO = ShapeAnalysis_WireOrder(mode3d, tolerance) #precision.PConfusion()
     
-    for edge in occedgelist:
+    for edge in occedge_list:
         V1 = topexp.FirstVertex(topods.Edge(edge))
         V2 = topexp.LastVertex(topods.Edge(edge))
         pnt1 = BRep_Tool().Pnt(V1)
@@ -514,7 +806,7 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
                 continue
             for j in range(estart, eend+1):
                 idx = abs(SAWO.Ordered(j)) # wirebuilder = s_addToWireBuilder(wirebuilder, edgelist[idx-1])
-                edge2w = occedgelist[idx-1]
+                edge2w = occedge_list[idx-1]
                 wirebuilder.Add(edge2w)
                 if wirebuilder is None:
                     raise RuntimeError, " build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i)
@@ -534,10 +826,237 @@ def arrange_edges_2_wires(occedgelist, isclosed = False):
             wirelist.append(aWire)
             
     return wirelist
+    
+#========================================================================================================
+#WIRE INPUTS
+#========================================================================================================
+def make_loft_with_wires(occwire_list):
+    """
+    This function lofts a list of OCCwires.
+ 
+    Parameters
+    ----------
+    occwire_list : a list of OCCwires
+        List of OCCwires for the loft.
         
-def merge_faces(occ_face_list, tolerance = 1e-06 ):
+    Returns
+    -------
+    shape : OCCshape
+        An OCCshape constructed from lofting the list of OCCwires.
+    """
+    loft = Construct.make_loft(occwire_list, ruled = False)
+    return loft
+
+def make_face_frm_wire(occwire):
+    """
+    This function creates an OCCface from an OCCwire.
+ 
+    Parameters
+    ----------
+    occwire : OCCwire
+        The OCCwire for creating the OCCface. 
+        
+    Returns
+    -------
+    face : OCCface
+        An OCCface constructed from the OCCwire.
+    """
+    occface = BRepBuilderAPI_MakeFace(occwire).Face()
+    if not occface.IsNull():    
+        return occface
+    
+#========================================================================================================
+#FACE INPUTS
+#========================================================================================================
+def make_offset(occface, offset_value):
+    """
+    This function offsets an OCCface.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        OCCface to be offset
+        
+    offset_value : float
+        The offset value. A negative value will offset the circle inwards, while a positive value will offset it outwards.
+    
+    Returns
+    -------
+    offset face : OCCface
+        The offsetted OCCface.
+    """
+    o_wire = Construct.make_offset(occface, offset_value)
+    o_face = BRepBuilderAPI_MakeFace(o_wire)
+    return o_face.Face()
+    
+def make_offset_face2wire(occface, offset_value):
+    """
+    This function offsets an OCCface and return the wire instead of the face.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        OCCface to be offset
+        
+    offset_value : float
+        The offset value. A negative value will offset the circle inwards, while a positive value will offset it outwards.
+    
+    Returns
+    -------
+    offset wire : OCCwire
+        The offsetted OCCwire.
+    """
+    o_wire = Construct.make_offset(occface, offset_value)
+    return fetch.shape2shapetype(o_wire)
+
+def grid_face(occface, udim, vdim):
+    """
+    This function creates a list of OCCfaces grids from an OCCface.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be gridded.
+        
+    udim : int
+        The number of rows of the grid.
+    
+    vdim : int
+        The number of columns of the grid.
+        
+    Returns
+    -------
+    grids : list of OCCfaces
+        A list of OCCfaces constructed from the gridding.
+    """
+    #returns a series of polygons 
+    pt_list = []
+    face_list = []
+    fc = face.Face(occface)
+    umin, umax, vmin, vmax = fc.domain()
+    u_div = int(math.ceil((umax-umin)/udim))
+    v_div = int(math.ceil((vmax-vmin)/vdim))
+    for ucnt in range(u_div+1):
+        for vcnt in range(v_div+1):
+            u = umin + (ucnt*udim)
+            v = vmin + (vcnt*vdim)
+            occpt = fc.parameter_to_point(u,v)
+            pt = [occpt.X(),occpt.Y(),occpt.Z()]
+            pt_list.append(pt)
+
+    for pucnt in range(u_div):
+        for pvcnt in range(v_div):
+            pcnt = pucnt*(v_div+1) + pvcnt
+            #print pcnt
+            pt1 = pt_list[pcnt]
+            pt2 = pt_list[pcnt+v_div+1]
+            pt3 = pt_list[pcnt+v_div+2]
+            pt4 = pt_list[pcnt+1]
+            occface = make_polygon([pt1, pt2, pt3, pt4])
+            face_list.append(occface)
+       
+    #intersect the grids and the face so that those grids that are not in the face will be erase
+    intersection_list = []
+    for f in face_list:
+        intersection = BRepAlgoAPI_Common(f, occface).Shape()
+        compound = fetch.shape2shapetype(intersection)
+        inter_face_list = fetch.topos_frm_compound(compound)["face"]
+        if inter_face_list:
+            for inter_face in inter_face_list:
+                intersection_list.append(inter_face)
+    return intersection_list
+    
+def extrude(occface, pydir, magnitude):
+    """
+    This function creates an extruded OCCsolid from an OCCface.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be extruded.
+        
+    pydir : tuple of floats
+        The direction of the extrusion. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+    
+    magnitude : float
+        The magnitude of the extrusion.
+        
+    Returns
+    -------
+    list of shell : list of OCCshells
+        An OCCsolid constructed from the extrusion.
+    """
+    orig_pt = calculate.face_midpt(occface)
+    dest_pt = modify.move_pt(orig_pt, pydir, magnitude)
+    wire_list =  fetch.geom_explorer(occface,"wire")
+    nwire = len(wire_list)
+    if nwire > 1:
+        #clockwise = hole
+        #anticlockwise = face
+        hole_solid_list = []
+        face_extrude_list = []
+        face_nrml = calculate.face_normal(occface)
+        
+        for wire in wire_list:
+            #first check if there are holes and which wire are holes
+            pyptlist = fetch.pyptlist_frm_occwire(wire)
+            is_anticlockwise = calculate.is_anticlockwise(pyptlist, face_nrml)
+            #create face from the wires
+            wire_face = make_face_frm_wire(wire)
+            
+            moved_face = modify.move(orig_pt,dest_pt, wire_face)
+            moved_face = fetch.shape2shapetype(moved_face)
+            #create solid from the faces
+            loft = make_loft([wire_face, moved_face])
+            face_list = fetch.geom_explorer(loft, "face")
+            face_list.append(wire_face)
+            face_list.append(moved_face)
+            
+            shell = sew_faces(face_list)[0]
+            solid = make_solid(shell)
+            solid = modify.fix_close_solid(solid)
+            
+            if not is_anticlockwise:
+                hole_solid_list.append(solid)
+            else:
+                face_extrude_list.append(solid)
+                
+        extrude_cmpd = make_compound(face_extrude_list)
+        hole_cmpd = make_compound(hole_solid_list)
+        diff_cmpd = boolean_difference(extrude_cmpd, hole_cmpd)
+        solid_list = fetch.geom_explorer(diff_cmpd, "solid")
+        return solid_list[0]
+    else:
+        moved_face = modify.move(orig_pt,dest_pt, occface)
+        loft = make_loft([occface, moved_face])
+        face_list = fetch.geom_explorer(loft, "face")
+        face_list.append(occface)
+        face_list.append(moved_face)
+        shell = sew_faces(face_list)[0]
+        solid = make_solid(shell)
+        solid = modify.fix_close_solid(solid)
+        return solid
+    
+def merge_faces(occface_list, tolerance = 1e-06 ):
+    """
+    This function creates a list of merged OCCfaces from a list of OCCfaces. The function loops through the OCCfaces to search for all possible
+    connected faces and merged them into a single face.
+ 
+    Parameters
+    ----------
+    occface_list : a list of OCCfaces
+        List of OCCfaces that will be looped through in search of all possible connected faces.
+        
+    tolerance : float
+        The minimal tolerance to decide if two faces are connected, Default = 1e-06.
+        
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of merged OCCfaces constructed from the list of OCCfaces.
+    """
     sew = BRepBuilderAPI_Sewing(tolerance)
-    for shp in occ_face_list:
+    for shp in occface_list:
         if isinstance(shp, list):
             for i in shp:
                 sew.Add(i)
@@ -549,15 +1068,320 @@ def merge_faces(occ_face_list, tolerance = 1e-06 ):
     free_edges = []
     for fe_cnt in range(nfreeedge):
         free_edges.append(sew.FreeEdge(fe_cnt+1))
-    face_list = wire_frm_loose_edges(free_edges)
+    face_list = faces_frm_loose_edges(free_edges)
+    return face_list
+
+def make_loft(occface_list, rule_face = True, tolerance = 1e-06):
+    """
+    This function lofts a list of OCCfaces.
+ 
+    Parameters
+    ----------
+    occface_list : a list of OCCfaces
+        List of OCCfaces for the loft.
+        
+    rule_face : bool
+        True or Force. Specify if the loft is a ruled face.
+    
+    tolerance : float
+        Specify the tolerance of the loft.
+        
+    Returns
+    -------
+    shape : OCCshape
+        An OCCshape constructed from lofting the list of OCCfaces.
+    """
+    #get the wires from the face_list
+    wire_list = []
+    for f in occface_list:
+        wires = fetch.wires_frm_face(f)
+        wire_list.extend(wires)
+        
+    loft = Construct.make_loft(wire_list, ruled = rule_face, tolerance = tolerance )
+    return loft
+    
+def make_shell(occface_list):
+    """
+    This function creates an OCCshell from a list of OCCfaces. The OCCfaces in the shell might not be connected. 
+    For creating an OCCshell that is definitely connected please use sew_faces function.
+ 
+    Parameters
+    ----------
+    occface_list : a list of OCCfaces
+        List of OCCfaces for the shell.
+        
+    Returns
+    -------
+    shell : OCCshell
+        An OCCshell constructed from the list of OCCfaces.
+    """
+    builder = BRep_Builder()
+    shell = TopoDS_Shell()
+    builder.MakeShell(shell)
+    for occface in occface_list:
+        builder.Add(shell, occface)
+        
+    return shell
+    
+def sew_faces(occface_list, tolerance = 1e-06):
+    """
+    This function creates a list of OCCshells from a list of OCCfaces. The function loops through the OCCfaces to search for all possible
+    shells that can be created from the faces.
+ 
+    Parameters
+    ----------
+    occface_list : a list of OCCfaces
+        List of OCCfaces that will be looped through in search of all possible shells.
+        
+    Returns
+    -------
+    list of shell : list of OCCshells
+        A list of OCCshells constructed from the list of OCCfaces.
+    """
+    #make shell
+    sewing = BRepBuilderAPI_Sewing()
+    sewing.SetTolerance(tolerance)
+    for f in occface_list:
+        sewing.Add(f)
+        
+    sewing.Perform()
+    sewing_shape = fetch.shape2shapetype(sewing.SewedShape())
+    shell_list = fetch.geom_explorer(sewing_shape, "shell")
+    return shell_list
+    
+def make_occfaces_frm_pypolygons(pypolygon_list):
+    """
+    This function creates a list of OCCfaces from a list of polygons.
+ 
+    Parameters
+    ----------
+    pypolygon_list : a 2d list of tuples
+        List of polygon for constructing the list of faces. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+        A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), ...], [(x21,y21,z21), (x22,y22,z22), ...], ...]
+                
+    Returns
+    -------
+    list of faces : list of OCCfaces
+        A list of OCCfaces constructed from the list of pypolygons.
+    """
+    face_list = []
+    for polygon_pts in pypolygon_list:
+        face = make_polygon(polygon_pts)
+        face_list.append(face)
     return face_list
     
-def simple_mesh(occshape, mesh_incremental_float = 0.8):
+def make_occsolid_frm_pypolygons(pypolygon_list):
+    """
+    This function creates a OCCsolid from a list of connected polygons.
+ 
+    Parameters
+    ----------
+    pypolygon_list : a 2d list of tuples
+        List of connected polygon for constructing the OCCsolid. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+        A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), ...], [(x21,y21,z21), (x22,y22,z22), ...], ...]
+                
+    Returns
+    -------
+    solid : OCCsolid
+        An OCCsolid constructed from the list of pypolygons.
+    """
+    face_list = make_occfaces_frm_pypolygons(pypolygon_list)
+    #make shell
+    shell_list = sew_faces(face_list)
+    shell = shell_list[0]
+    shell = modify.fix_shell_orientation(shell)
+    
+    solid = make_solid(shell)
+    solid = modify.fix_close_solid(solid)
+    return solid
+    
+#========================================================================================================
+#SHELL INPUTS
+#========================================================================================================
+def make_solid(occshell):
+    """
+    This function creates a OCCsolid from a OCCshell.
+ 
+    Parameters
+    ----------
+    occshell : OCCshell
+        A closed OCCshell to be converted into OCCsolid.
+                
+    Returns
+    -------
+    solid : OCCsolid
+        An OCCsolid constructed from the closed OCCshell.
+    """
+    ms = BRepBuilderAPI_MakeSolid()
+    ms.Add(occshell)
+    return ms.Solid()
+    
+def make_solid_from_shell_list(occshell_list):
+    """
+    This function creates a OCCsolid from a list of connected OCCshell.
+ 
+    Parameters
+    ----------
+    occshell_list : list of OCCshells
+        A list of connected closed OCCshell to be converted into OCCsolid.
+                
+    Returns
+    -------
+    solid : OCCsolid
+        An OCCsolid constructed from the list of connected closed OCCshell.
+    """
+    ms = BRepBuilderAPI_MakeSolid()
+    for occ_shell in occshell_list:
+        ms.Add(occ_shell)
+    return ms.Solid()
+    
+#========================================================================================================
+#TOPOLOGY INPUTS
+#========================================================================================================
+def make_compound(occtopo_list):
+    """
+    This function creates a OCCcompound from a list of OCCtopologies.
+ 
+    Parameters
+    ----------
+    occtopo_list : list of OCCtopology
+        A list of OCCtopologies to be converted into OCCcompound. 
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+                
+    Returns
+    -------
+    compound : OCCcompound
+        An OCCcompound constructed from the list of OCCtopologies.
+    """
+    return Construct.compound(occtopo_list)
+
+def boolean_common(occtopology1, occtopology2):
+    """
+    This function creates an OCCcompound from intersecting the two OCCtopologies.
+ 
+    Parameters
+    ----------
+    occtopology1 : OCCtopology
+        The OCCtopology to be intersected. 
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    occtopology2 : OCCtopology
+        The OCCtopology to be intersected.
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    Returns
+    -------
+    compound : OCCcompound
+        An OCCcompound constructed from the intersection.
+    """
+    intersection = BRepAlgoAPI_Common(occtopology1, occtopology2).Shape()
+    compound = fetch.shape2shapetype(intersection)
+    return compound
+    
+def boolean_fuse(occtopology1, occtopology2):
+    """
+    This function creates an OCCcompound from fusing the two OCCtopologies.
+ 
+    Parameters
+    ----------
+    occtopology1 : OCCtopology
+        The OCCtopology to be fused. 
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    occtopology2 : OCCtopology
+        The OCCtopology to be fused.
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    Returns
+    -------
+    compound : OCCcompound
+        An OCCcompound constructed from the fusion.
+    """
+    fused = Construct.boolean_fuse(occtopology1, occtopology2)
+    compound = fetch.shape2shapetype(fused)
+    return compound
+
+def boolean_difference(occstopology2cutfrm, cutting_occtopology):
+    """
+    This function creates an OCCcompound from cutting the two OCCtopologies.
+ 
+    Parameters
+    ----------
+    occstopology2cutfrm : OCCtopology
+        The OCCtopology to be cut. 
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    cutting_occtopology : OCCtopology
+        The cutting OCCtopology.
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    Returns
+    -------
+    compound : OCCcompound
+        An OCCcompound constructed from the cutting.
+    """
+    difference = Construct.boolean_cut(occstopology2cutfrm, cutting_occtopology)
+    compound = fetch.shape2shapetype(difference)
+    return compound
+
+def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance = 0.1):
+    """
+    This function creates an OCCcompound from cutting the OCCtopology with an OCCface.
+ 
+    Parameters
+    ----------
+    section_occface : OCCface
+        The OCCface for cutting the OCCtopology. 
+        
+    occtopology2cut : OCCtopology
+        The OCCtopology to be cut.
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, 
+    
+    roundndigit : int
+        The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
+        Depending on the precision of the points, it will decide whether the edges are connected.
+        
+    distance : float
+        The smallest distance between two points from the edges, Default = 0.01. 
+        The further the distance the less precise is the resultant faces.
+        
+    Returns
+    -------
+    compound : OCCcompound
+        An OCCcompound constructed from the cutting. The OCCcompound is a collection of OCCfaces
+    """
+    section = BRepAlgoAPI_Section(section_occface, occtopology2cut).Shape()
+    edges = fetch.geom_explorer(section, "edge")
+    face_list = faces_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
+    compound = make_compound(face_list)
+    #visualise([[compound]], ["BLUE"])
+    return compound
+    
+def simple_mesh(occtopology, mesh_incremental_float = 0.8):
+    """
+    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology.
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        The OCCtopology to be meshed.
+        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        
+    mesh_incremental_float : float
+        Default = 1e-06.
+        
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of meshed OCCfaces (triangles) constructed from the meshing.
+    """
     #TODO: figure out why is it that some surfaces do not work
-    occshape = TopoDS_Shape(occshape)
+    occtopology = TopoDS_Shape(occtopology)
     bt = BRep_Tool()
-    BRepMesh_IncrementalMesh(occshape, mesh_incremental_float)
-    occshape_face_list = fetch.geom_explorer(occshape, "face")
+    BRepMesh_IncrementalMesh(occtopology, mesh_incremental_float)
+    occshape_face_list = fetch.geom_explorer(occtopology, "face")
     occface_list = []
     for occshape_face in occshape_face_list:
         location = TopLoc_Location()
@@ -577,146 +1401,3 @@ def simple_mesh(occshape, mesh_incremental_float = 0.8):
                 occface = make_polygon([pypt1, pypt2, pypt3])
                 occface_list.append(occface)
     return occface_list
-    
-def delaunay3d(pyptlist, tolerance = 1e-06):
-    pyptlistx = []
-    pyptlisty = []
-    pyptlistz = []
-    
-    for pypt in pyptlist:
-        pyptlistx.append(pypt[0])
-        pyptlisty.append(pypt[1])
-        pyptlistz.append(pypt[2])
-        
-    # u, v are parameterisation variables
-    u = np.array(pyptlistx) 
-    v = np.array(pyptlisty) 
-    
-    x = u
-    y = v
-    z = np.array(pyptlistz)
-    
-    # Triangulate parameter space to determine the triangles
-    tri = Delaunay(np.array([u,v]).T)
-    
-    occtriangles = []
-    xyz = np.array([x,y,z]).T
-    for verts in tri.simplices:
-        pt1 = list(xyz[verts[0]])
-        pt2 = list(xyz[verts[1]])
-        pt3 = list(xyz[verts[2]])
-        occtriangle = make_polygon([pt1,pt2,pt3])
-        tri_area = calculate.face_area(occtriangle)
-        if tri_area > tolerance:
-            occtriangles.append(occtriangle)
-    return occtriangles
-
-def make_brep_text(stri, font_size):
-    from OCC.Addons import text_to_brep, Font_FA_Bold
-    brepstr = text_to_brep(stri, "Arial", Font_FA_Bold, font_size, True)
-    return brepstr
-    
-def visualise(shape2dlist, colour_list, backend = "qt-pyqt5"):
-    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
-    sc_cnt = 0
-    for shape_list in shape2dlist:
-        compound = make_compound(shape_list)
-        colour = colour_list[sc_cnt]
-        display.DisplayColoredShape(compound, color = colour, update=True)
-        sc_cnt+=1
-        
-    display.set_bg_gradient_color(250, 250, 250, 250, 250, 250)
-    display.View_Iso()
-    display.FitAll()
-    start_display()
-    
-def pseudocolor(val, minval, maxval):
-    # convert val in range minval..maxval to the range 0..120 degrees which
-    # correspond to the colors red..green in the HSV colorspace
-    if val <= minval:
-        h = 250.0
-    elif val>=maxval:
-        h = 0.0
-    else:
-        h = 250 - (((float(val-minval)) / (float(maxval-minval)))*250)
-    # convert hsv color (h,1,1) to its rgb equivalent
-    # note: the hsv_to_rgb() function expects h to be in the range 0..1 not 0..360
-    r, g, b = colorsys.hsv_to_rgb(h/360, 1., 1.)
-    return r, g, b
-    
-def falsecolour(results, minval, maxval):
-    res_colours = []
-    for result in results:
-        r,g,b = pseudocolor(result, minval, maxval)
-        colour = OCCViewer.rgb_color(r, g, b)
-        res_colours.append(colour)
-    return res_colours
-    
-def visualise_falsecolour_topo(results, occtopo_list, other_topo2dlist = None, other_colourlist = None, 
-                               minval_range = None, maxval_range = None, backend = "qt-pyqt5"):
-                                   
-    display, start_display, add_menu, add_function_to_menu = init_display(backend_str = backend)
-    
-    if minval_range == None: 
-        minval = min(results)
-    elif minval_range != None:
-        minval = minval_range
-    
-    if maxval_range == None: 
-        maxval = max(results)
-    elif maxval_range != None: 
-        maxval = maxval_range
-        
-    res_colours = falsecolour(results, minval, maxval)
-
-    colour_list = []
-    c_srf_list = []
-    for r_cnt in range(len(res_colours)):
-        fcolour = res_colours[r_cnt]
-        rf = occtopo_list[r_cnt]
-        if fcolour not in colour_list:
-            colour_list.append(fcolour)
-            c_srf_list.append([rf])
-            
-        elif fcolour in colour_list:
-            c_index = colour_list.index(fcolour)
-            c_srf_list[c_index].append(rf)
-        
-    for c_cnt in range(len(c_srf_list)):
-        c_srfs = c_srf_list[c_cnt]
-        colour = colour_list[c_cnt]
-        compound = make_compound(c_srfs)
-        display.DisplayColoredShape(compound, color=colour, update=True)
-        
-    #display the edges of the grid
-    tedges = []
-    for t in occtopo_list:
-        edge = list(Topology.Topo(t).edges())
-        tedges.extend(edge)
-        
-    edgecompound = make_compound(tedges)
-    display.DisplayColoredShape(edgecompound, color="BLACK", update=True)
-            
-    if other_topo2dlist != None:
-        tc_cnt = 0
-        for other_topolist in other_topo2dlist:
-            other_compound = make_compound(other_topolist)
-            other_colour = other_colourlist[tc_cnt]
-            display.DisplayColoredShape(other_compound, color=other_colour, update=True)
-            tc_cnt +=1
-    
-    display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
-    display.View_Iso()
-    display.FitAll()
-    start_display()
-    
-def write_2_stl(occshape, stl_filepath, mesh_incremental_float = 0.8):
-    from OCC.StlAPI import StlAPI_Writer
-    from OCC.BRepMesh import BRepMesh_IncrementalMesh
-    # Export to STL
-    stl_writer = StlAPI_Writer()
-    stl_writer.SetASCIIMode(True)
-    mesh = BRepMesh_IncrementalMesh(occshape, mesh_incremental_float)
-    mesh.Perform()
-    assert mesh.IsDone()
-    stl_writer.Write(occshape,stl_filepath)

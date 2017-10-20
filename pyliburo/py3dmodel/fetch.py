@@ -15,138 +15,570 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
+import calculate
+import construct
+
 from OCCUtils import Topology
 from OCCUtils import edge
-from OCC.BRep import BRep_Tool
+
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX, TopAbs_REVERSED
 from OCC.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
 from OCC.Geom import Handle_Geom_BSplineCurve
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
 from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
-import calculate
-import construct
 
-def pyptlist_frm_occface(occ_face):
-    wire_list = wires_frm_face(occ_face)
-    occpt_list = []
+#========================================================================================================
+#EDGE INPUTS
+#========================================================================================================
+def points_from_edge(occedge):
+    """
+    This function fetches a list of points from the OCCedge. The list of points consist of the starting and ending point of the edge.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be examined.
+        
+    Returns
+    -------
+    list of points : pyptlist
+        The list of points extracted from the OCCedge.
+    """
+    vertex_list = list(Topology.Topo(occedge).vertices())
+    point_list = construct.occvertex_list_2_occpt_list(vertex_list)
+    pyptlist = construct.occpt_list_2_pyptlist(point_list)
+    return pyptlist
+    
+def is_edge_bspline(occedge):
+    """
+    This function checks if an OCCedge contains a bspline curve.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be examined.
+        
+    Returns
+    -------
+    True or False : bool
+        True or False if the edge contains a bspline curve.
+    """
+
+    #GeomAbs_Line 	        0
+    #GeomAbs_Circle 	        1
+    #GeomAbs_Ellipse         2	
+    #GeomAbs_Hyperbola       3 	
+    #GeomAbs_Parabola        4	
+    #GeomAbs_BezierCurve     5	
+    #GeomAbs_BSplineCurve    6	
+    #GeomAbs_OtherCurve      7
+
+    adaptor = BRepAdaptor_Curve(occedge)
+    ctype = adaptor.GetType()
+    if ctype == 6:
+        return True
+    else:
+        return False
+
+def is_edge_line(occedge):
+    """
+    This function checks if an OCCedge contains a line.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be examined.
+        
+    Returns
+    -------
+    True or False : bool
+        True or False if the edge contains a line.
+    """
+    adaptor = BRepAdaptor_Curve(occedge)
+    
+    #GeomAbs_Line 	        0
+    #GeomAbs_Circle 	        1
+    #GeomAbs_Ellipse         2	
+    #GeomAbs_Hyperbola       3 	
+    #GeomAbs_Parabola        4	
+    #GeomAbs_BezierCurve     5	
+    #GeomAbs_BSplineCurve    6	
+    #GeomAbs_OtherCurve      7
+
+    ctype = adaptor.GetType()
+    if ctype == 0:
+        return True
+    else:
+        return False
+
+    
+def poles_from_bsplinecurve_edge(occedge):
+    """
+    This function fetches the poles of a bspline OCCedge.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be examined. The OCCedge needs to contain a bspline curve
+        
+    Returns
+    -------
+    List of poles : pyptlist
+        List of poles of the bspline curve
+    """
+    adaptor = BRepAdaptor_Curve(occedge)
+    adaptor_handle = BRepAdaptor_HCurve(adaptor)
+    handle_bspline = Handle_Geom_BSplineCurve()
+    bspline = handle_bspline.DownCast(adaptor.Curve().Curve()).GetObject()
+
+    npoles =  bspline.NbPoles()
+    polelist = []
+    for np in range(npoles):
+        pole = bspline.Pole(np+1)
+        pypole = (pole.X(), pole.Y(), pole.Z())
+        polelist.append(pypole)
+        
+    if topods_Edge(occedge).Orientation() == TopAbs_REVERSED:
+        polelist.reverse()
+
+    return polelist
+
+def edge_domain(occedge):
+    """
+    This function fetches the domain of an OCCedge.
+ 
+    Parameters
+    ----------
+    occedge : OCCedge
+        The OCCedge to be examined.
+        
+    Returns
+    -------
+    lower bound: float
+        The lower bound of the OCCedge domain
+    upper bound: float
+        The upper bound of the OCCedge domain
+    """
+    occutil_edge = edge.Edge(occedge)
+    lbound, ubound = occutil_edge.domain()
+    return lbound, ubound
+
+#========================================================================================================
+#WIRE INPUTS
+#========================================================================================================
+def points_frm_wire(occwire):
+    """
+    This function fetches a list of points from the OCCwire. The wire is constructed based on the list of points.
+    TODO: WHEN DEALING WITH OPEN WIRE IT WILL NOT RETURN THE LAST VERTEX
+ 
+    Parameters
+    ----------
+    occwire : OCCwire
+        The OCCwire to be examined.
+        
+    Returns
+    -------
+    list of points : pyptlist
+        The list of points extracted from the OCCwire.
+    """
+    verts = list(Topology.WireExplorer(occwire).ordered_vertices())
+    point_list = construct.occvertex_list_2_occpt_list(verts)
+    pyptlist = construct.occpt_list_2_pyptlist(point_list)
+    return pyptlist
+
+def edges_frm_wire(occwire):
+    """
+    This function fetches a list of OCCedges from the OCCwire. The wire is constructed based on the list of edges.
+ 
+    Parameters
+    ----------
+    occwire : OCCwire
+        The OCCwire to be examined.
+        
+    Returns
+    -------
+    list of edges : list of OCCedges
+        The list of OCCedges extracted from the OCCwire.
+    """
+    edge_list = Topology.WireExplorer(occwire).ordered_edges()
+    return list(edge_list)
+
+#========================================================================================================
+#FACE INPUTS
+#========================================================================================================
+def points_frm_occface(occface):
+    """
+    This function fetches a list of points from the OCCface. The face is constructed based on the list of points.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be examined.
+        
+    Returns
+    -------
+    list of points : pyptlist
+        The list of points extracted from the OCCface.
+    """
+    wire_list = wires_frm_face(occface)
     pt_list = []
     for wire in wire_list:
-        occpts = points_frm_wire(wire)
-        occpt_list.extend(occpts)
-        
-    for occpt in occpt_list:
-        pt = (occpt.X(), occpt.Y(), occpt.Z()) 
-        pt_list.append(pt)
+        pypts = points_frm_wire(wire)
+        pt_list.extend(pypts)
     
-    normal = calculate.face_normal(occ_face)
+    normal = calculate.face_normal(occface)
     anticlockwise = calculate.is_anticlockwise(pt_list, normal)
     if anticlockwise:
         pt_list.reverse()
         return pt_list
     else:
         return pt_list
-    
-def pyptlist_frm_occwire(occ_wire):
-    pt_list = []
-    occpt_list = points_frm_wire(occ_wire)
-    for occpt in occpt_list:
-        pt = (occpt.X(), occpt.Y(), occpt.Z()) 
-        pt_list.append(pt)
-    return pt_list
-    
-def occpt2pypt(occpt):
-    pypt = (occpt.X(), occpt.Y(), occpt.Z())
-    return pypt
 
-def occptlist2pyptlist(occptlist):
-    pyptlist = []
-    for occpt in occptlist:
-        pypt = occpt2pypt(occpt)
-        pyptlist.append(pypt)
+def wires_frm_face(occface):
+    """
+    This function fetches a list of OCCwires from the OCCface. The face is constructed based on the list of wires.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be examined.
+        
+    Returns
+    -------
+    list of wires : list of OCCwires
+        The list of OCCwires extracted from the OCCface.
+    """
+    wire_list =  Topology.Topo(occface).wires()
+    return list(wire_list)
+
+def is_face_null(occface):
+    """
+    This function checks if the OCCface is null. Null means it is a degenerated face.
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be examined.
+        
+    Returns
+    -------
+    True or False : bool
+        If True OCCface is null, if False OCCface is not null.
+    """
+    return occface.IsNull()
+    
+#========================================================================================================
+#SHELL INPUTS
+#========================================================================================================
+def faces_frm_shell(occshell):
+    """
+    This function fetches a list of OCCfaces from the OCCshell. The shell is constructed based on the list of faces.
+ 
+    Parameters
+    ----------
+    occshell : OCCshell
+        The OCCshell to be examined.
+        
+    Returns
+    -------
+    list of faces : list of OCCfaces
+        The list of OCCfaces extracted from the OCCshell.
+    """
+    face_list = Topology.Topo(occshell).faces()
+    return list(face_list) 
+
+#========================================================================================================
+#SOLID INPUTS
+#========================================================================================================
+def faces_frm_solid(occsolid):
+    """
+    This function fetches a list of OCCfaces from the OCCsolid. The solid is constructed based on the list of faces.
+ 
+    Parameters
+    ----------
+    occsolid : OCCsolid
+        The OCCsolid to be examined.
+        
+    Returns
+    -------
+    list of faces : list of OCCfaces
+        The list of OCCfaces extracted from the OCCsolid.
+    """
+    face_list = []
+    shell_list = shells_frm_solid(occsolid)
+    for shell in shell_list:
+        faces = faces_frm_shell(shell)
+        face_list.extend(faces)
+    return face_list
+        
+def shells_frm_solid(occsolid):
+    """
+    This function fetches a list of OCCshells from the OCCsolid. The solid is constructed based on the list of shells.
+ 
+    Parameters
+    ----------
+    occsolid : OCCsolid
+        The OCCsolid to be examined.
+        
+    Returns
+    -------
+    list of shells : list of OCCshells
+        The list of OCCshells extracted from the OCCsolid.
+    """
+    shell_list = Topology.Topo(occsolid).shells()
+    return list(shell_list)
+
+def points_frm_solid(occsolid):
+    """
+    This function fetches a list of points from the OCCsolid.
+ 
+    Parameters
+    ----------
+    occsolid : OCCsolid
+        The OCCsolid to be examined.
+        
+    Returns
+    -------
+    list of points : pyptlist
+        The list of points extracted from the OCCsolid.
+    """
+    verts = list(Topology.Topo(occsolid).vertices())
+    ptlist = construct.occvertex_list_2_occpt_list(verts)
+    pyptlist = construct.occpt_list_2_pyptlist(ptlist)        
     return pyptlist
 
-def vertex2point(occ_vertex):
-    occ_pnt = BRep_Tool.Pnt(occ_vertex)
-    return occ_pnt
+def solids_frm_compsolid(occcompsolid):
+    """
+    This function fetches a list of OCCsolids from the OCCcompsolid.
+ 
+    Parameters
+    ----------
+    occcompsolid : OCCcompsolid
+        The OCCcompsolid to be examined.
+        
+    Returns
+    -------
+    list of solids : list of OCCsolids
+        The list of OCCsolids extracted from the occcompsolid.
+    """
+    solid_list = Topology.Topo(occcompsolid).solids()
+    return list(solid_list)
 
-def vertex_list_2_point_list(occ_vertex_list):
-    point_list = []
-    for vert in occ_vertex_list:
-        point_list.append(BRep_Tool.Pnt(vert))
-    return point_list
+#========================================================================================================
+#COMPOUND INPUTS
+#========================================================================================================
+def topos_frm_compound(occcompound):
+    """
+    This function extracts all the topologies in the OCCcompound.
+ 
+    Parameters
+    ----------
+    occcompound : OCCcompound
+        The OCCcompound to be examined.
+        
+    Returns
+    -------
+    dictionary of topologies : dictionary of OCCtopologies
+        The dictionary of OCCtopologies extracted from the occcompound. Specify the topology as keywords to obtain each topology list.
+        e.g. dictionary of topologies["face"] to extract the list of OCCfaces in the OCCcompound.
+    """
+    topo_list = {}
     
-def pyptlist2vertlist(pyptlist):
-    vertlist = []
-    for pypt in pyptlist:
-        vert = construct.make_vertex(pypt)
-        vertlist.append(vert)
-    return vertlist
+    #find all the compsolids
+    compsolid_list = topo_explorer(occcompound, "compsolid")
+    topo_list["compsolid"] = compsolid_list
+
+    #find all the solids
+    solid_list = topo_explorer(occcompound, "solid")
+    topo_list["solid"] = solid_list
+
+    #find all the shells
+    shell_list = topo_explorer(occcompound, "shell")
+    topo_list["shell"] = shell_list
+
+    #find all the faces
+    face_list = topo_explorer(occcompound, "face")
+    topo_list["face"] = face_list
+
+    #find all the wires
+    wire_list = topo_explorer(occcompound, "wire")
+    topo_list["wire"] = wire_list
+
+    #find all the edges
+    edge_list = topo_explorer(occcompound, "edge")
+    topo_list["edge"] = edge_list
+
+    #find all the vertices
+    vertex_list = topo_explorer(occcompound, "vertex")
+    topo_list["vertex"] = vertex_list
     
-def get_shapetype(occ_shape_or_shape_str):
-    if isinstance(occ_shape_or_shape_str, str):
-        if occ_shape_or_shape_str == "compound":
+    return topo_list
+
+def is_compound_null(occ_compound):
+    """
+    This function checks if the OCCcompound is null. Null means its empty.
+ 
+    Parameters
+    ----------
+    occcompound : OCCcompound
+        The OCCcompound to be examined.
+        
+    Returns
+    -------
+    True or False : bool
+        If True the compound is null, if False compound is not null.
+    """
+    
+    isnull = True
+    
+    #find all the compsolids
+    compsolid_list = topo_explorer(occ_compound, "compsolid")
+    if compsolid_list:
+        isnull = False
+
+    #find all the solids
+    solid_list = topo_explorer(occ_compound, "solid")
+    if solid_list:
+        isnull = False
+
+    #find all the shells
+    shell_list = topo_explorer(occ_compound, "shell")
+    if shell_list:
+        isnull = False
+
+    #find all the faces
+    face_list = topo_explorer(occ_compound, "face")
+    if face_list:
+        isnull = False
+
+    #find all the wires
+    wire_list = topo_explorer(occ_compound, "wire")
+    if wire_list:
+        isnull =False
+
+    #find all the edges
+    edge_list = topo_explorer(occ_compound, "edge")
+    if edge_list:
+        isnull= False
+
+    #find all the vertices
+    vertex_list = topo_explorer(occ_compound, "vertex")
+    if vertex_list:
+        isnull = False
+    
+    return isnull
+
+#========================================================================================================
+#TOPOLOGY INPUTS
+#========================================================================================================    
+def get_topotype(occtopology_or_topo_str):
+    """
+    This function fetches the OCCtopology class object based on the specified OCCtopology or a string describing the topology. e.g. "face".
+ 
+    Parameters
+    ----------
+    occtopology_or_topo_str : OCCtopology or a string describing the topology. 
+        The strings can be e.g. "compound", "compsolid", "solid", "shell", "face", "wire", "edge", "vertex". 
+        
+    Returns
+    -------
+    topology class : OCCtopology class (TopABS_xx)
+        The OCCtopology class based on the specified inputs.
+    """
+    if isinstance(occtopology_or_topo_str, str):
+        if occtopology_or_topo_str == "compound":
             return TopAbs_COMPOUND
-        if occ_shape_or_shape_str == "compsolid":
+        if occtopology_or_topo_str == "compsolid":
             return TopAbs_COMPSOLID
-        if occ_shape_or_shape_str == "solid":
+        if occtopology_or_topo_str == "solid":
             return TopAbs_SOLID
-        if occ_shape_or_shape_str == "shell":
+        if occtopology_or_topo_str == "shell":
             return TopAbs_SHELL
-        if occ_shape_or_shape_str == "face":
+        if occtopology_or_topo_str == "face":
             return TopAbs_FACE
-        if occ_shape_or_shape_str == "wire":
+        if occtopology_or_topo_str == "wire":
             return TopAbs_WIRE
-        if occ_shape_or_shape_str == "edge":
+        if occtopology_or_topo_str == "edge":
             return TopAbs_EDGE
-        if occ_shape_or_shape_str == "vertex":
+        if occtopology_or_topo_str == "vertex":
             return TopAbs_VERTEX
     else:        
-        return occ_shape_or_shape_str.ShapeType()
+        return occtopology_or_topo_str.ShapeType()
     
-def shape2shapetype(occ_shape):
-    shapetype = occ_shape.ShapeType()
+def topo2topotype(occtopology):
+    """
+    This function converts the original OCCtopology of the given topology. e.g. an OCCcompound that is originally an OCCface etc.
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology 
+        The OCCtopology to be converted. 
+        
+    Returns
+    -------
+    original topology : OCCtopology
+        The original OCCtopology of the input.
+    """
+    shapetype = occtopology.ShapeType()
     if shapetype == TopAbs_COMPOUND:#compound
-        orig_topo = topods_Compound(occ_shape)
+        orig_topo = topods_Compound(occtopology)
     if shapetype == TopAbs_COMPSOLID:#compsolid
-        orig_topo = topods_CompSolid(occ_shape)
+        orig_topo = topods_CompSolid(occtopology)
     if shapetype == TopAbs_SOLID:#solid
-        orig_topo = topods_Solid(occ_shape)
+        orig_topo = topods_Solid(occtopology)
     if shapetype == TopAbs_SHELL:#shell
-        orig_topo = topods_Shell(occ_shape)
+        orig_topo = topods_Shell(occtopology)
     if shapetype == TopAbs_FACE:#face
-        orig_topo = topods_Face(occ_shape)
+        orig_topo = topods_Face(occtopology)
     if shapetype == TopAbs_WIRE:#wire
-        orig_topo = topods_Wire(occ_shape)
+        orig_topo = topods_Wire(occtopology)
     if shapetype == TopAbs_EDGE:#edge
-        orig_topo = topods_Edge(occ_shape)
+        orig_topo = topods_Edge(occtopology)
     if shapetype == TopAbs_VERTEX:#vertex
-        orig_topo = topods_Vertex(occ_shape)
+        orig_topo = topods_Vertex(occtopology)
     return orig_topo
 
-def geom_explorer(geom2explore, shapetype2find):
+def topo_explorer(occtopo2explore, topotype2find):
+    """
+    This function explores and fetches the specified topological type from the given OCCtopology.
+    e.g. find a list of OCCfaces in an OCCcompound.
+ 
+    Parameters
+    ----------
+    occtopo2explore : OCCtopology 
+        The OCCtopology to be explored. 
+        
+    topotype2find : str 
+        The string describing the topology to find. 
+        The strings can be e.g. "compound", "compsolid", "solid", "shell", "face", "wire", "edge", "vertex". 
+        
+    Returns
+    -------
+    list of topology : list of OCCtopology
+        The list of OCCtopology found in the specified OCCtopology.
+    """
     geom_list = []
-    if shapetype2find == "compound":
+    if topotype2find == "compound":
         shapetype2find_topABS = TopAbs_COMPOUND
-    if shapetype2find == "compsolid":
+    if topotype2find == "compsolid":
         shapetype2find_topABS = TopAbs_COMPSOLID
-    if shapetype2find == "solid":
+    if topotype2find == "solid":
         shapetype2find_topABS = TopAbs_SOLID
-    if shapetype2find == "shell":
+    if topotype2find == "shell":
         shapetype2find_topABS = TopAbs_SHELL
-    if shapetype2find == "face":
+    if topotype2find == "face":
         shapetype2find_topABS = TopAbs_FACE
-    if shapetype2find == "wire":
+    if topotype2find == "wire":
         shapetype2find_topABS = TopAbs_WIRE
-    if shapetype2find == "edge":
+    if topotype2find == "edge":
         shapetype2find_topABS = TopAbs_EDGE
-    if shapetype2find == "vertex":
+    if topotype2find == "vertex":
         shapetype2find_topABS = TopAbs_VERTEX
         
-    ex = TopExp_Explorer(geom2explore, shapetype2find_topABS)
+    ex = TopExp_Explorer(occtopo2explore, shapetype2find_topABS)
     while ex.More():
         if shapetype2find_topABS == 0:
             geom = topods_Compound(ex.Current())
@@ -167,218 +599,3 @@ def geom_explorer(geom2explore, shapetype2find):
         geom_list.append(geom)
         ex.Next()
     return geom_list
-
-def topos_frm_compound(occ_compound):
-    topo_list = {}
-    
-    #find all the compsolids
-    compsolid_list = geom_explorer(occ_compound, "compsolid")
-    topo_list["compsolid"] = compsolid_list
-
-    #find all the solids
-    solid_list = geom_explorer(occ_compound, "solid")
-    topo_list["solid"] = solid_list
-
-    #find all the shells
-    shell_list = geom_explorer(occ_compound, "shell")
-    topo_list["shell"] = shell_list
-
-    #find all the faces
-    face_list = geom_explorer(occ_compound, "face")
-    topo_list["face"] = face_list
-
-    #find all the wires
-    wire_list = geom_explorer(occ_compound, "wire")
-    topo_list["wire"] = wire_list
-
-    #find all the edges
-    edge_list = geom_explorer(occ_compound, "edge")
-    topo_list["edge"] = edge_list
-
-    #find all the vertices
-    vertex_list = geom_explorer(occ_compound, "vertex")
-    topo_list["vertex"] = vertex_list
-    
-    return topo_list
-    
-def is_compound_null(occ_compound):
-    isnull = True
-    
-    #find all the compsolids
-    compsolid_list = geom_explorer(occ_compound, "compsolid")
-    if compsolid_list:
-        isnull = False
-
-    #find all the solids
-    solid_list = geom_explorer(occ_compound, "solid")
-    if solid_list:
-        isnull = False
-
-    #find all the shells
-    shell_list = geom_explorer(occ_compound, "shell")
-    if shell_list:
-        isnull = False
-
-    #find all the faces
-    face_list = geom_explorer(occ_compound, "face")
-    if face_list:
-        isnull = False
-
-    #find all the wires
-    wire_list = geom_explorer(occ_compound, "wire")
-    if wire_list:
-        isnull =False
-
-    #find all the edges
-    edge_list = geom_explorer(occ_compound, "edge")
-    if edge_list:
-        isnull= False
-
-    #find all the vertices
-    vertex_list = geom_explorer(occ_compound, "vertex")
-    if vertex_list:
-        isnull = False
-    
-    return isnull
-    
-def is_face_null(occface):
-    return occface.IsNull()
-            
-def solids_frm_compsolid(occ_compsolid):
-    solid_list = Topology.Topo(occ_compsolid).solids()
-    return list(solid_list)
-    
-def shells_frm_solid(occ_solid):
-    shell_list = Topology.Topo(occ_solid).shells()
-    return list(shell_list)
-
-def faces_frm_shell(occ_shell):
-    face_list = Topology.Topo(occ_shell).faces()
-    return list(face_list)
-    
-def faces_frm_solid(occ_solid):
-    face_list = []
-    shell_list = shells_frm_solid(occ_solid)
-    for shell in shell_list:
-        faces = faces_frm_shell(shell)
-        face_list.extend(faces)
-    return face_list
-    
-def wires_frm_face(occ_face):
-    wire_list =  Topology.Topo(occ_face).wires()
-    return list(wire_list)
-
-def edges_frm_wire(occ_wire):
-    edge_list = Topology.WireExplorer(occ_wire).ordered_edges()
-    return list(edge_list)
-    
-def points_frm_wire(occ_wire):
-    '''
-    vertex_list = geom_explorer(occ_wire, TopAbs_VERTEX)
-    point_list = vertex_list_2_point_list(vertex_list)
-    
-    n_pt_list = []
-    for pt in point_list:
-        if n_pt_list:
-            p_vert = (n_pt_list[-1].X(), n_pt_list[-1].Y(), n_pt_list[-1].Z())
-            c_vert = (pt.X(), pt.Y(), pt.Z())
-            if c_vert != p_vert:
-                n_pt_list.append(pt)
-        else:
-            n_pt_list.append(pt)
-    
-    return n_pt_list
-    '''
-    #TODO: WHEN DEALING WITH OPEN WIRE IT WILL NOT RETURN THE LAST VERTEX
-    verts = Topology.WireExplorer(occ_wire).ordered_vertices()
-    point_list = []
-    for vert in verts:
-        pt = BRep_Tool.Pnt(vert)
-        point_list.append(pt)
-
-    #this always returns points in order that is opposite of the input
-    #e.g. if the inputs are clockwise it will ouput anticlockwise
-    #e.g. if the inputs are anticlockwise it will ouput clockwise
-    #thus the point list needs to be reversed to reflect the true order
-    #point_list = list(reversed(point_list))
-    
-    return point_list
-    
-def points_frm_solid(occ_solid):
-    verts = Topology.Topo(occ_solid).vertices()
-    point_list = []
-    for vert in verts:
-        pt = BRep_Tool.Pnt(vert)
-        point_list.append(pt)
-        
-    return point_list
-
-def points_from_edge(occ_edge):
-    vertex_list = list(Topology.Topo(occ_edge).vertices())
-    point_list = vertex_list_2_point_list(vertex_list)
-    return point_list
-    
-def is_edge_bspline(occedge):
-    adaptor = BRepAdaptor_Curve(occedge)
-    '''
-    GeomAbs_Line 	        0
-    GeomAbs_Circle 	        1
-    GeomAbs_Ellipse         2	
-    GeomAbs_Hyperbola       3 	
-    GeomAbs_Parabola        4	
-    GeomAbs_BezierCurve     5	
-    GeomAbs_BSplineCurve    6	
-    GeomAbs_OtherCurve      7
-    '''
-    ctype = adaptor.GetType()
-    if ctype == 6:
-        return True
-    else:
-        return False
-
-def is_edge_line(occedge):
-    adaptor = BRepAdaptor_Curve(occedge)
-    '''
-    GeomAbs_Line 	        0
-    GeomAbs_Circle 	        1
-    GeomAbs_Ellipse         2	
-    GeomAbs_Hyperbola       3 	
-    GeomAbs_Parabola        4	
-    GeomAbs_BezierCurve     5	
-    GeomAbs_BSplineCurve    6	
-    GeomAbs_OtherCurve      7
-    '''
-    ctype = adaptor.GetType()
-    if ctype == 0:
-        return True
-    else:
-        return False
-
-    
-def poles_from_bsplinecurve_edge(occedge):
-    '''
-    occedge: the edge to be measured
-    type: occedge
-    '''
-    #occutil_edge = edge.Edge(occedge)
-    adaptor = BRepAdaptor_Curve(occedge)
-    adaptor_handle = BRepAdaptor_HCurve(adaptor)
-    handle_bspline = Handle_Geom_BSplineCurve()
-    bspline = handle_bspline.DownCast(adaptor.Curve().Curve()).GetObject()
-
-    npoles =  bspline.NbPoles()
-    polelist = []
-    for np in range(npoles):
-        pole = bspline.Pole(np+1)
-        pypole = (pole.X(), pole.Y(), pole.Z())
-        polelist.append(pypole)
-        
-    if topods_Edge(occedge).Orientation() == TopAbs_REVERSED:
-        polelist.reverse()
-
-    return polelist
-
-def edge_domain(occedge):
-    occutil_edge = edge.Edge(occedge)
-    lbound, ubound = occutil_edge.domain()
-    return lbound, ubound

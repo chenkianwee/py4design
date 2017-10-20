@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.wire module
+==========================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.wire
+    :members:
+    :undoc-members:
+    :show-inheritance:

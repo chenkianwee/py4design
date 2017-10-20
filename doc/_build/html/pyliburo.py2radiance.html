@@ -1,0 +1,269 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py2radiance package &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py2radiance">
+<span id="pyliburo-py2radiance-package"></span><h1>pyliburo.py2radiance package<a class="headerlink" href="#module-pyliburo.py2radiance" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.py2radiance.Rad">
+<em class="property">class </em><code class="descclassname">pyliburo.py2radiance.</code><code class="descname">Rad</code><span class="sig-paren">(</span><em>base_file_path</em>, <em>data_folder_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.create_cumulative_sky_input_file">
+<code class="descname">create_cumulative_sky_input_file</code><span class="sig-paren">(</span><em>time</em>, <em>date</em>, <em>weatherfile_path</em>, <em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.create_cumulative_sky_input_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.create_rad_input_file">
+<code class="descname">create_rad_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.create_rad_input_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.create_sensor_input_file">
+<code class="descname">create_sensor_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.create_sensor_input_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.create_sky_input_file">
+<code class="descname">create_sky_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.create_sky_input_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.eval_cumulative_rad">
+<code class="descname">eval_cumulative_rad</code><span class="sig-paren">(</span><em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_cumulative_rad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.eval_ill">
+<code class="descname">eval_ill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_ill" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.eval_ill_per_sensor">
+<code class="descname">eval_ill_per_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_ill_per_sensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>each row is a sensor srf with 8760 colume of hourly result</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.eval_rad">
+<code class="descname">eval_rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_rad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_cumulative_oconv">
+<code class="descname">execute_cumulative_oconv</code><span class="sig-paren">(</span><em>time</em>, <em>date</em>, <em>weatherfile_path</em>, <em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_cumulative_oconv" title="Permalink to this definition">¶</a></dt>
+<dd><p>time format = 0 24, date format = 1 1 12 31 (all in string)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_cumulative_rtrace">
+<code class="descname">execute_cumulative_rtrace</code><span class="sig-paren">(</span><em>ab</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_cumulative_rtrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_ds_illum">
+<code class="descname">execute_ds_illum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_ds_illum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_epw2wea">
+<code class="descname">execute_epw2wea</code><span class="sig-paren">(</span><em>epwweatherfile</em>, <em>ground_reflectance=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_epw2wea" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_falsecolour">
+<code class="descname">execute_falsecolour</code><span class="sig-paren">(</span><em>i_basefilename</em>, <em>l_basefilename</em>, <em>filename</em>, <em>range_max</em>, <em>range_division</em>, <em>illuminance=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_falsecolour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_gen_dc">
+<code class="descname">execute_gen_dc</code><span class="sig-paren">(</span><em>output_unit</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_gen_dc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_oconv">
+<code class="descname">execute_oconv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_oconv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_radfiles2daysim">
+<code class="descname">execute_radfiles2daysim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_radfiles2daysim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_rpict">
+<code class="descname">execute_rpict</code><span class="sig-paren">(</span><em>filename</em>, <em>x_resolution</em>, <em>y_resolution</em>, <em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_rpict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_rtrace">
+<code class="descname">execute_rtrace</code><span class="sig-paren">(</span><em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_rtrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.execute_rvu">
+<code class="descname">execute_rvu</code><span class="sig-paren">(</span><em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.execute_rvu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.initialise_daysim">
+<code class="descname">initialise_daysim</code><span class="sig-paren">(</span><em>daysim_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.initialise_daysim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>filename</em>, <em>x_resolution</em>, <em>y_resolution</em>, <em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.set_sensor_points">
+<code class="descname">set_sensor_points</code><span class="sig-paren">(</span><em>sensor_positions</em>, <em>sensor_normals</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.set_sensor_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.set_sky">
+<code class="descname">set_sky</code><span class="sig-paren">(</span><em>gensky_command</em>, <em>sky_colour</em>, <em>ground_colour</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.set_sky" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.write_default_radiance_parameters">
+<code class="descname">write_default_radiance_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.write_default_radiance_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.write_radiance_parameters">
+<code class="descname">write_radiance_parameters</code><span class="sig-paren">(</span><em>rad_ab</em>, <em>rad_ad</em>, <em>rad_as</em>, <em>rad_ar</em>, <em>rad_aa</em>, <em>rad_lr</em>, <em>rad_st</em>, <em>rad_sj</em>, <em>rad_lw</em>, <em>rad_dj</em>, <em>rad_ds</em>, <em>rad_dr</em>, <em>rad_dp</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.write_radiance_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py2radiance.Rad.write_static_shading">
+<code class="descname">write_static_shading</code><span class="sig-paren">(</span><em>hea_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.write_static_shading" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.py2radiance.RadSurface">
+<em class="property">class </em><code class="descclassname">pyliburo.py2radiance.</code><code class="descname">RadSurface</code><span class="sig-paren">(</span><em>name</em>, <em>points</em>, <em>material</em>, <em>radgeom</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.RadSurface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.py2radiance.Surface" title="pyliburo.py2radiance.Surface"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.py2radiance.Surface</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.py2radiance.RadSurface.rad">
+<code class="descname">rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.RadSurface.rad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.py2radiance.Surface">
+<em class="property">class </em><code class="descclassname">pyliburo.py2radiance.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>name</em>, <em>points</em>, <em>material</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2radiance.calculate_reflectance">
+<code class="descclassname">pyliburo.py2radiance.</code><code class="descname">calculate_reflectance</code><span class="sig-paren">(</span><em>r</em>, <em>g</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.calculate_reflectance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyliburo.py2radiance.write_rad.html">pyliburo.py2radiance.write_rad module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py2radiance.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

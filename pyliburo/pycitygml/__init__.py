@@ -22,8 +22,6 @@
 from lxml import etree
 from lxml.etree import ElementTree, Element
 
-import gmlgeometry
-import write_gmlgeometry
 import write_gml
 
 
@@ -367,47 +365,3 @@ class Reader(object):
             pylinestring_list.append(pt_list)
             
         return pylinestring_list
-#===============================================================================================================================================================
-if __name__ == '__main__':
-
-    '''
-    citygml = Writer()
-    
-    generic_attrib_dict = {"plot ratio":3.5, "comment": "interesting plot", "id":5}
-    geometry_list = []
-
-    pos_list2 = [[458877, 5438353, 6.31769], [458889, 5438353, 6.31769], [458889, 5438363, 6.31769], [458877, 5438363, 6.31769], [458877, 5438353, 6.31769]]
-    pos_list3 = [[458877, 5438353, -0.2], [458877, 5438353, 6.31769], [458877, 5438363, 6.31769], [458877, 5438363, -0.2], [458877, 5438353, -0.2]]
-    pos_list4 = [[458877, 5438363, -0.2], [458877, 5438363, 6.31769], [458889, 5438363, 6.31769], [458889, 5438363, -0.2], [458877, 5438363, -0.2]]
-    pos_list5 = [[458889, 5438363, -0.2], [458889, 5438363, 6.31769], [458889, 5438353, 6.31769], [458889, 5438353, -0.2], [458889, 5438363, -0.2]]
-    pos_list6 = [[458889, 5438353, -0.2], [458889, 5438353, 6.31769], [458877, 5438353, 6.31769], [458877, 5438353, -0.2], [458889, 5438353, -0.2]]
-    pos_list = [pos_list2,pos_list3,pos_list4,pos_list5,pos_list6 ]
-    
-    for p in pos_list:
-        srf = geometry.SurfaceMember(p)
-        geometry_list.append(srf)
-        
-    #citygml.add_building("lod1", "building_test","1000","1000","1000","2016","1000","6.52","2","1", 'urn:adv:crs:ETRS89_UTM32', generic_attrib_dict, geometry_list)
-    citygml.add_cityfurniture("lod1", "bus_stop_test","1000","1110", 'urn:adv:crs:ETRS89_UTM32', generic_attrib_dict, geometry_list)
-    citygml.add_building("lod1", "building_test","1000","1000","1000","2016","1000","6.52","2","1", 'urn:adv:crs:ETRS89_UTM32', generic_attrib_dict, geometry_list)
-    pos_list = [[23312.293, 21059.261, 0.0],[23312.293, 20869.394, 0.0],[23543.693, 20869.394, 0.0]]
-    geometry_list = []
-    linestring = geometry.LineString(pos_list)
-    geometry_list.append(linestring)
-    citygml.add_transportation("Railway", "lod0", "test_road", "1", "0", "EPSG:21781", generic_attrib_dict, geometry_list)
-    pos_list = [[23312.293, 21059.261, 0.0],[23312.293, 20869.394, 0.0],[23543.693, 20869.394, 0.0]]
-    srf = geometry.SurfaceMember(pos_list)
-    geometry_list.append(srf)
-    citygml.add_landuse("lod1", "test_plot", "1010", "EPSG:21781", generic_attrib_dict, geometry_list)
-
-    pos_list1 = [458877, 5438353, -0.2]
-    ref_pt = geometry.Point(pos_list1)
-    citygml.add_cityfurniture("lod1", "bus_stop_test","1000","1110", 'urn:adv:crs:ETRS89_UTM32', "application/dxf", ref_pt, generic_attrib_dict, "F:\\kianwee_work\\smart\\oct2015-apr2016\\computational_env_for_optimisation\\bus_stop.dxf")
-    filepath = 'F:\\kianwee_work\\smart\\oct2015-apr2016\\computational_env_for_optimisation\\bus_stop_class.gml'
-
-    outFile = open(filepath, 'w')
-    ElementTree(citygml.et).write(outFile,pretty_print = True, xml_declaration = True, encoding="UTF-8", standalone="yes")
-    outFile.close()
-    print "done"
-    #print lxml.etree.tostring(citygml.et, pretty_print=True)
-    '''

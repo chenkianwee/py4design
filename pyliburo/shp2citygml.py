@@ -255,8 +255,8 @@ def calc_residential_parking_area(total_build_up):
     avg_hse_size = 87.4 #based on census data
     num_of_hse = total_build_up/avg_hse_size
     plot_pop_size = num_of_hse * hsehold_size
-    car_ownership = 9.4 #cars/100persons
-    plot_car_pop = car_ownership*(plot_pop_size/100)
+    #car_ownership = 9.4 #cars/100persons
+    #plot_car_pop = car_ownership*(plot_pop_size/100)
     motorbike_ownership = 2.6 #motobikes/100persons
     plot_bike_pop = motorbike_ownership*(plot_pop_size/100)
     parking_lot_size = 2.4*4.8 #m2

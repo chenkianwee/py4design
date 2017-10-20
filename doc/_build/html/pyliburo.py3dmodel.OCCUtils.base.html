@@ -1,0 +1,257 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py3dmodel.OCCUtils.base module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py3dmodel.OCCUtils.base">
+<span id="pyliburo-py3dmodel-occutils-base-module"></span><h1>pyliburo.py3dmodel.OCCUtils.base module<a class="headerlink" href="#module-pyliburo.py3dmodel.OCCUtils.base" title="Permalink to this headline">¶</a></h1>
+<p>Please note the following;
+&#64;readonly
+means that the decorated method is a readonly descriptor
+&#64;property
+means that the decorated method can be set / get using the descriptor
+( irony is that just using &#64;property <em>would</em></p>
+<blockquote>
+<div>result in a readonly descriptor :”)</div></blockquote>
+<p>Sometimes a set of methods should be contained in another module or class,
+or simply grouped.
+For instance the set of methods after:
+#===========================================================================
+#    Curve.local_properties
+#===========================================================================</p>
+<p>Can be a module, class or namespace.</p>
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.base.</code><code class="descname">BaseObject</code><span class="sig-paren">(</span><em>name=None</em>, <em>tolerance=1e-05</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>base class for all objects</p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.build">
+<code class="descname">build</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.check">
+<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.check" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.copy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.distance">
+<code class="descname">distance</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the minimum distance</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">minimum distance,
+minimum distance points on shp1
+minimum distance points on shp2</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.geom_type">
+<code class="descname">geom_type</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.geom_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.is_dirty">
+<code class="descname">is_dirty</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.is_dirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>when an object is dirty, its topology will be
+rebuild when update is called</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.is_valid">
+<code class="descname">is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.set_display">
+<code class="descname">set_display</code><span class="sig-paren">(</span><em>display</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.set_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>renders the topological entity in the viewer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>update</strong> – redraw the scene or not</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.BaseObject.topo_type">
+<code class="descname">topo_type</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.BaseObject.topo_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.base.</code><code class="descname">GlobalProperties</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>global properties for all topologies</p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.area">
+<code class="descname">area</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the area of the surface</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.bbox">
+<code class="descname">bbox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the bounding box of the face</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.centre">
+<code class="descname">centre</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.centre" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">centre of the entity</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.inertia">
+<code class="descname">inertia</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.inertia" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the inertia matrix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.system">
+<code class="descname">system</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.GlobalProperties.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.base.singleton">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.base.</code><code class="descname">singleton</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.base.singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py3dmodel.OCCUtils.base.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

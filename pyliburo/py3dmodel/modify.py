@@ -301,7 +301,7 @@ def wire_2_bsplinecurve_edge(occwire):
     adaptor = BRepAdaptor_CompCurve(occwire)
     hadap = BRepAdaptor_HCompCurve(adaptor)
     from OCC.Approx import Approx_Curve3d
-    from OCC.GeomAbs import GeomAbs_C0, GeomAbs_C0, GeomAbs_C2, GeomAbs_C3
+    from OCC.GeomAbs import GeomAbs_C2
     approx = Approx_Curve3d(hadap.GetHandle(), 1e-06, GeomAbs_C2 , 10000, 12)
     bspline_handle = approx.Curve()
     occedge = BRepBuilderAPI_MakeEdge(bspline_handle)

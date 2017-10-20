@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.shell module
+===========================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.shell
+    :members:
+    :undoc-members:
+    :show-inheritance:

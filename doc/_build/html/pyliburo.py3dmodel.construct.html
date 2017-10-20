@@ -1,0 +1,1429 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py3dmodel.construct module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py3dmodel.construct">
+<span id="pyliburo-py3dmodel-construct-module"></span><h1>pyliburo.py3dmodel.construct module<a class="headerlink" href="#module-pyliburo.py3dmodel.construct" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.arrange_edges_2_wires">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">arrange_edges_2_wires</code><span class="sig-paren">(</span><em>occedge_list</em>, <em>isclosed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.arrange_edges_2_wires" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCwires from a list of OCCedges. The edges does not need to form a close face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges for creating the list of OCCwires.</p>
+</div></blockquote>
+<p><strong>isclosed</strong> : bool</p>
+<blockquote>
+<div><p>True or False, is the resultant wires suppose to be closed or opened.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of wires</strong> : list of OCCwires</p>
+<blockquote class="last">
+<div><p>A list of OCCwires constructed from the list of OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.boolean_common">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">boolean_common</code><span class="sig-paren">(</span><em>occtopology1</em>, <em>occtopology2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.boolean_common" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCcompound from intersecting the two OCCtopologies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology1</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be intersected. 
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+<p><strong>occtopology2</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be intersected.
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>compound</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound constructed from the intersection.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.boolean_difference">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">boolean_difference</code><span class="sig-paren">(</span><em>occstopology2cutfrm</em>, <em>cutting_occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.boolean_difference" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCcompound from cutting the two OCCtopologies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occstopology2cutfrm</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be cut. 
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+<p><strong>cutting_occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The cutting OCCtopology.
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>compound</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound constructed from the cutting.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.boolean_fuse">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">boolean_fuse</code><span class="sig-paren">(</span><em>occtopology1</em>, <em>occtopology2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.boolean_fuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCcompound from fusing the two OCCtopologies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology1</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be fused. 
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+<p><strong>occtopology2</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be fused.
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>compound</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound constructed from the fusion.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.boolean_section">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">boolean_section</code><span class="sig-paren">(</span><em>section_occface</em>, <em>occtopology2cut</em>, <em>roundndigit=6</em>, <em>distance=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.boolean_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCcompound from cutting the OCCtopology with an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>section_occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface for cutting the OCCtopology.</p>
+</div></blockquote>
+<p><strong>occtopology2cut</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be cut.
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex,</p>
+</div></blockquote>
+<p><strong>roundndigit</strong> : int</p>
+<blockquote>
+<div><p>The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
+Depending on the precision of the points, it will decide whether the edges are connected.</p>
+</div></blockquote>
+<p><strong>distance</strong> : float</p>
+<blockquote>
+<div><p>The smallest distance between two points from the edges, Default = 0.01. 
+The further the distance the less precise is the resultant faces.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>compound</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound constructed from the cutting. The OCCcompound is a collection of OCCfaces</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.circles_frm_pyptlist">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">circles_frm_pyptlist</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>radius</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.circles_frm_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of OCCedge circles based on the list of centre points and the radius.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>radius</strong> : float</p>
+<blockquote>
+<div><p>Radius of the circles.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of circles</strong> : list of OCCedge</p>
+<blockquote class="last">
+<div><p>List of  OCCedge circles.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.delaunay3d">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">delaunay3d</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.delaunay3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The minimal surface area of each triangulated face, Default = 1e-06.. Any faces smaller than the tolerance will be deleted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of face</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of meshed OCCfaces (triangles) constructed from the meshing.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.extrude">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">extrude</code><span class="sig-paren">(</span><em>occface</em>, <em>pydir</em>, <em>magnitude</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.extrude" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an extruded OCCsolid from an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be extruded.</p>
+</div></blockquote>
+<p><strong>pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The direction of the extrusion. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>magnitude</strong> : float</p>
+<blockquote>
+<div><p>The magnitude of the extrusion.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of shell</strong> : list of OCCshells</p>
+<blockquote class="last">
+<div><p>An OCCsolid constructed from the extrusion.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.extrude_edge">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">extrude_edge</code><span class="sig-paren">(</span><em>occedge</em>, <em>pydir</em>, <em>magnitude</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.extrude_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an extruded OCCface from an OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The OCCedge to be extruded.</p>
+</div></blockquote>
+<p><strong>pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The direction of the extrusion. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>magnitude</strong> : float</p>
+<blockquote>
+<div><p>The magnitude of the extrusion.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>An OCCface constructed from the extrusion.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.faces_frm_loose_edges">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">faces_frm_loose_edges</code><span class="sig-paren">(</span><em>occedge_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.faces_frm_loose_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCfaces from a list of OCCedges. The edges need to be able to form a close face. 
+It does not work with a group of open edges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges for creating the list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces constructed from the list of OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.faces_frm_loose_edges2">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">faces_frm_loose_edges2</code><span class="sig-paren">(</span><em>occedge_list</em>, <em>roundndigit=6</em>, <em>distance=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.faces_frm_loose_edges2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCfaces from a list of OCCedges. The edges need to be able to form a close face. 
+It does not work with a group of open edges. wire_frm_loose_edges2 are for more complex geometries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges for creating the list of OCCfaces.</p>
+</div></blockquote>
+<p><strong>roundndigit</strong> : int</p>
+<blockquote>
+<div><p>The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
+Depending on the precision of the points, it will decide whether the edges are connected.</p>
+</div></blockquote>
+<p><strong>distance</strong> : float</p>
+<blockquote>
+<div><p>The smallest distance between two points from the edges, Default = 0.01. 
+The further the distance the less precise is the resultant faces.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces constructed from the list of OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.grid_face">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">grid_face</code><span class="sig-paren">(</span><em>occface</em>, <em>udim</em>, <em>vdim</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.grid_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCfaces grids from an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be gridded.</p>
+</div></blockquote>
+<p><strong>udim</strong> : int</p>
+<blockquote>
+<div><p>The number of rows of the grid.</p>
+</div></blockquote>
+<p><strong>vdim</strong> : int</p>
+<blockquote>
+<div><p>The number of columns of the grid.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>grids</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces constructed from the gridding.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_box">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_box</code><span class="sig-paren">(</span><em>length</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a box based on the length, width and height.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>length</strong> : float</p>
+<blockquote>
+<div><p>Length of box</p>
+</div></blockquote>
+<p><strong>width</strong> : float</p>
+<blockquote>
+<div><p>Width of box</p>
+</div></blockquote>
+<p><strong>height</strong> : float</p>
+<blockquote>
+<div><p>Height of box.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>box</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>OCCsolid box constructed based on the length, width and height.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_brep_text">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_brep_text</code><span class="sig-paren">(</span><em>text_string</em>, <em>font_size</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_brep_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCCcompound 3D text from a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>text_string</strong> : str</p>
+<blockquote>
+<div><p>The string to be converted.</p>
+</div></blockquote>
+<p><strong>font_size</strong> : int</p>
+<blockquote>
+<div><p>The font size.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>3D text</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound of the 3D text.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_bspline_edge">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_bspline_edge</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>mindegree=3</em>, <em>maxdegree=8</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_bspline_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an bspline OCCedge from a list of points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>mindegree</strong> : int</p>
+<blockquote>
+<div><p>The minimun degree of the bspline curve. Default = 3.</p>
+</div></blockquote>
+<p><strong>maxdegree</strong> : int</p>
+<blockquote>
+<div><p>The maximum degree of the bspline curve. Default = 8.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>An OCCedge constructed from the list of points</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_bspline_edge_interpolate">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_bspline_edge_interpolate</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>is_closed</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_bspline_edge_interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an bspline OCCedge from a list of points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>is_closed</strong> : bool</p>
+<blockquote>
+<div><p>True or False whether the edge constructed should be opened or closed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>An OCCedge constructed from the list of points. The edge is opened or closed as specified.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_circle">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_circle</code><span class="sig-paren">(</span><em>centre_pypt</em>, <em>normal_pydir</em>, <em>radius</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCedge circle based on the centre point, the orientation direction and the radius.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>centre_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>normal_pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>radius</strong> : float</p>
+<blockquote>
+<div><p>Radius of the circle.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>circle</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>An OCCedge circle.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_compound">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_compound</code><span class="sig-paren">(</span><em>occtopo_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_compound" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a OCCcompound from a list of OCCtopologies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopo_list</strong> : list of OCCtopology</p>
+<blockquote>
+<div><p>A list of OCCtopologies to be converted into OCCcompound. 
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>compound</strong> : OCCcompound</p>
+<blockquote class="last">
+<div><p>An OCCcompound constructed from the list of OCCtopologies.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_edge">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_edge</code><span class="sig-paren">(</span><em>pypt1</em>, <em>pypt2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCedge from two points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The starting pt of the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pypt2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The last pt of the edge. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>An OCCedge constructed from the two points</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_face_frm_wire">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_face_frm_wire</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_face_frm_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCface from an OCCwire.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire for creating the OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>An OCCface constructed from the OCCwire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_gp_ax3">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_gp_ax3</code><span class="sig-paren">(</span><em>pypt</em>, <em>pydir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_gp_ax3" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCC coordinate system (gp_ax3) with a point and direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>coordinate system</strong> : OCC coordinate (gp_ax3)</p>
+<blockquote class="last">
+<div><p>An OCC coordinate system (gp_ax3) constructed from the point and direction.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_gppnt">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_gppnt</code><span class="sig-paren">(</span><em>pypt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_gppnt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCC point (gp_pnt) with a point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>OCC point</strong> : OCC point (gp_pnt)</p>
+<blockquote class="last">
+<div><p>An OCC point (gp_pnt) constructed from the point.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_gppnt_list">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_gppnt_list</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_gppnt_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of OCC points (gp_pnt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of OCC points</strong> : list of OCC points (gp_pnt)</p>
+<blockquote class="last">
+<div><p>A list of OCC points (gp_pnt) converted from the list of points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_line">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_line</code><span class="sig-paren">(</span><em>pypt</em>, <em>pydir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCC line (gp_lin) with a point and direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The starting point of the line. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The direction of the line. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>line</strong> : OCC line (gp_lin)</p>
+<blockquote class="last">
+<div><p>An OCC line (gp_lin) constructed from the point and direction.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_loft">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_loft</code><span class="sig-paren">(</span><em>occface_list</em>, <em>rule_face=True</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_loft" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function lofts a list of OCCfaces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : a list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCfaces for the loft.</p>
+</div></blockquote>
+<p><strong>rule_face</strong> : bool</p>
+<blockquote>
+<div><p>True or Force. Specify if the loft is a ruled face.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>Specify the tolerance of the loft.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>shape</strong> : OCCshape</p>
+<blockquote class="last">
+<div><p>An OCCshape constructed from lofting the list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_loft_with_wires">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_loft_with_wires</code><span class="sig-paren">(</span><em>occwire_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_loft_with_wires" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function lofts a list of OCCwires.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire_list</strong> : a list of OCCwires</p>
+<blockquote>
+<div><p>List of OCCwires for the loft.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>shape</strong> : OCCshape</p>
+<blockquote class="last">
+<div><p>An OCCshape constructed from lofting the list of OCCwires.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_occfaces_frm_pypolygons">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_occfaces_frm_pypolygons</code><span class="sig-paren">(</span><em>pypolygon_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_occfaces_frm_pypolygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCfaces from a list of polygons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypolygon_list</strong> : a 2d list of tuples</p>
+<blockquote>
+<div><p>List of polygon for constructing the list of faces. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces constructed from the list of pypolygons.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_occsolid_frm_pypolygons">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_occsolid_frm_pypolygons</code><span class="sig-paren">(</span><em>pypolygon_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_occsolid_frm_pypolygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a OCCsolid from a list of connected polygons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypolygon_list</strong> : a 2d list of tuples</p>
+<blockquote>
+<div><p>List of connected polygon for constructing the OCCsolid. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>solid</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>An OCCsolid constructed from the list of pypolygons.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_occvertex_list">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_occvertex_list</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_occvertex_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of OCCvertices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : list of OCCvertices.</p>
+<blockquote class="last">
+<div><p>A list of OCCvertices converted from the list of points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_offset">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_offset</code><span class="sig-paren">(</span><em>occface</em>, <em>offset_value</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function offsets an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>OCCface to be offset</p>
+</div></blockquote>
+<p><strong>offset_value</strong> : float</p>
+<blockquote>
+<div><p>The offset value. A negative value will offset the circle inwards, while a positive value will offset it outwards.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>offset face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The offsetted OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_offset_face2wire">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_offset_face2wire</code><span class="sig-paren">(</span><em>occface</em>, <em>offset_value</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_offset_face2wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function offsets an OCCface and return the wire instead of the face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>OCCface to be offset</p>
+</div></blockquote>
+<p><strong>offset_value</strong> : float</p>
+<blockquote>
+<div><p>The offset value. A negative value will offset the circle inwards, while a positive value will offset it outwards.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>offset wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>The offsetted OCCwire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_plane_w_dir">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_plane_w_dir</code><span class="sig-paren">(</span><em>centre_pypt</em>, <em>normal_pydir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_plane_w_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCCface plane from a centre pt and the normal direction of the plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>centre_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>normal_pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>plane</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>An OCCface constructed from the point and direction</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_polygon">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_polygon</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a OCCface polygon from a list of points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>polygon</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>An OCCface constructed from the list of points</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_rectangle">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_rectangle</code><span class="sig-paren">(</span><em>xdim</em>, <em>ydim</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCface rectangle from the rectangle’s breath and height.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xdim</strong> : float</p>
+<blockquote>
+<div><p>Breath of the rectangle.</p>
+</div></blockquote>
+<p><strong>ydim</strong> : ydim</p>
+<blockquote>
+<div><p>Height of the rectangle.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rectangle</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>An OCCface rectangle constructed from the breath and height.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_shell">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_shell</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an OCCshell from a list of OCCfaces. The OCCfaces in the shell might not be connected. 
+For creating an OCCshell that is definitely connected please use sew_faces function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : a list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCfaces for the shell.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>shell</strong> : OCCshell</p>
+<blockquote class="last">
+<div><p>An OCCshell constructed from the list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_solid">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_solid</code><span class="sig-paren">(</span><em>occshell</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a OCCsolid from a OCCshell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell</strong> : OCCshell</p>
+<blockquote>
+<div><p>A closed OCCshell to be converted into OCCsolid.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>solid</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>An OCCsolid constructed from the closed OCCshell.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_solid_from_shell_list">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_solid_from_shell_list</code><span class="sig-paren">(</span><em>occshell_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_solid_from_shell_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a OCCsolid from a list of connected OCCshell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell_list</strong> : list of OCCshells</p>
+<blockquote>
+<div><p>A list of connected closed OCCshell to be converted into OCCsolid.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>solid</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>An OCCsolid constructed from the list of connected closed OCCshell.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_vector">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_vector</code><span class="sig-paren">(</span><em>pypt1</em>, <em>pypt2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function create a OCCvector from two points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The starting pt of the vector. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pypt2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The last pt of the vector. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>vector</strong> : OCCvector(gp_Vec)</p>
+<blockquote class="last">
+<div><p>The OCCvector(gp_Vec).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_vertex">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_vertex</code><span class="sig-paren">(</span><em>pypt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCvertex.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>vertex</strong> : OCCvertex</p>
+<blockquote class="last">
+<div><p>An OCCvertex constructed from the point</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_wire">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_wire</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCwire from a list of points.For a closed wire, the last point needs to be the same as the first point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points for constructing the wire. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z),
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>An OCCwire constructed from the list of points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.make_wire_frm_edges">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">make_wire_frm_edges</code><span class="sig-paren">(</span><em>occedge_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.make_wire_frm_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCCwire from a list of OCCedges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : a list of OCCedges</p>
+<blockquote>
+<div><p>List of OCCedge for constructing the wire.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>An OCCwire constructed from the list of OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.merge_faces">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">merge_faces</code><span class="sig-paren">(</span><em>occface_list</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.merge_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of merged OCCfaces from a list of OCCfaces. The function loops through the OCCfaces to search for all possible
+connected faces and merged them into a single face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : a list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCfaces that will be looped through in search of all possible connected faces.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The minimal tolerance to decide if two faces are connected, Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of face</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of merged OCCfaces constructed from the list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.occpt_2_pypt">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occpt_2_pypt</code><span class="sig-paren">(</span><em>occpt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occpt_2_pypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a point (pypt) from an OCC point (gp_pnt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt</strong> : OCC point (gp_pnt)</p>
+<blockquote>
+<div><p>OCC point (gp_pnt) to be converted to a pypt.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>A pypt constructed from the OCC point (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.occpt_list_2_pyptlist">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occpt_list_2_pyptlist</code><span class="sig-paren">(</span><em>occpt_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occpt_list_2_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of points (pyptlist) from a list of OCC points (gp_pnt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt_list</strong> : list of OCC points (gp_pnt)</p>
+<blockquote>
+<div><p>list of OCC points (gp_pnt) to be converted to a pyptlist.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>A pyptlist constructed from the list of OCC points (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.occvertex_2_occpt">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occvertex_2_occpt</code><span class="sig-paren">(</span><em>occvertex</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occvertex_2_occpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCC point (gp_pnt) from an OCCvertex.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex</strong> : OCCvertex</p>
+<blockquote>
+<div><p>OCCvertex to be converted to a OCC point (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : OCC point (gp_pnt)</p>
+<blockquote class="last">
+<div><p>An OCC point constructed from the OCCvertex.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.occvertex_list_2_occpt_list">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occvertex_list_2_occpt_list</code><span class="sig-paren">(</span><em>occvertex_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occvertex_list_2_occpt_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of OCC points (gp_pnt) from a list of OCCvertices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex_list</strong> : list of OCCvertices</p>
+<blockquote>
+<div><p>List of OCCvertices to be converted to a list of OCC points (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : list of OCC points (gp_pnt)</p>
+<blockquote class="last">
+<div><p>A list of OCC points (gp_pnt) constructed from the list of OCCvertices.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.sew_faces">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">sew_faces</code><span class="sig-paren">(</span><em>occface_list</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.sew_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of OCCshells from a list of OCCfaces. The function loops through the OCCfaces to search for all possible
+shells that can be created from the faces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : a list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCfaces that will be looped through in search of all possible shells.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of shell</strong> : list of OCCshells</p>
+<blockquote class="last">
+<div><p>A list of OCCshells constructed from the list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.construct.simple_mesh">
+<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">simple_mesh</code><span class="sig-paren">(</span><em>occtopology</em>, <em>mesh_incremental_float=0.8</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.simple_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a mesh (list of triangle OCCfaces) of the OCCtopology.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be meshed.
+OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+</div></blockquote>
+<p><strong>mesh_incremental_float</strong> : float</p>
+<blockquote>
+<div><p>Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of face</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of meshed OCCfaces (triangles) constructed from the meshing.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py3dmodel.construct.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

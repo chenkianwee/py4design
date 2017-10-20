@@ -1,0 +1,224 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py2energyplus.idf_writer module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py2energyplus.idf_writer">
+<span id="pyliburo-py2energyplus-idf-writer-module"></span><h1>pyliburo.py2energyplus.idf_writer module<a class="headerlink" href="#module-pyliburo.py2energyplus.idf_writer" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_alldays_schedule">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_alldays_schedule</code><span class="sig-paren">(</span><em>name</em>, <em>sch_type_limits_name</em>, <em>start</em>, <em>end</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_alldays_schedule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_building">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_building</code><span class="sig-paren">(</span><em>north</em>, <em>terrain</em>, <em>solar_dist</em>, <em>max_warmup_days</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_building_shade">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_building_shade</code><span class="sig-paren">(</span><em>name</em>, <em>transmittance</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_building_shade" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_ground_temp_bldg_srf">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_ground_temp_bldg_srf</code><span class="sig-paren">(</span><em>ground_temp</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_ground_temp_bldg_srf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_hvac_ideal_load_air_system">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_hvac_ideal_load_air_system</code><span class="sig-paren">(</span><em>zone_name</em>, <em>thermostat</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_hvac_ideal_load_air_system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_hvacschedule">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_hvacschedule</code><span class="sig-paren">(</span><em>name</em>, <em>sch_type_limits_name</em>, <em>day_start_time</em>, <em>day_end_time</em>, <em>setpoint_day</em>, <em>setpoint_night</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_hvacschedule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_internal_gains_other_equipment">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_internal_gains_other_equipment</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>watts_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_internal_gains_other_equipment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_lights">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_lights</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>watts_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_lights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_output_control_table_style">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_control_table_style</code><span class="sig-paren">(</span><em>column_sep</em>, <em>unit_conversion</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_control_table_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_output_surfaces_drawing">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_surfaces_drawing</code><span class="sig-paren">(</span><em>drawing_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_surfaces_drawing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_output_table_summary_reports">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_table_summary_reports</code><span class="sig-paren">(</span><em>report_types</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_table_summary_reports" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_outputmeter">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_outputmeter</code><span class="sig-paren">(</span><em>variable_name</em>, <em>report_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_outputmeter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_outputvar">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_outputvar</code><span class="sig-paren">(</span><em>variable_name</em>, <em>report_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_outputvar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_people">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_people</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>people_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_people" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_runperiod">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_runperiod</code><span class="sig-paren">(</span><em>start_month</em>, <em>start_day</em>, <em>end_month</em>, <em>end_day</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_runperiod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_schedule_type_limits">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_schedule_type_limits</code><span class="sig-paren">(</span><em>name</em>, <em>lower_limit</em>, <em>upper_limit</em>, <em>numeric_type</em>, <em>unit_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_schedule_type_limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_shadingoverhang">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_shadingoverhang</code><span class="sig-paren">(</span><em>name</em>, <em>window_name</em>, <em>height_above_window</em>, <em>tilt_angle</em>, <em>left_extension</em>, <em>right_extension</em>, <em>depth</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_shadingoverhang" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_shadow_calc">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_shadow_calc</code><span class="sig-paren">(</span><em>calc_frequency</em>, <em>max_figures</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_shadow_calc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_surface">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_surface</code><span class="sig-paren">(</span><em>name</em>, <em>type</em>, <em>construction</em>, <em>zone</em>, <em>boundary</em>, <em>boundary_object</em>, <em>sun_exp</em>, <em>wind_exp</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_surface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_thermostat">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_thermostat</code><span class="sig-paren">(</span><em>name</em>, <em>heat_sch</em>, <em>cool_sch</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_thermostat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_time_step">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_time_step</code><span class="sig-paren">(</span><em>time_step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_time_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_version">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_version</code><span class="sig-paren">(</span><em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_window">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_window</code><span class="sig-paren">(</span><em>name</em>, <em>construction</em>, <em>surface</em>, <em>shading</em>, <em>frame</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_zone">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_zone</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_zone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py2energyplus.idf_writer.write_zone_shade">
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_zone_shade</code><span class="sig-paren">(</span><em>name</em>, <em>base_surface</em>, <em>transmittance</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_zone_shade" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py2energyplus.idf_writer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

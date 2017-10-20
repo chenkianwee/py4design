@@ -1,0 +1,339 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.pyoptimise.nsga2 module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.pyoptimise.nsga2">
+<span id="pyliburo-pyoptimise-nsga2-module"></span><h1>pyliburo.pyoptimise.nsga2 module<a class="headerlink" href="#module-pyliburo.pyoptimise.nsga2" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.DerivedParams">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">DerivedParams</code><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.DerivedParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.DerivedParams.add_param">
+<code class="descname">add_param</code><span class="sig-paren">(</span><em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.DerivedParams.add_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.DerivedParams.length">
+<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.DerivedParams.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.DerivedParams.read_str">
+<code class="descname">read_str</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.DerivedParams.read_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.DerivedParams.write_str">
+<code class="descname">write_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.DerivedParams.write_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.Gene">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">Gene</code><span class="sig-paren">(</span><em>gene_type</em>, <em>value_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.Genotype">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">Genotype</code><span class="sig-paren">(</span><em>genotype_meta</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Genotype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Genotype.mutate">
+<code class="descname">mutate</code><span class="sig-paren">(</span><em>mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Genotype.mutate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Genotype.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Genotype.randomise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Genotype.read_str">
+<code class="descname">read_str</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Genotype.read_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Genotype.write_str">
+<code class="descname">write_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Genotype.write_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.GenotypeMeta">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">GenotypeMeta</code><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.GenotypeMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.GenotypeMeta.add_gene">
+<code class="descname">add_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.GenotypeMeta.add_gene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.GenotypeMeta.gene_position">
+<code class="descname">gene_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.GenotypeMeta.gene_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.GenotypeMeta.length">
+<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.GenotypeMeta.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.Individual">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">Individual</code><span class="sig-paren">(</span><em>idx</em>, <em>genotype_meta</em>, <em>score_meta</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.add_derivedparams">
+<code class="descname">add_derivedparams</code><span class="sig-paren">(</span><em>derivedparams</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.add_derivedparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.add_generation">
+<code class="descname">add_generation</code><span class="sig-paren">(</span><em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.add_generation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.get_score">
+<code class="descname">get_score</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.get_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.is_not_evaluated">
+<code class="descname">is_not_evaluated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.is_not_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.randomise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.set_score">
+<code class="descname">set_score</code><span class="sig-paren">(</span><em>index</em>, <em>score</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.set_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Individual.xml">
+<code class="descname">xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Individual.xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.Population">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">Population</code><span class="sig-paren">(</span><em>size</em>, <em>genotype_meta</em>, <em>score_meta</em>, <em>live_xml_filepath</em>, <em>dead_xml_filepath</em>, <em>mutation_prob</em>, <em>crossover_rate</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.crossover">
+<code class="descname">crossover</code><span class="sig-paren">(</span><em>ind1</em>, <em>ind2</em>, <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.crossover" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.crowd_distance_assignment">
+<code class="descname">crowd_distance_assignment</code><span class="sig-paren">(</span><em>individuals</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.crowd_distance_assignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.crowded_comparison">
+<code class="descname">crowded_comparison</code><span class="sig-paren">(</span><em>ind1</em>, <em>ind2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.crowded_comparison" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the two solutions based on crowded comparison.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.get_max_id">
+<code class="descname">get_max_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.get_max_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.randomise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.rank">
+<code class="descname">rank</code><span class="sig-paren">(</span><em>inds</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.reproduce">
+<code class="descname">reproduce</code><span class="sig-paren">(</span><em>individuals</em>, <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.reproduce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.select_random_inds">
+<code class="descname">select_random_inds</code><span class="sig-paren">(</span><em>num_inds</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.select_random_inds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.sort_objectives">
+<code class="descname">sort_objectives</code><span class="sig-paren">(</span><em>individuals</em>, <em>obj_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.sort_objectives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.Population.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.Population.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.pyoptimise.nsga2.ScoreMeta">
+<em class="property">class </em><code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">ScoreMeta</code><span class="sig-paren">(</span><em>score_names</em>, <em>scores_min_max</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.ScoreMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.pyoptimise.nsga2.ScoreMeta.MAX">
+<code class="descname">MAX</code><em class="property"> = 1</em><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.ScoreMeta.MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pyoptimise.nsga2.ScoreMeta.MIN">
+<code class="descname">MIN</code><em class="property"> = 0</em><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.ScoreMeta.MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.pyoptimise.nsga2.ScoreMeta.get_num_scores">
+<code class="descname">get_num_scores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.ScoreMeta.get_num_scores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.create_population_class">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">create_population_class</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.create_population_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.empty_xml_files">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">empty_xml_files</code><span class="sig-paren">(</span><em>xml_filelist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.empty_xml_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.feedback_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">feedback_nsga2</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.feedback_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.frange">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">frange</code><span class="sig-paren">(</span><em>start</em>, <em>end=None</em>, <em>inc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.frange" title="Permalink to this definition">¶</a></dt>
+<dd><p>A range function, that does accept float increments…</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.initialise_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">initialise_nsga2</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.initialise_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.nsga2.resume_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.nsga2.</code><code class="descname">resume_nsga2</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.nsga2.resume_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.pyoptimise.nsga2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

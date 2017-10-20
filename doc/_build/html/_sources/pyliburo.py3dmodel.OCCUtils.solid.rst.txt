@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.solid module
+===========================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.solid
+    :members:
+    :undoc-members:
+    :show-inheritance:

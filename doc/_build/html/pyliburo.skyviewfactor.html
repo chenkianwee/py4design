@@ -1,0 +1,172 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.skyviewfactor module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.skyviewfactor">
+<span id="pyliburo-skyviewfactor-module"></span><h1>pyliburo.skyviewfactor module<a class="headerlink" href="#module-pyliburo.skyviewfactor" title="Permalink to this headline">¶</a></h1>
+<p>PART 1 - DISCRETIZATION OF 4-PI SPACE
+&#64;author: Tiangang Yin
+Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J., 2013. A new approach of direction discretization and oversampling for 3D anisotropic radiative transfer modeling. Remote Sensing of Environment, 135, pp.213-223.</p>
+<dl class="function">
+<dt id="pyliburo.skyviewfactor.calc_SVF">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">calc_SVF</code><span class="sig-paren">(</span><em>coord</em>, <em>compound</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.calc_SVF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.skyviewfactor.direction">
+<em class="property">class </em><code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">direction</code><span class="sig-paren">(</span><em>x1=0.0</em>, <em>y1=0.0</em>, <em>z1=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.direction.printNorm">
+<code class="descname">printNorm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.direction.printNorm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.direction.reverseDir">
+<code class="descname">reverseDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.direction.reverseDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.skyviewfactor.tgDirs">
+<em class="property">class </em><code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">tgDirs</code><span class="sig-paren">(</span><em>nbDirs=2000</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>classdocs</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.generateDirs">
+<code class="descname">generateDirs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.generateDirs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.getDirList">
+<code class="descname">getDirList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere">
+<code class="descname">getDirLowerHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.getDirUpperHemisphere">
+<code class="descname">getDirUpperHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirUpperHemisphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.getNbDir">
+<code class="descname">getNbDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getNbDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.skyviewfactor.tgDirs.printDirList">
+<code class="descname">printDirList</code><span class="sig-paren">(</span><em>mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.printDirList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.skyviewfactor.thetaPhiToVectorDir">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">thetaPhiToVectorDir</code><span class="sig-paren">(</span><em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.thetaPhiToVectorDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.skyviewfactor.wrapTo2PI">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">wrapTo2PI</code><span class="sig-paren">(</span><em>stradiance</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.wrapTo2PI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.skyviewfactor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

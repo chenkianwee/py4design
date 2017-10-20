@@ -1,0 +1,239 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.pycitygml.write_gml module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.pycitygml.write_gml">
+<span id="pyliburo-pycitygml-write-gml-module"></span><h1>pyliburo.pycitygml.write_gml module<a class="headerlink" href="#module-pyliburo.pycitygml.write_gml" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces">
+<em class="property">class </em><code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">XMLNamespaces</code><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.app">
+<code class="descname">app</code><em class="property"> = 'http://www.opengis.net/citygml/appearance/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.bldg">
+<code class="descname">bldg</code><em class="property"> = 'http://www.opengis.net/citygml/building/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.bldg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.citygml">
+<code class="descname">citygml</code><em class="property"> = 'http://www.opengis.net/citygml/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.citygml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.core">
+<code class="descname">core</code><em class="property"> = 'http://www.opengis.net/citygml/base/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.core" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.dem">
+<code class="descname">dem</code><em class="property"> = 'http://www.opengis.net/citygml/relief/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.dem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.frn">
+<code class="descname">frn</code><em class="property"> = 'http://www.opengis.net/citygml/cityfurniture/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.frn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.gen">
+<code class="descname">gen</code><em class="property"> = 'http://www.opengis.net/citygml/generics/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.gen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.gml">
+<code class="descname">gml</code><em class="property"> = 'http://www.opengis.net/gml'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.gml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.grp">
+<code class="descname">grp</code><em class="property"> = 'http://www.opengis.net/citygml/cityobjectgroup/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.grp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.luse">
+<code class="descname">luse</code><em class="property"> = 'http://www.opengis.net/citygml/landuse/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.luse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.smil20">
+<code class="descname">smil20</code><em class="property"> = 'http://www.w3.org/2001/SMIL20/'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.smil20" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.smil20lang">
+<code class="descname">smil20lang</code><em class="property"> = 'http://www.w3.org/2001/SMIL20/Language'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.smil20lang" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.tex">
+<code class="descname">tex</code><em class="property"> = 'http://www.opengis.net/citygml/texturedsurface/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.tex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.trans">
+<code class="descname">trans</code><em class="property"> = 'http://www.opengis.net/citygml/transportation/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.trans" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.veg">
+<code class="descname">veg</code><em class="property"> = 'http://www.opengis.net/citygml/vegetation/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.veg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.wtr">
+<code class="descname">wtr</code><em class="property"> = 'http://www.opengis.net/citygml/waterbody/1.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.wtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.xAL">
+<code class="descname">xAL</code><em class="property"> = 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.xAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.xlink">
+<code class="descname">xlink</code><em class="property"> = 'http://www.w3.org/1999/xlink'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.xlink" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.pycitygml.write_gml.XMLNamespaces.xsi">
+<code class="descname">xsi</code><em class="property"> = 'http://www.w3.org/2001/XMLSchema-instance'</em><a class="headerlink" href="#pyliburo.pycitygml.write_gml.XMLNamespaces.xsi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_boundedby">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_boundedby</code><span class="sig-paren">(</span><em>parent_node</em>, <em>crs</em>, <em>lowercorner</em>, <em>uppercorner</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_boundedby" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_building">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_building</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>bldg_class=None</em>, <em>function=None</em>, <em>usage=None</em>, <em>yr_constr=None</em>, <em>rooftype=None</em>, <em>height=None</em>, <em>stry_abv_grd=None</em>, <em>stry_blw_grd=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_cityfurniture">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_cityfurniture</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>furn_class=None</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_cityfurniture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_gen_Attribute">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_gen_Attribute</code><span class="sig-paren">(</span><em>parent_node</em>, <em>generic_attrib_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_gen_Attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_landuse">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_landuse</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_landuse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_root">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_tin_relief">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_tin_relief</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_tin_relief" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pycitygml.write_gml.write_transportation">
+<code class="descclassname">pyliburo.pycitygml.write_gml.</code><code class="descname">write_transportation</code><span class="sig-paren">(</span><em>trpt_type</em>, <em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>rd_class=None</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pycitygml.write_gml.write_transportation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.pycitygml.write_gml.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

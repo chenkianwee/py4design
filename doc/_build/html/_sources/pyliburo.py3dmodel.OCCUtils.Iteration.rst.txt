@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.Iteration module
+===============================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.Iteration
+    :members:
+    :undoc-members:
+    :show-inheritance:

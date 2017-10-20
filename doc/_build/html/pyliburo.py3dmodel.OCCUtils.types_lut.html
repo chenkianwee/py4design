@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py3dmodel.OCCUtils.types_lut module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py3dmodel.OCCUtils.types_lut">
+<span id="pyliburo-py3dmodel-occutils-types-lut-module"></span><h1>pyliburo.py3dmodel.OCCUtils.types_lut module<a class="headerlink" href="#module-pyliburo.py3dmodel.OCCUtils.types_lut" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.EnumLookup">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">EnumLookup</code><span class="sig-paren">(</span><em>li_in</em>, <em>li_out</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.EnumLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>perform bi-directional lookup of Enums’…</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.ShapeToTopology">
+<em class="property">class </em><code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">ShapeToTopology</code><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.ShapeToTopology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>looks up the topology type and returns the corresponding topological entity</p>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.face_is_plane">
+<code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">face_is_plane</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.face_is_plane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the TopoDS_Shape is a plane, False otherwise</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.fix_formatting">
+<code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">fix_formatting</code><span class="sig-paren">(</span><em>_str</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.fix_formatting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.shape_is_cylinder">
+<code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">shape_is_cylinder</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.shape_is_cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True is the TopoDS_Shape is a cylinder, False otherwise</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.OCCUtils.types_lut.what_is_face">
+<code class="descclassname">pyliburo.py3dmodel.OCCUtils.types_lut.</code><code class="descname">what_is_face</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.OCCUtils.types_lut.what_is_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all class names for which this class can be downcasted</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py3dmodel.OCCUtils.types_lut.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

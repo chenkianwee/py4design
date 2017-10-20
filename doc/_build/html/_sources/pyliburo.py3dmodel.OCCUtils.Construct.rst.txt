@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.Construct module
+===============================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.Construct
+    :members:
+    :undoc-members:
+    :show-inheritance:

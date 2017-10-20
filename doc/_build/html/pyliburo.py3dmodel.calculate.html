@@ -1,0 +1,1233 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.py3dmodel.calculate module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.py3dmodel.calculate">
+<span id="pyliburo-py3dmodel-calculate-module"></span><h1>pyliburo.py3dmodel.calculate module<a class="headerlink" href="#module-pyliburo.py3dmodel.calculate" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.angle_bw_2_vecs">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">angle_bw_2_vecs</code><span class="sig-paren">(</span><em>pyvec1</em>, <em>pyvec2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.angle_bw_2_vecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function measures the angle between two vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyvec1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The first vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pyvec2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The second vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>angle</strong> : float</p>
+<blockquote class="last">
+<div><p>The measured angle between pyvec1 and pyvec2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.angle_bw_2_vecs_w_ref">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">angle_bw_2_vecs_w_ref</code><span class="sig-paren">(</span><em>pyvec1</em>, <em>pyvec2</em>, <em>ref_pyvec</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.angle_bw_2_vecs_w_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function measures the angle between two vectors regards to a reference vector. 
+The reference vector must be perpendicular to both the vectors. The angle is measured in counter-clockwise direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyvec1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The first vector to be measured.  A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pyvec2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The second vector to be measured.  A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>ref_pyvec</strong> : tuple of floats</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>The reference vector must be perpendicular to pyvec1 and pyvec2. </dt>
+<dd><p class="first last">A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>angle</strong> : float</p>
+<blockquote class="last">
+<div><p>The measured angle between pyvec1 and pyvec2 regards to ref_pyvec, the angle is measured in counter-clockwise direction.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.are_same_edges">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">are_same_edges</code><span class="sig-paren">(</span><em>occedge1</em>, <em>occedge2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.are_same_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the two OCCedges are the same.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge1</strong> : OCCedge</p>
+<blockquote>
+<div><p>The first edge to be analysed.</p>
+</div></blockquote>
+<p><strong>occedge2</strong> : OCCedge</p>
+<blockquote>
+<div><p>The second edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the two edges are the same, if False the two edges are not the same.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.are_same_faces">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">are_same_faces</code><span class="sig-paren">(</span><em>occface1</em>, <em>occface2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.are_same_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the two OCCfaces are the same.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface1</strong> : OCCface</p>
+<blockquote>
+<div><p>The first OCCface to be checked.</p>
+</div></blockquote>
+<p><strong>occface2</strong> : OCCface</p>
+<blockquote>
+<div><p>The second OCCface to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the faces are the same, if False the faces are not the same.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.check_solid_inward">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">check_solid_inward</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.check_solid_inward" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if all the OCCfaces of the OCCsolids is facing inwards.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The OCCsolid to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True OCCsolid is facing inwards, if False OCCsolid is not facing inwards.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.cs_transformation">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">cs_transformation</code><span class="sig-paren">(</span><em>occ_gpax3_1</em>, <em>occ_gpax3_2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.cs_transformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps a OCC coordinate system (occ_gpax3) to another OCC coordinate system (occ_gpax3).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occ_gpax3_1</strong> : gp_Ax3</p>
+<blockquote>
+<div><p>The coordinate system to be mapped.</p>
+</div></blockquote>
+<p><strong>occ_gpax3_2</strong> : gp_Ax3</p>
+<blockquote>
+<div><p>The coordinate system to be mapped onto.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>transformation</strong> : gp_Trsf</p>
+<blockquote class="last">
+<div><p>The transformation for the mapping.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.distance_between_2_pts">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">distance_between_2_pts</code><span class="sig-paren">(</span><em>pypt1</em>, <em>pypt2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.distance_between_2_pts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function measures the distance between two points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The first point to be measured. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pypt2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The second point to be measured. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>angle</strong> : float</p>
+<blockquote class="last">
+<div><p>The measured distance between pypt1 and pypt2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.edge_common_vertex">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">edge_common_vertex</code><span class="sig-paren">(</span><em>occedge1</em>, <em>occedge2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.edge_common_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if two OCCedges have common vertices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge1</strong> : OCCedge</p>
+<blockquote>
+<div><p>The first edge to be analysed.</p>
+</div></blockquote>
+<p><strong>occedge2</strong> : OCCedge</p>
+<blockquote>
+<div><p>The second edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of common points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of common points between the two edges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.edge_midpt">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">edge_midpt</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.edge_midpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calcuates the midpoint of an OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>midpoint</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The midpoint of the edge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.edgelength">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">edgelength</code><span class="sig-paren">(</span><em>lbound</em>, <em>ubound</em>, <em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.edgelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the length of the OCCedge between the lower and upper bound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lbound</strong> : float</p>
+<blockquote>
+<div><p>The lower bound of the OCCedge.</p>
+</div></blockquote>
+<p><strong>ubound</strong> : float</p>
+<blockquote>
+<div><p>The upper bound of the OCCedge.</p>
+</div></blockquote>
+<p><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>length</strong> : float</p>
+<blockquote class="last">
+<div><p>The length of the edge between the upper and lower bound.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.edgeparameter2pt">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">edgeparameter2pt</code><span class="sig-paren">(</span><em>parameter</em>, <em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.edgeparameter2pt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the point on the OCCedge from the given parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parameter</strong> : float</p>
+<blockquote>
+<div><p>The parameter of the OCCedge.</p>
+</div></blockquote>
+<p><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point on edge</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The point on the edge based on the parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.face_area">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">face_area</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.face_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the area of the OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face area</strong> : float</p>
+<blockquote class="last">
+<div><p>The area of the face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.face_is_inside">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">face_is_inside</code><span class="sig-paren">(</span><em>occface</em>, <em>boundary_occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.face_is_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates if OCCface is inside boundary OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be analysed.</p>
+</div></blockquote>
+<p><strong>boundary_occface</strong> : OCCface</p>
+<blockquote>
+<div><p>Check if occface is inside the boundary_occface.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True face is inside boundary face, if False face is not inside boundary face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.face_midpt">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">face_midpt</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.face_midpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the mid point of the OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face mid point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The mid point of the face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.face_normal">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">face_normal</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.face_normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the normal of the OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face normal</strong> : pydirection</p>
+<blockquote class="last">
+<div><p>The normal of the face. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.face_normal_as_edges">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">face_normal_as_edges</code><span class="sig-paren">(</span><em>occface_list</em>, <em>normal_magnitude=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.face_normal_as_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the normals of the list of OCCfaces and construct a list of OCCedges from it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The list of OCCfaces to be analysed.</p>
+</div></blockquote>
+<p><strong>normal_magnitude</strong> : float</p>
+<blockquote>
+<div><p>The length of the normal OCCedges, Default = 1.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of normals</strong> : list of OCCedges</p>
+<blockquote class="last">
+<div><p>List of OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.get_bounding_box">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">get_bounding_box</code><span class="sig-paren">(</span><em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.get_bounding_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the bounding box of the OCCtopology.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>xmin</strong> : float</p>
+<blockquote>
+<div><p>Minimum X-coordinate</p>
+</div></blockquote>
+<p><strong>ymin</strong> : float</p>
+<blockquote>
+<div><p>Minimum Y-coordinate</p>
+</div></blockquote>
+<p><strong>zmin</strong> : float</p>
+<blockquote>
+<div><p>Minimum Z-coordinate</p>
+</div></blockquote>
+<p><strong>xmax</strong> : float</p>
+<blockquote>
+<div><p>Maximum X-coordinate</p>
+</div></blockquote>
+<p><strong>ymax</strong> : float</p>
+<blockquote>
+<div><p>Maximum Y-coordinate</p>
+</div></blockquote>
+<p><strong>zmax</strong> : float</p>
+<blockquote class="last">
+<div><p>Maximum Z-coordinate</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.get_centre_bbox">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">get_centre_bbox</code><span class="sig-paren">(</span><em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.get_centre_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the centre of the bounding box of the OCCtopology.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>centre point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The centre point of the OCCtopology’s bounding box.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.grp_faces_acc2normals">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">grp_faces_acc2normals</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.grp_faces_acc2normals" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function groups the list of OCCfaces according to their normals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The list of OCCfaces to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary of faces according to their normals</strong> : dictionary of OCCfaces</p>
+<blockquote class="last">
+<div><p>The normals are the keys of the dictionary. e.g. to obtain all the OCCfaces that have normals (0,0,1), dictionar[ (0,0,1)]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.identify_open_close_wires_frm_loose_edges">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">identify_open_close_wires_frm_loose_edges</code><span class="sig-paren">(</span><em>occedge_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.identify_open_close_wires_frm_loose_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function rearranged the list of OCCedges and categorise them into two lists of open and closed OCCwires.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges to be sorted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of closed wires</strong> : list of OCCwires</p>
+<blockquote>
+<div><p>A list of closed OCCwires from the loose OCCedges.</p>
+</div></blockquote>
+<p><strong>list of opened wires</strong> : list of OCCwires</p>
+<blockquote class="last">
+<div><p>A list of opened OCCwires from the loose OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.intersect_edge_with_edge">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">intersect_edge_with_edge</code><span class="sig-paren">(</span><em>occedge1</em>, <em>occedge2</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.intersect_edge_with_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function intersects two OCCedges and obtain a list of intersection points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge1</strong> : OCCedge</p>
+<blockquote>
+<div><p>The first edge to be intersected.</p>
+</div></blockquote>
+<p><strong>occedge2</strong> : OCCedge</p>
+<blockquote>
+<div><p>The second edge to be intersected.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The minimum distance between the two edges to determine if the edges are intersecting, Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of intersection points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of points where the two edges intersect.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.intersect_edge_with_face">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">intersect_edge_with_face</code><span class="sig-paren">(</span><em>occedge</em>, <em>occface</em>, <em>tolerance=0.01</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.intersect_edge_with_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function intersects an OCCedge with an OCCface and obtain a list of intersection points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be intersected.</p>
+</div></blockquote>
+<p><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The face to be intersected.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The minimum distance between the edge and face to determine if the they are intersecting, Default = 1e-02.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of intersection points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of points where the two topologies intersect.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.intersect_shape_with_ptdir">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">intersect_shape_with_ptdir</code><span class="sig-paren">(</span><em>occtopology</em>, <em>pypt</em>, <em>pydir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.intersect_shape_with_ptdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects a point in a direction and calculates the at which point does the point intersects the OCCtopology.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be projected on.</p>
+</div></blockquote>
+<p><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The point to be projected. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pydir</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The direction of the point to be projected. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>intersection point</strong> : pypt</p>
+<blockquote>
+<div><p>The point in which the projected point intersect the OCCtopology. If None means there is no intersection.</p>
+</div></blockquote>
+<p><strong>intersection face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The OCCface in which the projected point hits. If None means there is no intersection.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.is_anticlockwise">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">is_anticlockwise</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>ref_pyvec</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.is_anticlockwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the list of points are arranged anticlockwise in regards to the ref_pyvec. 
+The ref_pyvec must be perpendicular to the points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>ref_pyvec</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The reference vector must be perpendicular to the list of points. 
+A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the list of points are arranged in anticlockwise manner, if False they are not.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.is_face_planar">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">is_face_planar</code><span class="sig-paren">(</span><em>occface</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.is_face_planar" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates if the OCCface is planar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be analysed.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The precision for checking the planarity, Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True face is planar, if False face is not planar.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.is_shell_closed">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">is_shell_closed</code><span class="sig-paren">(</span><em>occshell</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.is_shell_closed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates if the OCCshell is closed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell</strong> : OCCshell</p>
+<blockquote>
+<div><p>The OCCshell to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True OCCshell is closed, if False OCCshell is not closed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.is_wire_closed">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">is_wire_closed</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.is_wire_closed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if an OCCwire is closed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True wire is closed, if False wire is opened.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.minimum_distance">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">minimum_distance</code><span class="sig-paren">(</span><em>occtopology1</em>, <em>occtopology2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.minimum_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the minimum distance between the two OCCtopologies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology1</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be analysed.</p>
+</div></blockquote>
+<p><strong>occtopology2</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>minimum distance</strong> : float</p>
+<blockquote class="last">
+<div><p>The minimum distance between the two topologies.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.point_in_face">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">point_in_face</code><span class="sig-paren">(</span><em>pypt</em>, <em>occface</em>, <em>tolerance=0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.point_in_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if a point is inside an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>Check if this point is inside the OCCface. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>Check if the point is inside this OCCface.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The minimum distance between the point and the face to determine if the point is inside the face.
+Default = 1e-04.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True means the point is in the face, if False the point is not in the face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.point_in_solid">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">point_in_solid</code><span class="sig-paren">(</span><em>pypt</em>, <em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.point_in_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if a point is inside an OCCsolid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>Check if this point is inside the OCCsolid. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>Check if the point is inside this OCCsolid.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True, False, None</strong> : True, False, None</p>
+<blockquote class="last">
+<div><p>If True means the point is in the solid, if False the point is not in the solid, if None means the point is on the solid.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.project_edge_on_face">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">project_edge_on_face</code><span class="sig-paren">(</span><em>occedge</em>, <em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.project_edge_on_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects an OCCedge towards the OCCface. #TODO: figure out if it is a faceplane or just the face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be projected.</p>
+</div></blockquote>
+<p><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The face to be projected on.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Projected edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>The projected edge on the face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.project_face_on_faceplane">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">project_face_on_faceplane</code><span class="sig-paren">(</span><em>occface2projon</em>, <em>occface2proj</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.project_face_on_faceplane" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects the OCCface onto another OCCface plane. The plane stretches through infinity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface2projon</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be projected on.</p>
+</div></blockquote>
+<p><strong>occface2proj</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be projected.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of projected points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.project_point_on_faceplane">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">project_point_on_faceplane</code><span class="sig-paren">(</span><em>pypt</em>, <em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.project_point_on_faceplane" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects a point towards the OCCface. The face is treated as a plane and it stretched through infinity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The point to be projected. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The face to be projected on.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Projected point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The projected point on the face.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.project_point_on_infedge">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">project_point_on_infedge</code><span class="sig-paren">(</span><em>pypt</em>, <em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.project_point_on_infedge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects a point towards the OCCedge. The edge is treated as a vector and it stretched through infinity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The point to be projected. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be projected on.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Projected point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The projected point on the edge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.project_shape_on_shape">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">project_shape_on_shape</code><span class="sig-paren">(</span><em>occtopo_proj</em>, <em>occtopo_projon</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.project_shape_on_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function project the occtopoproj (OCCtopology) onto the occtopoprojon (OCCtopology), and returns the list of projected points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopo_proj</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to to project.</p>
+</div></blockquote>
+<p><strong>occtopo_projon</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be projected on.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float</p>
+<blockquote>
+<div><p>The precision of the projection.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of projected points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of projected points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.pt2edgeparameter">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">pt2edgeparameter</code><span class="sig-paren">(</span><em>pypt</em>, <em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.pt2edgeparameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the parameter of the OCCedge from the given point. The length of the edge can be calculated by specifying
+two parameters in the edgelength function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The point on the OCCedge to be converted to the parameter. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</p>
+</div></blockquote>
+<p><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter</strong> : float</p>
+<blockquote class="last">
+<div><p>The parameter of the point on the OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.solid_volume">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">solid_volume</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.solid_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the volume of the OCCsolid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The OCCsolid to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>volume</strong> : float</p>
+<blockquote class="last">
+<div><p>The volume of the solid.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.sort_edges_into_order">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">sort_edges_into_order</code><span class="sig-paren">(</span><em>occedge_list</em>, <em>isclosed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.sort_edges_into_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of ordered OCCedges from a list of loose OCCedges. The edges does not need to form a close face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges to be sorted.</p>
+</div></blockquote>
+<p><strong>isclosed</strong> : bool</p>
+<blockquote>
+<div><p>True or False, is the resultant wires suppose to be closed or opened.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of sorted edges</strong> : list of OCCedges</p>
+<blockquote class="last">
+<div><p>A list of ordered OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.srf_nrml_facing_solid_inward">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">srf_nrml_facing_solid_inward</code><span class="sig-paren">(</span><em>occface</em>, <em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.srf_nrml_facing_solid_inward" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the OCCface is facing the inside of the OCCsolid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be checked.</p>
+</div></blockquote>
+<p><strong>occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The OCCsolid.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the face is facing the inside of the solid, if False the face is not facing inwards.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.calculate.wirelength">
+<code class="descclassname">pyliburo.py3dmodel.calculate.</code><code class="descname">wirelength</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.calculate.wirelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function measures the length of the OCCwire.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be measured.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>length of wire</strong> : float</p>
+<blockquote class="last">
+<div><p>The lenght of the wire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.py3dmodel.calculate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

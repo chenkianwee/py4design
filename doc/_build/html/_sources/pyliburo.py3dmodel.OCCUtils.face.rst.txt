@@ -1,0 +1,7 @@
+pyliburo\.py3dmodel\.OCCUtils\.face module
+==========================================
+
+.. automodule:: pyliburo.py3dmodel.OCCUtils.face
+    :members:
+    :undoc-members:
+    :show-inheritance:
