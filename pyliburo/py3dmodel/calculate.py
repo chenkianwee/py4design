@@ -19,6 +19,7 @@
 #
 # ==================================================================================================
 import math
+
 import fetch
 import construct
 import modify
@@ -116,7 +117,7 @@ def project_point_on_infedge(pypt, occedge):
     gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
     occutil_edge = edge.Edge(occedge)
     u, projpt = occutil_edge.project_vertex(gp_pt)
-    proj_pypt = construct.occpt_2_pypt(projpt)
+    proj_pypt = modify.occpt_2_pypt(projpt)
     return proj_pypt
 
 def project_point_on_faceplane(pypt, occface):
@@ -139,7 +140,7 @@ def project_point_on_faceplane(pypt, occface):
     gp_pt = gp_Pnt(pypt[0], pypt[1], pypt[2])
     fc = face.Face(occface)
     uv, projected_pt = fc.project_vertex(gp_pt)
-    proj_pypt = construct.occpt_2_pypt(projected_pt)
+    proj_pypt = modify.occpt_2_pypt(projected_pt)
     return proj_pypt
     
 def angle_bw_2_vecs_w_ref(pyvec1, pyvec2, ref_pyvec):
@@ -1040,6 +1041,7 @@ def get_bounding_box(occtopology):
     ----------
     occtopology : OCCtopology
         The OCCtopology to be analysed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1071,6 +1073,7 @@ def get_centre_bbox(occtopology):
     ----------
     occtopology : OCCtopology
         The OCCtopology to be analysed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1088,9 +1091,11 @@ def minimum_distance(occtopology1, occtopology2):
     ----------
     occtopology1 : OCCtopology
         The OCCtopology to be analysed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     occtopology2 : OCCtopology
         The OCCtopology to be analysed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1108,9 +1113,11 @@ def project_shape_on_shape(occtopo_proj, occtopo_projon, tolerance = 1e-06):
     ----------
     occtopo_proj : OCCtopology
         The OCCtopology to to project.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     occtopo_projon : OCCtopology
         The OCCtopology to be projected on.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     tolerance : float
         The precision of the projection.
@@ -1142,6 +1149,7 @@ def intersect_shape_with_ptdir(occtopology, pypt, pydir):
     ----------
     occtopology : OCCtopology
         The OCCtopology to be projected on.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     pypt : tuple of floats
         The point to be projected. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
@@ -1164,7 +1172,7 @@ def intersect_shape_with_ptdir(occtopology, pypt, pydir):
     if shape_inter.IsDone():
         npts = shape_inter.NbPnt()
         if npts !=0:
-            return construct.occpt_2_pypt(shape_inter.Pnt(1)), shape_inter.Face(1)
+            return modify.occpt_2_pypt(shape_inter.Pnt(1)), shape_inter.Face(1)
         else:
             return None, None 
     else:

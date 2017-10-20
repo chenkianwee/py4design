@@ -79,12 +79,12 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology1</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be intersected. 
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 <p><strong>occtopology2</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be intersected.
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 </td>
 </tr>
@@ -109,12 +109,12 @@ OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occstopology2cutfrm</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be cut. 
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 <p><strong>cutting_occtopology</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The cutting OCCtopology.
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 </td>
 </tr>
@@ -139,12 +139,12 @@ OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology1</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be fused. 
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 <p><strong>occtopology2</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be fused.
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 </td>
 </tr>
@@ -173,7 +173,7 @@ OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge
 <p><strong>occtopology2cut</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be cut.
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex,</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 <p><strong>roundndigit</strong> : int</p>
 <blockquote>
@@ -576,7 +576,7 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopo_list</strong> : list of OCCtopology</p>
 <blockquote>
 <div><p>A list of OCCtopologies to be converted into OCCcompound. 
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1221,102 +1221,6 @@ connected faces and merged them into a single face.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.py3dmodel.construct.occpt_2_pypt">
-<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occpt_2_pypt</code><span class="sig-paren">(</span><em>occpt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occpt_2_pypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function constructs a point (pypt) from an OCC point (gp_pnt).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt</strong> : OCC point (gp_pnt)</p>
-<blockquote>
-<div><p>OCC point (gp_pnt) to be converted to a pypt.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : pypt</p>
-<blockquote class="last">
-<div><p>A pypt constructed from the OCC point (gp_pnt).</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.py3dmodel.construct.occpt_list_2_pyptlist">
-<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occpt_list_2_pyptlist</code><span class="sig-paren">(</span><em>occpt_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occpt_list_2_pyptlist" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function constructs a list of points (pyptlist) from a list of OCC points (gp_pnt).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt_list</strong> : list of OCC points (gp_pnt)</p>
-<blockquote>
-<div><p>list of OCC points (gp_pnt) to be converted to a pyptlist.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
-<blockquote class="last">
-<div><p>A pyptlist constructed from the list of OCC points (gp_pnt).</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.py3dmodel.construct.occvertex_2_occpt">
-<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occvertex_2_occpt</code><span class="sig-paren">(</span><em>occvertex</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occvertex_2_occpt" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function constructs an OCC point (gp_pnt) from an OCCvertex.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex</strong> : OCCvertex</p>
-<blockquote>
-<div><p>OCCvertex to be converted to a OCC point (gp_pnt).</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : OCC point (gp_pnt)</p>
-<blockquote class="last">
-<div><p>An OCC point constructed from the OCCvertex.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.py3dmodel.construct.occvertex_list_2_occpt_list">
-<code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">occvertex_list_2_occpt_list</code><span class="sig-paren">(</span><em>occvertex_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.occvertex_list_2_occpt_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function constructs a list of OCC points (gp_pnt) from a list of OCCvertices.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex_list</strong> : list of OCCvertices</p>
-<blockquote>
-<div><p>List of OCCvertices to be converted to a list of OCC points (gp_pnt).</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : list of OCC points (gp_pnt)</p>
-<blockquote class="last">
-<div><p>A list of OCC points (gp_pnt) constructed from the list of OCCvertices.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyliburo.py3dmodel.construct.sew_faces">
 <code class="descclassname">pyliburo.py3dmodel.construct.</code><code class="descname">sew_faces</code><span class="sig-paren">(</span><em>occface_list</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.construct.sew_faces" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function creates a list of OCCshells from a list of OCCfaces. The function loops through the OCCfaces to search for all possible
@@ -1352,7 +1256,7 @@ shells that can be created from the faces.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
 <blockquote>
 <div><p>The OCCtopology to be meshed.
-OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape</p>
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
 <p><strong>mesh_incremental_float</strong> : float</p>
 <blockquote>

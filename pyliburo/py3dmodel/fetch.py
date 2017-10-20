@@ -19,7 +19,7 @@
 #
 # ==================================================================================================
 import calculate
-import construct
+import modify
 
 from OCCUtils import Topology
 from OCCUtils import edge
@@ -48,8 +48,8 @@ def points_from_edge(occedge):
         The list of points extracted from the OCCedge.
     """
     vertex_list = list(Topology.Topo(occedge).vertices())
-    point_list = construct.occvertex_list_2_occpt_list(vertex_list)
-    pyptlist = construct.occpt_list_2_pyptlist(point_list)
+    point_list = modify.occvertex_list_2_occpt_list(vertex_list)
+    pyptlist = modify.occpt_list_2_pyptlist(point_list)
     return pyptlist
     
 def is_edge_bspline(occedge):
@@ -185,8 +185,8 @@ def points_frm_wire(occwire):
         The list of points extracted from the OCCwire.
     """
     verts = list(Topology.WireExplorer(occwire).ordered_vertices())
-    point_list = construct.occvertex_list_2_occpt_list(verts)
-    pyptlist = construct.occpt_list_2_pyptlist(point_list)
+    point_list = modify.occvertex_list_2_occpt_list(verts)
+    pyptlist = modify.occpt_list_2_pyptlist(point_list)
     return pyptlist
 
 def edges_frm_wire(occwire):
@@ -346,8 +346,8 @@ def points_frm_solid(occsolid):
         The list of points extracted from the OCCsolid.
     """
     verts = list(Topology.Topo(occsolid).vertices())
-    ptlist = construct.occvertex_list_2_occpt_list(verts)
-    pyptlist = construct.occpt_list_2_pyptlist(ptlist)        
+    ptlist = modify.occvertex_list_2_occpt_list(verts)
+    pyptlist = modify.occpt_list_2_pyptlist(ptlist)        
     return pyptlist
 
 def solids_frm_compsolid(occcompsolid):
@@ -516,6 +516,7 @@ def topo2topotype(occtopology):
     ----------
     occtopology : OCCtopology 
         The OCCtopology to be converted. 
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -549,7 +550,8 @@ def topo_explorer(occtopo2explore, topotype2find):
     Parameters
     ----------
     occtopo2explore : OCCtopology 
-        The OCCtopology to be explored. 
+        The OCCtopology to be explored.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     topotype2find : str 
         The string describing the topology to find. 

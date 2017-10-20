@@ -108,121 +108,7 @@ def make_brep_text(text_string, font_size):
 
 #========================================================================================================
 #POINT INPUTS
-#========================================================================================================
-def occpt_2_pypt(occpt):
-    """
-    This function constructs a point (pypt) from an OCC point (gp_pnt).
- 
-    Parameters
-    ----------
-    occpt : OCC point (gp_pnt)
-        OCC point (gp_pnt) to be converted to a pypt.
-        
-    Returns
-    -------
-    point : pypt
-        A pypt constructed from the OCC point (gp_pnt).
-    """
-    pypt = (occpt.X(), occpt.Y(), occpt.Z())
-    return pypt
-
-def occpt_list_2_pyptlist(occpt_list):
-    """
-    This function constructs a list of points (pyptlist) from a list of OCC points (gp_pnt).
- 
-    Parameters
-    ----------
-    occpt_list : list of OCC points (gp_pnt)
-        list of OCC points (gp_pnt) to be converted to a pyptlist.
-        
-    Returns
-    -------
-    list of points : pyptlist
-        A pyptlist constructed from the list of OCC points (gp_pnt).
-    """
-    pyptlist = []
-    for occpt in occpt_list:
-        pypt = occpt_2_pypt(occpt)
-        pyptlist.append(pypt)
-    return pyptlist
-
-def occvertex_2_occpt(occvertex):
-    """
-    This function constructs an OCC point (gp_pnt) from an OCCvertex.
- 
-    Parameters
-    ----------
-    occvertex : OCCvertex
-        OCCvertex to be converted to a OCC point (gp_pnt).
-        
-    Returns
-    -------
-    point : OCC point (gp_pnt)
-        An OCC point constructed from the OCCvertex.
-    """
-    occ_pnt = BRep_Tool.Pnt(occvertex)
-    return occ_pnt
-
-def occvertex_list_2_occpt_list(occvertex_list):
-    """
-    This function constructs a list of OCC points (gp_pnt) from a list of OCCvertices.
- 
-    Parameters
-    ----------
-    occvertex_list : list of OCCvertices
-        List of OCCvertices to be converted to a list of OCC points (gp_pnt).
-        
-    Returns
-    -------
-    list of points : list of OCC points (gp_pnt)
-        A list of OCC points (gp_pnt) constructed from the list of OCCvertices.
-    """
-    point_list = []
-    for vert in occvertex_list:
-        point_list.append(BRep_Tool.Pnt(vert))
-    return point_list
-    
-def make_occvertex_list(pyptlist):
-    """
-    This function constructs a list of OCCvertices.
- 
-    Parameters
-    ----------
-    pyptlist : a list of tuples
-        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
-        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
-        
-    Returns
-    -------
-    list of points : list of OCCvertices.
-        A list of OCCvertices converted from the list of points.
-    """
-    vertlist = []
-    for pypt in pyptlist:
-        vert = make_vertex(pypt)
-        vertlist.append(vert)
-    return vertlist
-
-def make_gppnt_list(pyptlist):
-    """
-    This function constructs a list of OCC points (gp_pnt).
- 
-    Parameters
-    ----------
-    pyptlist : a list of tuples
-        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
-        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
-        
-    Returns
-    -------
-    list of OCC points : list of OCC points (gp_pnt)
-        A list of OCC points (gp_pnt) converted from the list of points.
-    """
-    gpptlist = []
-    for pypt in pyptlist:
-        gpptlist.append(make_gppnt(pypt))
-    return gpptlist
-
+#========================================================================================================    
 def make_vertex(pypt):
     """
     This function constructs an OCCvertex.
@@ -387,6 +273,47 @@ def make_line(pypt, pydir):
     """
     occ_line = gp_Lin(gp_Ax1(gp_Pnt(pypt[0], pypt[1], pypt[2]), gp_Dir(pydir[0], pydir[1], pydir[2])))
     return occ_line
+
+def make_occvertex_list(pyptlist):
+    """
+    This function constructs a list of OCCvertices.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    list of points : list of OCCvertices.
+        A list of OCCvertices converted from the list of points.
+    """
+    vertlist = []
+    for pypt in pyptlist:
+        vert = make_vertex(pypt)
+        vertlist.append(vert)
+    return vertlist
+
+def make_gppnt_list(pyptlist):
+    """
+    This function constructs a list of OCC points (gp_pnt).
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    list of OCC points : list of OCC points (gp_pnt)
+        A list of OCC points (gp_pnt) converted from the list of points.
+    """
+    gpptlist = []
+    for pypt in pyptlist:
+        gpptlist.append(make_gppnt(pypt))
+    return gpptlist
 
 def make_polygon(pyptlist):
     """
@@ -1248,7 +1175,7 @@ def make_compound(occtopo_list):
     ----------
     occtopo_list : list of OCCtopology
         A list of OCCtopologies to be converted into OCCcompound. 
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
                 
     Returns
     -------
@@ -1265,11 +1192,11 @@ def boolean_common(occtopology1, occtopology2):
     ----------
     occtopology1 : OCCtopology
         The OCCtopology to be intersected. 
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     occtopology2 : OCCtopology
         The OCCtopology to be intersected.
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1288,11 +1215,11 @@ def boolean_fuse(occtopology1, occtopology2):
     ----------
     occtopology1 : OCCtopology
         The OCCtopology to be fused. 
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     occtopology2 : OCCtopology
         The OCCtopology to be fused.
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1311,11 +1238,11 @@ def boolean_difference(occstopology2cutfrm, cutting_occtopology):
     ----------
     occstopology2cutfrm : OCCtopology
         The OCCtopology to be cut. 
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     cutting_occtopology : OCCtopology
         The cutting OCCtopology.
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     Returns
     -------
@@ -1337,7 +1264,7 @@ def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance 
         
     occtopology2cut : OCCtopology
         The OCCtopology to be cut.
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, 
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
     
     roundndigit : int
         The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
@@ -1367,7 +1294,7 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
     ----------
     occtopology : OCCtopology
         The OCCtopology to be meshed.
-        OCCtopology includes: OCCcompound, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex, OCCshape
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
     mesh_incremental_float : float
         Default = 1e-06.
