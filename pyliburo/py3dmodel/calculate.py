@@ -54,7 +54,7 @@ def point_in_face(pypt, occface, tolerance = 1e-04):
     occface : OCCface
         Check if the point is inside this OCCface.
         
-    tolerance : float
+    tolerance : float, optional
         The minimum distance between the point and the face to determine if the point is inside the face.
         Default = 1e-04.
 
@@ -321,7 +321,7 @@ def intersect_edge_with_edge(occedge1, occedge2, tolerance = 1e-06):
     occedge2 : OCCedge
         The second edge to be intersected.
         
-    tolerance : float
+    tolerance : float, optional
         The minimum distance between the two edges to determine if the edges are intersecting, Default = 1e-06.
 
     Returns
@@ -393,7 +393,7 @@ def intersect_edge_with_face(occedge, occface, tolerance = 1e-02):
     occface : OCCface
         The face to be intersected.
         
-    tolerance : float
+    tolerance : float, optional
         The minimum distance between the edge and face to determine if the they are intersecting, Default = 1e-02.
 
     Returns
@@ -510,8 +510,8 @@ def sort_edges_into_order(occedge_list, isclosed = False):
     occedge_list : list of OCCedges
         The list of OCCedges to be sorted.
     
-    isclosed : bool
-        True or False, is the resultant wires suppose to be closed or opened.
+    isclosed : bool, optional
+        True or False, is the resultant wires suppose to be closed or opened, Default = False.
         
     Returns
     -------
@@ -780,7 +780,7 @@ def is_face_planar(occface, tolerance = 1e-06):
     occface : OCCface
         The OCCface to be analysed.
         
-    tolerance : float
+    tolerance : float, optional
         The precision for checking the planarity, Default = 1e-06.
         
     Returns
@@ -920,7 +920,7 @@ def face_normal_as_edges(occface_list, normal_magnitude = 1):
     occface_list : list of OCCfaces
         The list of OCCfaces to be analysed.
         
-    normal_magnitude : float
+    normal_magnitude : float, optional
         The length of the normal OCCedges, Default = 1.
         
     Returns
@@ -1119,8 +1119,8 @@ def project_shape_on_shape(occtopo_proj, occtopo_projon, tolerance = 1e-06):
         The OCCtopology to be projected on.
         OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
-    tolerance : float
-        The precision of the projection.
+    tolerance : float, optional
+        The precision of the projection, Default = 1e-06.
         
     Returns
     -------

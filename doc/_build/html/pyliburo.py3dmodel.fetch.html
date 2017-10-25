@@ -261,6 +261,30 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="pyliburo.py3dmodel.fetch.points_frm_edge">
+<code class="descclassname">pyliburo.py3dmodel.fetch.</code><code class="descname">points_frm_edge</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.fetch.points_frm_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of points from the OCCedge. The list of points consist of the starting and ending point of the edge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The OCCedge to be examined.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of points extracted from the OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pyliburo.py3dmodel.fetch.points_frm_occface">
 <code class="descclassname">pyliburo.py3dmodel.fetch.</code><code class="descname">points_frm_occface</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.fetch.points_frm_occface" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function fetches a list of points from the OCCface. The face is constructed based on the list of points.</p>
@@ -326,30 +350,6 @@ TODO: WHEN DEALING WITH OPEN WIRE IT WILL NOT RETURN THE LAST VERTEX</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
 <blockquote class="last">
 <div><p>The list of points extracted from the OCCwire.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.py3dmodel.fetch.points_from_edge">
-<code class="descclassname">pyliburo.py3dmodel.fetch.</code><code class="descname">points_from_edge</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.fetch.points_from_edge" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function fetches a list of points from the OCCedge. The list of points consist of the starting and ending point of the edge.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
-<blockquote>
-<div><p>The OCCedge to be examined.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
-<blockquote class="last">
-<div><p>The list of points extracted from the OCCedge.</p>
 </div></blockquote>
 </td>
 </tr>

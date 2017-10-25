@@ -241,8 +241,8 @@ def rmv_duplicated_pts_by_distance(pyptlist, distance = 1e-06):
         List of points to be fused. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
         thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
         
-    distance : float
-        The minimal distance between two points. Any points closer than this distance will be fused.
+    distance : float, optional
+        The minimal distance between two points, default = 1e-06. Any points closer than this distance will be fused.
         
     Returns
     -------
@@ -267,7 +267,7 @@ def rmv_duplicated_pts(pyptlist, roundndigit = None):
         List of points to be analysed. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
         thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
         
-    roundndigit : int
+    roundndigit : int, optional
         The number of decimal place the points will be rounded to. Default= None
         
     Returns
@@ -367,7 +367,7 @@ def flatten_edge_z_value(occedge, z=0):
     occedge : OCCedge
         The edge to be flatten.
         
-    z : float
+    z : float, optional
         The Z-value to flatten to. Default = 0.
 
     Returns
@@ -398,7 +398,7 @@ def fix_closed_wire(occwire,occface, tolerance = 1e-06):
     occface : OCCface
         The reference OCCface used for closing the OCCwire.
         
-    tolerance : float
+    tolerance : float, optional
         The precision for the fix, Default = 1e-06. 
 
     Returns
@@ -431,7 +431,7 @@ def trim_wire(occwire, pypt1, pypt2, is_periodic=False):
     pypt2 : tuple of floats
         The ending point of the trim. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
         
-    is_periodic : bool
+    is_periodic : bool, optional
         Indicates if the wire is open or close, True for close, False for open, Default = False.
 
     Returns
@@ -568,7 +568,7 @@ def flatten_face_z_value(occface, z=0):
     occface : OCCface
         The OCCface to be flatten.
         
-    z : float
+    z : float, optional
         The Z-value to flatten to. Default = 0.
 
     Returns
@@ -616,7 +616,7 @@ def flatten_shell_z_value(occshell, z=0):
     occshell : OCCshell
         The OCCshell to be flattened.
         
-    z : float
+    z : float, optional
         The Z-value to flatten to. Default = 0.
 
     Returns
@@ -721,7 +721,7 @@ def simplify_shell(occshell, tolerance = 1e-06):
     occshell : OCCshell
         The OCCshell to be simplified.
         
-    tolerance : float
+    tolerance : float, optional
         The precision of the simplification, Default = 1e-06.
 
     Returns

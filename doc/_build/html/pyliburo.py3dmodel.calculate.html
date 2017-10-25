@@ -465,7 +465,7 @@ The reference vector must be perpendicular to both the vectors. The angle is mea
 <blockquote>
 <div><p>The list of OCCfaces to be analysed.</p>
 </div></blockquote>
-<p><strong>normal_magnitude</strong> : float</p>
+<p><strong>normal_magnitude</strong> : float, optional</p>
 <blockquote>
 <div><p>The length of the normal OCCedges, Default = 1.</p>
 </div></blockquote>
@@ -619,7 +619,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>The second edge to be intersected.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The minimum distance between the two edges to determine if the edges are intersecting, Default = 1e-06.</p>
 </div></blockquote>
@@ -651,7 +651,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>The face to be intersected.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The minimum distance between the edge and face to determine if the they are intersecting, Default = 1e-02.</p>
 </div></blockquote>
@@ -747,7 +747,7 @@ A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
 <blockquote>
 <div><p>The OCCface to be analysed.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The precision for checking the planarity, Default = 1e-06.</p>
 </div></blockquote>
@@ -857,7 +857,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>Check if the point is inside this OCCface.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The minimum distance between the point and the face to determine if the point is inside the face.
 Default = 1e-04.</p>
@@ -1032,9 +1032,9 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <div><p>The OCCtopology to be projected on.
 OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
-<div><p>The precision of the projection.</p>
+<div><p>The precision of the projection, Default = 1e-06.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1113,9 +1113,9 @@ two parameters in the edgelength function.</p>
 <blockquote>
 <div><p>The list of OCCedges to be sorted.</p>
 </div></blockquote>
-<p><strong>isclosed</strong> : bool</p>
+<p><strong>isclosed</strong> : bool, optional</p>
 <blockquote>
-<div><p>True or False, is the resultant wires suppose to be closed or opened.</p>
+<div><p>True or False, is the resultant wires suppose to be closed or opened, Default = False.</p>
 </div></blockquote>
 </td>
 </tr>

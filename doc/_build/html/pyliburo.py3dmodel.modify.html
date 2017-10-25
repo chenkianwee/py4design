@@ -80,7 +80,7 @@
 <blockquote>
 <div><p>The reference OCCface used for closing the OCCwire.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The precision for the fix, Default = 1e-06.</p>
 </div></blockquote>
@@ -181,7 +181,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>The edge to be flatten.</p>
 </div></blockquote>
-<p><strong>z</strong> : float</p>
+<p><strong>z</strong> : float, optional</p>
 <blockquote>
 <div><p>The Z-value to flatten to. Default = 0.</p>
 </div></blockquote>
@@ -209,7 +209,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>The OCCface to be flatten.</p>
 </div></blockquote>
-<p><strong>z</strong> : float</p>
+<p><strong>z</strong> : float, optional</p>
 <blockquote>
 <div><p>The Z-value to flatten to. Default = 0.</p>
 </div></blockquote>
@@ -237,7 +237,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <blockquote>
 <div><p>The OCCshell to be flattened.</p>
 </div></blockquote>
-<p><strong>z</strong> : float</p>
+<p><strong>z</strong> : float, optional</p>
 <blockquote>
 <div><p>The Z-value to flatten to. Default = 0.</p>
 </div></blockquote>
@@ -630,7 +630,7 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <div><p>List of points to be analysed. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
 thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 </div></blockquote>
-<p><strong>roundndigit</strong> : int</p>
+<p><strong>roundndigit</strong> : int, optional</p>
 <blockquote>
 <div><p>The number of decimal place the points will be rounded to. Default= None</p>
 </div></blockquote>
@@ -659,9 +659,9 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <div><p>List of points to be fused. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
 thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 </div></blockquote>
-<p><strong>distance</strong> : float</p>
+<p><strong>distance</strong> : float, optional</p>
 <blockquote>
-<div><p>The minimal distance between two points. Any points closer than this distance will be fused.</p>
+<div><p>The minimal distance between two points, default = 1e-06. Any points closer than this distance will be fused.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -817,7 +817,7 @@ A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
 <blockquote>
 <div><p>The OCCshell to be simplified.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The precision of the simplification, Default = 1e-06.</p>
 </div></blockquote>
@@ -853,7 +853,7 @@ A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
 <blockquote>
 <div><p>The ending point of the trim. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
 </div></blockquote>
-<p><strong>is_periodic</strong> : bool</p>
+<p><strong>is_periodic</strong> : bool, optional</p>
 <blockquote>
 <div><p>Indicates if the wire is open or close, True for close, False for open, Default = False.</p>
 </div></blockquote>

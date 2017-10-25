@@ -354,10 +354,10 @@ def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
         List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
         thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
         
-    mindegree : int
+    mindegree : int, optional
         The minimun degree of the bspline curve. Default = 3.
         
-    maxdegree : int
+    maxdegree : int, optional
         The maximum degree of the bspline curve. Default = 8. 
         
     Returns
@@ -458,7 +458,7 @@ def delaunay3d(pyptlist, tolerance = 1e-06):
         The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
         thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
         
-    tolerance : float
+    tolerance : float, optional
         The minimal surface area of each triangulated face, Default = 1e-06.. Any faces smaller than the tolerance will be deleted.
  
     Returns
@@ -600,11 +600,11 @@ def faces_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
     occedge_list : list of OCCedges
         The list of OCCedges for creating the list of OCCfaces.
     
-    roundndigit : int
+    roundndigit : int, optional
         The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
         Depending on the precision of the points, it will decide whether the edges are connected.
         
-    distance : float
+    distance : float, optional
         The smallest distance between two points from the edges, Default = 0.01. 
         The further the distance the less precise is the resultant faces.
         
@@ -678,7 +678,7 @@ def arrange_edges_2_wires(occedge_list, isclosed = False):
     occedge_list : list of OCCedges
         The list of OCCedges for creating the list of OCCwires.
     
-    isclosed : bool
+    isclosed : bool, optional
         True or False, is the resultant wires suppose to be closed or opened.
         
     Returns
@@ -974,7 +974,7 @@ def merge_faces(occface_list, tolerance = 1e-06 ):
     occface_list : a list of OCCfaces
         List of OCCfaces that will be looped through in search of all possible connected faces.
         
-    tolerance : float
+    tolerance : float, optional
         The minimal tolerance to decide if two faces are connected, Default = 1e-06.
         
     Returns
@@ -1007,11 +1007,11 @@ def make_loft(occface_list, rule_face = True, tolerance = 1e-06):
     occface_list : a list of OCCfaces
         List of OCCfaces for the loft.
         
-    rule_face : bool
-        True or Force. Specify if the loft is a ruled face.
+    rule_face : bool, optional
+        True or False, Default = True. Specify if the loft is a ruled face.
     
-    tolerance : float
-        Specify the tolerance of the loft.
+    tolerance : float, optional
+        Specify the tolerance of the loft, Default = 1e-06.
         
     Returns
     -------
@@ -1059,6 +1059,9 @@ def sew_faces(occface_list, tolerance = 1e-06):
     ----------
     occface_list : a list of OCCfaces
         List of OCCfaces that will be looped through in search of all possible shells.
+        
+    tolerance : float, optional
+        Specify the tolerance of the sewing, Default = 1e-06.
         
     Returns
     -------
@@ -1266,11 +1269,11 @@ def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance 
         The OCCtopology to be cut.
         OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
     
-    roundndigit : int
+    roundndigit : int, optional
         The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
         Depending on the precision of the points, it will decide whether the edges are connected.
         
-    distance : float
+    distance : float, optional
         The smallest distance between two points from the edges, Default = 0.01. 
         The further the distance the less precise is the resultant faces.
         
@@ -1296,8 +1299,8 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
         The OCCtopology to be meshed.
         OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
-    mesh_incremental_float : float
-        Default = 1e-06.
+    mesh_incremental_float : float, optional
+        Default = 0.8.
         
     Returns
     -------

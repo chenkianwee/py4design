@@ -43,127 +43,802 @@
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_alldays_schedule">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_alldays_schedule</code><span class="sig-paren">(</span><em>name</em>, <em>sch_type_limits_name</em>, <em>start</em>, <em>end</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_alldays_schedule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the all day schedule information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the schedule.</p>
+</div></blockquote>
+<p><strong>sch_type_limits_name</strong> : str</p>
+<blockquote>
+<div><p>The name of schedule type limit to use.</p>
+</div></blockquote>
+<p><strong>start</strong> : str</p>
+<blockquote>
+<div><p>The starting time of the schedule, e.g. “09:00”.</p>
+</div></blockquote>
+<p><strong>end</strong> : str</p>
+<blockquote>
+<div><p>The ending time of the schedule, e.g. “17:00”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>all day schedule data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the all day schedule data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_building">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_building</code><span class="sig-paren">(</span><em>north</em>, <em>terrain</em>, <em>solar_dist</em>, <em>max_warmup_days</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_building" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the building information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>north</strong> :  str</p>
+<blockquote>
+<div><p>The north direction in degrees. If “0” it means the y-direction is north, if “90” x-direction is north.</p>
+</div></blockquote>
+<p><strong>terrain</strong> :  str</p>
+<blockquote>
+<div><p>The terrain of the simulation environment. e.g. “Urban”, “Suburbs”, “Country”, “City”, “Ocean”.</p>
+</div></blockquote>
+<p><strong>solar_dist</strong> :  str</p>
+<blockquote>
+<div><p>The solar distribuition setting. e.g. “FullExterior”, “MinimalShadowing”, “FullInteriorAndExterior”, “FullExteriorWithReflections”, “FullInteriorAndExteriorWithReflections”.</p>
+</div></blockquote>
+<p><strong>max_warmup_days</strong> :  str</p>
+<blockquote>
+<div><p>The maximum number of warmup days. At least “25”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the building data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_building_shade">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_building_shade</code><span class="sig-paren">(</span><em>name</em>, <em>transmittance</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_building_shade" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the all the surfaces of the surrounding context, e.g. shadings that are not attached to the buildings which includes trees and surrounding site
+into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>transmittance</strong> : str</p>
+<blockquote>
+<div><p>The transmittance value of the subsurface, only used for shading surfaces. If not provided energyplus will default to 0, means a totally opaque surface.</p>
+</div></blockquote>
+<p><strong>points</strong> : pyptlist</p>
+<blockquote>
+<div><p>List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building shade data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the building shade data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_ground_temp_bldg_srf">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_ground_temp_bldg_srf</code><span class="sig-paren">(</span><em>ground_temp</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_ground_temp_bldg_srf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the ground temperature information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ground_temp</strong> :  list of str</p>
+<blockquote>
+<div><p>The the ground temperature for each month. e.g. [“20”, “20”, “20”, “20”, “20”, “20”,”20”, “20”, “20”, “20”, “20”, “20”]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ground temperature data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the ground temperature data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_hvac_ideal_load_air_system">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_hvac_ideal_load_air_system</code><span class="sig-paren">(</span><em>zone_name</em>, <em>thermostat</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_hvac_ideal_load_air_system" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the ideal load hvac information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>zone_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the zone to apply the system to.</p>
+</div></blockquote>
+<p><strong>thermostat</strong> : str</p>
+<blockquote>
+<div><p>The name of the thermostat schedule.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ideal hvac data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the ideal hvac data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_hvacschedule">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_hvacschedule</code><span class="sig-paren">(</span><em>name</em>, <em>sch_type_limits_name</em>, <em>day_start_time</em>, <em>day_end_time</em>, <em>setpoint_day</em>, <em>setpoint_night</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_hvacschedule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the hvac schedule information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the schedule.</p>
+</div></blockquote>
+<p><strong>sch_type_limits_name</strong> : str</p>
+<blockquote>
+<div><p>The name of schedule type limit to use.</p>
+</div></blockquote>
+<p><strong>day_start_time</strong> : str</p>
+<blockquote>
+<div><p>The starting time of the cooling schedule, e.g. “09:00”.</p>
+</div></blockquote>
+<p><strong>day_end_time</strong> : str</p>
+<blockquote>
+<div><p>The ending time of the cooling schedule, e.g. “17:00”.</p>
+</div></blockquote>
+<p><strong>setpoint_day</strong> : str</p>
+<blockquote>
+<div><p>The set point temperature of the cooling, e.g. “25”.</p>
+</div></blockquote>
+<p><strong>setpoint_night</strong> : str</p>
+<blockquote>
+<div><p>The set point temperature of the cooling after end time, e.g. “50”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>hvac schedule data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the hvac schedule data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_internal_gains_other_equipment">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_internal_gains_other_equipment</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>watts_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_internal_gains_other_equipment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the other equipment internal gain information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>zone_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the zone to apply the system to.</p>
+</div></blockquote>
+<p><strong>schedule_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the internal gain schedule.</p>
+</div></blockquote>
+<p><strong>watts_per_m2</strong> : str</p>
+<blockquote>
+<div><p>The Watts per m2 of the equipment, e.g. “20”</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>internal gain data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the internal gain data data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_lights">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_lights</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>watts_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_lights" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the lights information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>zone_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the zone to apply the system to.</p>
+</div></blockquote>
+<p><strong>schedule_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the lighting schedule.</p>
+</div></blockquote>
+<p><strong>watts_per_m2</strong> : str</p>
+<blockquote>
+<div><p>The Watts per m2 of the lighting, e.g. “10”</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>lights data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the lights data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_output_control_table_style">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_control_table_style</code><span class="sig-paren">(</span><em>column_sep</em>, <em>unit_conversion</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_control_table_style" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the output control table style information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>column_sep</strong> : str</p>
+<blockquote>
+<div><p>The style of the table, e.g. “HTML”.</p>
+</div></blockquote>
+<p><strong>unit_conversion</strong> : str</p>
+<blockquote>
+<div><p>The unit conversion, e.g. JtoKWH.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>table style data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the table style data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_output_surfaces_drawing">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_surfaces_drawing</code><span class="sig-paren">(</span><em>drawing_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_surfaces_drawing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the output drawing information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>drawing_type</strong> :  str</p>
+<blockquote>
+<div><p>The 3D model of the simulated building, e.g. “DXF”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>output drawing  data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the output drawing data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_output_table_summary_reports">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_output_table_summary_reports</code><span class="sig-paren">(</span><em>report_types</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_output_table_summary_reports" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the output table summary information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>report_type</strong> :  str or list of str</p>
+<blockquote>
+<div><p>The reports to be outputted after the simulation, e.g. “AllSummary”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>table summary data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the table summary data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_outputmeter">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_outputmeter</code><span class="sig-paren">(</span><em>variable_name</em>, <em>report_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_outputmeter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the output meter information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>variable_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the variable.</p>
+</div></blockquote>
+<p><strong>report_frequency</strong> : str</p>
+<blockquote>
+<div><p>The report frequency of the variable, e.g. “Hourly”, “Monthly”, “Daily”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>output meter data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the output meter data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_outputvar">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_outputvar</code><span class="sig-paren">(</span><em>variable_name</em>, <em>report_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_outputvar" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the output variable information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>variable_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the variable.</p>
+</div></blockquote>
+<p><strong>report_frequency</strong> : str</p>
+<blockquote>
+<div><p>The report frequency of the variable, e.g. “Hourly”, “Monthly”, “Daily”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>output variable data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the output variable data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_people">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_people</code><span class="sig-paren">(</span><em>zone_name</em>, <em>schedule_name</em>, <em>people_per_m2</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_people" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the occupancy information into energyplus readable string. In PROGRESS …</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_runperiod">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_runperiod</code><span class="sig-paren">(</span><em>start_month</em>, <em>start_day</em>, <em>end_month</em>, <em>end_day</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_runperiod" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the run period information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start_month</strong> : str</p>
+<blockquote>
+<div><p>The starting month of the energyplus simulation.</p>
+</div></blockquote>
+<p><strong>start_day</strong> : str</p>
+<blockquote>
+<div><p>The starting day of the starting month of the energyplus simulation.</p>
+</div></blockquote>
+<p><strong>end_month</strong> : str</p>
+<blockquote>
+<div><p>The end month of the energyplus simulation.</p>
+</div></blockquote>
+<p><strong>end_day</strong> : str</p>
+<blockquote>
+<div><p>The end day of the end month of the energyplus simulation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>run period data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the run period data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_schedule_type_limits">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_schedule_type_limits</code><span class="sig-paren">(</span><em>name</em>, <em>lower_limit</em>, <em>upper_limit</em>, <em>numeric_type</em>, <em>unit_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_schedule_type_limits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the schedule type limit information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the schedule type limit.</p>
+</div></blockquote>
+<p><strong>lower_limit</strong> : str</p>
+<blockquote>
+<div><p>The lower limit of the schedule.</p>
+</div></blockquote>
+<p><strong>upper_limit</strong> : str</p>
+<blockquote>
+<div><p>The upper limit of the schedule.</p>
+</div></blockquote>
+<p><strong>numeric_type</strong> : str</p>
+<blockquote>
+<div><p>The numeric type of the schedule, e.g. “Continuous” or “Discrete” .</p>
+</div></blockquote>
+<p><strong>unit_type</strong> : str</p>
+<blockquote>
+<div><p>The unit type of the schedule, e.g. “Dimensionless”, “Temperature”, “ActivityLevel” etc.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>schedule type limit data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the schedule type limit data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_shadingoverhang">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_shadingoverhang</code><span class="sig-paren">(</span><em>name</em>, <em>window_name</em>, <em>height_above_window</em>, <em>tilt_angle</em>, <em>left_extension</em>, <em>right_extension</em>, <em>depth</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_shadingoverhang" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the shading overhang information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>window_name</strong> : str</p>
+<blockquote>
+<div><p>The window name the overhang belongs to.</p>
+</div></blockquote>
+<p><strong>height_above_window</strong> : str</p>
+<blockquote>
+<div><p>The height of the overhang above the window in metres.</p>
+</div></blockquote>
+<p><strong>tilt_angle</strong> : str</p>
+<blockquote>
+<div><p>The tilt angle of the overhang in degree.</p>
+</div></blockquote>
+<p><strong>left_extension</strong> : str</p>
+<blockquote>
+<div><p>The left extension of the overhang in metres.</p>
+</div></blockquote>
+<p><strong>right_extension</strong> : str</p>
+<blockquote>
+<div><p>The right extension of the overhang in metres.</p>
+</div></blockquote>
+<p><strong>depth</strong> : str</p>
+<blockquote>
+<div><p>The depthof the overhang in metres.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>overhang shade data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the overhang shade data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_shadow_calc">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_shadow_calc</code><span class="sig-paren">(</span><em>calc_frequency</em>, <em>max_figures</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_shadow_calc" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the shadow calculation information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>calc_frequency</strong> : str</p>
+<blockquote>
+<div><p>The calculation frequency, e.g. “20”.</p>
+</div></blockquote>
+<p><strong>max_figures</strong> : str</p>
+<blockquote>
+<div><p>The max figures. e.g. “100000”</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>shadow calculation data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the shadow calculation data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_surface">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_surface</code><span class="sig-paren">(</span><em>name</em>, <em>type</em>, <em>construction</em>, <em>zone</em>, <em>boundary</em>, <em>boundary_object</em>, <em>sun_exp</em>, <em>wind_exp</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_surface" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the surface information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>type</strong> : str</p>
+<blockquote>
+<div><p>The type of the surface, options: “Floor”, “Wall”, “Ceiling”, “Roof” .</p>
+</div></blockquote>
+<p><strong>construction</strong> : str</p>
+<blockquote>
+<div><p>The name of the construction. The construction must be in the base.idf file. e.g. “Medium Roof/Ceiling”</p>
+</div></blockquote>
+<p><strong>zone</strong> : str</p>
+<blockquote>
+<div><p>The name of the zone the surface belongs to.</p>
+</div></blockquote>
+<p><strong>boundary</strong> : str</p>
+<blockquote>
+<div><p>The boundary condition of the surface, options: “Outdoors”, “Adiabatic”, “Ground” or the name of the surface it is adjacent to.</p>
+</div></blockquote>
+<p><strong>boundary_object</strong> : str</p>
+<blockquote>
+<div><p>The object the surface is adjacent to. If boundary is “Outdoors” or “Ground” give an empty string, if “Adiabatic” give its own name, else give the name of the surface
+it is adjacent to.</p>
+</div></blockquote>
+<p><strong>sun_exp</strong> : str</p>
+<blockquote>
+<div><p>Describes if the surface is exposed to sun. Gives either “SunExposed” or “NoSun”.</p>
+</div></blockquote>
+<p><strong>win_exp</strong> : str</p>
+<blockquote>
+<div><p>Describes if the surface is exposed to wind. Gives either “WindExposed” or “NoWind”.</p>
+</div></blockquote>
+<p><strong>points</strong> : pyptlist</p>
+<blockquote>
+<div><p>List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>surface data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the surface data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_thermostat">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_thermostat</code><span class="sig-paren">(</span><em>name</em>, <em>heat_sch</em>, <em>cool_sch</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_thermostat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the thermostat information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the thermostat.</p>
+</div></blockquote>
+<p><strong>heat_sch</strong> : str</p>
+<blockquote>
+<div><p>The name of heating schedule to use.</p>
+</div></blockquote>
+<p><strong>cool_sch</strong> : str</p>
+<blockquote>
+<div><p>The name of cooling schedule to use.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>thermostat data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the thermostat data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_time_step">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_time_step</code><span class="sig-paren">(</span><em>time_step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_time_step" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the time step information into energyplus readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>time_step</strong> : str</p>
+<blockquote>
+<div><p>The time step of the simulation in minutes.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>time step data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the time step data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_version">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_version</code><span class="sig-paren">(</span><em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_version" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the energyplus version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>version</strong> : str</p>
+<blockquote>
+<div><p>The energyplus version, e.g. “EnergyPlusV8-7-0”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>version data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the version data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_window">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_window</code><span class="sig-paren">(</span><em>name</em>, <em>construction</em>, <em>surface</em>, <em>shading</em>, <em>frame</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_window" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the window information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>construction</strong> : str</p>
+<blockquote>
+<div><p>The name of the construction. The construction must be in the base.idf file.</p>
+</div></blockquote>
+<p><strong>surface</strong> : str</p>
+<blockquote>
+<div><p>The name of the host surface. e.g. “wall1”.</p>
+</div></blockquote>
+<p><strong>shading</strong> : str</p>
+<blockquote>
+<div><p>The name of the shading surface that belongs to the window. if none just give an empty string “”.</p>
+</div></blockquote>
+<p><strong>frame</strong> : str</p>
+<blockquote>
+<div><p>The name of the frame that belongs to the window. if none just give an empty string “”.</p>
+</div></blockquote>
+<p><strong>points</strong> : pyptlist</p>
+<blockquote>
+<div><p>List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>window data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the window data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_zone">
 <code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_zone</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_zone" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function writes all the zone information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the zone.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>zone data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the zone data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.py2energyplus.idf_writer.write_zone_shade">
-<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_zone_shade</code><span class="sig-paren">(</span><em>name</em>, <em>base_surface</em>, <em>transmittance</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_zone_shade" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">pyliburo.py2energyplus.idf_writer.</code><code class="descname">write_zone_shade</code><span class="sig-paren">(</span><em>name</em>, <em>host_surface</em>, <em>transmittance</em>, <em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2energyplus.idf_writer.write_zone_shade" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes all the zone shade information into energyplus readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the shade.</p>
+</div></blockquote>
+<p><strong>host_surface</strong> : str</p>
+<blockquote>
+<div><p>The name of the host surface. e.g. “wall1”.</p>
+</div></blockquote>
+<p><strong>transmittance</strong> : str</p>
+<blockquote>
+<div><p>The transmittance value of the subsurface. If not provided, an empty string “” is given,  energyplus will default to 0, means a totally opaque surface.</p>
+</div></blockquote>
+<p><strong>points</strong> : pyptlist</p>
+<blockquote>
+<div><p>List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>shade data</strong> : str</p>
+<blockquote class="last">
+<div><p>The idf string of the shade data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

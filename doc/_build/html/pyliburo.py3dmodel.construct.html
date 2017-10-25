@@ -52,7 +52,7 @@
 <blockquote>
 <div><p>The list of OCCedges for creating the list of OCCwires.</p>
 </div></blockquote>
-<p><strong>isclosed</strong> : bool</p>
+<p><strong>isclosed</strong> : bool, optional</p>
 <blockquote>
 <div><p>True or False, is the resultant wires suppose to be closed or opened.</p>
 </div></blockquote>
@@ -175,12 +175,12 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <div><p>The OCCtopology to be cut.
 OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
-<p><strong>roundndigit</strong> : int</p>
+<p><strong>roundndigit</strong> : int, optional</p>
 <blockquote>
 <div><p>The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
 Depending on the precision of the points, it will decide whether the edges are connected.</p>
 </div></blockquote>
-<p><strong>distance</strong> : float</p>
+<p><strong>distance</strong> : float, optional</p>
 <blockquote>
 <div><p>The smallest distance between two points from the edges, Default = 0.01. 
 The further the distance the less precise is the resultant faces.</p>
@@ -239,7 +239,7 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <div><p>The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
 thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The minimal surface area of each triangulated face, Default = 1e-06.. Any faces smaller than the tolerance will be deleted.</p>
 </div></blockquote>
@@ -357,12 +357,12 @@ It does not work with a group of open edges. wire_frm_loose_edges2 are for more 
 <blockquote>
 <div><p>The list of OCCedges for creating the list of OCCfaces.</p>
 </div></blockquote>
-<p><strong>roundndigit</strong> : int</p>
+<p><strong>roundndigit</strong> : int, optional</p>
 <blockquote>
 <div><p>The number of decimal places of the xyz of the points, Default = 6. The higher the number the more precise are the points.
 Depending on the precision of the points, it will decide whether the edges are connected.</p>
 </div></blockquote>
-<p><strong>distance</strong> : float</p>
+<p><strong>distance</strong> : float, optional</p>
 <blockquote>
 <div><p>The smallest distance between two points from the edges, Default = 0.01. 
 The further the distance the less precise is the resultant faces.</p>
@@ -484,11 +484,11 @@ The further the distance the less precise is the resultant faces.</p>
 <div><p>List of points for constructing the edge. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
 thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 </div></blockquote>
-<p><strong>mindegree</strong> : int</p>
+<p><strong>mindegree</strong> : int, optional</p>
 <blockquote>
 <div><p>The minimun degree of the bspline curve. Default = 3.</p>
 </div></blockquote>
-<p><strong>maxdegree</strong> : int</p>
+<p><strong>maxdegree</strong> : int, optional</p>
 <blockquote>
 <div><p>The maximum degree of the bspline curve. Default = 8.</p>
 </div></blockquote>
@@ -759,13 +759,13 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <blockquote>
 <div><p>List of OCCfaces for the loft.</p>
 </div></blockquote>
-<p><strong>rule_face</strong> : bool</p>
+<p><strong>rule_face</strong> : bool, optional</p>
 <blockquote>
-<div><p>True or Force. Specify if the loft is a ruled face.</p>
+<div><p>True or False, Default = True. Specify if the loft is a ruled face.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
-<div><p>Specify the tolerance of the loft.</p>
+<div><p>Specify the tolerance of the loft, Default = 1e-06.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1204,7 +1204,7 @@ connected faces and merged them into a single face.</p>
 <blockquote>
 <div><p>List of OCCfaces that will be looped through in search of all possible connected faces.</p>
 </div></blockquote>
-<p><strong>tolerance</strong> : float</p>
+<p><strong>tolerance</strong> : float, optional</p>
 <blockquote>
 <div><p>The minimal tolerance to decide if two faces are connected, Default = 1e-06.</p>
 </div></blockquote>
@@ -1233,6 +1233,10 @@ shells that can be created from the faces.</p>
 <blockquote>
 <div><p>List of OCCfaces that will be looped through in search of all possible shells.</p>
 </div></blockquote>
+<p><strong>tolerance</strong> : float, optional</p>
+<blockquote>
+<div><p>Specify the tolerance of the sewing, Default = 1e-06.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of shell</strong> : list of OCCshells</p>
@@ -1258,9 +1262,9 @@ shells that can be created from the faces.</p>
 <div><p>The OCCtopology to be meshed.
 OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
 </div></blockquote>
-<p><strong>mesh_incremental_float</strong> : float</p>
+<p><strong>mesh_incremental_float</strong> : float, optional</p>
 <blockquote>
-<div><p>Default = 1e-06.</p>
+<div><p>Default = 0.8.</p>
 </div></blockquote>
 </td>
 </tr>

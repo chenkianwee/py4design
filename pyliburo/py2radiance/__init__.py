@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 #   Authors: Patrick Janssen <patrick@janssen.name>
 #           Chen Kian Wee <chenkianwee@gmail.com>
@@ -29,7 +29,144 @@ import shutil
 import write_rad
 
 class Rad(object):
+    """
+    An object that contains all the neccessary information for running a Radiance/Daysim simulation.
+    
+    Parameters
+    ----------
+    base_file_path :  str
+        The file path of the base.rad file. The base.rad file documents all the basic information of the simulation e.g. materials, constructions ... It is distributed together with py2radiance.
+        
+    data_folder_path :  str
+        The directory to write all the results file to.
+
+    Attributes
+    ----------
+    base_file_path :  str
+        The file path of the base.rad file.
+    
+    data_folder_path :  str
+        The directory to write all the results file to.
+        
+    command_file: str
+        The file path of the command.txt. The command file documents all the executed Radiance/Daysim commands.
+    
+    surfaces: list of Surface class instances
+        The list of surfaces that will be analysed by Radiance/Daysim.
+        
+    sensor_positions: pyptlist
+        List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+    sensor_normals: pyveclist
+        List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a 
+        direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    sensor_file_path :  str
+        The file path of the sensor file.
+        
+    rad_file_path :  str
+        The file path of the rad file.
+        
+    sky_file_path :  str
+        The file path of the sky file.
+        
+    oconv_file_path :  str
+        The file path of the oconv file.
+        
+    cumulative_sky_file_path :  str
+        The file path of the cumulative sky file.
+        
+    cumulative_oconv_file_path :  str
+        The file path of the cumulative sky oconv file.
+        
+    result_file :  str
+        The file path of the result file.
+        
+    cumulative_result_file_path :  str
+        The file path of the cumulative result file.
+        
+    daysimdir_ies :  str
+        The daysim ies directory path.
+        
+    daysimdir_pts :  str
+        The daysim points directory path.
+        
+    daysimdir_rad :  str
+        The daysim rad directory path.
+        
+    daysimdir_res :  str
+        The daysim res directory path.
+        
+    daysimdir_tmp :  str
+        The daysim tmp directory path.
+        
+    daysimdir_wea :  str
+        The daysim wea directory path.
+        
+    hea_file :  str
+        The file path of the hea header daysim file.
+        
+    hea_filename :  str
+        The name of the hea header daysim file.
+        
+    sunuphrs :  int
+        The number of daylight hours in the weather file.
+        
+    Examples
+    --------
+    #initialise the rad class
+        >>> rad = Rad("C:\\base.rad", "C:\\rad_results")
+    #append surfaces for the simulation
+        >>> RadSurface("srfname1", [(0,0,0), (0,1,0), (1,1,0), (0,1,0)], "srfmat", rad)
+    #set sensor points
+        >>> rad.set_sensor_points([(0,0.2,0), (0,0.5,0)],[(0,0,1), (0,0,1)] )
+    #set the sky
+        >>> rad.set_sky( "!gensky 1 31 15 -c -a 1.3 -o -103.9 -m -120", (1,1,1), (0.2.0.2.0.2))
+        >>> rad.execute_oconv()
+        >>> dict_parm = {"ab": 2, "aa": 0.15, "ar": 128, "ad": 512, "as":256}
+        >>> rad.execute_rtrace(dict_parm)
+    #evaluate the result
+        >>> rad.eval_rad()
+    #for rpict rvu and falsecolor
+        >>> vp = (0,0,0)
+        >>> vd = (1,0,0)
+        >>> rad.execute_rvu(vp, vd, dict_parm)
+        >>> rad.execute_rpict("pict1", "640", "480", vp, vd, dict_parm)
+        >>> rad.execute_falsecolor("C:\\i_pict.tif", "C:\\l_pict.tif", "falsecolor_pict", "1000", "10", illuminance = True)
+    #FOR GENCUMULATIVE SKY MODULE
+        >>> rad = Rad("C:\\base.rad", "C:\\rad_results")
+        >>> RadSurface("srfname1", [(0,0,0), (0,1,0), (1,1,0), (0,1,0)], "srfmat", rad)
+        >>> rad.set_sensor_points([(0,0.2,0), (0,0.5,0)],[(0,0,1), (0,0,1)] )
+    #the gencumulative sky
+        >>> rad.execute_cumulative_oconv("7 19", "1 1 12 31", "c:\\weatherfile.epw", output = "irradiance")
+        >>> rad.execute_cumulative_rtrace("2")
+    #FOR DAYSIM MODULE
+        >>> rad = Rad("C:\\base.rad", "C:\\rad_results")
+        >>> RadSurface("srfname1", [(0,0,0), (0,1,0), (1,1,0), (0,1,0)], "srfmat", rad)
+    #for daysim you need to create the sensor files
+        >>> rad.set_sensor_points([(0,0.2,0), (0,0.5,0)],[(0,0,1), (0,0,1)] )
+        >>> rad.create_sensor_input_file()
+    #initialise the daysim module
+        >>> rad.initialise_daysim("c:\\daysim_dir")
+    #convert the epw to wea
+        >>> rad.execute_epw2wea(weatherfilepath)
+    #convert the rad files to daysim files
+        >>> rad.create_rad_input_file()
+        >>> rad.execute_radfiles2daysim()
+    #write the default radiance parameters
+        >>> rad.write_default_radiance_parameters()
+    #execute the gen_dc and ds_illum
+        >>> rad.execute_gen_dc("w/m2")
+        >>> rad.execute_ds_illum()
+    #evaluate the result
+        >>> res_dict = rad.eval_ill().
+            
+    """
     def __init__(self, base_file_path, data_folder_path):
+        """
+        This function initialises the Rad class.
+        """
         #paths
         self.base_file_path = base_file_path
         self.data_folder_path = data_folder_path
@@ -64,15 +201,26 @@ class Rad(object):
         self.sunuphrs = None
         
     def set_sensor_points(self, sensor_positions,sensor_normals):
+        """
+        This function sets the sensor points and their normals for the Radiance/Daysim simulation.
+     
+        Parameters
+        ----------
+        sensor_positions: pyptlist
+            List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+            pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+        sensor_normals: pyveclist
+            List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a 
+            direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        """
         self.sensor_positions = sensor_positions
         self.sensor_normals = sensor_normals
         
-    def set_sky(self, gensky_command, sky_colour, ground_colour):
-        self.gensky_command = gensky_command
-        self.sky_colour = sky_colour
-        self.ground_colour = ground_colour
-        
     def create_sensor_input_file(self):
+        """
+        This function creates the sensor file. It requires the set_sensor_points() function to be executed prior to this function.
+        """
         sensor_file_path = os.path.join(self.data_folder_path, "sensor_points.pts")
         sensor_file = open(sensor_file_path,  "w")
         sensor_pts_data = write_rad.sensor_file(self.sensor_positions, self.sensor_normals)
@@ -80,7 +228,48 @@ class Rad(object):
         sensor_file.close()
         self.sensor_file_path = sensor_file_path
         
+    def set_sky(self, gensky_command, sky_colour, ground_colour):
+        """
+        This function sets the gensky command and parameters.
+     
+        Parameters
+        ----------
+        gensky_command: str
+            The gensky command, e.g. "!gensky 1 31 15 -c -a 1.3 -o -103.9 -m -120". The command is constructing a sky model for:
+            Jan 31st at 15hr cloudy sky (-c) at latitude 1.3 and longitude -103.9 (to the east)  and standard meridian -120 (to the east). 
+            The different sky models are -s sunny without sun, +s sunny with sun, -c cloudy sky, -i intermediate sky without sun,  
+            +i intermediate with sun, -u uniform cloudy sky.
+            For more information visit: https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/gensky.pdf/view 
+    
+        sky_colour: tuple of floats
+            A tuple of floats describing the sky colour. e.g. (1,1,1) for a white sky.
+            
+        ground_colour: tuple of floats
+            A tuple of floats describing the ground colour. e.g. (0.2,0.2,0.2) for a grey ground.
+        """
+        self.gensky_command = gensky_command
+        self.sky_colour = sky_colour
+        self.ground_colour = ground_colour
+        
+    def create_sky_input_file(self):
+        """
+        This function creates the sky file. It requires the set_sky() function to be executed prior to this function.
+        """
+        sky_file_path = os.path.join(self.data_folder_path, "sky.rad")
+        sky_file = open(sky_file_path,  "w")
+        sky_glow = write_rad.glow("sky_glow", self.sky_colour)
+        grd_glow = write_rad.glow("ground_glow", self.ground_colour)
+        sky_source = write_rad.source("sky", "sky_glow", (0,0,1))
+        grd_source = write_rad.source("ground", "ground_glow", (0,0,-1))
+        sky_data = self.gensky_command + "\n\n" + sky_glow + "\n\n" + grd_glow + "\n\n" + sky_source + "\n\n" + grd_source
+        sky_file.write(sky_data)
+        sky_file.close()
+        self.sky_file_path = sky_file_path
+        
     def create_rad_input_file(self):
+        """
+        This function creates the geometry rad file. It requires self.surfaces to be populated.
+        """
         rad_file_path = os.path.join(self.data_folder_path, "geometry.rad")
         rad_building_data = []
         rad_file = open(rad_file_path,  "w")
@@ -93,22 +282,359 @@ class Rad(object):
         rad_file.close()
         self.rad_file_path = rad_file_path 
 
-    def create_sky_input_file(self):
-        sky_file_path = os.path.join(self.data_folder_path, "sky.rad")
-        sky_file = open(sky_file_path,  "w")
-        sky_glow = write_rad.glow("sky_glow", self.sky_colour)
-        grd_glow = write_rad.glow("ground_glow", self.ground_colour)
-        sky_source = write_rad.source("sky", "sky_glow", (0,0,1))
-        grd_source = write_rad.source("ground", "ground_glow", (0,0,-1))
-        sky_data = self.gensky_command + "\n\n" + sky_glow + "\n\n" + grd_glow + "\n\n" + sky_source + "\n\n" + grd_source
-        sky_file.write(sky_data)
-        sky_file.close()
-        self.sky_file_path = sky_file_path
+    def execute_oconv(self): 
+        """
+        This function creates the geometry oconv file. It requires set_sky() to be executed prior and self.surfaces to be populated.
+        """
+        self.create_sky_input_file()
+        self.create_rad_input_file() #what about interior??
+        oconv_file_path = os.path.join(self.data_folder_path, "input.oconv")
+        command = "oconv " + self.sky_file_path + " " + self.base_file_path + " "\
+                .rad_file_path +\
+                " " + ">" + " " + oconv_file_path
+        #process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #result = process.communicate()
+        #print result
+        f = open(self.command_file, "a")
+        f.write(command)
+        f.write("\n")
+        f.close()
+        os.system(command) #EXECUTE!!
+        self.oconv_file_path = oconv_file_path 
+    
+    def execute_rtrace(self, dict_parm):
+        """
+        This function executes the rtrace Radiance program and simulates the Irradiance. It requires the execute _oconv() to be executed prior.
+     
+        Parameters
+        ----------
+        dict_parm: dictionary
+            The dictionary needs to have the following keys and values: e.g. {"ab": 2, "aa": 0.15, "ar": 128, "ad": 512, "as":256}. The 
+            parameters specify the parameters for the ray-tracing simulation. For more information visit:
+            https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view. 
+        """
+        
+        if self.oconv_file_path == None:
+            raise Exception
+        #execute rtrace 
+        self.create_sensor_input_file()
+        result_file_path = os.path.join(self.data_folder_path, "results.txt")
+        command = "rtrace -h -w -I+ -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+        " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+        " " + self.oconv_file_path + " " + " < " + self.sensor_file_path +\
+        " " + " > " + " " + result_file_path
+        
+        f = open(self.command_file, "a")
+        f.write(command)
+        f.write("\n")
+        f.close()
+        #os.system(command)#EXECUTE!!
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        result = process.communicate()
+        print result
+        self.result_file_path = result_file_path 
+        
+    def execute_rvu(self, vp, vd, dict_parm):
+        """
+        This function executes the rvu Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.
+     
+        Parameters
+        ----------
+        vp: str
+            The focal point of a perspective view or the center of a parallel projection. e.g. "0 0 0"
+            
+        vd: str
+             the view direction vector. The length of this vector indicates the focal distance. e.g. "1 0 0"
+            
+        dict_parm: dictionary
+            The dictionary needs to have the following keys and values: e.g. {"ab": 2, "aa": 0.15, "ar": 128, "ad": 512, "as":256}. The 
+            parameters specify the parameters for the ray-tracing simulation. For more information visit:
+            https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view. 
+        """
+        if self.oconv_file_path == None:
+            raise Exception
+        #execute rvu
+        operating_sys = os.name
+        if operating_sys == "posix":
+            command = "rvu -vp " + vp + " -vd " + vd +\
+            " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+            " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
+        elif operating_sys == "nt":
+            command = "rvu -vp " + vp + " -vd " + vd +\
+            " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+            " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
+            
+        f = open(self.command_file, "a")
+        f.write(command)
+        f.write("\n")
+        f.close()
+        os.system(command)#EXECUTE!!
+         
+    def execute_rpict(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
+        """
+        This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.
+     
+        Parameters
+        ----------
+        filename: str
+            The name of generated tif picture. e.g. "pict1". The picture will be saved to the data_folder_path. The tif file is a 
+            will have an angular fisheye distortion.
+            
+        x_resolution: str
+            The x-resolution of the generated tif picture. e.g. "640".
+            
+        y_resolution: str
+            The y-resolution of the generated tif picture. e.g. "480".
+            
+        vp: str
+            The focal point of a perspective view or the center of a parallel projection. e.g. "0 0 0".
+            
+        vd: str
+             the view direction vector. The length of this vector indicates the focal distance. e.g. "1 0 0".
+            
+        dict_parm: dictionary
+            The dictionary needs to have the following keys and values: e.g. {"ab": 2, "aa": 0.15, "ar": 128, "ad": 512, "as":256}. The 
+            parameters specify the parameters for the ray-tracing simulation. For more information visit:
+            https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view. 
+        """
+        if self.oconv_file_path == None:
+            raise Exception("oconv file is missing")
+        #execute rpict
+        image_folder_path = os.path.join(self.data_folder_path,"images")
+        if not os.path.isdir(image_folder_path):
+            os.mkdir(image_folder_path)
+        image_file_path = os.path.join(image_folder_path, filename)
+        
+        command1 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " + vp +\
+            " -vd " + vd +\
+            " -vh 200 -vv 100 -vta" + \
+            " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+            " -i " + self.oconv_file_path + " > " + image_file_path + "out_i.hdr" 
+          
+        command2 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " +\
+            vp + " -vd " + vd +\
+            " -vh 200 -vv 100 -vta" + \
+            " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+            " " + self.oconv_file_path + " > " + image_file_path + "out.hdr"
+          
+        command3 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out_i.hdr" + " > " +\
+            image_file_path + "out_i_filt.hdr"
+        command4 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
+            image_file_path + "out_filt.hdr"
+		
+        command5 = "ra_tiff " + image_file_path + "out.hdr" + " " + image_file_path + "out.tif"
+        command6 = "ra_tiff " + image_file_path + "out_i.hdr" + " " + image_file_path + "out_i.tif"
+        command7 = "ra_tiff " + image_file_path + "out_filt.hdr" + " " + image_file_path + "out_filt.tif"    
+        command8 = "ra_tiff " + image_file_path + "out_i_filt.hdr" + " " + image_file_path + "out_i_filt.tif"
+        
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.write(command2)
+        f.write("\n")
+        f.write(command3)
+        f.write("\n")
+        f.write(command4)
+        f.write("\n")
+        f.write(command5)
+        f.write("\n")
+        f.write(command6)
+        f.write("\n")
+        f.write(command7)
+        f.write("\n")
+        f.write(command8)
+        f.write("\n")
+        os.system(command1)#EXECUTE!!
+        os.system(command2)#EXECUTE!!
+        os.system(command3)#EXECUTE!!
+        os.system(command4)#EXECUTE!!
+        os.system(command5)#EXECUTE!!
+        os.system(command6)#EXECUTE!!
+        os.system(command7)#EXECUTE!!
+        os.system(command8)#EXECUTE!!
+        
+    def execute_falsecolour(self,i_basefile_path, l_basefile_path, filename, range_max, 
+                            range_division, illuminance = True):
+        """
+        This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.
+     
+        Parameters
+        ----------
+        i_basefile_path : str
+            The path of the illuminance tif picture. This tif picture can be generated using the execute_rpict)() function.
+        
+        l_basefile_path : str
+            The path of the luminance tif picture. This tif picture can be generated using the execute_rpict)() function.
+            
+        filename : str
+            The name of generated tif picture. e.g. "pict1". The picture will be saved to the data_folder_path. The tif file is a 
+            will have an angular fisheye distortion.
+            
+        range_max : str
+            The maximum value of the falsecolour. e.g. "1200".
+            
+        range_division : str
+            The division of the falsecolour. e.g. "10".
+            
+        illuminance : bool
+            True or False. If True will generate a falsecolour image of the illuminance value. If False will generate a falsecolour image
+            of the luminance value.
+        
+        """
+        image_folder_path = os.path.join(self.data_folder_path, "images")
+        if not os.path.isdir(image_folder_path):
+            os.mkdir(image_folder_path)
+        i_base_image_path = i_basefile_path
+        l_base_image_path = l_basefile_path
+        falsecolour_folder_path = os.path.join(image_folder_path, "falsecolour")
+        if not os.path.isdir(falsecolour_folder_path):
+            os.mkdir(falsecolour_folder_path)
+        falsecolour_file_path = os.path.join(falsecolour_folder_path, filename)
+        if illuminance == True:
+            #command = "falsecolor -i " + i_base_image_path + " -p " +\
+             #l_base_image_path + " -n " + range_division + " -s " + range_max +\
+             #" -l lux > " + falsecolour_file_path + "_illum.hdr"
+            
+            command = "falsecolor2 -i " + i_base_image_path + " -p " +\
+                l_base_image_path + " -cl -n " + range_division + " -s " + range_max +\
+                " -l lux > " + falsecolour_file_path + "_illum.hdr"
+            
+            command2 = "ra_tiff " + falsecolour_file_path + "_illum.hdr" + " " + falsecolour_file_path + "illum.tif"
 
+        else:
+            command = "falsecolor2 -ip " + l_base_image_path +\
+             " -n " + range_division + " -s " + range_max +\
+             " -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
+
+            #command = "falsecolor2 -ip " + l_base_image_path +\
+             #" -cl -n " + range_division + " -s " + range_max +\
+             #" -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
+            
+            command2 = "ra_tiff " + falsecolour_file_path + "_luminance.hdr" + " " + falsecolour_file_path + "luminance.tif"
+
+            
+        f = open(self.command_file, "a")
+        f.write(command)
+        f.write("\n")
+        f.write(command2)
+        f.write("\n")
+        f.close()
+        os.system(command)#EXECUTE!!
+        os.system(command2)#EXECUTE!!
+
+    def render(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
+        """
+        This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.
+        The difference between render() and execute_rpict() is that this function do not produce illuminance and luminance tif.
+     
+        Parameters
+        ----------
+        filename: str
+            The name of generated tif picture. e.g. "pict1". The picture will be saved to the data_folder_path. The tif file is a 
+            will have an angular fisheye distortion.
+            
+        x_resolution: str
+            The x-resolution of the generated tif picture. e.g. "640".
+            
+        y_resolution: str
+            The y-resolution of the generated tif picture. e.g. "480".
+            
+        vp: str
+            The focal point of a perspective view or the center of a parallel projection. e.g. "0 0 0".
+            
+        vd: str
+             the view direction vector. The length of this vector indicates the focal distance. e.g. "1 0 0".
+            
+        dict_parm: dictionary
+            The dictionary needs to have the following keys and values: e.g. {"ab": 2, "aa": 0.15, "ar": 128, "ad": 512, "as":256}. The 
+            parameters specify the parameters for the ray-tracing simulation. For more information visit:
+            https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view. 
+        """
+        
+        if self.oconv_file_path == None:
+            raise Exception("oconv file is missing")
+        #execute rpict
+        image_folder_path = os.path.join(self.data_folder_path,"render")
+        if not os.path.isdir(image_folder_path):
+            os.mkdir(image_folder_path)
+        image_file_path = os.path.join(image_folder_path, filename)
+          
+        command1 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " +\
+         vp + " -vd " + vd +\
+         " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
+        " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
+         " " + self.oconv_file_path + " > " + image_file_path + "out.hdr"
+         
+        command2 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
+         image_file_path + "out_filt.hdr"
+
+        command3 = "ra_tiff " + image_file_path + "out_filt.hdr" + " " + image_file_path + "out_filt.tif"
+
+        f = open(self.command_file, "a")
+        f.write(command1)
+        f.write("\n")
+        f.write(command2)
+        f.write("\n")
+        f.write(command3)
+        f.write("\n")
+        f.close()
+        os.system(command1)#EXECUTE!!  
+        os.system(command2)#EXECUTE!!  
+        os.system(command3)#EXECUTE!!   
+        
+    def eval_rad(self):
+        """
+        This function reads the result file from the simulation and returns the results as a list.
+        
+        Returns
+        ------
+        irradiance: list of floats
+            List of irradiance results (Wh/m2) that corresponds to the sensor points.
+            
+        illuminance: list of floats
+            List of illuminance in (lux) results that corresponds to the sensor points.
+        """
+        
+        if self.result_file_path == None:
+            raise Exception
+        results = open(self.result_file_path, "r")
+        irradiance_list = []        
+        illuminance_list = []
+        for result in results:
+            words  = result.split()
+            numbers = map(float, words)
+            #IRRADIANCE RESULTS 
+            irradiance = round((0.265 * numbers[0]) + (0.670 * numbers[1]) + (0.065 * numbers[2]), 1)
+            irradiance_list.append(irradiance)
+            #ILLUMINANCE RESULTS            
+            illuminance = irradiance * 179
+            illuminance_list.append(illuminance)
+        return irradiance_list, illuminance_list
     #=============================================================================================
-        #FOR GENCUMULATIVE SKY MODULE // START //
+    #FOR GENCUMULATIVE SKY MODULE // START //
     #=============================================================================================
     def create_cumulative_sky_input_file(self, time, date, weatherfile_path, output = "irradiance"):
+        """
+        This function sets the gencummulative sky command and parameters.
+     
+        Parameters
+        ----------
+        time: str
+            The time duration of the simulation e.g. "7 19". This means the simulation will run from 7am to 7pm.
+            
+        date: str
+            The dates of the simulation e.g. "1 1 12 31". This means the simulation will run from Jan 1st to Dec 31st.
+            
+        weatherfile_path: str
+            The file path of the weather file.
+            
+        output: str, optional
+            The units of the results, "irradiance" (Wh/m2) or "illuminance" (lux), Default = "irradiance".
+        """
         #execute epw2wea 
         head,tail = ntpath.split(weatherfile_path)
         wfilename_no_extension = tail.replace(".epw", "")
@@ -154,9 +680,23 @@ class Rad(object):
         self.cumulative_sky_file_path = cumulative_sky_file_path
 
     def execute_cumulative_oconv(self, time, date, weatherfile_path, output = "irradiance"): 
-        '''
-        time format = 0 24, date format = 1 1 12 31 (all in string)
-        '''
+        """
+        This function executes the gencummulative oconv command and parameters.
+     
+        Parameters
+        ----------
+        time: str
+            The time duration of the simulation e.g. "7 19". This means the simulation will run from 7am to 7pm.
+            
+        date: str
+            The dates of the simulation e.g. "1 1 12 31". This means the simulation will run from Jan 1st to Dec 31st.
+            
+        weatherfile_path: str
+            The file path of the weather file.
+            
+        output: str, optional
+            The units of the results, "irradiance" (Wh/m2) or "illuminance" (lux), Default = "irradiance".
+        """
         if output == "irradiance":
             self.create_cumulative_sky_input_file(time, date, weatherfile_path)
         if output == "illuminance":
@@ -181,6 +721,14 @@ class Rad(object):
         self.cumulative_oconv_file_path = cumulative_oconv_file_path
 
     def execute_cumulative_rtrace(self, ab):
+        """
+        This function executes the rtrace with the cummulative sky. This function requires the execution of execute_cumulative_oconv() prior.
+        
+        Parameters
+        ----------
+        ab: str
+            The number of ambient bounces for the ray-tracing. e.g. "2".
+        """
         if self.cumulative_oconv_file_path == None:
             raise Exception
         #execute rtrace
@@ -201,6 +749,20 @@ class Rad(object):
         self.cumulative_result_file_path = cumulative_result_file_path
 
     def eval_cumulative_rad(self, output = "irradiance"):
+        """
+        This function reads the cummulative result file from the simulation and returns the results as a list.
+        
+        Parameters
+        ----------
+        output: str, optional
+            The units of the results, "irradiance" (Wh/m2) or "illuminance" (lux), Default = "irradiance".
+            
+        Returns
+        ------
+        results: list of floats
+            List of irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
+        
+        """
         if self.cumulative_result_file_path == None:
             raise Exception
         results = open(self.cumulative_result_file_path)
@@ -222,224 +784,22 @@ class Rad(object):
                 result_list.append(illuminance)
             
         return result_list
-
     #=============================================================================================
-        #FOR GENCUMULATIVE SKY MODULE //END//
+    #FOR GENCUMULATIVE SKY MODULE //END//
     #=============================================================================================
-    def execute_oconv(self): 
-        self.create_sky_input_file()
-        self.create_rad_input_file() #what about interior??
-        oconv_file_path = os.path.join(self.data_folder_path, "input.oconv")
-        command = "oconv " + self.sky_file_path + " " + self.base_file_path + " "\
-		+ self.rad_file_path +\
-        " " + ">" + " " + oconv_file_path
-        #process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #result = process.communicate()
-        #print result
-        f = open(self.command_file, "a")
-        f.write(command)
-        f.write("\n")
-        f.close()
-        os.system(command) #EXECUTE!!
-        self.oconv_file_path = oconv_file_path 
-    
-    def execute_rtrace(self, dict_parm):
-        if self.oconv_file_path == None:
-            raise Exception
-        #execute rtrace 
-        self.create_sensor_input_file()
-        result_file_path = os.path.join(self.data_folder_path, "results.txt")
-        command = "rtrace -h -w -I+ -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-        " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-        " " + self.oconv_file_path + " " + " < " + self.sensor_file_path +\
-        " " + " > " + " " + result_file_path
-        
-        f = open(self.command_file, "a")
-        f.write(command)
-        f.write("\n")
-        f.close()
-        #os.system(command)#EXECUTE!!
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        result = process.communicate()
-        print result
-        self.result_file_path = result_file_path 
-        
-    def execute_rvu(self, vp, vd, dict_parm):
-        if self.oconv_file_path == None:
-            raise Exception
-        #execute rvu
-        operating_sys = os.name
-        if operating_sys == "posix":
-            command = "rvu -vp " + vp + " -vd " + vd +\
-            " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-            " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
-        elif operating_sys == "nt":
-            command = "rvu -vp " + vp + " -vd " + vd +\
-            " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-            " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-            " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
-        f = open(self.command_file, "a")
-        f.write(command)
-        f.write("\n")
-        f.close()
-        os.system(command)#EXECUTE!!
-         
-    def execute_rpict(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
-        if self.oconv_file_path == None:
-            raise Exception("oconv file is missing")
-        #execute rpict
-        image_folder_path = os.path.join(self.data_folder_path,"images")
-        if not os.path.isdir(image_folder_path):
-            os.mkdir(image_folder_path)
-        image_file_path = os.path.join(image_folder_path, filename)
-        
-        command1 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " + vp +\
-         " -vd " + vd +\
-		 " -vh 200 -vv 100 -vta" + \
-         " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-         " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-         " -i " + self.oconv_file_path + " > " + image_file_path + "out_i.hdr" 
-          
-        command2 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " +\
-        vp + " -vd " + vd +\
-		" -vh 200 -vv 100 -vta" + \
-        " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-        " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-        " " + self.oconv_file_path + " > " + image_file_path + "out.hdr"
-          
-        command3 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out_i.hdr" + " > " +\
-		image_file_path + "out_i_filt.hdr"
-        command4 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
-		image_file_path + "out_filt.hdr"
-		
-        command5 = "ra_tiff " + image_file_path + "out.hdr" + " " + image_file_path + "out.tif"
-        command6 = "ra_tiff " + image_file_path + "out_i.hdr" + " " + image_file_path + "out_i.tif"
-        command7 = "ra_tiff " + image_file_path + "out_filt.hdr" + " " + image_file_path + "out_filt.tif"    
-        command8 = "ra_tiff " + image_file_path + "out_i_filt.hdr" + " " + image_file_path + "out_i_filt.tif"
-        
-        f = open(self.command_file, "a")
-        f.write(command1)
-        f.write("\n")
-        f.write(command2)
-        f.write("\n")
-        f.write(command3)
-        f.write("\n")
-        f.write(command4)
-        f.write("\n")
-        f.write(command5)
-        f.write("\n")
-        f.write(command6)
-        f.write("\n")
-        f.write(command7)
-        f.write("\n")
-        f.write(command8)
-        f.write("\n")
-        os.system(command1)#EXECUTE!!
-        os.system(command2)#EXECUTE!!
-        os.system(command3)#EXECUTE!!
-        os.system(command4)#EXECUTE!!
-        os.system(command5)#EXECUTE!!
-        os.system(command6)#EXECUTE!!
-        os.system(command7)#EXECUTE!!
-        os.system(command8)#EXECUTE!!
-        
-    def execute_falsecolour(self,i_basefilename, l_basefilename, filename, range_max, 
-                            range_division, illuminance = True):
-        image_folder_path = os.path.join(self.data_folder_path, "images")
-        if not os.path.isdir(image_folder_path):
-            os.mkdir(image_folder_path)
-        i_base_image_path = os.path.join(image_folder_path, i_basefilename)
-        l_base_image_path = os.path.join(image_folder_path, l_basefilename)
-        falsecolour_folder_path = os.path.join(image_folder_path, "falsecolour")
-        if not os.path.isdir(falsecolour_folder_path):
-            os.mkdir(falsecolour_folder_path)
-        falsecolour_file_path = os.path.join(falsecolour_folder_path, filename)
-        if illuminance == True:
-            #command = "falsecolor -i " + i_base_image_path + " -p " +\
-             #l_base_image_path + " -n " + range_division + " -s " + range_max +\
-             #" -l lux > " + falsecolour_file_path + "_illum.hdr"
-
-            command = "falsecolor2 -i " + i_base_image_path + " -p " +\
-             l_base_image_path + " -cl -n " + range_division + " -s " + range_max +\
-             " -l lux > " + falsecolour_file_path + "_illum.hdr"
-            
-            command2 = "ra_tiff " + falsecolour_file_path + "_illum.hdr" + " " + falsecolour_file_path + "illum.tif"
-
-        else:
-            command = "falsecolor2 -ip " + l_base_image_path +\
-             " -n " + range_division + " -s " + range_max +\
-             " -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
-
-            #command = "falsecolor2 -ip " + l_base_image_path +\
-             #" -cl -n " + range_division + " -s " + range_max +\
-             #" -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
-            
-            command2 = "ra_tiff " + falsecolour_file_path + "_luminance.hdr" + " " + falsecolour_file_path + "luminance.tif"
-
-            
-        f = open(self.command_file, "a")
-        f.write(command)
-        f.write("\n")
-        f.write(command2)
-        f.write("\n")
-        f.close()
-        os.system(command)#EXECUTE!!
-        os.system(command2)#EXECUTE!!
-
-    def render(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
-        if self.oconv_file_path == None:
-            raise Exception("oconv file is missing")
-        #execute rpict
-        image_folder_path = os.path.join(self.data_folder_path,"render")
-        if not os.path.isdir(image_folder_path):
-            os.mkdir(image_folder_path)
-        image_file_path = os.path.join(image_folder_path, filename)
-          
-        command1 = "rpict -x " + x_resolution + " -y " + y_resolution + " -vp " +\
-         vp + " -vd " + vd +\
-         " -ab " +  dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
-        " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
-         " " + self.oconv_file_path + " > " + image_file_path + "out.hdr"
-         
-        command2 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
-         image_file_path + "out_filt.hdr"
-
-        command3 = "ra_tiff " + image_file_path + "out_filt.hdr" + " " + image_file_path + "out_filt.tif"
-
-        f = open(self.command_file, "a")
-        f.write(command1)
-        f.write("\n")
-        f.write(command2)
-        f.write("\n")
-        f.write(command3)
-        f.write("\n")
-        f.close()
-        os.system(command1)#EXECUTE!!  
-        os.system(command2)#EXECUTE!!  
-        os.system(command3)#EXECUTE!!   
-        
-    def eval_rad(self):
-        if self.result_file_path == None:
-            raise Exception
-        results = open(self.result_file_path, "r")
-        irradiance_list = []        
-        illuminance_list = []
-        for result in results:
-            words  = result.split()
-            numbers = map(float, words)
-            #IRRADIANCE RESULTS 
-            irradiance = round((0.265 * numbers[0]) + (0.670 * numbers[1]) + (0.065 * numbers[2]), 1)
-            irradiance_list.append(irradiance)
-            #ILLUMINANCE RESULTS            
-            illuminance = irradiance * 179
-            illuminance_list.append(illuminance)
-        return irradiance_list, illuminance_list
-    
-#==========================================================================================================================
+    #==========================================================================================================================
     #FUNCTION FOR DAYSIM
-#==========================================================================================================================
+    #==========================================================================================================================
     def initialise_daysim(self, daysim_dir):
+        """
+        Run this method prior to running any Daysim simulation. This function creates the base .hea header file and all the neccessary 
+        folders for the Daysim simulation.
+        
+        Parameters
+        ----------            
+        daysim_dir :  str
+            The directory to write all the daysim results file to.
+        """
         #create the directory if its not existing
         if not os.path.isdir(daysim_dir):
             os.mkdir(daysim_dir)
@@ -493,6 +853,17 @@ class Rad(object):
                     os.remove(rmv_path)
                     
     def execute_epw2wea(self, epwweatherfile, ground_reflectance = 0.2):
+        """
+        This function executes the epw2wea.exe and convert an epw weatherfile into a .wea weather file. Daysim uses .wea weatherfile.
+        
+        Parameters
+        ----------            
+        epwweatherfile :  str
+            The file path of the epw weather file.
+        
+        ground_reflectance : float, optional
+            The ground reflectance, default = 0.2.
+        """
         daysimdir_wea = self.daysimdir_wea
         if daysimdir_wea == None:
             raise NameError("run .initialise_daysim function before running execute_epw2wea")
@@ -542,6 +913,11 @@ class Rad(object):
         self.sunuphrs = sunuphrs
         
     def execute_radfiles2daysim(self):
+        """
+        This function executes the radfiles2daysim.exe and convert an all the rad geometry and material files to daysim files.
+        The create_rad function needs to be executed prior to this function.
+        """
+        
         hea_filepath = self.hea_file
         head,tail = ntpath.split(hea_filepath)
         radfilename = tail.replace(".hea", "")
@@ -563,6 +939,15 @@ class Rad(object):
         os.system(command1)
         
     def write_static_shading(self, hea_file):
+        """
+        This function writes the static shading into the hea file.
+        
+        Parameters
+        ----------            
+        hea_file :  open file mode "a"
+            The opened file of the header file.
+            
+        """
         hea_filepath = self.hea_file
         head,tail = ntpath.split(hea_filepath)
         tail = tail.replace(".hea", "")
@@ -572,6 +957,25 @@ class Rad(object):
         hea_file.write("\nshading" + " " + "1" + " " + "static_system" + " " + dc_file + " " + ill_file)
     
     def write_radiance_parameters(self,rad_ab,rad_ad,rad_as,rad_ar,rad_aa,rad_lr,rad_st,rad_sj,rad_lw,rad_dj,rad_ds,rad_dr,rad_dp):
+        """
+        This function write the radiance parameters for the Daysim simulation.
+        
+        Parameters
+        ----------            
+        rad_ab :  int
+        rad_ad :  int
+        rad_as :  int
+        rad_ar :  int
+        rad_aa :  float
+        rad_lr :  int
+        rad_st :  float
+        rad_sj :  float
+        rad_lw :  float
+        rad_dj :  float
+        rad_ds :  float
+        rad_dr :  int
+        rad_dp :  int
+        """
         hea_file = open(self.hea_file, "a")        
         hea_file.write("\nab" + " " + str(rad_ab))
         hea_file.write("\nad" + " " + str(rad_ad))
@@ -589,6 +993,10 @@ class Rad(object):
         hea_file.close()
     
     def write_default_radiance_parameters(self): 
+        """
+        This function write the default radiance parameters for the Daysim simulation. 
+        The default settings are the complex scene 1 settings of daysimPS
+        """
         rad_ab = 2
         rad_ad = 1000
         rad_as = 20
@@ -606,6 +1014,14 @@ class Rad(object):
                                        rad_st,rad_sj,rad_lw,rad_dj,rad_ds,rad_dr,rad_dp)
         
     def execute_gen_dc(self, output_unit):
+        """
+        This function executes the gen_dc Daysim command.
+     
+        Parameters
+        ----------
+        output_unit: str, optional
+            The units of the results, "w/m2" or "lux".
+        """
         hea_filepath = self.hea_file
         hea_file = open(hea_filepath,  "a")
         sensor_filepath = self.sensor_file_path
@@ -681,6 +1097,9 @@ class Rad(object):
         os.system(command3)
         
     def execute_ds_illum(self):
+        """
+        This function executes the ds_illum Daysim command.
+        """
         hea_filepath = self.hea_file
         #execute ds_illum
         command1 = "ds_illum" + " " + hea_filepath
@@ -691,6 +1110,18 @@ class Rad(object):
         os.system(command1)
         
     def eval_ill(self):
+        """
+        This function reads the daysim result file from the simulation and returns the results as a dictionaries.
+            
+        Returns
+        ------
+        hourly results: list of dictionaries
+            List of Dictionaries of hourly irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
+            Each dictionary is an hour of results of all the sensor points. Each dictionary has key "date" and "result_list". 
+            The "date" key points to a date string e.g. "12 31 23.500" which means Dec 31st 23hr indicating the date and hour of the result.
+            The "result_list" key points to a list of results, which is the result of all the sensor points. 
+        
+        """
         if self.hea_filename == None :
             raise Exception("run ds_illum to simulate results")
         ill_path = os.path.join(self.daysimdir_res,self.hea_filename + ".ill")
@@ -713,7 +1144,15 @@ class Rad(object):
         return res_dict_list
     
     def eval_ill_per_sensor(self):
-        """each row is a sensor srf with 8760 colume of hourly result"""
+        """
+        This function reads the daysim result file from the simulation and returns a list of results.
+            
+        Returns
+        ------
+        results per sensor: list of results
+            Each row is a sensor srf with 8760 colume of hourly result
+        
+        """
         res_dict_list = self.eval_ill()
         npts = len(res_dict_list[0]["result_list"])
         sensorptlist = []
@@ -729,18 +1168,70 @@ class Rad(object):
 #==========================================================================================================================
 #==========================================================================================================================
 class Surface(object):
+    """
+    An object that contains all the surface information running a Radiance/Daysim simulation.
+    
+    Parameters
+    ----------
+    name :  str
+        The name of the surface.
+        
+    points :  pyptlist
+        List of points defining the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    material :  str
+        The name of the material of the surface. The material name must be in the base.rad file.
+
+    Attributes
+    ----------
+    see Parameters.
+    """
     def __init__(self, name, points, material):
+        """Initialises the surface class"""
         self.name = name
         self.points = points
         self.material = material
 		
 class RadSurface(Surface):
+    """
+    An object that contains all the surface information running a Radiance/Daysim simulation.
+    
+    Parameters
+    ----------
+    name :  str
+        The name of the surface.
+        
+    points :  pyptlist
+        List of points defining the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    material :  str
+        The name of the material of the surface. The material name must be in the base.rad file.
+        
+    radgeom : Rad class
+        The Rad class that contains all the information for running a Radiance/Daysim simulation.
+
+    Attributes
+    ----------
+    see Parameters.
+    """
     def __init__(self, name, points, material, radgeom):
+        """Initialises the RadSurface class"""
         super(RadSurface, self).__init__(name,  points, material)
         self.radgeom = radgeom
         radgeom.surfaces.append(self)
         
     def rad(self):
+        """
+        This function writes the surface information into Radiance readable string.
+        
+        Returns
+        -------
+        rad surface :  str
+            The surface writtenn into radiance readable string.
+            
+        """
         name = self.name
         material = self.material
         points = self.points[:]
@@ -748,5 +1239,25 @@ class RadSurface(Surface):
 #==========================================================================================================================
 #==========================================================================================================================
 def calculate_reflectance(r,g,b):
+    """
+    This function converts r g b into reflectance value based on the equation: reflectance = (0.2125 * r) + (0.7154 * g) + (0.0721 * b)
+    
+    Parameters
+    ----------
+    r :  float
+        The r value.
+        
+    g :  float
+        The g value.
+        
+    b :  float
+        The b value.
+    
+    Returns
+    -------
+    reflectance :  float
+        The reflectance value.
+        
+    """
     reflectance = (0.2125 * r) + (0.7154 * g) + (0.0721 * b)
     return reflectance

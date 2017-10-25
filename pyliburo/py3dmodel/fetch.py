@@ -33,7 +33,7 @@ from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
 #========================================================================================================
 #EDGE INPUTS
 #========================================================================================================
-def points_from_edge(occedge):
+def points_frm_edge(occedge):
     """
     This function fetches a list of points from the OCCedge. The list of points consist of the starting and ending point of the edge.
  

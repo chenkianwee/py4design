@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 #   Authors: Patrick Janssen <patrick@janssen.name>
 #           Chen Kian Wee <chenkianwee@gmail.com>
@@ -23,6 +23,26 @@
 
 
 def surface(name, material, points):
+    """
+    This function writes the surface information into Radiance readable string format.
+    
+    Parameters
+    ----------
+    name :  str
+        The name of the surface.
+        
+    material :  str
+        The name of the material of the surface. The material name must be in the base.rad file.
+        
+    points :  pyptlist
+        List of points defining the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+
+    Returns
+    -------
+    rad surface :  str
+        The surface written into radiance readable string.
+    """
     surface = material + " polygon " + name + "\n"+\
     "0\n"+\
     "0\n"+\
@@ -33,6 +53,22 @@ def surface(name, material, points):
     return surface
 
 def glow(name, colour):
+    """
+    This function writes the glow function for Radiance.
+ 
+    Parameters
+    ----------
+    name: str
+        The name of glow. 
+
+    colour: tuple of floats
+        A tuple of floats describing the colour. e.g. (1,1,1) for a white sky.
+        
+    Returns
+    -------
+    rad glow :  str
+        The glow written into radiance readable string.
+    """
     glow = "skyfunc glow " + name + "\n"+\
     "0\n"+\
     "0\n"+\
@@ -44,6 +80,25 @@ def glow(name, colour):
     return glow 
 
 def source(name, material, direction):
+    """
+    This function writes the source function for Radiance.
+ 
+    Parameters
+    ----------
+    name: str
+        The name of source. 
+    
+    material: str
+        The material of the source, can be either "sky_glow" or "ground_glow".
+
+    direction: tuple of floats
+        A tuple of floats describing the direction of the source. e.g. (0,0,1) for point up.
+        
+    Returns
+    -------
+    rad source :  str
+        The source written into radiance readable string.
+    """
     source = material + " source " + name + "\n"+\
     "0\n"+\
     "0\n"+\
@@ -55,14 +110,46 @@ def source(name, material, direction):
     return source
 
 def brightfunc(cal_name):
+    """
+    This function writes the brightfunc function for Radiance.
+ 
+    Parameters
+    ----------
+    cal_name: str
+        The name of cal. 
+        
+    Returns
+    -------
+    rad brightfunc :  str
+        The brightfunc written into radiance readable string.
+    """
+    
     brightfunc = "void brightfunc skyfunc\n" +\
                  "2 skybright " + cal_name + "\n"+\
                  "0\n"+\
                  "0\n\n"
+                 
     return brightfunc
 
 
 def material_glass(name, transmission):
+    """
+    This function writes the Radiance glass material.
+ 
+    Parameters
+    ----------
+    name: str
+        The name of glass. 
+    
+    transmission: tuple of floats
+        A tuple of floats describing the transmission of the glass.
+        
+    Returns
+    -------
+    rad glass :  str
+        The glass written into radiance readable string.
+    """
+    
     material_glass = "# Glass material\n"+\
     "void glass " + name + "\n"+\
     "0\n"+\
@@ -75,6 +162,28 @@ def material_glass(name, transmission):
 
 
 def material_plastic(name, colour, spec, rough):
+    """
+    This function writes the Radiance plastic material.
+ 
+    Parameters
+    ----------
+    name: str
+        The name of plastic. 
+    
+    colour: tuple of floats
+        A tuple of floats describing the colour of the glass.
+    
+    spec: float
+        A float describing the specularity of the plastic.
+        
+    rough: float
+        A float describing the roughness of the plastic.
+        
+    Returns
+    -------
+    rad plastic :  str
+        The plastic written into radiance readable string.
+    """
     material_plastic = "# Plastic material\n"+\
     "void plastic " + name + "\n"+\
     "0\n"+\
@@ -88,6 +197,25 @@ def material_plastic(name, colour, spec, rough):
     return material_plastic
 
 def sensor_file(positions, normals):
+    """
+    This function writes the sensor points and their normals for the Radiance/Daysim simulation.
+ 
+    Parameters
+    ----------
+    positions: pyptlist
+        List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+
+    normals: pyveclist
+        List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a 
+        direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    rad sensors :  str
+        The sensors written into radiance readable string.
+    """
+        
     if not positions or not normals:
         raise Exception
     if len(positions) != len(normals):

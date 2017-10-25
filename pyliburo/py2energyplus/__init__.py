@@ -490,8 +490,67 @@ IF "%inEPdir%"=="FALSE" DEL Energy+.ini
 """
 
 class Idf(object):
+    """
+    An object that contains all the neccessary information for running a Energyplus simulation.
     
+    Attributes
+    ----------
+    zones :  list of IdfZone class instances
+        The list of zones to be simulated by Energyplus.
+    
+    runperiods :  list of RunPeriod class instances
+        The list of runperiods to be simulated by Energyplus.
+        
+    outputvars : list of OutputVariables class instances
+        The variables that will be outputted after the simulation.
+    
+    outputmeter : list of OutputMeter class instances
+        The meters that will be outputted after the simulation.
+        
+    buildingshades : list of IdfBuildingShade class instances
+        List of building shades geometries for the simulation.
+    
+    version : str
+        The version of the Energyplus application.
+        
+    time_step :  str
+       The time step of the simulation in minutes.
+        
+    shadow_calc : tuple of two str
+        The first element of the tuple is the calculation frequency and the second element is the max figures. e.g.("20", "100000")
+        
+    building_data :  str
+        The IDF string of the building to be simulated.
+        
+    result_file_path :  str
+        The file path of the output.csv file.
+        
+    north :  str
+        The north direction in degrees. If "0" it means the y-direction is north, if "90" x-direction is north.
+        
+    terrain :  str
+        The terrain of the simulation environment. e.g. "Urban", "Suburbs", "Country", "City", "Ocean".
+        
+    solar_dist :  str
+        The solar distribuition setting. e.g. "FullExterior", "MinimalShadowing", "FullInteriorAndExterior", "FullExteriorWithReflections", "FullInteriorAndExteriorWithReflections".
+        
+    max_warmup_days :  str
+        The maximum number of warmup days. At least "25".
+        
+    ground_temp :  list of str
+        The the ground temperature for each month.
+        
+    output_control_table_style : tuple of two str
+        The first element of the tuple specifies the style of the table, e.g. "HTML". The second element of the tuple specifies the unit conversion, e.g. JtoKWH.
+        
+    output_surfaces_drawings : list of str
+        The 3D model formats to output after the simulation, e.g. ["DXF"]. 
+        
+    output_table_summary_reports :  list of str
+        The reports to be outputted after the simulation, e.g. ["AllSummary"].
+    """
     def __init__(self):
+        """Initialises the Idf class"""
         self.zones = []
         self.runperiods = []
         self.outputvars = []
@@ -512,39 +571,145 @@ class Idf(object):
         self.output_table_summary_reports = []
         
     def set_version(self, version):
+        """
+        This function sets the energyplus version that is used.
+     
+        Parameters
+        ----------
+        version: str
+            The version of the Energyplus application.
+        """
         self.version = version
         
     def set_time_step(self, time_step):
+        """
+        This function sets the time step of the energyplus simulation.
+     
+        Parameters
+        ----------
+        time_step :  str
+            The time step of the simulation in minutes.
+        """
         self.time_step = time_step
         
     def set_shadow_calc(self, calc_frequency, max_figures):
+        """
+        This function sets the shadow calculation parameters of the energyplus simulation.
+     
+        Parameters
+        ----------
+        shadow_calc : tuple of two str
+            The first element of the tuple is the calculation frequency and the second element is the max figures. e.g.("20", "100000")
+        """
         self.shadow_calc = (calc_frequency, max_figures)
         
     def set_north(self, north):
+        """
+        This function sets the north direction of the energyplus simulation.
+     
+        Parameters
+        ----------
+        north :  str
+            The north direction in degrees. If "0" it means the y-direction is north, if "90" x-direction is north.
+        """
         self.north = north
         
     def set_terrain(self, terrain):
+        """
+        This function sets the terrain of the energyplus simulation.
+     
+        Parameters
+        ----------
+        terrain :  str
+            The terrain of the simulation environment. e.g. "Urban", "Suburbs", "Country", "City", "Ocean".
+        """
         self.terrain = terrain
         
     def set_solar_dist(self, solar_dist):
+        """
+        This function sets the solar distribuition of the energyplus simulation.
+     
+        Parameters
+        ----------
+        solar_dist :  str
+        The solar distribuition setting. e.g. "FullExterior", "MinimalShadowing", "FullInteriorAndExterior", "FullExteriorWithReflections", "FullInteriorAndExteriorWithReflections".
+        """
         self.solar_dist = solar_dist
         
     def set_max_warmup_days(self, max_warmup_days):
+        """
+        This function sets the maximum warmup days of the energyplus simulation.
+     
+        Parameters
+        ----------
+        max_warmup_days :  str
+            The maximum number of warmup days. At least "25".
+        """
         self.max_warmup_days = max_warmup_days
         
     def set_ground_temp(self, ground_temp):
+        """
+        This function sets the ground temperatures of the energyplus simulation.
+     
+        Parameters
+        ----------
+        ground_temp :  list of str
+            The the ground temperature for each month. e.g. ["20", "20", "20", "20", "20", "20","20", "20", "20", "20", "20", "20"]
+        """
         self.ground_temp = ground_temp
         
     def set_output_control_table_style(self, column_sep, unit_conversion):
+        """
+        This function sets the output control table style of the energyplus simulation.
+     
+        Parameters
+        ----------
+        column_sep : str
+            The style of the table, e.g. "HTML". 
+            
+        unit_conversion : str
+            The unit conversion, e.g. JtoKWH.
+        """
         self.output_control_table_style = (column_sep, unit_conversion)
         
     def add_output_surfaces_drawing(self, drawing_type):
+        """
+        This function sets the 3D geometry format to output after the simulation.
+     
+        Parameters
+        ----------
+        drawing_type :  str
+            The 3D model of the simulated building, e.g. "DXF". 
+        """
         self.output_surfaces_drawings.append(drawing_type)
         
     def add_output_table_summary_report(self, report_type):
+        """
+        This function sets the report type to output after the simulation.
+     
+        Parameters
+        ----------
+        report_type :  str
+            The reports to be outputted after the simulation, e.g. "AllSummary".
+        """
+        
         self.output_table_summary_reports.append(report_type)
 
     def execute_idf(self, base_file_path, weather_file_path, data_folder_path):
+        """
+        This function executes the energyplus application.
+     
+        Parameters
+        ----------
+        base_file_path :  str
+            The file path of the base.idf file. The base.idf file documents all the basic information of the simulation e.g. materials, constructions ... It is distributed together with py2energyplus.
+        
+        weather_file_path: str
+            The file path of the weather file.
+            
+        data_folder_path :  str
+            The directory to write all the results file to.
+        """
         #check the number days the simulation will run for
         run_period_days = []
         for period in self.runperiods:
@@ -672,7 +837,10 @@ class Idf(object):
             #os.system(bat_file_2_path)
         
     def read_results_file(self):
-        if self.result_file_path == None:#TODO: check file exists
+        """
+        This function reads the output.csv file and save a list of results after the simulation into self.content.
+        """
+        if self.result_file_path == None:
             raise Exception
         
         #read the csv file 
@@ -704,6 +872,23 @@ class Idf(object):
         self.content = content_cols
             
     def get_results(self, result_category, display):
+        """
+        This function reads the self.content and filter the results. read_result_file function must be executed prior.
+        
+        Parameters
+        ----------
+        result_category :  str
+            The result to filter. Options: "energytransfer", "z_sys_sensible_cooling", "z_sys_sensible_cooling_peak", "z_sys_sensible_heating", "z_sys_sensible_heating_peak", "sol_incident",
+            "sol_beam", "sol_sky_diff", "sol_refl_obs".
+        
+        display: str
+            If display is "daily", shows the results/day.
+            
+        Returns
+        -------
+        filtered results : dictionary 
+            A dicitonary with the output variable names as keywords and a list of results values.
+        """
         if self.content == None:
             raise Exception
         content = self.content
@@ -927,7 +1112,33 @@ class Idf(object):
             return res_list
 
 class RunPeriod(object):
+    """
+    An object that contains all the run period information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    start_month : str
+        The starting month of the energyplus simulation.
+    
+    start_day : str
+        The starting day of the starting month of the energyplus simulation.
+        
+    end_month : str
+        The end month of the energyplus simulation.
+        
+    end_day : str
+        The end day of the end month of the energyplus simulation.
+        
+    idf : Idf class instance
+        The idf class instance to append to.
+    
+    Attributes
+    ----------
+    see Parameters
+    
+    """
     def __init__(self, start_month, start_day, end_month, end_day, idf):
+        """Initialises the RunPeriod class"""
         self.s_mth = start_month
         self.s_day = start_day
         self.e_mth = end_month
@@ -935,33 +1146,159 @@ class RunPeriod(object):
         idf.runperiods.append(self)
         
     def idf(self):
+        """
+        This function writes all the run period information into energyplus readable string
+        
+        Returns
+        -------
+        run period : str 
+            The idf string of the run period.
+        """
         runperiod = idf_writer.write_runperiod(self.s_mth, self.s_day, 
                                                       self.e_mth, self.e_day)
         return runperiod
     
 class OutputMeter(object):
+    """
+    An object that contains all the output meter information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    variable_name : str
+        The name of the variable of the output meter.
+    
+    report_frequency : str
+        The report frequency of the variable, e.g. "Hourly", "Monthly", "Daily".
+        
+    idf : Idf class instance
+        The idf class instance to append to.
+    
+    Attributes
+    ----------
+    see Parameters
+    
+    """
     def __init__(self, variable_name, report_frequency, idf):
         self.variable = variable_name
         self.frequency = report_frequency
         idf.outputmeter.append(self)
         
     def idf(self):
-        output_meter = idf_writer.write_outputmeter(self.variable, self.frequency)
+        """
+        This function writes all the output meter information into energyplus readable string
         
+        Returns
+        -------
+        output meter : str 
+            The idf string of the output meter.
+        """
+        output_meter = idf_writer.write_outputmeter(self.variable, self.frequency)
         return output_meter
     
 class OutputVariables(object):
+    """
+    An object that contains all the output variable information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    variable_name : str
+        The name of the variable.
+    
+    report_frequency : str
+        The report frequency of the variable, e.g. "Hourly", "Monthly", "Daily".
+        
+    idf : Idf class instance
+        The idf class instance to append to.
+    
+    Attributes
+    ----------
+    see Parameters
+    
+    """
     def __init__(self, variable_name, report_frequency, idf):
         self.variable = variable_name
         self.frequency = report_frequency
         idf.outputvars.append(self)
         
     def idf(self):
+        """
+        This function writes all the output variable information into energyplus readable string.
+        
+        Returns
+        -------
+        output variable : str 
+            The idf string of the output variable.
+        """
         output_var = idf_writer.write_outputvar(self.variable, self.frequency)
         
         return output_var
     
 class IdfZone(object):
+    """
+    An object that contains all the zone information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the zone.
+        
+    idf : Idf class instance
+        The idf class instance to append to.
+    
+    Attributes
+    ----------
+    name : str
+        The name of the zone.
+        
+    surfaces : list of IdfZoneSurface class instance
+        The surfaces that belongs to this zone.
+        
+    cstart : str
+        The starting time of the cooling schedule, e.g. "09:00"
+        
+    cend : str
+        The ending time of the cooling schedule, e.g. "17:00"
+        
+    ctemp : str
+        The set point temperature of the cooling, e.g. "25"
+        
+    hstart : str
+        The starting time of the heating schedule, e.g. "09:00"
+        
+    hend : str
+        The ending time of the heating schedule, e.g. "17:00"
+        
+    htemp : str
+        The set point temperature of the heating, e.g. "18"
+        
+    l_start : str
+        The starting time of the lighting schedule, e.g. "09:00"
+        
+    l_end : str
+        The ending time of the lighting schedule, e.g. "17:00"
+        
+    l_watts : str
+        The Watts per m2 of the lighting, e.g. "10"
+        
+    p_start : str
+        The starting time of the occupancy schedule, e.g. "09:00"
+        
+    p_end : str
+        The ending time of the occupancy schedule, e.g. "17:00"
+        
+    p_num : str
+        The m2 per person of the occupancy, e.g. "10"
+        
+    ig_start : str
+        The starting time of the internal gain other equipment schedule, e.g. "09:00"
+        
+    ig_end : str
+        The ending time of the internal gain other equipment schedule, e.g. "17:00"
+        
+    ig_watts : str
+        The Watts per m2 of the equipment, e.g. "20"
+    
+    """
     def __init__(self, name, idf):
         self.name = name
         self.surfaces = []
@@ -989,29 +1326,107 @@ class IdfZone(object):
         idf.zones.append(self)
         
     def add_surface(self,  surface):
+        """
+        This function adds surface to the zone.
+        
+        Parameters
+        ----------
+        surface : IdfZoneSurface class instance
+            Add the surface into the zone.
+        
+        """
         surface.zone = self.name
         self.surfaces.append(surface)
         
     def set_cool_schedule(self, start, end, temp):
+        """
+        This function sets the cooling schedule for the zone.
+        
+        Parameters
+        ----------
+        start : str
+            The starting time of the cooling schedule, e.g. "09:00"
+        
+        end : str
+            The ending time of the cooling schedule, e.g. "17:00"
+            
+        temp : str
+            The set point temperature of the cooling, e.g. "25"
+        
+        """
         self.cstart = start
         self.cend = end
         self.ctemp = temp
         
     def set_heat_schedule(self, start, end, temp):
+        """
+        This function sets the heating schedule for the zone.
+        
+        Parameters
+        ----------
+        start : str
+            The starting time of the heating schedule, e.g. "09:00"
+        
+        end : str
+            The ending time of the heating schedule, e.g. "17:00"
+            
+        temp : str
+            The set point temperature of the heating, e.g. "18"
+        
+        """
         self.hstart = start
         self.hend = end
         self.htemp = temp
         
-    def set_light_schedule(self, start, end):
+    def set_light_schedule(self, start, end, watts):
+        """
+        This function sets the lighting schedule for the zone.
+        
+        Parameters
+        ----------
+        start : str
+            The starting time of the lighting schedule, e.g. "09:00"
+        
+        end : str
+            The ending time of the lighting schedule, e.g. "17:00"
+            
+        watts : str
+            The Watts per m2 of the lighting, e.g. "10"
+        
+        """
         self.l_start = start
         self.l_end = end 
+        self.l_watts = watts
         
     def set_internal_gains_schedule(self, start, end, watts):
+        """
+        This function sets the internal gain schedule for the zone.
+        
+        Parameters
+        ----------
+        start : str
+            The starting time of the internal gain other equipment schedule, e.g. "09:00"
+        
+        end : str
+            The ending time of the internal gain other equipment schedule, e.g. "17:00"
+            
+        watts : str
+            The Watts per m2 of the equipment, e.g. "20"
+        
+        """
         self.ig_start = start
         self.ig_end = end 
         self.ig_watts = watts
         
     def idf(self):
+        """
+        This function writes all the information into energyplus readable string
+        
+        Returns
+        -------
+        zone data : str 
+            The idf string of the zone data.
+        """
         name = self.name 
         zone_data = idf_writer.write_zone(name)
         #cooling and heating
@@ -1031,11 +1446,11 @@ class IdfZone(object):
             lights = idf_writer.write_lights(name, l_sch_name, self.l_watts)
             zone_data = zone_data + l_sch + lights
         #people
-        if self.p_start and self.p_end and self.p_num:
-            p_sch_name = name + "_people"
-            p_sch = idf_writer.write_alldays_schedule(p_sch_name, "Fraction", self.p_start,self.p_end)
-            people = idf_writer.write_people(name, p_sch_name, self.p_num)
-            zone_data = zone_data + p_schedule + people
+        #if self.p_start and self.p_end and self.p_num:
+        #    p_sch_name = name + "_people"
+        #    p_sch = idf_writer.write_alldays_schedule(p_sch_name, "Fraction", self.p_start,self.p_end)
+        #    people = idf_writer.write_people(name, p_sch_name, self.p_num)
+        #    zone_data = zone_data + p_sch + people
         #internal gains
         if self.ig_start and self.ig_end and self.ig_watts:
             ig_sch_name = name + "_internal_gains"
@@ -1046,13 +1461,80 @@ class IdfZone(object):
         return zone_data
         
 class IdfSurface(object):
+    """
+    An object that contains all the surface information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    construction : str
+        The name of the construction. The construction must be in the base.idf file. e.g. "Medium Roof/Ceiling"
+    
+    Attributes
+    ----------
+    see Parameters.
+        
+    """
     def __init__(self, name, points, construction):
         self.name = name
         self.points = points
         self.construction = construction
         
 class IdfZoneSurface(IdfSurface):
+    """
+    An object that contains all the zone surface information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    construction : str
+        The name of the construction. The construction must be in the base.idf file. e.g. "Medium Roof/Ceiling"
+        
+    type : str
+        The type of the surface, options: "Floor", "Wall", "Ceiling", "Roof" .
+        
+    boundary_srf_name : str
+        The boundary of the surface, options: "Outdoors", "Adiabatic", "Ground" or the name of the surface it is adjacent to.
+    
+    Attributes
+    ----------
+    zone : str
+        The name of the zone.
+        
+    type : str
+        The type of the surface, options: "Floor", "Wall", "Ceiling", "Roof" .
+        
+    subsurfaces : list of IdfSubSurface class instances
+        The list of subsurfaces (windows & shades) that belongs to this surface.
+        
+    boundary : str
+        The boundary condition of the surface, options: "Outdoors", "Adiabatic", "Ground" or the name of the surface it is adjacent to.
+    
+    boundary_obj : str
+        The object the surface is adjacent to. If boundary is "Outdoors" or "Ground" returns an empty string, if "Adiabatic" return its own name, else return the name of the surface
+        it is adjacent to.
+    
+    sun_exp : str
+        Describes if the surface is exposed to sun. Returns either "SunExposed" or "NoSun".
+    
+    win_exp : str
+         Describes if the surface is exposed to wind. Returns either "WindExposed" or "NoWind".
+        
+    """
     def __init__(self, name, points, construction, type, boundary_srf_name):
+        """ This function initialises the idfzonesurface class"""
         if not type in ("Wall", "Floor", "Ceiling", "Roof"):
             return
         super(IdfZoneSurface, self).__init__(name,  points, construction)
@@ -1081,12 +1563,38 @@ class IdfZoneSurface(IdfSurface):
             self.win_exp = "NoWind"
             
     def add_window(self,  window):
+        """
+        This function adds a window subsurface.
+        
+        Parameters
+        ----------
+        window : IdfWindow class instance
+            The window that belongs to this surface.
+            
+        """
         self.subsurfaces.append(window)
         
     def add_shade(self,  shade):
+        """
+        This function adds a shade subsurface.
+        
+        Parameters
+        ----------
+        shade : IdfShade class instance
+            The shade that belongs to this surface.
+            
+        """
         self.subsurfaces.append(shade)
         
     def idf(self):
+        """
+        This function writes all the information into energyplus readable string
+        
+        Returns
+        -------
+        surface data : str 
+            The idf string of the surface data.
+        """
         return idf_writer.write_surface(
             self.name, 
             self.type,
@@ -1099,6 +1607,33 @@ class IdfZoneSurface(IdfSurface):
             self.points)
                                               
 class IdfSubSurface(IdfSurface):
+    """
+    An object that contains all the zone subsurface information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    construction : str
+        The name of the construction. The construction must be in the base.idf file. e.g. "Medium Roof/Ceiling"
+        
+    host_srf : str
+        The name of the host surface. e.g. "wall1".
+    
+    Attributes
+    ----------
+    host_srf : str
+        See Parameters.
+        
+    transmittance : str
+        The transmittance value of the subsurface, only used for shading surfaces. If not provided energyplus will default to 0, means a totally opaque surface.
+        
+    """
     def __init__(self, name, points, construction, host_srf):
         if host_srf == None:
             raise Exception
@@ -1107,22 +1642,116 @@ class IdfSubSurface(IdfSurface):
         self.transmittance = "" 
 
 class IdfWindow(IdfSubSurface):
+    """
+    An object that contains all the zone subsurface information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    construction : str
+        The name of the construction. The construction must be in the base.idf file. e.g. "Medium Roof/Ceiling"
+        
+    host_srf : str
+        The name of the host surface. e.g. "wall1".
+    
+    Attributes
+    ----------
+    host_srf : str
+        See Parameters.
+        
+    transmittance : str
+        The transmittance value of the subsurface, only used for shading surfaces.
+        
+    """
     def idf(self):
+        """
+        This function writes all the information into energyplus readable string
+        
+        Returns
+        -------
+        window data : str 
+            The idf string of the window data.
+        """
         return idf_writer.write_window(self.name, self.construction, self.host_srf, "", "", self.points)   
 
 
 class IdfShade(IdfSubSurface):
+    """
+    An object that contains all the zone subsurface information for running a Energyplus simulation.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    construction : str
+        The name of the construction. The construction must be in the base.idf file. e.g. "Medium Roof/Ceiling"
+        
+    host_srf : str
+        The name of the host surface. e.g. "wall1".
+    
+    Attributes
+    ----------
+    host_srf : str
+        See Parameters.
+        
+    transmittance : str
+        The transmittance value of the subsurface, only used for shading surfaces.
+        
+    """
     def idf(self):
+        """
+        This function writes all the information into energyplus readable string
+        
+        Returns
+        -------
+        shade data : str 
+            The idf string of the shade data.
+        """
         return idf_writer.write_zone_shade(self.name, self.host_srf, self.transmittance, self.points)
 
-#for shadings that are not attached to the buildings which includes trees and surrounding site
 class IdfBuildingShade(object):
+    """
+    An object that contains all the surfaces of the surrounding context, e.g. shadings that are not attached to the buildings which includes trees and surrounding site.
+    
+    Parameters
+    ----------
+    name : str
+        The name of the surface.
+        
+    points : pyptlist
+        List of points that defines the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+        pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    idf : Idf class instance
+        The idf class instance to append to.
+    
+    Attributes
+    ----------
+    See Parameters.
+    """
     def __init__(self, name, points, idf):
         self.name = name 
         self.points = points
         idf.buildingshades.append(self)
         
     def idf(self):
+        """
+        This function writes all the information into energyplus readable string
+        
+        Returns
+        -------
+        building shade data : str 
+            The idf string of the building shade data.
+        """
         return idf_writer.write_building_shade(self.name, "", self.points)
-
-

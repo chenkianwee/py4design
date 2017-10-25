@@ -24,9 +24,32 @@ import fetch
 import modify
 import utility
 
-def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None, 
+def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None, 
                     occedge_list = None):
+    """
+    This function converts OCCtopologies into a pycollada Collada class. The units are in meter.
+ 
+    Parameters
+    ----------
+    occface_list : list of OCCfaces
+        The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+        are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+        OCCsolid, OCCshell, OCCface. 
+        
+    dae_filepath : str
+        The file path of the DAE (Collada) file.
     
+    face_rgb_colour_list : list of tuple of floats, optional
+        Each tuple is a r,g,b that is specifying the colour of the face. The number of colours must correspond to the number of OCCfaces.
+        
+    occedge_list : list of OCCedges, optional
+        OCCedges to be visualised together, Default = None.
+        
+    Returns
+    -------
+    mesh : pycollada Collada class object
+        The collada object from pycollada library.
+    """   
     import collada
     from collada import asset, material, source, geometry, scene
     import numpy
@@ -59,7 +82,7 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None,
         
     geomnode_list = []
     shell_cnt = 0
-    for occshell in occshell_list:
+    for occshell in occface_list:
         vert_floats = []
         normal_floats = []
         vcnt = []
@@ -144,8 +167,7 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None,
         for occedge in occedge_list:
             vert_floats = []
             indices = []
-            occpt_list = fetch.points_from_edge(occedge)
-            pypt_list = fetch.occptlist2pyptlist(occpt_list)
+            pypt_list =fetch.points_frm_edge(occedge)
             if len(pypt_list) == 2:
                 vert_cnt = 0
                 for pypt in pypt_list:
@@ -177,40 +199,113 @@ def write_2_collada(occshell_list, collada_filepath, face_rgb_colour_list=None,
     myscene = scene.Scene("myscene", [vis_node])
     mesh.scenes.append(myscene)
     mesh.scene = myscene
-    mesh.write(collada_filepath)
+    return mesh
     
-def write_2_collada_text_string(occshell_list, text_string, collada_filepath, 
-                                face_rgb_colour_list=None, occedge_list = None):
-
-    overall_cmpd = construct.make_compound(occshell_list)
-    xmin, ymin, zmin, xmax, ymax, zmax = calculate.get_bounding_box(overall_cmpd)
-    xdim = xmax-xmin
-    d_str = fetch.shape2shapetype(construct.make_brep_text(text_string,xdim/10))
-    xmin1, ymin1, zmin1, xmax1, ymax1, zmax1 = calculate.get_bounding_box(d_str)
-    corner_pt = (xmin1,ymax1,zmin1)
-    corner_pt2 = (xmin,ymin,zmin)
-    moved_str = modify.move(corner_pt, corner_pt2, d_str)
-    face_list = fetch.geom_explorer(moved_str, "face")
-    meshed_list = []
-    for face in face_list:    
-        meshed_face_list = construct.simple_mesh(face)
-        mface = construct.make_shell(meshed_face_list)
-        face_mid_pt =  calculate.face_midpt(face)
-        str_mid_pt = calculate.get_centre_bbox(mface)
-        moved_mface = modify.move(str_mid_pt,face_mid_pt,mface)
-        meshed_list.append(moved_mface)
-    
-    meshed_str_cmpd = construct.make_compound(meshed_list)
-    occshell_list.append(meshed_str_cmpd)
-    if face_rgb_colour_list !=None:
-        face_rgb_colour_list.append((0,0,0))
+def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None, 
+                    occedge_list = None, text_string = None):
+                                
+    """
+    This function writes a 3D model into a Collada file.
+ 
+    Parameters
+    ----------
+    occface_list : list of OCCfaces
+        The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+        are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+        OCCsolid, OCCshell, OCCface. 
         
-    write_2_collada(occshell_list, collada_filepath, 
-                    face_rgb_colour_list=face_rgb_colour_list, 
-                    occedge_list = occedge_list)
+    dae_filepath : str
+        The file path of the DAE (Collada) file.
+    
+    face_rgb_colour_list : list of tuple of floats, optional
+        Each tuple is a r,g,b that is specifying the colour of the face,Default = None. 
+        The number of colours must correspond to the number of OCCfaces.
+        
+    occedge_list : list of OCCedges, optional
+        OCCedges to be visualised together, Default = None.
+        
+    text_string : str, optional
+        Description for the 3D model, Default = None.
+        
+    Returns
+    -------
+    None : None
+        The geometries are written to a DAE file.
+    """   
+    if text_string != None:
+        overall_cmpd = construct.make_compound(occface_list)
+        xmin, ymin, zmin, xmax, ymax, zmax = calculate.get_bounding_box(overall_cmpd)
+        xdim = xmax-xmin
+        d_str = fetch.topo2topotype(construct.make_brep_text(text_string,xdim/10))
+        xmin1, ymin1, zmin1, xmax1, ymax1, zmax1 = calculate.get_bounding_box(d_str)
+        corner_pt = (xmin1,ymax1,zmin1)
+        corner_pt2 = (xmin,ymin,zmin)
+        moved_str = modify.move(corner_pt, corner_pt2, d_str)
+        face_list = fetch.geom_explorer(moved_str, "face")
+        meshed_list = []
+        for face in face_list:    
+            meshed_face_list = construct.simple_mesh(face)
+            mface = construct.make_shell(meshed_face_list)
+            face_mid_pt =  calculate.face_midpt(face)
+            str_mid_pt = calculate.get_centre_bbox(mface)
+            moved_mface = modify.move(str_mid_pt,face_mid_pt,mface)
+            meshed_list.append(moved_mface)
+        
+        meshed_str_cmpd = construct.make_compound(meshed_list)
+        occface_list.append(meshed_str_cmpd)
+        
+        if face_rgb_colour_list !=None:
+            face_rgb_colour_list.append((0,0,0))
+        
+    mesh = occtopo_2_collada(occface_list, dae_filepath, 
+                      face_rgb_colour_list=face_rgb_colour_list, 
+                      occedge_list = occedge_list)
+    
+    mesh.write(dae_filepath)
         
 def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepath, description_str = None, 
                                 minval = None, maxval=None, other_occface_list = None, other_occedge_list = None):
+    """
+    This function writes a falsecolour 3D model into a Collada file.
+ 
+    Parameters
+    ----------
+    occface_list : list of OCCfaces
+        The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+        are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+        OCCsolid, OCCshell, OCCface. 
+        
+    result_list : list of floats
+        The results to be visualised. The list of results must correspond to the occface_list.
+        
+    unit_str : str
+        The string of the unit to be displayed on the bar.
+        
+    dae_filepath : str
+        The file path of the DAE (Collada) file.
+        
+    description_str : str, optional
+        Description for the falsecolour bar, Default = None.
+        
+    minval : float, optional
+        The minimum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the maximum value from the results.
+        
+    maxval : float, optional
+        The maximum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the minimum value from the results.
+        
+    other_occface_list : list of OCCfaces, optional
+        Other geometries to be visualised together with the results, Default = None. Other OCCtopologies
+        are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+        OCCsolid, OCCshell, OCCface. 
+        
+    other_occedge_list : list of OCCedges, optional
+        Other OCCedges to be visualised together with the results, Default = None.
+        
+    Returns
+    -------
+    None : None
+        The geometries are written to a DAE file.
+    """               
     if minval == None:
         minval = min(result_list)
     if maxval == None:
@@ -289,7 +384,9 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
         edge_cmpd = construct.make_compound(other_occedge_list)
         edge_cmpd = modify.move(otopo_centre_pt, (0,0,0), edge_cmpd)
         other_occedge_list = fetch.geom_explorer(edge_cmpd, "edge")
-        write_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list, 
-                        occedge_list = other_occedge_list)
+        mesh = occtopo_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list, 
+                                 occedge_list = other_occedge_list)
+        mesh.write(dae_filepath)
     else:
-        write_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list)
+        mesh = occtopo_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list)
+        mesh.write(dae_filepath)
