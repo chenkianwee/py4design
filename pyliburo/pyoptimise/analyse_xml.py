@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 from xml.dom.minidom import Node
@@ -25,6 +25,22 @@ from xml.dom.minidom import Document
 #xml functions
 #================================================================================
 def get_childnode_values(node_name, parent_node):
+    """
+    This function gets the node value.
+    
+    Parameters
+    ----------
+    node_name : str
+        The name of the node to be retrieved.
+    
+    parent_node : xml minidom Node
+        The parent node.
+    
+    Returns
+    -------
+    values : list of str
+        The values of the node.
+    """
     values = []
     for node in parent_node.getElementsByTagName(node_name):
         node_value = ""
@@ -39,6 +55,25 @@ def get_childnode_values(node_name, parent_node):
     return values
 
 def get_childnode_attributes(node_name, parent_node, attribute_name):
+    """
+    This function gets the node attributes.
+    
+    Parameters
+    ----------
+    node_name : str
+        The name of the node to be retrieved.
+    
+    parent_node : xml minidom Node
+        The parent node.
+        
+    attribute_name : str
+        The name of the attributes to retrieve.
+    
+    Returns
+    -------
+    values : list of str
+        The values of the attributes of the node.
+    """
     attributes = []
     for node in parent_node.getElementsByTagName(node_name):
         attributes.append(str(node.attributes[attribute_name].value))
@@ -46,6 +81,22 @@ def get_childnode_attributes(node_name, parent_node, attribute_name):
     return attributes
 
 def get_childnode_value(node_name, parent_node):
+    """
+    This function gets the node value.
+    
+    Parameters
+    ----------
+    node_name : str
+        The name of the node to be retrieved.
+    
+    parent_node : xml minidom Node
+        The parent node.
+    
+    Returns
+    -------
+    value : str
+        The value of the node.
+    """
     nodes_list = parent_node.getElementsByTagName(node_name)
     num_nodes = len(nodes_list)
     
@@ -67,6 +118,20 @@ def get_childnode_value(node_name, parent_node):
     return values[0]
 
 def edit_nodevalue(node_name, parent_node, change_value):
+    """
+    This function gets the node value.
+    
+    Parameters
+    ----------
+    node_name : str
+        The name of the node to be retrieved.
+    
+    parent_node : xml minidom Node
+        The parent node.
+        
+    change_value : str
+        The new value of the node.
+    """
     nodes_list = parent_node.getElementsByTagName(node_name)
     num_nodes = len(nodes_list)
     
@@ -81,12 +146,50 @@ def edit_nodevalue(node_name, parent_node, change_value):
                     cnode.nodeValue = change_value
                     
 def create_childnode(node_name, parent_node, value, doc):
+    """
+    This function creates a node.
+    
+    Parameters
+    ----------
+    node_name : str
+        The name of the node to be created.
+    
+    parent_node : xml minidom Node
+        The parent node.
+        
+    value : str
+        The value of the node.
+    
+    doc : xml minidom Document
+        The document to append the created node into.
+    """
+    
     childnode = doc.createElement(node_name)
     value = doc.createTextNode(value)
     childnode.appendChild(value)
     parent_node.appendChild(childnode)
 
 def create_xml_file(doc, ind, status):
+    """
+    This function creates a invidual node in the xml document.
+    
+    Parameters
+    ----------
+    doc : xml minidom Document
+        The document to append the created node into.
+        
+    ind : nsga2.Individual class instance
+        The individual object from the optimisation.
+    
+    status : bool
+        True or False, if True the individual is alived, if False it is not.
+        
+    Returns
+    -------
+    doc : xml minidom Document
+        The document to append the created node into.
+    
+    """
     population = doc.getElementsByTagName("population")[0]
     #create the individual 
     individual = doc.createElement("individual")
@@ -124,6 +227,38 @@ def create_xml_file(doc, ind, status):
     return doc
 
 def create_xml_individual(doc, identity, generation, status, genotype, ind_derivedparams, ind_scores ):
+    """
+    This function creates a invidual node in the xml document.
+    
+    Parameters
+    ----------
+    doc : xml minidom Document
+        The document to append the created node into.
+        
+    identity : int
+        The unique id of an individual.
+    
+    generation : int
+        The generation of the individual.
+    
+    status : bool
+        True or False, if True the individual is alived, if False it is not.
+        
+    genotype : Genotype class instance
+        The genotype of the individual.
+    
+    ind_derivedparams : DerivedParams class instance
+        The derived parameters of the individual.
+        
+    ind_scores : list of floats
+        The scores of the individual.
+        
+    Returns
+    -------
+    doc : xml minidom Document
+        The document to append the created node into.
+    
+    """
     #create the individual 
     individual = doc.createElement("individual")
     doc.appendChild(individual)
@@ -160,6 +295,20 @@ def create_xml_individual(doc, identity, generation, status, genotype, ind_deriv
     return doc
     
 def get_score(ind):
+    """
+    This function gets the scores of an invidual.
+    
+    Parameters
+    ----------
+    ind : xml minidom Node
+        The individual node.
+        
+    Returns
+    -------
+    scores : list of floats
+        The scores of the individual
+    
+    """
     score_list = get_childnode_values("score", ind)
     score_list_f = []
     for score in score_list:
@@ -167,6 +316,20 @@ def get_score(ind):
     return score_list_f
     
 def get_inputparam(ind):
+    """
+    This function gets the input parameters (genotype) of an invidual.
+    
+    Parameters
+    ----------
+    ind : xml minidom Node
+        The individual node.
+        
+    Returns
+    -------
+    input parameters : list of floats
+        The input parameters of the individual
+    
+    """
     input_list = get_childnode_values("inputparam", ind)
     input_list_f = []
     for inputx in input_list:
@@ -174,6 +337,20 @@ def get_inputparam(ind):
     return input_list_f
 
 def get_derivedparam(ind):
+    """
+    This function gets the derived parameters of an invidual.
+    
+    Parameters
+    ----------
+    ind : xml minidom Node
+        The individual node.
+        
+    Returns
+    -------
+    derived parameters : list of floats
+        The derived parameters of the individual
+    
+    """
     derived_list = get_childnode_values("derivedparam", ind)
     #derived_list_f = []
     #for derived in derived_list:
@@ -181,15 +358,55 @@ def get_derivedparam(ind):
     return derived_list
 
 def get_id(ind):
+    """
+    This function gets the unique id of an invidual.
+    
+    Parameters
+    ----------
+    ind : xml minidom Node
+        The individual node.
+        
+    Returns
+    -------
+    id : str
+        The id of the individual
+    
+    """
     identity = get_childnode_value("identity", ind)
     return identity
 
 def get_inds_frm_xml(xml_filepath):
+    """
+    This function gets the individuals minidom Node from an XML file.
+    
+    Parameters
+    ----------
+    xml_filepath : str
+        The file path of the XML file.
+        
+    Returns
+    -------
+    individuals : list of xml minidom Node
+        All the individuals in the xml file.
+    
+    """
     doc = xml.dom.minidom.parse(xml_filepath)
     ind_list = doc.getElementsByTagName("individual")
     return ind_list
 
 def write_inds_2_xml(inds, res_path):
+    """
+    This function writes the individuals minidom Node into an XML file.
+    
+    Parameters
+    ----------
+    inds : list of xml minidom Node
+        All the individuals to be written to the xml file.
+    
+    res_path : str
+        The file path of the XML file.
+    
+    """
     #write an xml file
     doc = Document()
     root_node = doc.createElement("data")
@@ -208,6 +425,21 @@ def write_inds_2_xml(inds, res_path):
     f.close()
     
 def combine_xml_files(xmlfile1, xmlfile2, resxml_file):
+    """
+    This function combines two xml file into a single xml file.
+    
+    Parameters
+    ----------
+    xmlfile1 : str
+        The file path of the first XML file.
+        
+    xmlfile2 : str
+        The file path of the second XML file.
+        
+    resxml_file : str
+        The file path of the resultant XML file.
+    
+    """
     total_inds = []
     inds1 = get_inds_frm_xml(xmlfile1)
     inds2 = get_inds_frm_xml(xmlfile2)
@@ -216,6 +448,14 @@ def combine_xml_files(xmlfile1, xmlfile2, resxml_file):
     write_inds_2_xml(total_inds, resxml_file)
 
 def rmv_unevaluated_inds(xmlfile):
+    """
+    This function removes all the individuals that are unevaluated from the xml file.
+    
+    Parameters
+    ----------
+    xmlfile : str
+        The file path of the XML file.
+    """
     eval_inds = []
     inds = get_inds_frm_xml(xmlfile)
     for ind in inds:
@@ -226,6 +466,25 @@ def rmv_unevaluated_inds(xmlfile):
     write_inds_2_xml(eval_inds, xmlfile)
         
 def dominates(result_list1, result_list2, min_max_list):
+    """
+    This function determines if result_list1 dominates result_list2.
+    
+    Parameters
+    ----------
+    result_list1 : list of floats
+        The performance objectives of an individual.
+        
+    result_list2 : list of floats
+        The performance objectives of an individual.
+    
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.
+    
+    Returns
+    -------
+    dominates : bool
+        True or False, if True result_list1 dominates result_list2, if false result_list1 does not dominate result_list2.
+    """
     equal = True
     score1 = result_list1
     score2 = result_list2
@@ -245,12 +504,50 @@ def dominates(result_list1, result_list2, min_max_list):
     return True
 
 def on_pareto_front(score_list, score_2dlist, min_max_list):
+    """
+    This function determines if the score_list is on the pareto front.
+    
+    Parameters
+    ----------
+    result_list1 : list of floats
+        The performance objectives of an individual.
+        
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals.
+    
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.
+    
+    Returns
+    -------
+    on pareto : bool
+        True or False, if True score_list is on the Pareto front, if False score_list is not on the Pareto front.
+    """
     for score_list2 in score_2dlist:
         if dominates(score_list2, score_list, min_max_list):
             return False
     return True
     
 def extract_pareto_front(score_2dlist, min_max_list):
+    """
+    This function extract the Pareto front from the list of score_2dlist.
+    
+    Parameters
+    ----------            
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals.
+    
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.
+    
+    Returns
+    -------
+    pareto front : 2dlist of floats
+        The performance objectives of a population of individuals.
+    
+    non pareto front : 2dlist of floats
+        The performance objectives of a population of individuals.
+    """
     pareto_front = []
     non_pareto_front = []
     for score_list in score_2dlist:
@@ -262,6 +559,25 @@ def extract_pareto_front(score_2dlist, min_max_list):
     return pareto_front, non_pareto_front
 
 def c_measures (score_2dlist1,score_2dlist2, min_max_list):
+    """
+    This function calculates the c-measure btween two Pareto front.
+    
+    Parameters
+    ----------            
+    score_2dlist1 : 2dlist of floats
+        The performance objectives of a population of individuals on the Pareto front.
+    
+    score_2dlist2 : 2dlist of floats
+        The performance objectives of a population of individuals on the Pareto front.
+        
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. 
+    
+    Returns
+    -------
+    c-measure : float
+        The c-measure. 1 means score_2dlist1 totally dominates score_2dlist2.
+    """
     num_inds2 = len(score_2dlist2)
     ind_list = []
     for score_list2 in score_2dlist2:
@@ -274,6 +590,22 @@ def c_measures (score_2dlist1,score_2dlist2, min_max_list):
     return float(num_dominated_inds)/float(num_inds2)
 
 def minimise_score_4_hypervolume(score_list, min_max_list):
+    """
+    This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.
+    
+    Parameters
+    ----------            
+    score_list : list of floats
+        The performance objectives of an individual.
+        
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. 
+    
+    Returns
+    -------
+    converted score list : list of floats
+        The list of converted floats.
+    """
     score_list_f = []
     scnt = 0
     for score in score_list:
@@ -287,6 +619,22 @@ def minimise_score_4_hypervolume(score_list, min_max_list):
     return score_list_f
 
 def prepare_front_4_hypervolume(score_2dlist, min_max_list):
+    """
+    This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.
+    
+    Parameters
+    ----------            
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals on the Pareto front.
+        
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. 
+    
+    Returns
+    -------
+    converted score 2dlist : 2d list of floats
+        The 2d list of converted floats.
+    """
     front = []
     for score_list in score_2dlist:
         score_list = minimise_score_4_hypervolume(score_list,min_max_list)
@@ -294,14 +642,45 @@ def prepare_front_4_hypervolume(score_2dlist, min_max_list):
     return front
 
 def hyper_volume(score_2dlist, ref_pt, min_max_list):
+    """
+    This function performs the hypervolume calculation.
+    
+    Parameters
+    ----------            
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals on the Pareto front.
+        
+    ref_pt : list of floats
+        The performance objectives that is coverted by every individual on the Pareto front.
+        
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. 
+    
+    Returns
+    -------
+    hyper volume : float
+        The hyper volume of the front.
+    """
     import hv
     hypervolume = hv.HyperVolume(ref_pt)
     min_front = prepare_front_4_hypervolume(score_2dlist, min_max_list)
     volume = hypervolume.compute(min_front)
     return volume
     
-
 def inds_2_score_2dlist(inds):
+    """
+    This function converts xml minidom individual node into score 2dlist.
+    
+    Parameters
+    ----------            
+    inds : list of xml minidom Node
+        All the individuals to be converted.   
+    
+    Returns
+    -------
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals.
+    """
     score_2dlist = []
     for ind in inds:
         scorelist = get_score(ind)
@@ -309,11 +688,25 @@ def inds_2_score_2dlist(inds):
     return score_2dlist
         
 def extract_pareto_front_inds(inds, min_max_list):
-    '''
-    min_max_list = [0,1]
-    0 = minimise
-    1 = maximise
-    '''
+    """
+    This function extract the Pareto front from the list of score_2dlist.
+    
+    Parameters
+    ----------            
+    inds : list of xml minidom Node
+        The individuals to extract the Pareto front from.
+    
+    min_max_list : list of ints
+        The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.
+    
+    Returns
+    -------
+    pareto front : list of xml minidom Node
+        The population of individuals on the front.
+    
+    non pareto front : list of xml minidom Node
+        The population of individuals not on the front.
+    """
     pareto_front = []
     non_pareto_front = []
     score_2dlist = inds_2_score_2dlist(inds)
@@ -327,6 +720,19 @@ def extract_pareto_front_inds(inds, min_max_list):
     return pareto_front, non_pareto_front
 
 def calc_min_max_range(data_2dlist):
+    """
+    This function calculates the minimum and maximum range of the 2d data.
+    
+    Parameters
+    ----------            
+    data_2dlist : 2dlist of floats
+        The 2d list of floats.
+    
+    Returns
+    -------
+    min max range : 2dlist of floats
+        The range of the 2d data.
+    """
     min_max_range = list()
     for m in zip(*data_2dlist):
         mn = min(m)
@@ -339,6 +745,19 @@ def calc_min_max_range(data_2dlist):
     return min_max_range
 
 def normalise(data_2dlist):
+    """
+    This function normalise all the data into 0.0-1.0.
+    
+    Parameters
+    ----------            
+    data_2dlist : 2dlist of floats
+        The 2d list of floats.
+    
+    Returns
+    -------
+    normalised 2d list : 2dlist of floats
+        The normalised 2d data.
+    """
     #data is in array [nsamples][dimensions]
     min_max_range = calc_min_max_range(data_2dlist)
     # Normalize the data sets
@@ -353,6 +772,22 @@ def normalise(data_2dlist):
     return norm_data_sets
 
 def denormalise(data_2dlist, orig_data_2dlist):
+    """
+    This function converts a 2d data list back into its original range based on the orig_data_2dlist.
+    
+    Parameters
+    ----------           
+    data_2dlist : 2dlist of floats
+        The normalised list of floats.
+        
+    orig_data_2dlist : 2dlist of floats
+        The 2d list of floats.
+    
+    Returns
+    -------
+    denormalised 2d list : 2dlist of floats
+        The denormalised 2d data.
+    """
     #data is in array [nsamples][dimensions]
     min_max_range = calc_min_max_range(orig_data_2dlist)
     denorm_2dlist = []
@@ -369,6 +804,27 @@ def denormalise(data_2dlist, orig_data_2dlist):
     return denorm_2dlist
     
 def kmeans_inds(inds, attribs_2_cluster, n_clusters = None):
+    """
+    This function performs k-means clustering on the specified attributes of the individuals.
+    
+    Parameters
+    ----------           
+    inds : list of xml minidom Node
+        All the individuals to be clustered.   
+        
+    attribs_2_cluster : str
+        Options: "score", "inputparam", "derivedparam".
+    
+    n_clusters : int, optional
+        The number of clusters to generate, Default = None. If None the elbow test is used to automatically decide the number of clusters.
+    
+    Returns
+    -------
+    result dictionary : dictionary
+        The dictionary is in this format. 
+        {"cluster_list": [[cluster1-ind1, cluster1-ind2, cluster1-indx],[cluster2-ind1, cluster2-ind2, cluster2-indx],[cluster3-ind1, cluster3-ind2, cluster3-indx]]
+         "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
+    """
     from sklearn.cluster import KMeans
     import numpy as np
     
@@ -417,6 +873,24 @@ def kmeans_inds(inds, attribs_2_cluster, n_clusters = None):
     return result_dict
     
 def kmeans(np_array, n_clusters):
+    """
+    This function performs k-means clustering.
+    
+    Parameters
+    ----------           
+    np_array : numpy array
+        2d list of floats.
+    
+    n_clusters : int
+        The number of clusters to generate.
+    
+    Returns
+    -------
+    result dictionary : dictionary
+        The dictionary is in this format. 
+        {"cluster_list": [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]
+         "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
+    """
     from sklearn.cluster import KMeans
     import numpy as np
     k_means = KMeans(n_clusters=n_clusters)
@@ -441,6 +915,22 @@ def kmeans(np_array, n_clusters):
 
 #run through a series kmeans to determine the elbow
 def elbow_test(X, max_cluster):
+    """
+    This function performs the elbow test to determine the number of clusters for k-means clustering.
+    
+    Parameters
+    ----------           
+    X : numpy array
+        2d list of floats.  
+    
+    max_cluster : int
+        The maximum number of clusters to desirable.
+    
+    Returns
+    -------
+    number of clusters : int
+        The number of clusters for kmeans clustering
+    """
     from sklearn.cluster import KMeans
     from sklearn import metrics
     inertia_list = []
@@ -471,6 +961,28 @@ def elbow_test(X, max_cluster):
     return best_no_cluster
 
 def archetypal_analysis_inds(inds, attribs_2_cluster, max_archetypes, niter = 200):
+    """
+    This function performs archetypal analysis on the specified attributes of the individuals.
+    
+    Parameters
+    ----------           
+    inds : list of xml minidom Node
+        All the individuals to be analysed.   
+        
+    attribs_2_cluster : str
+        Options: "score", "inputparam", "derivedparam".
+    
+    max_archetypes : int
+        The maximum permissible number of archetypes to generate.
+        
+    niter : int, optional
+        The number of iterations of the analysis, Default = 200.
+    
+    Returns
+    -------
+    archetypes : 2dlist of floats
+        The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]
+    """
     import numpy as np
     
     #attribs_2_cluster =  "score", "inputparam", "derivedparam"  
@@ -497,6 +1009,25 @@ def archetypal_analysis_inds(inds, attribs_2_cluster, max_archetypes, niter = 20
     return denorm_archetypes
 
 def archetypal_analysis(np_array, max_archetypes, niter = 200):
+    """
+    This function performs archetypal analysis.
+    
+    Parameters
+    ----------           
+    np_array : numpy array
+        2d list of floats. 
+    
+    max_archetypes : int
+        The maximum permissible number of archetypes to generate.
+        
+    niter : int, optional
+        The number of iterations of the analysis, Default = 200.
+    
+    Returns
+    -------
+    archetypes : 2dlist of floats
+        The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]
+    """
     import pymf
     m = pymf.AA(np_array, num_bases=max_archetypes)
     #m.initialization()      

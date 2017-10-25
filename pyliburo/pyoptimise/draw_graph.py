@@ -23,6 +23,38 @@ import matplotlib.ticker as ticker
 
 def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labellist = [], xlabel = "", ylabel = "", title = "", 
                  savefile = ""):
+    """
+    This function plots a scatter plot.
+    
+    Parameters
+    ----------
+    pts2plotlist : 2d list of floats
+        The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y]
+        
+    colourlist : list of str
+        List of string describing the colours, e.g. "red", "blue", "yellow".
+        
+    pt_arealist : list of floats
+        List of floats describing the size of each point.
+        
+    label_size : int, optional
+        The font size of the labels, Default = 16.
+        
+    labellist : list of str
+        List of string describing the points.
+        
+    xlabel : str, optional
+        String describing the x-axis, Default = "".
+        
+    ylabel : str, optional
+        String describing the y-axis, Default = "".
+        
+    title : str, optional
+        String describing the graph, Default = "".
+        
+    savefile : str, optional
+        The filepath to save the generated graph image, Default = "".
+    """
     x =[]
     y = []
 
@@ -52,8 +84,48 @@ def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labelli
     plt.show()
     
 def scatter_plot3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel = "", ylabel = "", zlabel = "", title = "", 
-                 savefile = "", elev=30, azim = -45, surface_pts = None):
+                 savefile = "", elev=30, azim = -45):
+    """
+    This function plots a 3d scatter plot.
     
+    Parameters
+    ----------
+    pt3d_list : 2d list of floats
+        The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y,z]
+        
+    colourlist : list of str
+        List of string describing the colours, e.g. "red", "blue", "yellow".
+        
+    pt_arealist : list of floats
+        List of floats describing the size of each point.
+        
+    label_size : int, optional
+        The font size of the labels, Default = 16.
+        
+    labellist : list of str
+        List of string describing the points.
+        
+    xlabel : str, optional
+        String describing the x-axis, Default = "".
+        
+    ylabel : str, optional
+        String describing the y-axis, Default = "".
+        
+    zlabel : str, optional
+        String describing the z-axis, Default = "".
+        
+    title : str, optional
+        String describing the graph, Default = "".
+        
+    savefile : str, optional
+        The filepath to save the generated graph image, Default = "".
+        
+    elev : float, optional
+        The elevation of the view, Default = 30.
+        
+    azim : float, optional
+        The angle of the view, Default = -45.
+    """
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     x =[]
@@ -77,7 +149,47 @@ def scatter_plot3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel =
     
 def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel = "", ylabel = "", zlabel = "", title = "", 
                  savefile = "", elev=30, azim = -45):
+    """
+    This function plots a 3d surface scatter plot.
     
+    Parameters
+    ----------
+    pt3d_list : 2d list of floats
+        The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y,z]
+        
+    colourlist : list of str
+        List of string describing the colours, e.g. "red", "blue", "yellow".
+        
+    pt_arealist : list of floats
+        List of floats describing the size of each point.
+        
+    label_size : int, optional
+        The font size of the labels, Default = 16.
+        
+    labellist : list of str
+        List of string describing the points.
+        
+    xlabel : str, optional
+        String describing the x-axis, Default = "".
+        
+    ylabel : str, optional
+        String describing the y-axis, Default = "".
+        
+    zlabel : str, optional
+        String describing the z-axis, Default = "".
+        
+    title : str, optional
+        String describing the graph, Default = "".
+        
+    savefile : str, optional
+        The filepath to save the generated graph image, Default = "".
+        
+    elev : float, optional
+        The elevation of the view, Default = 30.
+        
+    azim : float, optional
+        The angle of the view, Default = -45.
+    """
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     x =[]
@@ -100,7 +212,24 @@ def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], 
     plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
     
 def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
-
+    """
+    This function plots a parallel coordinate plot.
+    
+    Parameters
+    ----------
+    data_sets : 2d list of floats
+        Each list in the 2d list is a line on the PCP.
+        
+    parmlabels : list of str
+        List of string describing each axis of the PCP.
+    
+    savefile : str, optional
+        The filepath to save the generated graph image, Default = "".
+        
+    style : list of str, optional
+        List of string describing the colours, e.g. "red", "blue", "yellow". If None all the lines are black.
+        
+    """
     dims = len(data_sets[0])
     x    = range(dims)
     fig, axes = plt.subplots(1, dims-1, sharey=False)
@@ -221,9 +350,21 @@ def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
     plt.show()
 
 def create_int_normalise(r):
+    """
+    This function creates a list of normalise integers within the specified range.
+    
+    Parameters
+    ----------
+    r : float
+       The range.
+    
+    Returns
+    -------
+    normalised list : list of integers
+        List of normalised integers.
+    """
     step = 1/r
     norm_list = []
     for i in range(int(r+1)):
         norm_list.append(i*step)
     return norm_list
-    
