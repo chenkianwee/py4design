@@ -41,30 +41,26 @@
   <div class="section" id="module-pyliburo.pyoptimise.analyse_xml">
 <span id="pyliburo-pyoptimise-analyse-xml-module"></span><h1>pyliburo.pyoptimise.analyse_xml module<a class="headerlink" href="#module-pyliburo.pyoptimise.analyse_xml" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.archetypal_analysis">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis</code><span class="sig-paren">(</span><em>np_array</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.archetypal_analysis" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function performs archetypal analysis.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_values">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_values</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
 <blockquote>
-<div><p>2d list of floats.</p>
+<div><p>The name of the node to be retrieved.</p>
 </div></blockquote>
-<p><strong>max_archetypes</strong> : int</p>
+<p><strong>parent_node</strong> : xml minidom Node</p>
 <blockquote>
-<div><p>The maximum permissible number of archetypes to generate.</p>
-</div></blockquote>
-<p><strong>niter</strong> : int, optional</p>
-<blockquote>
-<div><p>The number of iterations of the analysis, Default = 200.</p>
+<div><p>The parent node.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
 <blockquote class="last">
-<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
+<div><p>The values of the node.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -73,34 +69,30 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.archetypal_analysis_inds">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>attribs_2_cluster</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.archetypal_analysis_inds" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function performs archetypal analysis on the specified attributes of the individuals.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_attributes">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_attributes</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>attribute_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
 <blockquote>
-<div><p>All the individuals to be analysed.</p>
+<div><p>The name of the node to be retrieved.</p>
 </div></blockquote>
-<p><strong>attribs_2_cluster</strong> : str</p>
+<p><strong>parent_node</strong> : xml minidom Node</p>
 <blockquote>
-<div><p>Options: “score”, “inputparam”, “derivedparam”.</p>
+<div><p>The parent node.</p>
 </div></blockquote>
-<p><strong>max_archetypes</strong> : int</p>
+<p><strong>attribute_name</strong> : str</p>
 <blockquote>
-<div><p>The maximum permissible number of archetypes to generate.</p>
-</div></blockquote>
-<p><strong>niter</strong> : int, optional</p>
-<blockquote>
-<div><p>The number of iterations of the analysis, Default = 200.</p>
+<div><p>The name of the attributes to retrieve.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
 <blockquote class="last">
-<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
+<div><p>The values of the attributes of the node.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -109,30 +101,26 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.c_measures">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">c_measures</code><span class="sig-paren">(</span><em>score_2dlist1</em>, <em>score_2dlist2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.c_measures" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function calculates the c-measure btween two Pareto front.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_value">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_value</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist1</strong> : 2dlist of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
 <blockquote>
-<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+<div><p>The name of the node to be retrieved.</p>
 </div></blockquote>
-<p><strong>score_2dlist2</strong> : 2dlist of floats</p>
+<p><strong>parent_node</strong> : xml minidom Node</p>
 <blockquote>
-<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+<div><p>The parent node.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>c-measure</strong> : float</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>value</strong> : str</p>
 <blockquote class="last">
-<div><p>The c-measure. 1 means score_2dlist1 totally dominates score_2dlist2.</p>
+<div><p>The value of the node.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -141,48 +129,24 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.calc_min_max_range">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">calc_min_max_range</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.calc_min_max_range" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function calculates the minimum and maximum range of the 2d data.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.edit_nodevalue">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">edit_nodevalue</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>change_value</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.edit_nodevalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
 <blockquote>
-<div><p>The 2d list of floats.</p>
+<div><p>The name of the node to be retrieved.</p>
 </div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>min max range</strong> : 2dlist of floats</p>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+<p><strong>change_value</strong> : str</p>
 <blockquote class="last">
-<div><p>The range of the 2d data.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.combine_xml_files">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">combine_xml_files</code><span class="sig-paren">(</span><em>xmlfile1</em>, <em>xmlfile2</em>, <em>resxml_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.combine_xml_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function combines two xml file into a single xml file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile1</strong> : str</p>
-<blockquote>
-<div><p>The file path of the first XML file.</p>
-</div></blockquote>
-<p><strong>xmlfile2</strong> : str</p>
-<blockquote>
-<div><p>The file path of the second XML file.</p>
-</div></blockquote>
-<p><strong>resxml_file</strong> : str</p>
-<blockquote class="last">
-<div><p>The file path of the resultant XML file.</p>
+<div><p>The new value of the node.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -301,26 +265,22 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.denormalise">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">denormalise</code><span class="sig-paren">(</span><em>data_2dlist</em>, <em>orig_data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.denormalise" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts a 2d data list back into its original range based on the orig_data_2dlist.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.get_score">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_score</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the scores of an invidual.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
 <blockquote>
-<div><p>The normalised list of floats.</p>
-</div></blockquote>
-<p><strong>orig_data_2dlist</strong> : 2dlist of floats</p>
-<blockquote>
-<div><p>The 2d list of floats.</p>
+<div><p>The individual node.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>denormalised 2d list</strong> : 2dlist of floats</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scores</strong> : list of floats</p>
 <blockquote class="last">
-<div><p>The denormalised 2d data.</p>
+<div><p>The scores of the individual</p>
 </div></blockquote>
 </td>
 </tr>
@@ -329,236 +289,22 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.dominates">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">dominates</code><span class="sig-paren">(</span><em>result_list1</em>, <em>result_list2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.dominates" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function determines if result_list1 dominates result_list2.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.get_inputparam">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_inputparam</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_inputparam" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the input parameters (genotype) of an invidual.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
 <blockquote>
-<div><p>The performance objectives of an individual.</p>
-</div></blockquote>
-<p><strong>result_list2</strong> : list of floats</p>
-<blockquote>
-<div><p>The performance objectives of an individual.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+<div><p>The individual node.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dominates</strong> : bool</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>input parameters</strong> : list of floats</p>
 <blockquote class="last">
-<div><p>True or False, if True result_list1 dominates result_list2, if false result_list1 does not dominate result_list2.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.edit_nodevalue">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">edit_nodevalue</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>change_value</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.edit_nodevalue" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the node value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
-<blockquote>
-<div><p>The name of the node to be retrieved.</p>
-</div></blockquote>
-<p><strong>parent_node</strong> : xml minidom Node</p>
-<blockquote>
-<div><p>The parent node.</p>
-</div></blockquote>
-<p><strong>change_value</strong> : str</p>
-<blockquote class="last">
-<div><p>The new value of the node.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.elbow_test">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">elbow_test</code><span class="sig-paren">(</span><em>X</em>, <em>max_cluster</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.elbow_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function performs the elbow test to determine the number of clusters for k-means clustering.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy array</p>
-<blockquote>
-<div><p>2d list of floats.</p>
-</div></blockquote>
-<p><strong>max_cluster</strong> : int</p>
-<blockquote>
-<div><p>The maximum number of clusters to desirable.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>number of clusters</strong> : int</p>
-<blockquote class="last">
-<div><p>The number of clusters for kmeans clustering</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.extract_pareto_front">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.extract_pareto_front" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
-<blockquote>
-<div><p>The performance objectives of a population of individuals.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : 2dlist of floats</p>
-<blockquote>
-<div><p>The performance objectives of a population of individuals.</p>
-</div></blockquote>
-<p><strong>non pareto front</strong> : 2dlist of floats</p>
-<blockquote class="last">
-<div><p>The performance objectives of a population of individuals.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.extract_pareto_front_inds">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.extract_pareto_front_inds" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
-<blockquote>
-<div><p>The individuals to extract the Pareto front from.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : list of xml minidom Node</p>
-<blockquote>
-<div><p>The population of individuals on the front.</p>
-</div></blockquote>
-<p><strong>non pareto front</strong> : list of xml minidom Node</p>
-<blockquote class="last">
-<div><p>The population of individuals not on the front.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_attributes">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_attributes</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>attribute_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_attributes" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the node attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
-<blockquote>
-<div><p>The name of the node to be retrieved.</p>
-</div></blockquote>
-<p><strong>parent_node</strong> : xml minidom Node</p>
-<blockquote>
-<div><p>The parent node.</p>
-</div></blockquote>
-<p><strong>attribute_name</strong> : str</p>
-<blockquote>
-<div><p>The name of the attributes to retrieve.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
-<blockquote class="last">
-<div><p>The values of the attributes of the node.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_value">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_value</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the node value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
-<blockquote>
-<div><p>The name of the node to be retrieved.</p>
-</div></blockquote>
-<p><strong>parent_node</strong> : xml minidom Node</p>
-<blockquote>
-<div><p>The parent node.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>value</strong> : str</p>
-<blockquote class="last">
-<div><p>The value of the node.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.get_childnode_values">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_values</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_childnode_values" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the node value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
-<blockquote>
-<div><p>The name of the node to be retrieved.</p>
-</div></blockquote>
-<p><strong>parent_node</strong> : xml minidom Node</p>
-<blockquote>
-<div><p>The parent node.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
-<blockquote class="last">
-<div><p>The values of the node.</p>
+<div><p>The input parameters of the individual</p>
 </div></blockquote>
 </td>
 </tr>
@@ -639,22 +385,20 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.get_inputparam">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_inputparam</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_inputparam" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the input parameters (genotype) of an invidual.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.write_inds_2_xml">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">write_inds_2_xml</code><span class="sig-paren">(</span><em>inds</em>, <em>res_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.write_inds_2_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the individuals minidom Node into an XML file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
 <blockquote>
-<div><p>The individual node.</p>
+<div><p>All the individuals to be written to the xml file.</p>
 </div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>input parameters</strong> : list of floats</p>
+<p><strong>res_path</strong> : str</p>
 <blockquote class="last">
-<div><p>The input parameters of the individual</p>
+<div><p>The file path of the XML file.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -663,22 +407,226 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.get_score">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">get_score</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.get_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the scores of an invidual.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.combine_xml_files">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">combine_xml_files</code><span class="sig-paren">(</span><em>xmlfile1</em>, <em>xmlfile2</em>, <em>resxml_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.combine_xml_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function combines two xml file into a single xml file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile1</strong> : str</p>
 <blockquote>
-<div><p>The individual node.</p>
+<div><p>The file path of the first XML file.</p>
+</div></blockquote>
+<p><strong>xmlfile2</strong> : str</p>
+<blockquote>
+<div><p>The file path of the second XML file.</p>
+</div></blockquote>
+<p><strong>resxml_file</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the resultant XML file.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scores</strong> : list of floats</p>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">rmv_unevaluated_inds</code><span class="sig-paren">(</span><em>xmlfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes all the individuals that are unevaluated from the xml file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile</strong> : str</p>
 <blockquote class="last">
-<div><p>The scores of the individual</p>
+<div><p>The file path of the XML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.dominates">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">dominates</code><span class="sig-paren">(</span><em>result_list1</em>, <em>result_list2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.dominates" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines if result_list1 dominates result_list2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>result_list2</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dominates</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True result_list1 dominates result_list2, if false result_list1 does not dominate result_list2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.on_pareto_front">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">on_pareto_front</code><span class="sig-paren">(</span><em>score_list</em>, <em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.on_pareto_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines if the score_list is on the pareto front.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>on pareto</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True score_list is on the Pareto front, if False score_list is not on the Pareto front.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.extract_pareto_front">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.extract_pareto_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>non pareto front</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.c_measures">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">c_measures</code><span class="sig-paren">(</span><em>score_2dlist1</em>, <em>score_2dlist2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.c_measures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the c-measure btween two Pareto front.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist1</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>score_2dlist2</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>c-measure</strong> : float</p>
+<blockquote class="last">
+<div><p>The c-measure. 1 means score_2dlist1 totally dominates score_2dlist2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.minimise_score_4_hypervolume">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">minimise_score_4_hypervolume</code><span class="sig-paren">(</span><em>score_list</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.minimise_score_4_hypervolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_list</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score list</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>The list of converted floats.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.prepare_front_4_hypervolume">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">prepare_front_4_hypervolume</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.prepare_front_4_hypervolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score 2dlist</strong> : 2d list of floats</p>
+<blockquote class="last">
+<div><p>The 2d list of converted floats.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -743,30 +691,106 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.kmeans">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">kmeans</code><span class="sig-paren">(</span><em>np_array</em>, <em>n_clusters</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.kmeans" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function performs k-means clustering.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.extract_pareto_front_inds">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.extract_pareto_front_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
 <blockquote>
-<div><p>2d list of floats.</p>
+<div><p>The individuals to extract the Pareto front from.</p>
 </div></blockquote>
-<p><strong>n_clusters</strong> : int</p>
+<p><strong>min_max_list</strong> : list of ints</p>
 <blockquote>
-<div><p>The number of clusters to generate.</p>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result dictionary</strong> : dictionary</p>
-<blockquote class="last">
-<div><p>The dictionary is in this format. 
-{“cluster_list”: [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : list of xml minidom Node</p>
 <blockquote>
-<div><p>“centroids”: [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]</p>
+<div><p>The population of individuals on the front.</p>
 </div></blockquote>
+<p><strong>non pareto front</strong> : list of xml minidom Node</p>
+<blockquote class="last">
+<div><p>The population of individuals not on the front.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.calc_min_max_range">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">calc_min_max_range</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.calc_min_max_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the minimum and maximum range of the 2d data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>min max range</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The range of the 2d data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.normalise">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">normalise</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function normalise all the data into 0.0-1.0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised 2d list</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The normalised 2d data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.denormalise">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">denormalise</code><span class="sig-paren">(</span><em>data_2dlist</em>, <em>orig_data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.denormalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a 2d data list back into its original range based on the orig_data_2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The normalised list of floats.</p>
+</div></blockquote>
+<p><strong>orig_data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>denormalised 2d list</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The denormalised 2d data.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -811,26 +835,30 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.minimise_score_4_hypervolume">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">minimise_score_4_hypervolume</code><span class="sig-paren">(</span><em>score_list</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.minimise_score_4_hypervolume" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.kmeans">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">kmeans</code><span class="sig-paren">(</span><em>np_array</em>, <em>n_clusters</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.kmeans" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs k-means clustering.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_list</strong> : list of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
 <blockquote>
-<div><p>The performance objectives of an individual.</p>
+<div><p>2d list of floats.</p>
 </div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
+<p><strong>n_clusters</strong> : int</p>
 <blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+<div><p>The number of clusters to generate.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score list</strong> : list of floats</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result dictionary</strong> : dictionary</p>
 <blockquote class="last">
-<div><p>The list of converted floats.</p>
+<div><p>The dictionary is in this format. 
+{“cluster_list”: [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]</p>
+<blockquote>
+<div><p>“centroids”: [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]</p>
+</div></blockquote>
 </div></blockquote>
 </td>
 </tr>
@@ -839,22 +867,26 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.normalise">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">normalise</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.normalise" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function normalise all the data into 0.0-1.0.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.elbow_test">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">elbow_test</code><span class="sig-paren">(</span><em>X</em>, <em>max_cluster</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.elbow_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the elbow test to determine the number of clusters for k-means clustering.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy array</p>
 <blockquote>
-<div><p>The 2d list of floats.</p>
+<div><p>2d list of floats.</p>
+</div></blockquote>
+<p><strong>max_cluster</strong> : int</p>
+<blockquote>
+<div><p>The maximum number of clusters to desirable.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised 2d list</strong> : 2dlist of floats</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>number of clusters</strong> : int</p>
 <blockquote class="last">
-<div><p>The normalised 2d data.</p>
+<div><p>The number of clusters for kmeans clustering</p>
 </div></blockquote>
 </td>
 </tr>
@@ -863,98 +895,66 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.on_pareto_front">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">on_pareto_front</code><span class="sig-paren">(</span><em>score_list</em>, <em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.on_pareto_front" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function determines if the score_list is on the pareto front.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
-<blockquote>
-<div><p>The performance objectives of an individual.</p>
-</div></blockquote>
-<p><strong>score_2dlist</strong> : 2dlist of floats</p>
-<blockquote>
-<div><p>The performance objectives of a population of individuals.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>on pareto</strong> : bool</p>
-<blockquote class="last">
-<div><p>True or False, if True score_list is on the Pareto front, if False score_list is not on the Pareto front.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.prepare_front_4_hypervolume">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">prepare_front_4_hypervolume</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.prepare_front_4_hypervolume" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
-<blockquote>
-<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
-</div></blockquote>
-<p><strong>min_max_list</strong> : list of ints</p>
-<blockquote>
-<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score 2dlist</strong> : 2d list of floats</p>
-<blockquote class="last">
-<div><p>The 2d list of converted floats.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">rmv_unevaluated_inds</code><span class="sig-paren">(</span><em>xmlfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.rmv_unevaluated_inds" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function removes all the individuals that are unevaluated from the xml file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile</strong> : str</p>
-<blockquote class="last">
-<div><p>The file path of the XML file.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.analyse_xml.write_inds_2_xml">
-<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">write_inds_2_xml</code><span class="sig-paren">(</span><em>inds</em>, <em>res_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.write_inds_2_xml" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function writes the individuals minidom Node into an XML file.</p>
+<dt id="pyliburo.pyoptimise.analyse_xml.archetypal_analysis_inds">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>attribs_2_cluster</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.archetypal_analysis_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs archetypal analysis on the specified attributes of the individuals.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
 <blockquote>
-<div><p>All the individuals to be written to the xml file.</p>
+<div><p>All the individuals to be analysed.</p>
 </div></blockquote>
-<p><strong>res_path</strong> : str</p>
+<p><strong>attribs_2_cluster</strong> : str</p>
+<blockquote>
+<div><p>Options: “score”, “inputparam”, “derivedparam”.</p>
+</div></blockquote>
+<p><strong>max_archetypes</strong> : int</p>
+<blockquote>
+<div><p>The maximum permissible number of archetypes to generate.</p>
+</div></blockquote>
+<p><strong>niter</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of iterations of the analysis, Default = 200.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
 <blockquote class="last">
-<div><p>The file path of the XML file.</p>
+<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.analyse_xml.archetypal_analysis">
+<code class="descclassname">pyliburo.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis</code><span class="sig-paren">(</span><em>np_array</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.analyse_xml.archetypal_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs archetypal analysis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
+<blockquote>
+<div><p>2d list of floats.</p>
+</div></blockquote>
+<p><strong>max_archetypes</strong> : int</p>
+<blockquote>
+<div><p>The maximum permissible number of archetypes to generate.</p>
+</div></blockquote>
+<p><strong>niter</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of iterations of the analysis, Default = 200.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
 </div></blockquote>
 </td>
 </tr>

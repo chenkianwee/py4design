@@ -44,8 +44,8 @@
 &#64;author: Tiangang Yin
 Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J., 2013. A new approach of direction discretization and oversampling for 3D anisotropic radiative transfer modeling. Remote Sensing of Environment, 135, pp.213-223.</p>
 <dl class="function">
-<dt id="pyliburo.skyviewfactor.calc_SVF">
-<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">calc_SVF</code><span class="sig-paren">(</span><em>coord</em>, <em>compound</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.calc_SVF" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.wrapTo2PI">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">wrapTo2PI</code><span class="sig-paren">(</span><em>stradiance</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.wrapTo2PI" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
@@ -65,6 +65,11 @@ Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J
 
 </dd></dl>
 
+<dl class="function">
+<dt id="pyliburo.skyviewfactor.thetaPhiToVectorDir">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">thetaPhiToVectorDir</code><span class="sig-paren">(</span><em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.thetaPhiToVectorDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="class">
 <dt id="pyliburo.skyviewfactor.tgDirs">
 <em class="property">class </em><code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">tgDirs</code><span class="sig-paren">(</span><em>nbDirs=2000</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs" title="Permalink to this definition">¶</a></dt>
@@ -77,13 +82,13 @@ Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pyliburo.skyviewfactor.tgDirs.getDirList">
-<code class="descname">getDirList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirList" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.tgDirs.printDirList">
+<code class="descname">printDirList</code><span class="sig-paren">(</span><em>mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.printDirList" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere">
-<code class="descname">getDirLowerHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.tgDirs.getDirList">
+<code class="descname">getDirList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirList" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -92,25 +97,20 @@ Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pyliburo.skyviewfactor.tgDirs.getNbDir">
-<code class="descname">getNbDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getNbDir" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere">
+<code class="descname">getDirLowerHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getDirLowerHemisphere" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pyliburo.skyviewfactor.tgDirs.printDirList">
-<code class="descname">printDirList</code><span class="sig-paren">(</span><em>mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.printDirList" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.tgDirs.getNbDir">
+<code class="descname">getNbDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.tgDirs.getNbDir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="pyliburo.skyviewfactor.thetaPhiToVectorDir">
-<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">thetaPhiToVectorDir</code><span class="sig-paren">(</span><em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.thetaPhiToVectorDir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.skyviewfactor.wrapTo2PI">
-<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">wrapTo2PI</code><span class="sig-paren">(</span><em>stradiance</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.wrapTo2PI" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.skyviewfactor.calc_SVF">
+<code class="descclassname">pyliburo.skyviewfactor.</code><code class="descname">calc_SVF</code><span class="sig-paren">(</span><em>coord</em>, <em>compound</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.skyviewfactor.calc_SVF" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

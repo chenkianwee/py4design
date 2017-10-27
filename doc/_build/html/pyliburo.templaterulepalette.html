@@ -38,8 +38,152 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-templaterulepalette-module">
-<h1>pyliburo.templaterulepalette module<a class="headerlink" href="#pyliburo-templaterulepalette-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.templaterulepalette">
+<span id="pyliburo-templaterulepalette-module"></span><h1>pyliburo.templaterulepalette module<a class="headerlink" href="#module-pyliburo.templaterulepalette" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule">
+<em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">BaseTemplateRule</code><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>add analysis rule to this template rule and specify its bool condition for the analysis rule (either true or false)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>the analysis rule is defined 
+and the method executes the analysis rule</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings">
+<em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyBuildingMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings">
+<em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyTerrainMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings">
+<em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyLandUseMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings">
+<em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyRoadMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 

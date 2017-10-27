@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 import os
@@ -30,44 +30,47 @@ import py2radiance
 #================================================================================================================
 def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 100, ydim = 100):
     '''
-    Algorithm to calculate frontal area index for a design
+    This function calculates the frontal area index of an urban massing.
     
     PARAMETERS
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : a list of OCCsolids
+        The buildings to be analysed.
     
-    :param boundary_occface: occface that is the boundary of the area
-    :ptype: occface
+    boundary_occface: OCCface 
+        The boundary of the FAI analysis. This face will be gridded.
     
-    :param wind_dir: a 3d tuple specifying the direction of the wind is blowing from
-    :ptype: tuple
+    wind_dir: pyvec
+        Pyvec is a tuple of floats that documents the xyz vector of a dir e.g. (x,y,z)
     
-    :param xdim: x dimension of the grid for the boundary occface, in metres (m)
-    :ptype: float
+    xdim: float
+        X-dimension of the grid for the boundary occface, in metres (m)
     
-    :param ydim: y dimension of the grid for the boundary occface, in metres (m)
-    :ptype: float
+    ydim: float
+        Y-dimension of the grid for the boundary occface, in metres (m)
     
     RETURNS
     -------
-    :returns avg_fai: average frontal area index of the whole design
-    :rtype: float
-    
-    :returns gridded_boundary: the grid of the frontal area index
-    :rtype: list(occface)
-    
-    :returns fai_list: list of all the FAI of each plot
-    :rtype: list(float)    
-    
-    :returns fs_list: the projected surfaces fused together
-    :rtype: list(occface)
-    
-    :returns wp_list: the plane representing the direction of the wind
-    :rtype: list(occface)
-    
-    :returns os_list: the facade surfaces that are projected
-    :rtype: list(occface)
+    result dictionary : dictionary
+        A dictionary with this keys : {"average", "grids", "fai_list", "projected_surface_list" , "wind_plane_list", "vertical_surface_list" }
+        
+        average: float
+            Average frontal area index of the whole design.
+        
+        grids: list of OCCfaces
+            The grid used for the frontal area index.
+        
+        fai_list: list of floats
+            List of all the FAI of each grid.   
+        
+        projected_surface_list: list of OCCfaces
+            The projected surfaces merged together.
+        
+        wind_plane_list: list of OCCfaces
+            The plane representing the direction of the wind
+        
+        vertical_surface_list: list of OCCfaces
+            The facade surfaces that are projected.
     
     '''
     fai_list = []
@@ -153,38 +156,37 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     
     return res_dict
     
-def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
+def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
     '''
-    Algorithm to calculate frontal area index for a single plot
+    This function calculates the frontal area index for a single grid.
     
     PARAMETERS
     ----------
-    :param facet_occpolygons : a list of occ faces of vertical facades 
-    :ptype: list(occface)
+    facade_occfaces : list of OCCfaces 
+        List of occfaces of vertical facades 
     
-    :param plane_occpolygon: an occ face that is the horizontal plane buildings are sitting on 
-    :ptype: occface
+    plane_occface: OCCface
+        An occface that is the horizontal plane buildings are sitting on, the single grid.
     
-    :param wind_dir: a 3d tuple specifying the direction of the wind is blowing from
-    :ptype: tuple
+    wind_dir: pyvec
+        Pyvec is a tuple of floats that documents the xyz vector of a dir e.g. (x,y,z).
     
     RETURNS
     -------
-    :returns fai: frontal area index 
-    :rtype: float
+    fai: float
+        Frontal area index. 
     
-    :returns fuse_srfs: the projected surfaces fused together
-    :rtype: list(occface)
+    fuse_srfs: list of OCCfaces
+        The projected surfaces fused together
     
+    wind_plane: OCCface
+        The plane representing the direction of the wind
     
-    :returns wind_plane: the plane representing the direction of the wind
-    :rtype: occface
-    
-    :returns surfaces_projected: the facade surfaces that are projected
-    :rtype: list(occface)
+    surfaces_projected: list of OCCfaces
+        the facade surfaces that are projected
     
     '''
-    facade_faces_compound = py3dmodel.construct.make_compound(facade_occpolygons)
+    facade_faces_compound = py3dmodel.construct.make_compound(facade_occfaces)
      
     #create win dir plane
     #get the bounding box of the compound, so that the wind plane will be placed at the edge of the bounding box
@@ -200,7 +202,7 @@ def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
     
     surfaces_projected = []
     projected_facet_faces = []
-    for facade_face in facade_occpolygons:
+    for facade_face in facade_occfaces:
         surfaces_projected.append(facade_face)
         projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facade_face)
         projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
@@ -222,7 +224,7 @@ def frontal_area_index_aplot(facade_occpolygons, plane_occpolygon, wind_dir):
     
     #calculate the frontal area index
     facet_area = gml3dmodel.faces_surface_area(fuse_srfs)
-    plane_area = py3dmodel.calculate.face_area(plane_occpolygon)
+    plane_area = py3dmodel.calculate.face_area(plane_occface)
     fai = facet_area/plane_area
     
     return fai, fuse_srfs, wind_plane, surfaces_projected

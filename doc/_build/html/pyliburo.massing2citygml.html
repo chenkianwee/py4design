@@ -38,8 +38,66 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-massing2citygml-module">
-<h1>pyliburo.massing2citygml module<a class="headerlink" href="#pyliburo-massing2citygml-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.massing2citygml">
+<span id="pyliburo-massing2citygml-module"></span><h1>pyliburo.massing2citygml module<a class="headerlink" href="#module-pyliburo.massing2citygml" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.massing2citygml.Massing2Citygml">
+<em class="property">class </em><code class="descclassname">pyliburo.massing2citygml.</code><code class="descname">Massing2Citygml</code><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.massing2citygml.Massing2Citygml.read_collada">
+<code class="descname">read_collada</code><span class="sig-paren">(</span><em>dae_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.read_collada" title="Permalink to this definition">¶</a></dt>
+<dd><p>the dae file must be modelled as such:
+close_shells = buildings
+open_shells = terrain &amp; plots(land-use)
+edges = street network</p>
+<p>#TODO: a function that will convert collada to citygml base on the visual scenes and library nodes (groups and layers)
+dae = Collada(collada_file)
+nodes = dae.scene.nodes</p>
+<p>#this loops thru the visual scene 
+#loop thru the library nodes
+for node in nodes:</p>
+<blockquote>
+<div><p>name = node.xmlnode.get(‘name’)
+children_nodes = node.children
+if children_nodes:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>for node2 in children_nodes:</dt>
+<dd><p class="first">name2 = node2.xmlnode.get(‘name’)
+print ‘name2’, name2
+children_node2 = node2.children
+if children_node2:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>if type(children_node2[0]) == scene.NodeNode:</dt>
+<dd>print children_node2[0].children</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.massing2citygml.Massing2Citygml.add_template_rule">
+<code class="descname">add_template_rule</code><span class="sig-paren">(</span><em>template_rule_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.add_template_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.massing2citygml.Massing2Citygml.execute_analysis_rule">
+<code class="descname">execute_analysis_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.execute_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.massing2citygml.Massing2Citygml.execute_template_rule">
+<code class="descname">execute_template_rule</code><span class="sig-paren">(</span><em>citygml_filepath</em>, <em>tolerance=0.01</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.execute_template_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 

@@ -92,6 +92,12 @@ every node has multiple predecessors and successors, one in every list.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="pyliburo.pyoptimise.hv.MultiList.getLength">
+<code class="descname">getLength</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.hv.MultiList.getLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of the i-th list.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pyliburo.pyoptimise.hv.MultiList.append">
 <code class="descname">append</code><span class="sig-paren">(</span><em>node</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.hv.MultiList.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Appends a node to the end of the list at the given index.</p>
@@ -104,9 +110,9 @@ every node has multiple predecessors and successors, one in every list.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyliburo.pyoptimise.hv.MultiList.getLength">
-<code class="descname">getLength</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.hv.MultiList.getLength" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the length of the i-th list.</p>
+<dt id="pyliburo.pyoptimise.hv.MultiList.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>node</em>, <em>index</em>, <em>bounds</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.hv.MultiList.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes and returns ‘node’ from all lists in [0, ‘index’[.</p>
 </dd></dl>
 
 <dl class="method">
@@ -115,12 +121,6 @@ every node has multiple predecessors and successors, one in every list.</p>
 <dd><p>Inserts ‘node’ at the position it had in all lists in [0, ‘index’[
 before it was removed. This method assumes that the next and previous 
 nodes of the node that is reinserted are in the list.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyliburo.pyoptimise.hv.MultiList.remove">
-<code class="descname">remove</code><span class="sig-paren">(</span><em>node</em>, <em>index</em>, <em>bounds</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.hv.MultiList.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes and returns ‘node’ from all lists in [0, ‘index’[.</p>
 </dd></dl>
 
 </dd></dl>

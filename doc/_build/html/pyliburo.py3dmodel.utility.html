@@ -41,38 +41,6 @@
   <div class="section" id="module-pyliburo.py3dmodel.utility">
 <span id="pyliburo-py3dmodel-utility-module"></span><h1>pyliburo.py3dmodel.utility module<a class="headerlink" href="#module-pyliburo.py3dmodel.utility" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="pyliburo.py3dmodel.utility.falsecolour">
-<code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">falsecolour</code><span class="sig-paren">(</span><em>vals</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.falsecolour" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts a list of values into a list of rgb values with reference to the minimum and maximum value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vals</strong> : list of float</p>
-<blockquote>
-<div><p>A list of values to be converted into rgb.</p>
-</div></blockquote>
-<p><strong>minval</strong> : float</p>
-<blockquote>
-<div><p>The minimum value of the falsecolour rgb.</p>
-</div></blockquote>
-<p><strong>maxval</strong> : float</p>
-<blockquote>
-<div><p>The maximum value of the falsecolour rgb.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rgb value</strong> : list of tuple of floats</p>
-<blockquote class="last">
-<div><p>The converted list of rgb value.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyliburo.py3dmodel.utility.generate_falsecolour_bar">
 <code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">generate_falsecolour_bar</code><span class="sig-paren">(</span><em>minval</em>, <em>maxval</em>, <em>unit_str</em>, <em>bar_length</em>, <em>description_str=None</em>, <em>bar_pos=(0</em>, <em>0</em>, <em>0)</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.generate_falsecolour_bar" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function constructs a falsecolour diagram.</p>
@@ -165,6 +133,38 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="pyliburo.py3dmodel.utility.falsecolour">
+<code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">falsecolour</code><span class="sig-paren">(</span><em>vals</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.falsecolour" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a list of values into a list of rgb values with reference to the minimum and maximum value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vals</strong> : list of float</p>
+<blockquote>
+<div><p>A list of values to be converted into rgb.</p>
+</div></blockquote>
+<p><strong>minval</strong> : float</p>
+<blockquote>
+<div><p>The minimum value of the falsecolour rgb.</p>
+</div></blockquote>
+<p><strong>maxval</strong> : float</p>
+<blockquote>
+<div><p>The maximum value of the falsecolour rgb.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rgb value</strong> : list of tuple of floats</p>
+<blockquote class="last">
+<div><p>The converted list of rgb value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pyliburo.py3dmodel.utility.rgb2val">
 <code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">rgb2val</code><span class="sig-paren">(</span><em>rgb</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.rgb2val" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function converts a rgb of value into its original value with reference to the minimum and maximum value.</p>
@@ -189,41 +189,6 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>original value</strong> : float</p>
 <blockquote class="last">
 <div><p>The orignal float value.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.py3dmodel.utility.visualise">
-<code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">visualise</code><span class="sig-paren">(</span><em>occtopo_2dlist</em>, <em>colour_list=None</em>, <em>backend='qt-pyqt5'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.visualise" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function visualise a 3D model using the PythonOCC viewer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopo_2dlist</strong> : 2d list of OCCtopologies</p>
-<blockquote>
-<div><p>Geometries to be visualised together with the results.
-OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
-</div></blockquote>
-<p><strong>colour_list</strong> : list of str, optional</p>
-<blockquote>
-<div><p>The colours of the occtopo_2dlist, Default = None. If None all the geometries are displayed in white.
-The colour strings include: “WHITE”, “BLUE”, “RED”, “GREEN”, “YELLOW”, “CYAN”, “BLACK”, “ORANGE”. 
-The number of colours must correspond to the number of list in the other_topo2dlist.</p>
-</div></blockquote>
-<p><strong>backend</strong> : str, optional</p>
-<blockquote>
-<div><p>The graphic interface to use for visualisation, Default = qt-pyqt5. Other options include:”qt-pyqt4”, “qt-pyside”, “wx”</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>None</strong> : None</p>
-<blockquote class="last">
-<div><p>A qt window pops up displaying the geometries.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -264,6 +229,41 @@ OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, O
 <p><strong>maxval</strong> : float, optional</p>
 <blockquote>
 <div><p>The maximum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the minimum value from the results.</p>
+</div></blockquote>
+<p><strong>backend</strong> : str, optional</p>
+<blockquote>
+<div><p>The graphic interface to use for visualisation, Default = qt-pyqt5. Other options include:”qt-pyqt4”, “qt-pyside”, “wx”</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>None</strong> : None</p>
+<blockquote class="last">
+<div><p>A qt window pops up displaying the geometries.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.py3dmodel.utility.visualise">
+<code class="descclassname">pyliburo.py3dmodel.utility.</code><code class="descname">visualise</code><span class="sig-paren">(</span><em>occtopo_2dlist</em>, <em>colour_list=None</em>, <em>backend='qt-pyqt5'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py3dmodel.utility.visualise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function visualise a 3D model using the PythonOCC viewer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopo_2dlist</strong> : 2d list of OCCtopologies</p>
+<blockquote>
+<div><p>Geometries to be visualised together with the results.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+<p><strong>colour_list</strong> : list of str, optional</p>
+<blockquote>
+<div><p>The colours of the occtopo_2dlist, Default = None. If None all the geometries are displayed in white.
+The colour strings include: “WHITE”, “BLUE”, “RED”, “GREEN”, “YELLOW”, “CYAN”, “BLACK”, “ORANGE”. 
+The number of colours must correspond to the number of list in the other_topo2dlist.</p>
 </div></blockquote>
 <p><strong>backend</strong> : str, optional</p>
 <blockquote>

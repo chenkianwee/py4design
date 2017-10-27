@@ -38,8 +38,554 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-gmlparmpalette-module">
-<h1>pyliburo.gmlparmpalette module<a class="headerlink" href="#pyliburo-gmlparmpalette-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.gmlparmpalette">
+<span id="pyliburo-gmlparmpalette-module"></span><h1>pyliburo.gmlparmpalette module<a class="headerlink" href="#module-pyliburo.gmlparmpalette" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BaseParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BaseParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>the method defines the int_range of the parm_range</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>the method defines the float_range of the parm_range</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>the method sets the parm_range attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>the method determines how many parameters is required for 
+this urban design</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>the method map the normalised parameters into the define parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BaseParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BaseParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>the parameterisation process is defined 
+and the method executes the parameterisation process</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgFlrAreaHeightParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgFlrAreaHeightParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgHeightParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgHeightParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgHeightParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgOrientationParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.set_clash_detection">
+<code class="descname">set_clash_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.set_clash_detection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.set_boundary_detection">
+<code class="descname">set_boundary_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.set_boundary_detection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgOrientationParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgOrientationParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgPositionParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.set_clash_detection">
+<code class="descname">set_clash_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.set_clash_detection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.set_boundary_detection">
+<code class="descname">set_boundary_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.set_boundary_detection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.set_xdim_ydim">
+<code class="descname">set_xdim_ydim</code><span class="sig-paren">(</span><em>xdim</em>, <em>ydim</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.set_xdim_ydim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgPositionParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgPositionParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgTwistParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTwistParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTwistParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgBendParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgBendParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgBendParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgSlantParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgSlantParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgSlantParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm">
+<em class="property">class </em><code class="descclassname">pyliburo.gmlparmpalette.</code><code class="descname">BldgTaperParm</code><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.gmlparmpalette.BaseParm" title="pyliburo.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.gmlparmpalette.BaseParm</span></code></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.gmlparmpalette.BldgTaperParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparmpalette.BldgTaperParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 

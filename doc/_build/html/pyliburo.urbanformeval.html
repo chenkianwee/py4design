@@ -38,8 +38,594 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-urbanformeval-module">
-<h1>pyliburo.urbanformeval module<a class="headerlink" href="#pyliburo-urbanformeval-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.urbanformeval">
+<span id="pyliburo-urbanformeval-module"></span><h1>pyliburo.urbanformeval module<a class="headerlink" href="#module-pyliburo.urbanformeval" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.urbanformeval.frontal_area_index">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">frontal_area_index</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>boundary_occface</em>, <em>wind_dir</em>, <em>xdim=100</em>, <em>ydim=100</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.frontal_area_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the frontal area index of an urban massing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>building_occsolids</strong> : a list of OCCsolids</p>
+<blockquote>
+<div><p>The buildings to be analysed.</p>
+</div></blockquote>
+<p><strong>boundary_occface: OCCface</strong></p>
+<blockquote>
+<div><p>The boundary of the FAI analysis. This face will be gridded.</p>
+</div></blockquote>
+<p><strong>wind_dir: pyvec</strong></p>
+<blockquote>
+<div><p>Pyvec is a tuple of floats that documents the xyz vector of a dir e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>xdim: float</strong></p>
+<blockquote>
+<div><p>X-dimension of the grid for the boundary occface, in metres (m)</p>
+</div></blockquote>
+<p><strong>ydim: float</strong></p>
+<blockquote>
+<div><p>Y-dimension of the grid for the boundary occface, in metres (m)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result dictionary</strong> : dictionary</p>
+<blockquote class="last">
+<div><p>A dictionary with this keys : {“average”, “grids”, “fai_list”, “projected_surface_list” , “wind_plane_list”, “vertical_surface_list” }</p>
+<dl class="docutils">
+<dt>average: float</dt>
+<dd><p class="first last">Average frontal area index of the whole design.</p>
+</dd>
+<dt>grids: list of OCCfaces</dt>
+<dd><p class="first last">The grid used for the frontal area index.</p>
+</dd>
+<dt>fai_list: list of floats</dt>
+<dd><p class="first last">List of all the FAI of each grid.</p>
+</dd>
+<dt>projected_surface_list: list of OCCfaces</dt>
+<dd><p class="first last">The projected surfaces merged together.</p>
+</dd>
+<dt>wind_plane_list: list of OCCfaces</dt>
+<dd><p class="first last">The plane representing the direction of the wind</p>
+</dd>
+<dt>vertical_surface_list: list of OCCfaces</dt>
+<dd><p class="first last">The facade surfaces that are projected.</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.frontal_area_index_aplot">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">frontal_area_index_aplot</code><span class="sig-paren">(</span><em>facade_occpolygons</em>, <em>plane_occpolygon</em>, <em>wind_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.frontal_area_index_aplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Algorithm to calculate frontal area index for a single plot</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param facet_occpolygons</strong> : a list of occ faces of vertical facades</p>
+<p><strong>:ptype: list(occface)</strong></p>
+<p><strong>:param plane_occpolygon: an occ face that is the horizontal plane buildings are sitting on</strong></p>
+<p><strong>:ptype: occface</strong></p>
+<p><strong>:param wind_dir: a 3d tuple specifying the direction of the wind is blowing from</strong></p>
+<p><strong>:ptype: tuple</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">returns fai:</th><td class="field-body">frontal area index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns fuse_srfs:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">the projected surfaces fused together</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns wind_plane:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">the plane representing the direction of the wind</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">occface</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns surfaces_projected:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">the facade surfaces that are projected</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.route_directness">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">route_directness</code><span class="sig-paren">(</span><em>network_occedgelist</em>, <em>plot_occfacelist</em>, <em>boundary_occface</em>, <em>obstruction_occfacelist=[]</em>, <em>rdi_threshold=1.6</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.route_directness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Algorithm for Route Directness Test  
+Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
+urban design international 17, 228-238</p>
+<p>A test that measures the connectivity of street network in a neighbourhood
+measuring route directness for each parcel to each of a series
+of points around the periphery of the study area,
+and identifying the percentage of parcels for which
+any of these measures exceed 1.6. Urban area is 1.3, suburban is 1.6</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param network_occedgelist</strong> : a list of occedges that is the network to be analysed, clearly define network with</p>
+<blockquote>
+<div><p>nodes and edges</p>
+</div></blockquote>
+<p><strong>:ptype: list(occedge)</strong></p>
+<p><strong>:param plot_occfacelist: a list of occfaces that is the land use plots</strong></p>
+<p><strong>:ptype: list(occface)</strong></p>
+<p><strong>:param boundary_occface: occface that is the boundary of the area</strong></p>
+<p><strong>:ptype: occface</strong></p>
+<p><strong>:param route_directness_threshold: a float specifying the route directness threshold, default value 1.6</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">returns route_directness_measure:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">route_directness_measure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns failed_plots:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">plots that fail the route directness measure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns successful_plots:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">plots that pass the route directness measure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns peripheral_pts:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">peripheral pts</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occpts)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_route_directness">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_route_directness</code><span class="sig-paren">(</span><em>startpypt</em>, <em>peripheralpypt</em>, <em>obstruction_occfacelist</em>, <em>G</em>, <em>plot_area=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_route_directness" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.designate_peripheral_pts">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">designate_peripheral_pts</code><span class="sig-paren">(</span><em>boundary_occface</em>, <em>network_occedgelist</em>, <em>precision</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.designate_peripheral_pts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.connect_street_network2plot">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">connect_street_network2plot</code><span class="sig-paren">(</span><em>network_occedgelist</em>, <em>plot_occfacelist</em>, <em>peripheral_n_inter_ptlist</em>, <em>precision</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.connect_street_network2plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.route_ard_obstruction">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">route_ard_obstruction</code><span class="sig-paren">(</span><em>obstruction_face</em>, <em>crow_wire</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.route_ard_obstruction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.generate_directions">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">generate_directions</code><span class="sig-paren">(</span><em>rot_degree</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.generate_directions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.construct_network_compound">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">construct_network_compound</code><span class="sig-paren">(</span><em>network_occedgelist</em>, <em>extrusion_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.construct_network_compound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.draw_street_graph">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">draw_street_graph</code><span class="sig-paren">(</span><em>networkx_graph</em>, <em>node_index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.draw_street_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.nshffai">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">nshffai</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>nshffai_threshold=None</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.nshffai" title="Permalink to this definition">¶</a></dt>
+<dd><p>Algorithm to calculate Solar Heat Gain Facade Area to Volume Index</p>
+<p>Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
+receives irradiation above a specified level over the building volume.</p>
+<p>Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
+receives irradiation below a specified level over the net facade area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param building_occsolids</strong> : a list of buildings occsolids</p>
+<p><strong>:ptype: list(occsolid)</strong></p>
+<p><strong>:param irrad_threshold: a solar irradiance threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param epwweatherfile: file path of the epw weatherfile</strong></p>
+<p><strong>:ptype: string</strong></p>
+<p><strong>:param xdim: x dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param ydim: y dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">returns shgfavi:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">average solar heat gain facade area volume index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns shgfavi_percent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">percentage of buildings achieving the shgfavi_threshold</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns shgfai:</th><td class="field-body">shgfai value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns sensor_srflist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">surfaces of the grid used for solar irradiation calculation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns irrad_ress:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">solar irradiation results from the simulation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.nshffai2">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">nshffai2</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>lower_irrad_threshold</em>, <em>upper_irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>nshffai_threshold=None</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.nshffai2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Algorithm to calculate Solar Heat Gain Facade Area to Volume Index</p>
+<p>Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
+receives irradiation above a specified level over the building volume.</p>
+<p>Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
+receives irradiation below a specified level over the net facade area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param building_occsolids</strong> : a list of buildings occsolids</p>
+<p><strong>:ptype: list(occsolid)</strong></p>
+<p><strong>:param irrad_threshold: a solar irradiance threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param epwweatherfile: file path of the epw weatherfile</strong></p>
+<p><strong>:ptype: string</strong></p>
+<p><strong>:param xdim: x dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param ydim: y dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">returns shgfavi:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">average solar heat gain facade area volume index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns shgfavi_percent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">percentage of buildings achieving the shgfavi_threshold</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns shgfai:</th><td class="field-body">shgfai value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns sensor_srflist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">surfaces of the grid used for solar irradiation calculation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns irrad_ress:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">solar irradiation results from the simulation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_epv">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_epv</code><span class="sig-paren">(</span><em>sensor_srflist</em>, <em>irrad_ress</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_epv" title="Permalink to this definition">¶</a></dt>
+<dd><p>epv is energy produced by pv (kwh/yr)</p>
+<p>eqn to calculate the energy produce by pv
+epv = apv*fpv*gt*nmod*ninv
+apv is area of pv (m2)
+fpv is faction of surface with active solar cells (ratio)
+gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
+nmod is the pv efficiency (12%)
+ninv is the avg inverter efficiency (90%)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.pvafai">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">pvafai</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>mode='roof'</em>, <em>pvafai_threshold=None</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.pvafai" title="Permalink to this definition">¶</a></dt>
+<dd><p>PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
+receives irradiation above a specified level over the building volume.</p>
+<p>epv calculates the potential electricity 
+that can be generated on the buildings annually. (kWh/yr.)</p>
+<p>PV Area Index (PVAI) calculates the ratio of  area that 
+receives irradiation above a specified level over the net envelope/roof/facade area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param building_occsolids</strong> : a list of buildings occsolids</p>
+<p><strong>:ptype: list(occsolid)</strong></p>
+<p><strong>:param irrad_threshold: a solar irradiance threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param epwweatherfile: file path of the epw weatherfile</strong></p>
+<p><strong>:ptype: string</strong></p>
+<p><strong>:param xdim: x dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param ydim: y dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param pvavi_threshold: a pvavi threshold value for calculating the pvavi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">returns avg_pvavi:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">average pvavi facade area volume index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns pvavi_percent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">percentage of buildings achieving the pvavi_threshold</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns pvai:</th><td class="field-body">pvai value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns epv:</th><td class="field-body">potential electricity that can be generated on the buildings annually. (kWh/yr.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns sensor_srflist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">surfaces of the grid used for solar irradiation calculation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns irrad_ress:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">solar irradiance results from the simulation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.pvefai">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">pvefai</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>roof_irrad_threshold</em>, <em>facade_irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>pvrfai_threshold=None</em>, <em>pvffai_threshold=None</em>, <em>pvefai_threshold=None</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.pvefai" title="Permalink to this definition">¶</a></dt>
+<dd><p>PV Envelope Area to Volume  Index (PVEAVI) calculates the ratio of envelope area that 
+receives irradiation above a specified level over the building volume.</p>
+<p>epv calculates the potential electricity 
+that can be generated on the buildings annually. (kWh/yr.)</p>
+<p>PV Area Index (PVEAI) calculates the ratio of  area that 
+receives irradiation above a specified level over the net envelope area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param building_occsolids</strong> : a list of buildings occsolids</p>
+<p><strong>:ptype: list(occsolid)</strong></p>
+<p><strong>:param irrad_threshold: a solar irradiance threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param epwweatherfile: file path of the epw weatherfile</strong></p>
+<p><strong>:ptype: string</strong></p>
+<p><strong>:param xdim: x dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param ydim: y dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param pvravi_threshold: a pvravi threshold value for calculating the pvravi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param pvfavi_threshold: a pvravi threshold value for calculating the pvfavi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param pveavi_threshold: a pvravi threshold value for calculating the pveavi_percent</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">returns list of avi averages:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">average avi values of pveavi, pvravi, pvfavi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float, float, float)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns list of avi_percent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">percentage of buildings achieving the avi_threshold, pveavi_percent, pvravi_percent, pvfavi_percent</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float, float, float)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns list of fai values:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">fai values of pveai, pvrai, pvfai</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float, float, float)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns epv:</th><td class="field-body">potential electricity that can be generated on the buildings annually. (kWh/yr.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns sensor_srflist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">surfaces of the grid used for solar irradiation calculation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns irrad_ress:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">solar irradiance results from the simulation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.dffai">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">dffai</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>illum_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>daysim_folderpath</em>, <em>dffai_threshold=None</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.dffai" title="Permalink to this definition">¶</a></dt>
+<dd><p>Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
+receives daylighting above a specified level over the volume of the building.</p>
+<p>Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
+receives daylighting above a specified level over the total facade area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>:param building_occsolids</strong> : a list of buildings occsolids</p>
+<p><strong>:ptype: list(occsolid)</strong></p>
+<p><strong>:param illum_threshold: a solar illuminance threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param epwweatherfile: file path of the epw weatherfile</strong></p>
+<p><strong>:ptype: string</strong></p>
+<p><strong>:param xdim: x dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param ydim: y dimension grid size</strong></p>
+<p><strong>:ptype: float</strong></p>
+<p><strong>:param dfavi_threshold: a shgfavi threshold value</strong></p>
+<p><strong>:ptype: float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">returns dfavi:</th><td class="field-body">average dfavi facade area volume index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns dfavi_percent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">percentage of buildings achieving the dfavi_threshold</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns dfai:</th><td class="field-body">dfai value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns sensor_srflist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">surfaces of the grid used for solar irradiation calculation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(occface)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">returns mean illum_ress:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">mean illuminance results from the simulation, for visualisation purpose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.initialise_vol_indexes">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">initialise_vol_indexes</code><span class="sig-paren">(</span><em>building_occsolids</em>, <em>xdim</em>, <em>ydim</em>, <em>rad_folderpath</em>, <em>surface='facade'</em>, <em>shading_occfaces=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.initialise_vol_indexes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.execute_cummulative_radiance">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">execute_cummulative_radiance</code><span class="sig-paren">(</span><em>rad</em>, <em>start_mth</em>, <em>end_mth</em>, <em>start_date</em>, <em>end_date</em>, <em>start_hr</em>, <em>end_hr</em>, <em>epwweatherfile</em>, <em>mode='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.execute_cummulative_radiance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_bldg_flr_area">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_bldg_flr_area</code><span class="sig-paren">(</span><em>bldg_occsolid</em>, <em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_bldg_flr_area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_bld_up_area">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_bld_up_area</code><span class="sig-paren">(</span><em>bldg_occsolid_list</em>, <em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_bld_up_area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_shape_factor">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_shape_factor</code><span class="sig-paren">(</span><em>bldg_occsolid_list</em>, <em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_shape_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_urban_vol">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_urban_vol</code><span class="sig-paren">(</span><em>bldg_occsolid_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_urban_vol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_afi">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_afi</code><span class="sig-paren">(</span><em>bldgdict_list</em>, <em>result_threshold</em>, <em>mode</em>, <em>flr2flr_height=3.0</em>, <em>afi_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_afi" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate area 2 floor area index</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.calculate_afi2">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">calculate_afi2</code><span class="sig-paren">(</span><em>bldgdict_list</em>, <em>lower_result_threshold</em>, <em>upper_result_threshold</em>, <em>mode</em>, <em>flr2flr_height=3.0</em>, <em>afi_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.calculate_afi2" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate area 2 floor area index for nshffai2</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.urbanformeval.get_vol2srfs_dict">
+<code class="descclassname">pyliburo.urbanformeval.</code><code class="descname">get_vol2srfs_dict</code><span class="sig-paren">(</span><em>result_list</em>, <em>sensor_srflist</em>, <em>bldgdict_list</em>, <em>surface='all_surfaces'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.urbanformeval.get_vol2srfs_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>rearrange the surfaces of a building accordingly for calculate_afi function</p>
+</dd></dl>
+
 </div>
 
 

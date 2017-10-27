@@ -47,6 +47,12 @@
 <p class="rubric">Attributes</p>
 <p class="rubric">Methods</p>
 <dl class="attribute">
+<dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.dict_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>the key to the value that will be added to the geometry dictionary, 
@@ -60,35 +66,6 @@ the value to must always be a true or false (bool)</p>
 and the method executes the analysis rule</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary">
-<em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">IsEdgeInBoundary</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
-<p class="rubric">Attributes</p>
-<p class="rubric">Methods</p>
-<dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key">
-<code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.execute">
-<code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -98,6 +75,11 @@ and the method executes the analysis rule</p>
 <p class="rubric">Attributes</p>
 <p class="rubric">Methods</p>
 <dl class="attribute">
+<dt id="pyliburo.analysisrulepalette.IsShellClosed.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.IsShellClosed.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.dict_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -105,11 +87,6 @@ and the method executes the analysis rule</p>
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.IsShellClosed.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsShellClosed.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.for_shape_type" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -121,6 +98,11 @@ and the method executes the analysis rule</p>
 <p class="rubric">Attributes</p>
 <p class="rubric">Methods</p>
 <dl class="attribute">
+<dt id="pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.IsShellInBoundary.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.dict_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -128,11 +110,6 @@ and the method executes the analysis rule</p>
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.IsShellInBoundary.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -144,6 +121,11 @@ and the method executes the analysis rule</p>
 <p class="rubric">Attributes</p>
 <p class="rubric">Methods</p>
 <dl class="attribute">
+<dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.dict_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -153,9 +135,27 @@ and the method executes the analysis rule</p>
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.execute" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary">
+<em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">IsEdgeInBoundary</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
+<p class="rubric">Attributes</p>
+<p class="rubric">Methods</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type">
+<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key">
+<code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.execute" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

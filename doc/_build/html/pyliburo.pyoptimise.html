@@ -40,6 +40,186 @@
             
   <div class="section" id="module-pyliburo.pyoptimise">
 <span id="pyliburo-pyoptimise-package"></span><h1>pyliburo.pyoptimise package<a class="headerlink" href="#module-pyliburo.pyoptimise" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.pyoptimise.empty_xml_files">
+<code class="descclassname">pyliburo.pyoptimise.</code><code class="descname">empty_xml_files</code><span class="sig-paren">(</span><em>xml_filelist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.empty_xml_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function empties all the xml files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xml_filelist</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The list of xml files to be emptied.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.create_nsga2_population_class">
+<code class="descclassname">pyliburo.pyoptimise.</code><code class="descname">create_nsga2_population_class</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.create_nsga2_population_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a population class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gene_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a Gene class instance. Each dictionay is in this format: {“type”: “int_range”, “range”: (0,4,1)}.</p>
+</div></blockquote>
+<p><strong>score_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a ScoreMeta class instance. Each dictionay is in this format: {“name”: “solar”, “minmax”: “min”}.</p>
+</div></blockquote>
+<p><strong>mutation_rate</strong> : float</p>
+<blockquote>
+<div><p>The mutation probability, the probability is between 0 to 1. The usual mutation probability is about 0.01.</p>
+</div></blockquote>
+<p><strong>crossover_rate</strong> : float</p>
+<blockquote>
+<div><p>The crossover rate, the rate is between 0 to 1. The usual crossover rate is about 0.8.</p>
+</div></blockquote>
+<p><strong>init_population</strong> : int</p>
+<blockquote>
+<div><p>The population size. The usual size is about 100.</p>
+</div></blockquote>
+<p><strong>live_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the living individuals.</p>
+</div></blockquote>
+<p><strong>dead_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the dead individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>population</strong> : Population class instance</p>
+<blockquote class="last">
+<div><p>The created population class instance.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.initialise_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.</code><code class="descname">initialise_nsga2</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.initialise_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initialises the population and writes the xml files for an NSGA2 optimisation process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gene_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a Gene class instance. Each dictionay is in this format: {“type”: “int_range”, “range”: (0,4,1)}.</p>
+</div></blockquote>
+<p><strong>score_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a ScoreMeta class instance. Each dictionay is in this format: {“name”: “solar”, “minmax”: “min”}.</p>
+</div></blockquote>
+<p><strong>mutation_rate</strong> : float</p>
+<blockquote>
+<div><p>The mutation probability, the probability is between 0 to 1. The usual mutation probability is about 0.01.</p>
+</div></blockquote>
+<p><strong>crossover_rate</strong> : float</p>
+<blockquote>
+<div><p>The crossover rate, the rate is between 0 to 1. The usual crossover rate is about 0.8.</p>
+</div></blockquote>
+<p><strong>init_population</strong> : int</p>
+<blockquote>
+<div><p>The population size. The usual size is about 100.</p>
+</div></blockquote>
+<p><strong>live_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the living individuals.</p>
+</div></blockquote>
+<p><strong>dead_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the dead individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>population</strong> : Population class instance</p>
+<blockquote class="last">
+<div><p>The created population class instance.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.resume_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.</code><code class="descname">resume_nsga2</code><span class="sig-paren">(</span><em>gene_dict_list</em>, <em>score_dict_list</em>, <em>mutation_rate</em>, <em>crossover_rate</em>, <em>init_population</em>, <em>live_file</em>, <em>dead_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.resume_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function resumes a broken NSGA2 optimisation process based on the dead xml file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gene_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a Gene class instance. Each dictionay is in this format: {“type”: “int_range”, “range”: (0,4,1)}.</p>
+</div></blockquote>
+<p><strong>score_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>Each dictionary contains the parameters for creating a ScoreMeta class instance. Each dictionay is in this format: {“name”: “solar”, “minmax”: “min”}.</p>
+</div></blockquote>
+<p><strong>mutation_rate</strong> : float</p>
+<blockquote>
+<div><p>The mutation probability, the probability is between 0 to 1. The usual mutation probability is about 0.01.</p>
+</div></blockquote>
+<p><strong>crossover_rate</strong> : float</p>
+<blockquote>
+<div><p>The crossover rate, the rate is between 0 to 1. The usual crossover rate is about 0.8.</p>
+</div></blockquote>
+<p><strong>init_population</strong> : int</p>
+<blockquote>
+<div><p>The population size. The usual size is about 100.</p>
+</div></blockquote>
+<p><strong>live_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the living individuals.</p>
+</div></blockquote>
+<p><strong>dead_file</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the dead individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>population</strong> : Population class instance</p>
+<blockquote class="last">
+<div><p>The resumed population class instance.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.feedback_nsga2">
+<code class="descclassname">pyliburo.pyoptimise.</code><code class="descname">feedback_nsga2</code><span class="sig-paren">(</span><em>population</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.feedback_nsga2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the feedback process of a population.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>population</strong> : Population class instance</p>
+<blockquote class="last">
+<div><p>The function will perform the reproduction on this population and generate a new generation of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">

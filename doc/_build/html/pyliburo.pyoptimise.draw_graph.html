@@ -41,60 +41,6 @@
   <div class="section" id="module-pyliburo.pyoptimise.draw_graph">
 <span id="pyliburo-pyoptimise-draw-graph-module"></span><h1>pyliburo.pyoptimise.draw_graph module<a class="headerlink" href="#module-pyliburo.pyoptimise.draw_graph" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="pyliburo.pyoptimise.draw_graph.create_int_normalise">
-<code class="descclassname">pyliburo.pyoptimise.draw_graph.</code><code class="descname">create_int_normalise</code><span class="sig-paren">(</span><em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.draw_graph.create_int_normalise" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function creates a list of normalise integers within the specified range.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
-<blockquote>
-<div><p>The range.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised list</strong> : list of integers</p>
-<blockquote class="last">
-<div><p>List of normalised integers.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyliburo.pyoptimise.draw_graph.parallel_coordinates">
-<code class="descclassname">pyliburo.pyoptimise.draw_graph.</code><code class="descname">parallel_coordinates</code><span class="sig-paren">(</span><em>data_sets</em>, <em>parmlabels</em>, <em>savefile=''</em>, <em>style=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.draw_graph.parallel_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function plots a parallel coordinate plot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_sets</strong> : 2d list of floats</p>
-<blockquote>
-<div><p>Each list in the 2d list is a line on the PCP.</p>
-</div></blockquote>
-<p><strong>parmlabels</strong> : list of str</p>
-<blockquote>
-<div><p>List of string describing each axis of the PCP.</p>
-</div></blockquote>
-<p><strong>savefile</strong> : str, optional</p>
-<blockquote>
-<div><p>The filepath to save the generated graph image, Default = “”.</p>
-</div></blockquote>
-<p><strong>style</strong> : list of str, optional</p>
-<blockquote class="last">
-<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”. If None all the lines are black.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyliburo.pyoptimise.draw_graph.scatter_plot">
 <code class="descclassname">pyliburo.pyoptimise.draw_graph.</code><code class="descname">scatter_plot</code><span class="sig-paren">(</span><em>pts2plotlist</em>, <em>colourlist</em>, <em>pt_arealist</em>, <em>label_size=16</em>, <em>labellist=[]</em>, <em>xlabel=''</em>, <em>ylabel=''</em>, <em>title=''</em>, <em>savefile=''</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.draw_graph.scatter_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function plots a scatter plot.</p>
@@ -261,6 +207,60 @@
 <p><strong>azim</strong> : float, optional</p>
 <blockquote class="last">
 <div><p>The angle of the view, Default = -45.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.draw_graph.parallel_coordinates">
+<code class="descclassname">pyliburo.pyoptimise.draw_graph.</code><code class="descname">parallel_coordinates</code><span class="sig-paren">(</span><em>data_sets</em>, <em>parmlabels</em>, <em>savefile=''</em>, <em>style=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.draw_graph.parallel_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a parallel coordinate plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_sets</strong> : 2d list of floats</p>
+<blockquote>
+<div><p>Each list in the 2d list is a line on the PCP.</p>
+</div></blockquote>
+<p><strong>parmlabels</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing each axis of the PCP.</p>
+</div></blockquote>
+<p><strong>savefile</strong> : str, optional</p>
+<blockquote>
+<div><p>The filepath to save the generated graph image, Default = “”.</p>
+</div></blockquote>
+<p><strong>style</strong> : list of str, optional</p>
+<blockquote class="last">
+<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”. If None all the lines are black.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.pyoptimise.draw_graph.create_int_normalise">
+<code class="descclassname">pyliburo.pyoptimise.draw_graph.</code><code class="descname">create_int_normalise</code><span class="sig-paren">(</span><em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.pyoptimise.draw_graph.create_int_normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of normalise integers within the specified range.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<blockquote>
+<div><p>The range.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised list</strong> : list of integers</p>
+<blockquote class="last">
+<div><p>List of normalised integers.</p>
 </div></blockquote>
 </td>
 </tr>

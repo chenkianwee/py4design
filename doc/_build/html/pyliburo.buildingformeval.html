@@ -38,8 +38,91 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-buildingformeval-module">
-<h1>pyliburo.buildingformeval module<a class="headerlink" href="#pyliburo-buildingformeval-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.buildingformeval">
+<span id="pyliburo-buildingformeval-module"></span><h1>pyliburo.buildingformeval module<a class="headerlink" href="#module-pyliburo.buildingformeval" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_ettv">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_ettv</code><span class="sig-paren">(</span><em>srfs_shp_attribs_obj_list</em>, <em>epwweatherfile</em>, <em>mode='ettv'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_ettv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.glazing_sc2">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">glazing_sc2</code><span class="sig-paren">(</span><em>srfs_shp_attribs_obj_list</em>, <em>epwweatherfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.glazing_sc2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_dir_pitch_angle">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_dir_pitch_angle</code><span class="sig-paren">(</span><em>srfs_shp_attribs_obj_list</em>, <em>mode='ettv'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_dir_pitch_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.create_glazing_shape_attribute">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">create_glazing_shape_attribute</code><span class="sig-paren">(</span><em>occ_face</em>, <em>uvalue</em>, <em>shading_coefficient1</em>, <em>srf_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.create_glazing_shape_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>srf_type can be either window or skylight</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.create_opaque_srf_shape_attribute">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">create_opaque_srf_shape_attribute</code><span class="sig-paren">(</span><em>occ_face</em>, <em>uvalue</em>, <em>srf_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.create_opaque_srf_shape_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>srf_type can be either wall or roof</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.create_shading_srf_shape_attribute">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">create_shading_srf_shape_attribute</code><span class="sig-paren">(</span><em>occ_face</em>, <em>srf_type</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.create_shading_srf_shape_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>srf_type can be either footprint, shade, surrounding</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.read_cf_file">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">read_cf_file</code><span class="sig-paren">(</span><em>filepath</em>, <em>pitch_angle</em>, <em>direction</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.read_cf_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_cooling_energy_consumption">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_cooling_energy_consumption</code><span class="sig-paren">(</span><em>facade_area</em>, <em>roof_area</em>, <em>floor_area</em>, <em>ettv</em>, <em>rttv</em>, <em>equip_load_per_area=25.0</em>, <em>occ_load_per_person=75.0</em>, <em>light_load_per_area=15.0</em>, <em>area_per_person=10.0</em>, <em>m3_sec_per_person=0.006</em>, <em>operation_hrs=3120</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_cooling_energy_consumption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.choose_efficient_cooling_system">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">choose_efficient_cooling_system</code><span class="sig-paren">(</span><em>system_dict_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.choose_efficient_cooling_system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.radiant_panel_dvu_system">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">radiant_panel_dvu_system</code><span class="sig-paren">(</span><em>sensible_load</em>, <em>latent_load</em>, <em>floor_area</em>, <em>area_per_person=10.0</em>, <em>m3_sec_per_person=0.006</em>, <em>operation_hrs=3120</em>, <em>dvu_airflow_rate_m3_sec=0.02</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.radiant_panel_dvu_system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_radiant_panel_cooling_rate">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_radiant_panel_cooling_rate</code><span class="sig-paren">(</span><em>supply_temp_kelvin</em>, <em>aust_kelvin=298.15</em>, <em>indoor_air_temp_kelvin=298.15</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_radiant_panel_cooling_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.central_all_air_system">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">central_all_air_system</code><span class="sig-paren">(</span><em>sensible_load</em>, <em>latent_load</em>, <em>floor_area</em>, <em>operation_hrs=3120</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.central_all_air_system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_cooling_cop">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_cooling_cop</code><span class="sig-paren">(</span><em>supply_temp_kelvin</em>, <em>heat_rej_temp_kelvin</em>, <em>chiller_efficiency=0.4</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_cooling_cop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_sensible_load">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_sensible_load</code><span class="sig-paren">(</span><em>facade_area</em>, <em>roof_area</em>, <em>floor_area</em>, <em>ettv</em>, <em>rttv</em>, <em>equip_load_per_area=25.0</em>, <em>occ_load_per_person=75.0</em>, <em>light_load_per_area=15.0</em>, <em>area_per_person=10.0</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_sensible_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_latent_load">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_latent_load</code><span class="sig-paren">(</span><em>floor_area</em>, <em>area_per_person=10.0</em>, <em>m3_sec_per_person=0.006</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_latent_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.buildingformeval.calc_mass_of_air">
+<code class="descclassname">pyliburo.buildingformeval.</code><code class="descname">calc_mass_of_air</code><span class="sig-paren">(</span><em>occupancy</em>, <em>m3_sec_per_person</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.buildingformeval.calc_mass_of_air" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 

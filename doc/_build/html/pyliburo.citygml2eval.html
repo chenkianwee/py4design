@@ -38,8 +38,87 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyliburo-citygml2eval-module">
-<h1>pyliburo.citygml2eval module<a class="headerlink" href="#pyliburo-citygml2eval-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyliburo.citygml2eval">
+<span id="pyliburo-citygml2eval-module"></span><h1>pyliburo.citygml2eval module<a class="headerlink" href="#module-pyliburo.citygml2eval" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyliburo.citygml2eval.Evals">
+<em class="property">class </em><code class="descclassname">pyliburo.citygml2eval.</code><code class="descname">Evals</code><span class="sig-paren">(</span><em>citygmlfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.initialise_occgeom">
+<code class="descname">initialise_occgeom</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.initialise_occgeom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.add_shadings_4_solar_analysis">
+<code class="descname">add_shadings_4_solar_analysis</code><span class="sig-paren">(</span><em>shading_citygml_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.add_shadings_4_solar_analysis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.calculate_far">
+<code class="descname">calculate_far</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.calculate_far" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.nshffai">
+<code class="descname">nshffai</code><span class="sig-paren">(</span><em>irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>nshffai_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.nshffai" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
+receives irradiation above a specified level over the floor area.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.nshffai2">
+<code class="descname">nshffai2</code><span class="sig-paren">(</span><em>lower_irrad_threshold</em>, <em>upper_irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>nshffai_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.nshffai2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solar Heat Gain Facade Area to Volume Index 2 (SHGFAVI) calculates the ratio of facade area that 
+receives irradiation within a specified level over the building floor area.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.dffai">
+<code class="descname">dffai</code><span class="sig-paren">(</span><em>illum_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>dffai_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.dffai" title="Permalink to this definition">¶</a></dt>
+<dd><p>Daylighting Facade Area to Volume Index (DFAI) calculates the ratio of facade area that 
+receives daylighting above a specified level, 
+over the building volume.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.pvafai">
+<code class="descname">pvafai</code><span class="sig-paren">(</span><em>irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>surface='roof'</em>, <em>pvafai_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.pvafai" title="Permalink to this definition">¶</a></dt>
+<dd><p>epv calculates the potential electricity 
+that can be generated on the roof of buildings annually.
+epv is represented in kWh/yr.</p>
+<p>PV Area to Volume Index (PVAVI) calculates the ratio of roof area that 
+receives irradiation above a specified level, 
+over the building volume.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.pvefai">
+<code class="descname">pvefai</code><span class="sig-paren">(</span><em>roof_irrad_threshold</em>, <em>facade_irrad_threshold</em>, <em>epwweatherfile</em>, <em>xdim</em>, <em>ydim</em>, <em>pvrfai_threshold=None</em>, <em>pvffai_threshold=None</em>, <em>pvefai_threshold=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.pvefai" title="Permalink to this definition">¶</a></dt>
+<dd><p>epv calculates the potential electricity 
+that can be generated on the roof of buildings annually.
+epv is represented in kWh/yr.</p>
+<p>PV Envelope Area to Volume Index (PVEAVI) calculates the ratio of roof area that 
+receives irradiation above a specified level, 
+over the building volume.</p>
+<p>Same as PVAVI but runs it for the whole envelope</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.fai">
+<code class="descname">fai</code><span class="sig-paren">(</span><em>wind_dir</em>, <em>boundary_occface=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.fai" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frontal Area Index (FAI)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyliburo.citygml2eval.Evals.rdi">
+<code class="descname">rdi</code><span class="sig-paren">(</span><em>boundary_occface=None</em>, <em>obstruction_occfacelist=[]</em>, <em>rdi_threshold=1.6</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.citygml2eval.Evals.rdi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Route Directness Index</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
