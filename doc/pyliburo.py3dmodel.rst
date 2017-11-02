@@ -1,11 +1,6 @@
 pyliburo\.py3dmodel package
 ===========================
 
-.. automodule:: pyliburo.py3dmodel
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Submodules
 ----------
 
@@ -18,3 +13,10 @@ Submodules
    pyliburo.py3dmodel.modify
    pyliburo.py3dmodel.utility
 
+Module contents
+---------------
+
+.. automodule:: pyliburo.py3dmodel
+    :members:
+    :undoc-members:
+    :show-inheritance:

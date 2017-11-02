@@ -1,7 +1,0 @@
-pyliburo\.py3dmodel\.OCCUtils\.types\_lut module
-================================================
-
-.. automodule:: pyliburo.py3dmodel.OCCUtils.types_lut
-    :members:
-    :undoc-members:
-    :show-inheritance:

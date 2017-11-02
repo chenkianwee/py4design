@@ -22,57 +22,57 @@ import os
 import math
 import networkx as nx
 import py3dmodel
-import gml3dmodel
+import urbangeom
 import py2radiance
     
 #================================================================================================================
 #FRONTAL AREA INDEX
 #================================================================================================================
 def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 100, ydim = 100):
-    '''
+    """
     This function calculates the frontal area index of an urban massing.
     
-    PARAMETERS
+    Parameters
     ----------
     building_occsolids : a list of OCCsolids
         The buildings to be analysed.
     
-    boundary_occface: OCCface 
+    boundary_occface : OCCface 
         The boundary of the FAI analysis. This face will be gridded.
     
-    wind_dir: pyvec
+    wind_dir : pyvec
         Pyvec is a tuple of floats that documents the xyz vector of a dir e.g. (x,y,z)
     
-    xdim: float
+    xdim : float
         X-dimension of the grid for the boundary occface, in metres (m)
     
-    ydim: float
+    ydim : float
         Y-dimension of the grid for the boundary occface, in metres (m)
     
-    RETURNS
+    Returns
     -------
     result dictionary : dictionary
         A dictionary with this keys : {"average", "grids", "fai_list", "projected_surface_list" , "wind_plane_list", "vertical_surface_list" }
         
-        average: float
+        average : float
             Average frontal area index of the whole design.
         
-        grids: list of OCCfaces
+        grids : list of OCCfaces
             The grid used for the frontal area index.
         
-        fai_list: list of floats
+        fai_list : list of floats
             List of all the FAI of each grid.   
         
-        projected_surface_list: list of OCCfaces
+        projected_surface_list : list of OCCfaces
             The projected surfaces merged together.
         
-        wind_plane_list: list of OCCfaces
+        wind_plane_list : list of OCCfaces
             The plane representing the direction of the wind
         
-        vertical_surface_list: list of OCCfaces
+        vertical_surface_list : list of OCCfaces
             The facade surfaces that are projected.
     
-    '''
+    """
     fai_list = []
     fs_list = []
     wp_list = []
@@ -83,7 +83,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     bldg_fp = []
     for building_occsolid in building_occsolids:
         bldg_dict = {}
-        footprints = gml3dmodel.get_bldg_footprint_frm_bldg_occsolid(building_occsolid)
+        footprints = urbangeom.get_bldg_footprint_frm_bldg_occsolid(building_occsolid)
         
         if not footprints:
             face_list = py3dmodel.fetch.geom_explorer(building_occsolid, "face")
@@ -130,7 +130,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
             for bldg in bldg_list:
                 common_shape = py3dmodel.construct.boolean_common(grid_extrude,bldg)
                 compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
-                facade_list, roof_list, ftprint_list = gml3dmodel.identify_srfs_according_2_angle(compound_faces)
+                facade_list, roof_list, ftprint_list = urbangeom.identify_srfs_according_2_angle(compound_faces)
                 agrid_facade_list.extend(facade_list)
             if agrid_facade_list:
                 fai,fuse_srfs,wind_plane,origsrf_prj= frontal_area_index_aplot(agrid_facade_list, grid, wind_dir)
@@ -157,35 +157,35 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     return res_dict
     
 def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
-    '''
+    """
     This function calculates the frontal area index for a single grid.
     
-    PARAMETERS
+    Parameters
     ----------
     facade_occfaces : list of OCCfaces 
         List of occfaces of vertical facades 
     
-    plane_occface: OCCface
+    plane_occface : OCCface
         An occface that is the horizontal plane buildings are sitting on, the single grid.
     
-    wind_dir: pyvec
+    wind_dir : pyvec
         Pyvec is a tuple of floats that documents the xyz vector of a dir e.g. (x,y,z).
     
-    RETURNS
+    Returns
     -------
-    fai: float
+    fai : float
         Frontal area index. 
     
-    fuse_srfs: list of OCCfaces
+    fuse_srfs : list of OCCfaces
         The projected surfaces fused together
     
-    wind_plane: OCCface
+    wind_plane : OCCface
         The plane representing the direction of the wind
     
-    surfaces_projected: list of OCCfaces
+    surfaces_projected : list of OCCfaces
         the facade surfaces that are projected
     
-    '''
+    """
     facade_faces_compound = py3dmodel.construct.make_compound(facade_occfaces)
      
     #create win dir plane
@@ -223,7 +223,7 @@ def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
         fuse_srfs = py3dmodel.fetch.geom_explorer(fuse_compound,"face")
     
     #calculate the frontal area index
-    facet_area = gml3dmodel.faces_surface_area(fuse_srfs)
+    facet_area = urbangeom.faces_surface_area(fuse_srfs)
     plane_area = py3dmodel.calculate.face_area(plane_occface)
     fai = facet_area/plane_area
     
@@ -232,48 +232,61 @@ def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
 #================================================================================================================
 #ROUTE DIRECTNESS INDEX
 #================================================================================================================
-def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], rdi_threshold = 1.6):
-    '''
-    Algorithm for Route Directness Test  
-    Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
-    urban design international 17, 228-238
+def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, obstruction_occfacelist = [], rdi_threshold = 0.6):
+    """
+    This function measures the connectivity of street network in a neighbourhood by measuring route 
+    directness for each parcel to a series of points around the periphery of the study area. It
+    identifies the percentage of good plots that exceed a rdi of 0.8 (urban area) and 0.6 (suburban). 
+    Algorithm for Route Directness Test, Stangl, P.. 2012 the pedestrian route directness test: A new level of service model.
+    urban design international 17, 228-238.
     
-    A test that measures the connectivity of street network in a neighbourhood
-    measuring route directness for each parcel to each of a series
-    of points around the periphery of the study area,
-    and identifying the percentage of parcels for which
-    any of these measures exceed 1.6. Urban area is 1.3, suburban is 1.6
-    
-    PARAMETERS
+    Parameters
     ----------
-    :param network_occedgelist : a list of occedges that is the network to be analysed, clearly define network with
-        nodes and edges
-    :ptype: list(occedge)
+    network_occedgelist : list of OCCedges
+        The network to be analysed with nodes and edges.
     
-    :param plot_occfacelist: a list of occfaces that is the land use plots
-    :ptype: list(occface)
+    plot_occfacelist : list of OCCfaces
+        The land use plots to be analysed.
     
-    :param boundary_occface: occface that is the boundary of the area
-    :ptype: occface
+    boundary_occface : OCCface
+        The boundary of the analysed area.
     
-    :param route_directness_threshold: a float specifying the route directness threshold, default value 1.6
-    :ptype: float
+    obstruction_occface_list : list of OCCfaces, optional
+        The obstructions represented as OCCfaces for the analysis, default value = [].
+        
+    rdi_threshold : float, optional
+        A threshold Route Directness Index, default value = 0.6.
     
-    RETURNS
+    Returns
     -------
-    :returns route_directness_measure: route_directness_measure
-    :rtype: float
-    
-    :returns failed_plots: plots that fail the route directness measure
-    :rtype: list(occface)
-    
-    :returns successful_plots: plots that pass the route directness measure
-    :rtype: list(occface)
-    
-    :returns peripheral_pts: peripheral pts
-    :rtype: list(occpts)
-    
-    '''
+    result dictionary : dictionary
+        A dictionary with this keys : {"average", "percent", "plots", "pass_plots" , 
+        "fail_plots", "rdi_list", "network_edges", "peripheral_points" }
+        
+        average : float
+            Average rdi of the whole design.
+        
+        percent : float
+            The percentage of the plots that has RDI higher than the threshold.
+        
+        plots : list of OCCfaces
+            The plots that are analysed.   
+        
+        pass_plots : list of OCCfaces
+            The plots that has RDI higher than the threshold.
+        
+        fail_plots : list of OCCfaces
+            The plots that has RDI lower than the threshold.
+            
+        rdi_list : list of floats
+            The RDI of each plot, corresponds to the list of plots.
+            
+        network_edges : list of OCCedges
+            The network that was analysed.
+            
+        peripheral_points : list of OCCedges
+            The peripheral points visualised as OCCedges circles.    
+    """
     ndecimal = 3
     precision = 1e-02
     #======================================================================
@@ -365,6 +378,37 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     return res_dict
 
 def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelist,G, plot_area = None):
+    """
+    This function measures the route directness index of a plot.
+    
+    Parameters
+    ----------
+    startpypt : pypt
+        The mid point of the plot. Pypt is a tuple of floats. A pypt is a tuple that documents 
+        the xyz coordinates of a pt e.g. (x,y,z).
+    
+    peripheralpypt : pypt
+        The end point. Pypt is a tuple of floats. A pypt is a tuple that documents 
+        the xyz coordinates of a pt e.g. (x,y,z).
+    
+    obstruction_occface_list : list of OCCfaces
+        The obstructions represented as OCCfaces for the analysis.
+        
+    G : Networkx Graph class instance
+        The networkx graph used for calculating the route distance of the shortest path between
+        the mid point and ending point.
+    
+    plot_area : float, optional
+        The area of the plot. If the area is less than 2023m2 (1/2 acre), the function will not
+        consider the distane from the midpoint to the edge of the plot.
+        
+    Returns
+    -------
+    rdi : float
+        The route directness index of the plot and this peripheral point. 
+        rdi = direct distance/ route distance.
+        
+    """
     crow_wire = py3dmodel.construct.make_wire([startpypt, peripheralpypt])   
     #need to check if the crow edge intersect any obstruction
     rerouted_wire = crow_wire 
@@ -400,6 +444,35 @@ def calculate_route_directness(startpypt, peripheralpypt, obstruction_occfacelis
     return route_directness
 
 def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
+    """
+    This function calculates the peripheral points around the boundary.
+    
+    Parameters
+    ----------
+    boundary_occface : OCCface
+        The boundary of the analysed area.
+        
+    network_occedgelist : list of OCCedges
+        The network to be analysed with nodes and edges.
+    
+    precision : float
+        The tolerance to be used for intersection calculations.
+    
+    Returns
+    -------
+    peripheral_ptlist : pyptlist
+        The peripheral points. List of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+    
+    pedgelist : list of OCCedges
+        The edges of the boundary.
+    
+    interptlist : pyptlist
+        The intersections of the internal network and the boundary edges.
+        List of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        
+    """
     peripheral_ptlist = []
     peripheral_parmlist = []
     peripheral_parmlist4network = []
@@ -539,6 +612,39 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     return peripheral_ptlist, pedgelist, fused_interptlist
     
 def connect_street_network2plot(network_occedgelist, plot_occfacelist, peripheral_n_inter_ptlist, precision):
+    """
+    This function connects the network edges to the mid point of each plot.
+    
+    Parameters
+    ----------
+    network_occedgelist : list of OCCedges
+        The network to be analysed with nodes and edges.
+        
+    plot_occfacelist : list of OCCfaces
+        The land use plots to be analysed.
+        
+    peripheral_n_inter_ptlist : pyptlist
+        The peripheral points and the intersections of the internal network and the boundary edges. 
+        List of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+    
+    precision : float
+        The tolerance to be used for intersection calculations.
+    
+    Returns
+    -------
+    new_network_occedgelist : list of OCCedges
+        The new network that has been connected to the plots.
+    
+    midpt2_network_edgelist : list of OCCedges
+        The edges that connect the mid point of each plot to the new_network_occedgelist.
+        
+    plot_midptlist : pyptlist
+        The mid points of all the plots.
+        List of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        
+    """
     plot_midptlist = []
     network_ptlist = []
     midpt2_network_edgelist = []
@@ -625,7 +731,25 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
     return new_network_occedgelist, midpt2_network_edgelist, plot_midptlist
     
     
-def route_ard_obstruction(obstruction_face, crow_wire):        
+def route_ard_obstruction(obstruction_face, crow_wire):    
+    """
+    This function calculates the direct distance when met with an obstruction.
+    
+    Parameters
+    ----------
+    obstruction_face : OCCface
+        The obstructions represented as OCCface for the analysis.
+        
+    crow_wire : OCCwire
+        The direct way from start to peripheral point not taking into account of the obstruction.
+    
+    Returns
+    -------
+    new crow wire : OCCwire
+        The direct way from start to peripheral point taking into account of the obstruction.
+        The wire will go around the obstruction OCCface.
+        
+    """    
     res = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(obstruction_face,crow_wire))
     res2 =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_difference(crow_wire,obstruction_face))
     edgelist = py3dmodel.fetch.geom_explorer(res, "edge")
@@ -684,6 +808,22 @@ def route_ard_obstruction(obstruction_face, crow_wire):
     return new_bwire
     
 def generate_directions(rot_degree):
+    """
+    This function generates a list of direction according to the interval of rotation degree.
+    
+    Parameters
+    ----------
+    rot_degree : float
+        The interval rotation degree.
+    
+    Returns
+    -------
+    list of directions : pydirlist
+        The generated directions. List of tuples of floats. 
+        A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z), 
+        thus a pydirlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        
+    """  
     #generate the direction from the midpt to the plot edges 
     orig_vert = py3dmodel.construct.make_vertex((0,1,0))
     pydirlist = []
@@ -697,6 +837,23 @@ def generate_directions(rot_degree):
     return pydirlist
     
 def construct_network_compound(network_occedgelist, extrusion_height):
+    """
+    This function extrudes the network edges and consolidate it into an OCCcompound.
+    
+    Parameters
+    ----------
+    network_occedgelist : list of OCCedges
+        The network to be analysed with nodes and edges.
+    
+    extrusion_height : float
+        The extrusion height.
+    
+    Returns
+    -------
+    extruded network compound : OCCcompound
+        The extruded network compound.
+        
+    """
     nfacelist = []
     for nedge in network_occedgelist:
         #move the edge upwards then loft it to make a face
@@ -707,6 +864,18 @@ def construct_network_compound(network_occedgelist, extrusion_height):
     return network_compound
     
 def draw_street_graph(networkx_graph, node_index):
+    """
+    This function draws the networkx graph and visualise it.
+    
+    PARAMETERS
+    ----------
+    networkx_graph : networkx graph class instance
+        The networkx graph to be visualised.
+    
+    node_index : list of floats
+        The index of the nodes in the networkx graph.
+        
+    """
     import matplotlib.pyplot as plt
     node_pos = {}
     ntcnt = 0
@@ -724,54 +893,67 @@ def draw_street_graph(networkx_graph, node_index):
 #================================================================================================================
 def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, nshffai_threshold = None, shading_occfaces = []):
-    '''
-    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
+    """
+    This function calculates the Non-Solar Heated Facade to Floor Area Index (NSHFFAI) which is the ratio of the facade area that 
+    receives irradiation below a specified level over the net floor area. For more information refer to: Chen, Kian Wee, and Leslie Norford.
+    2017. Evaluating Urban Forms for Comparison Studies in the Massing Design Stage. Sustainability 9 (6). doi:10.3390/su9060987.
     
-    Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
-    receives irradiation above a specified level over the building volume.    
-    
-    Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
-    receives irradiation below a specified level over the net facade area. 
-    
-    PARAMETERS
+    Parameters
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
     
-    :param irrad_threshold: a solar irradiance threshold value
-    :ptype: float
+    irrad_threshold : float 
+        The solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 364 kwh/m2 is used.
     
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
+    epwweatherfile : string
+        The file path of the epw weatherfile.
     
-    :param xdim: x dimension grid size
-    :ptype: float
+    xdim : int
+        The x dimension grid size for the building facades.
     
-    :param ydim: y dimension grid size
-    :ptype: float
+    ydim : int
+        The y dimension grid size
     
-    :param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent
-    :ptype: float
+    rad_folderpath : string
+        The file directory to store all the result files.
     
-    RETURNS
+    nshffai_threshold : float, optional
+        The nshffai threshold value for calculating the nshffai percent, default = None. If None, nshffai percent will return None.
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
+    
+    Returns
     -------
-    :returns shgfavi: average solar heat gain facade area volume index
-    :rtype: float
+    result dictionary : dictionary
+        A dictionary with this keys : {"afi", "ai", "percent", "sensor_surfaces" , 
+        "solar_results", "building_solids", "afi_list"}
     
-    :returns shgfavi_percent: percentage of buildings achieving the shgfavi_threshold
-    :rtype: float
-    
-    :returns shgfai: shgfai value 
-    :rtype: float
-    
-    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
+        afi : float
+            The nshffai of the urban design.
+            
+        ai : float
+            The Non-Solar Heated Facade Area Index. The ratio of the facade area that receives irradiation below a specified level over the net facade area.
+        
+        percent : float
+            The percentage of the buidings that has nshffai higher than the threshold.
+        
+        sensor surfaces : list of OCCfaces
+            The gridded facade.   
+        
+        solar_results : list of floats
+            The the irradiance results in (kWh/m2), the list corresponds to the sensor surface list.
+        
+        building_solids : list of OCCsolids
+            The OCCsolids of the buildings.
+            
+        afi_list : list of floats
+            The nshffai of each building, the list corresponds to the building solids.
+            
+    """
     #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_srf_indexes(building_occsolids, 
                                                                                                xdim, ydim, 
                                                                                                rad_folderpath, 
                                                                                                shading_occfaces = shading_occfaces)   
@@ -779,7 +961,7 @@ def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     #execute gencumulative sky rtrace
     irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    sorted_bldgdict_list = get_afi_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     #calculate avg shgfavi 
     total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, irrad_threshold, "nshffai",
@@ -797,56 +979,72 @@ def nshffai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
     
     return res_dict
     
-def nshffai2(building_occsolids, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, xdim, ydim,
-            rad_folderpath, nshffai_threshold = None, shading_occfaces = []):
-    '''
-    Algorithm to calculate Solar Heat Gain Facade Area to Volume Index
+def usffai(building_occsolids, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, xdim, ydim,
+            rad_folderpath, usffai_threshold = None, shading_occfaces = []):
     
-    Solar Heat Gain Facade Area to Volume Index (SHGFAVI) calculates the ratio of facade area that 
-    receives irradiation above a specified level over the building volume.    
-    
-    Solar Heat Gain Facade Area Index (SHGFAI) calculates the ratio of facade area that 
-    receives irradiation below a specified level over the net facade area. 
-    
-    PARAMETERS
+    """
+    This function calculates the Useful-Solar Facade to Floor Area Index (USFFAI) which is the ratio of the facade area that 
+    receives irradiation between the lower and upper solar threshold over the net floor area. 
+
+    Parameters
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
     
-    :param irrad_threshold: a solar irradiance threshold value
-    :ptype: float
+    lower_irrad_threshold : float 
+        The lower solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 254 kwh/m2 is used.
+        
+    upper_irrad_threshold : float 
+        The upper solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 364 kwh/m2 is used.
     
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
+    epwweatherfile : string
+        The file path of the epw weatherfile.
     
-    :param xdim: x dimension grid size
-    :ptype: float
+    xdim : int
+        The x dimension grid size for the building facades.
     
-    :param ydim: y dimension grid size
-    :ptype: float
+    ydim : int
+        The y dimension grid size
     
-    :param shgfavi_threshold: a shgfavi threshold value for calculating the shgfavi_percent
-    :ptype: float
+    rad_folderpath : string
+        The file directory to store all the result files.
     
-    RETURNS
+    usffai_threshold : float, optional
+        The usffai threshold value for calculating the nshffai percent, default = None. If None, usffai percent will return None.
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
+    
+    Returns
     -------
-    :returns shgfavi: average solar heat gain facade area volume index
-    :rtype: float
+    result dictionary : dictionary
+        A dictionary with this keys : {"afi", "ai", "percent", "sensor_surfaces" , 
+        "solar_results", "building_solids", "afi_list"}
     
-    :returns shgfavi_percent: percentage of buildings achieving the shgfavi_threshold
-    :rtype: float
-    
-    :returns shgfai: shgfai value 
-    :rtype: float
-    
-    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns irrad_ress: solar irradiation results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
+        afi : float
+            The usffai of the urban design.
+            
+        ai : float
+            The Useful-Solar Facade Area Index. The ratio of the facade area that receives irradiation between the thresholdsover the net facade area.
+        
+        percent : float
+            The percentage of the buidings that has usffai higher than the threshold.
+        
+        sensor surfaces : list of OCCfaces
+            The gridded facade.   
+        
+        solar_results : list of floats
+            The the irradiance results in (kWh/m2), the list corresponds to the sensor surface list.
+        
+        building_solids : list of OCCsolids
+            The OCCsolids of the buildings.
+            
+        afi_list : list of floats
+            The usffai of each building, the list corresponds to the building solids.
+            
+    """
     #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_srf_indexes(building_occsolids, 
                                                                                                xdim, ydim, 
                                                                                                rad_folderpath, 
                                                                                                shading_occfaces = shading_occfaces)   
@@ -854,12 +1052,12 @@ def nshffai2(building_occsolids, lower_irrad_threshold, upper_irrad_threshold, e
     #execute gencumulative sky rtrace
     irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    sorted_bldgdict_list = get_afi_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     #calculate avg shgfavi 
     total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi2(sorted_bldgdict_list, lower_irrad_threshold,
-                                                                                                                       upper_irrad_threshold, "nshffai2",
-                                                                                                                       afi_threshold = nshffai_threshold)
+                                                                                                                       upper_irrad_threshold, "usffai",
+                                                                                                                       afi_threshold = usffai_threshold)
             
 
     res_dict = {}
@@ -874,18 +1072,30 @@ def nshffai2(building_occsolids, lower_irrad_threshold, upper_irrad_threshold, e
     return res_dict
 
 def calculate_epv(sensor_srflist,irrad_ress):
-    '''
-    epv is energy produced by pv (kwh/yr)
-    
-    eqn to calculate the energy produce by pv
+    """
+    This function calculates the energy produced by PV (kwh/yr) (epv). 
     epv = apv*fpv*gt*nmod*ninv
     apv is area of pv (m2)
     fpv is faction of surface with active solar cells (ratio)
     gt is total annual solar radiation energy incident on pv (kwh/m2/yr)
     nmod is the pv efficiency (12%)
     ninv is the avg inverter efficiency (90%)
-    '''
-    apv = gml3dmodel.faces_surface_area(sensor_srflist)
+    
+    Parameters
+    ----------
+    sensor_srflist : list of OCCfaces
+        The gridded facade.
+            
+    irrad_ress : list of floats
+        The the irradiance results in (kWh/m2), the list corresponds to the sensor surface list.
+    
+    Returns
+    -------
+    epv : float
+        The energy produced by PV (kwh/yr).
+    
+    """
+    apv = urbangeom.faces_surface_area(sensor_srflist)
     fpv = 0.8
     gt = (sum(irrad_ress))/(float(len(irrad_ress)))
     nmod = 0.12
@@ -898,67 +1108,82 @@ def calculate_epv(sensor_srflist,irrad_ress):
 #================================================================================================================
 def pvafai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, mode = "roof", pvafai_threshold = None, shading_occfaces = []):
-                
+    
     """
-    PV Area to Volume  Index (PVAVI) calculates the ratio of roof/facade area that 
-    receives irradiation above a specified level over the building volume. 
-    
-    epv calculates the potential electricity 
-    that can be generated on the buildings annually. (kWh/yr.)
-    
-    PV Area Index (PVAI) calculates the ratio of  area that 
-    receives irradiation above a specified level over the net envelope/roof/facade area.         
-        
-    PARAMETERS
+    This function calculates the PhotoVoltaic Area to Floor Area Index (PVAFAI) which is the ratio of the PV area that 
+    receives irradiation above a specified level over the net floor area. For more information refer to: Chen, Kian Wee, and Leslie Norford.
+    2017. Evaluating Urban Forms for Comparison Studies in the Massing Design Stage. Sustainability 9 (6). doi:10.3390/su9060987.
+
+    Parameters
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
     
-    :param irrad_threshold: a solar irradiance threshold value
-    :ptype: float
+    irrad_threshold : float 
+        The solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 512 kwh/m2 is used for the facade and 1280 kWh/m2 is used for the roof.
     
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
+    epwweatherfile : string
+        The file path of the epw weatherfile.
     
-    :param xdim: x dimension grid size
-    :ptype: float
+    xdim : int
+        The x dimension grid size for the building facades.
     
-    :param ydim: y dimension grid size
-    :ptype: float
+    ydim : int
+        The y dimension grid size
     
-    :param pvavi_threshold: a pvavi threshold value for calculating the pvavi_percent
-    :ptype: float
+    rad_folderpath : string
+        The file directory to store all the result files.
+        
+    mode : str, optional
+        The PV area of the building. Options are either "roof" or "facade", default = "roof".
     
-    RETURNS
+    pvafai_threshold : float, optional
+        The pvafai threshold value for calculating the pvafai percent, default = None. If None, nshffai percent will return None.
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
+    
+    Returns
     -------
-    :returns avg_pvavi: average pvavi facade area volume index
-    :rtype: float
+    result dictionary : dictionary
+        A dictionary with this keys : {"afi", "ai", "percent", "sensor_surfaces" , 
+        "solar_results", "building_solids", "afi_list", "epv"}
     
-    :returns pvavi_percent: percentage of buildings achieving the pvavi_threshold
-    :rtype: float
-    
-    :returns pvai: pvai value 
-    :rtype: float
-    
-    :returns epv: potential electricity that can be generated on the buildings annually. (kWh/yr.)
-    :rtype: float
-    
-    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    """    
+        afi : float
+            The pvafai of the urban design.
+            
+        ai : float
+            The PV Area to Facade Area Index. The ratio of the facade area that receives irradiation below a specified level over the net facade area.
+        
+        percent : float
+            The percentage of the buidings that has pvafai higher than the threshold.
+        
+        sensor surfaces : list of OCCfaces
+            The gridded facade.   
+        
+        solar_results : list of floats
+            The the irradiance results in (kWh/m2), the list corresponds to the sensor surface list.
+        
+        building_solids : list of OCCsolids
+            The OCCsolids of the buildings.
+            
+        afi_list : list of floats
+            The pvafai of each building, the list corresponds to the building solids.
+            
+        epv : float
+        The energy produced by PV (kwh/yr).
+            
+    """
     
     #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_srf_indexes(building_occsolids, 
                                                                                                xdim, ydim, rad_folderpath, 
                                                                                                surface = mode, 
                                                                                                shading_occfaces = shading_occfaces)   
     #execute gencumulative sky rtrace
     irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    sorted_bldgdict_list = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
+    sorted_bldgdict_list = get_afi_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")    
     
     #calculate avg pvavi 
     total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, irrad_threshold, "pvefai", afi_threshold = pvafai_threshold)
@@ -981,75 +1206,90 @@ def pvafai(building_occsolids, irrad_threshold, epwweatherfile, xdim, ydim,
             
 def pvefai(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath, pvrfai_threshold = None, pvffai_threshold = None, pvefai_threshold = None, shading_occfaces = []):
-                
     """
-    PV Envelope Area to Volume  Index (PVEAVI) calculates the ratio of envelope area that 
-    receives irradiation above a specified level over the building volume. 
-    
-    epv calculates the potential electricity 
-    that can be generated on the buildings annually. (kWh/yr.)
-    
-    PV Area Index (PVEAI) calculates the ratio of  area that 
-    receives irradiation above a specified level over the net envelope area.                 
-        
-    PARAMETERS
+    This function calculates the PhotoVoltaic Envelope to Floor Area Index (PVEFAI) which is the ratio of the PV envelope area (both facade and roof) that 
+    receives irradiation above a specified level over the net floor area. For more information refer to: Chen, Kian Wee, and Leslie Norford.
+    2017. Evaluating Urban Forms for Comparison Studies in the Massing Design Stage. Sustainability 9 (6). doi:10.3390/su9060987.
+
+    Parameters
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
     
-    :param irrad_threshold: a solar irradiance threshold value
-    :ptype: float
+    roof_irrad_threshold : float 
+        The solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 1280 kWh/m2 is used for the roof.
+        
+    facade_irrad_threshold : float 
+        The solar irradiance threshold value (kwh/m2). For Singapore a tropical climate 512 kwh/m2 is used for the facade.
     
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
+    epwweatherfile : string
+        The file path of the epw weatherfile.
     
-    :param xdim: x dimension grid size
-    :ptype: float
+    xdim : int
+        The x dimension grid size for the building facades.
     
-    :param ydim: y dimension grid size
-    :ptype: float
+    ydim : int
+        The y dimension grid size
     
-    :param pvravi_threshold: a pvravi threshold value for calculating the pvravi_percent
-    :ptype: float
+    rad_folderpath : string
+        The file directory to store all the result files.
     
-    :param pvfavi_threshold: a pvravi threshold value for calculating the pvfavi_percent
-    :ptype: float
+    pvrfai_threshold : float, optional
+        The PV Roof to Floor Area Index (pvrfai) threshold value for calculating the pvrfai percent, default = None. If None, pvrfai percent will return None.
+        
+    pvffai_threshold : float, optional
+        The PV Facade to Floor Area Index (pvffai) threshold value for calculating the pvffai percent, default = None. If None, pvffai percent will return None.
+        
+    pvefai_threshold : float, optional
+        The PV Envelope to Floor Area Index (pvefai) threshold value for calculating the pvefai percent, default = None. If None, pvefai percent will return None.
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
     
-    :param pveavi_threshold: a pvravi threshold value for calculating the pveavi_percent
-    :ptype: float
-    
-    RETURNS
+    Returns
     -------
-    :returns list of avi averages: average avi values of pveavi, pvravi, pvfavi 
-    :rtype: list(float, float, float)
+    result dictionary : dictionary
+        A dictionary with this keys : {"afi", "ai", "percent", "sensor_surfaces" , 
+        "solar_results", "building_solids", "afi_list", "epv"}
     
-    :returns list of avi_percent: percentage of buildings achieving the avi_threshold, pveavi_percent, pvravi_percent, pvfavi_percent
-    :rtype: list(float, float, float)
-    
-    :returns list of fai values: fai values of pveai, pvrai, pvfai
-    :rtype: list(float, float, float)
-    
-    :returns epv: potential electricity that can be generated on the buildings annually. (kWh/yr.)
-    :rtype: float
-    
-    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns irrad_ress: solar irradiance results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    """    
+        afi : list of floats
+            The pvefai, pvrfai and pvffai of the urban design.
+            
+        ai : list of floats
+            The PV Envelope Area Index, PV Roof Area Index and PV Facade Area Index. The ratio of the envelope, roof or facade area that receives irradiation above a specified level over the 
+            net envelope, roof or facade area.
+        
+        percent : list of floats
+            The percentage of the buidings that has pvefai, pvrfai and pvffai higher than the threshold.
+        
+        sensor surfaces : list of OCCfaces
+            The gridded envelope surfaces.   
+        
+        solar_results : list of floats
+            The the irradiance results in (kWh/m2), the list corresponds to the sensor surface list.
+        
+        building_solids : list of OCCsolids
+            The OCCsolids of the buildings.
+            
+        afi_list : 2d list of floats
+            The pvefai, pvrfai and pvffai of each building, the list corresponds to the building solids. e.g. [[envelope_result_list],[roof_result_list], [facade_result_list]]
+            
+        epv : float
+        The energy produced by PV (kwh/yr) if the envelope is installed with PV.
+            
+    """
     flr2flr_height = 3.0
     
     #sort and process the surfaces into radiance ready surfaces
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids,
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_srf_indexes(building_occsolids,
                                                                                                xdim, ydim, rad_folderpath, 
                                                                                                surface = "envelope",
                                                                                                shading_occfaces = shading_occfaces)   
     #execute gencumulative sky rtrace
     irrad_ress = execute_cummulative_radiance(rad,1,12, 1,31,0, 24, epwweatherfile)
     
-    sorted_bldgdict_listr = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "roof")
-    sorted_bldgdict_listf = get_vol2srfs_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
+    sorted_bldgdict_listr = get_afi_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "roof")
+    sorted_bldgdict_listf = get_afi_dict(irrad_ress, sensor_srflist, bldgdict_list, surface = "facade")
     
     #calculate avg pvavi 
     rtotal_afi,rai, rafi_percent, rhigh_perf_area_list, rsa_list, shape_factor_list, bsolid_list, rafi_list  = calculate_afi(sorted_bldgdict_listr, roof_irrad_threshold,"pvefai",
@@ -1058,11 +1298,11 @@ def pvefai(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     ftotal_afi,fai, fafi_percent, fhigh_perf_area_list, fsa_list, shape_factor_list, bsolid_list, fafi_list  = calculate_afi(sorted_bldgdict_listf, facade_irrad_threshold, "pvefai",
                                                                                                                      afi_threshold = pvffai_threshold)
     
-    total_bld_up_area = calculate_bld_up_area(bsolid_list,flr2flr_height)
+    total_bld_up_area = urbangeom.calculate_bld_up_area(bsolid_list,flr2flr_height)
     eafi_list = []
     compared_list = []
     for pv_cnt in range(len(bsolid_list)):
-        bldg_flr_area = calculate_bldg_flr_area(bsolid_list[pv_cnt], flr2flr_height)
+        bldg_flr_area = urbangeom.calculate_bldg_flr_area(bsolid_list[pv_cnt], flr2flr_height)
         eafi = ((rhigh_perf_area_list[pv_cnt] + fhigh_perf_area_list[pv_cnt])/bldg_flr_area)
         eafi_list.append(eafi)
         
@@ -1090,57 +1330,71 @@ def pvefai(building_occsolids, roof_irrad_threshold, facade_irrad_threshold, epw
     
     return res_dict
     
-#================================================================================================================
-#DFFAI
-#================================================================================================================
 def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
             rad_folderpath,daysim_folderpath, dffai_threshold = None, shading_occfaces = []):
-    '''
-    Daylighting Facade Area to Volume Index (DFAVI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the volume of the building. 
-    
-    Daylighting Facade Area Index (DFAI) calculates the ratio of facade area that 
-    receives daylighting above a specified level over the total facade area. 
-    
-    PARAMETERS
+    """
+    This function calculates the Daylight Facade to Floor Area Index (DFFAI) which is the ratio of the facade area that 
+    receives illuminance (lx) higher than a threshold over the net floor area. 
+
+    Parameters
     ----------
-    :param building_occsolids : a list of buildings occsolids
-    :ptype: list(occsolid)
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
     
-    :param illum_threshold: a solar illuminance threshold value
-    :ptype: float
+    illum_threshold : float 
+        The illuminance threshold value (lx). For Singapore a tropical climate 10,000lx is used.
     
-    :param epwweatherfile: file path of the epw weatherfile
-    :ptype: string
+    epwweatherfile : string
+        The file path of the epw weatherfile.
     
-    :param xdim: x dimension grid size
-    :ptype: float
+    xdim : int
+        The x dimension grid size for the building facades.
     
-    :param ydim: y dimension grid size
-    :ptype: float
+    ydim : int
+        The y dimension grid size
     
-    :param dfavi_threshold: a shgfavi threshold value
-    :ptype: float
+    rad_folderpath : string
+        The file directory to store all the result files.
+        
+    daysim_folderpath : string 
+        The file directory to store all the daysim result files.
     
-    RETURNS
+    dffai_threshold : float, optional
+        The dffai threshold value for calculating the dffai percent, default = None. If None, dsffai percent will return None.
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
+    
+    Returns
     -------
-    :returns dfavi: average dfavi facade area volume index
-    :rtype: float
+    result dictionary : dictionary
+        A dictionary with this keys : {"afi", "ai", "percent", "sensor_surfaces" , 
+        "solar_results", "building_solids", "afi_list"}
     
-    :returns dfavi_percent: percentage of buildings achieving the dfavi_threshold
-    :rtype: float
+        afi : float
+            The dffai of the urban design.
+            
+        ai : float
+            The Daylight Facade Area Index. The ratio of the facade area that receives illuminance above the thresholds over the net facade area.
+        
+        percent : float
+            The percentage of the buidings that has dffai higher than the threshold.
+        
+        sensor surfaces : list of OCCfaces
+            The gridded facade.   
+        
+        solar_results : list of floats
+            The illuminance in (lx), the list corresponds to the sensor surface list.
+        
+        building_solids : list of OCCsolids
+            The OCCsolids of the buildings.
+            
+        afi_list : list of floats
+            The dffai of each building, the list corresponds to the building solids.
+            
+    """
     
-    :returns dfai: dfai value
-    :rtype: float
-    
-    :returns sensor_srflist: surfaces of the grid used for solar irradiation calculation, for visualisation purpose
-    :rtype: list(occface)
-    
-    :returns mean illum_ress: mean illuminance results from the simulation, for visualisation purpose
-    :rtype: list(float)
-    '''
-    
-    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_vol_indexes(building_occsolids, 
+    rad, sensor_ptlist, sensor_dirlist, sensor_srflist, bldgdict_list = initialise_srf_indexes(building_occsolids, 
                                                                                       xdim, ydim, rad_folderpath, 
                                                                                       shading_occfaces = shading_occfaces)   
     
@@ -1156,7 +1410,7 @@ def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
         mean_illum = illum/float(sunuphrs)
         mean_illum_ress.append(mean_illum)
         
-    sorted_bldgdict_list = get_vol2srfs_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
+    sorted_bldgdict_list = get_afi_dict(mean_illum_ress, sensor_srflist, bldgdict_list, surface = "all_surfaces")
     
     total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list = calculate_afi(sorted_bldgdict_list, illum_threshold, "dffai",
                                                                                                                        afi_threshold = dffai_threshold)
@@ -1175,7 +1429,57 @@ def dffai(building_occsolids, illum_threshold, epwweatherfile, xdim, ydim,
 #================================================================================================================
 #SOLAR SIM FUNCTIONS
 #================================================================================================================
-def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surface = "facade", shading_occfaces = []):
+def initialise_srf_indexes(building_occsolids, xdim, ydim, rad_folderpath, surface = "facade", shading_occfaces = []):
+    """
+    This function sorts all the building geometries and convert them into Radiance ready geometries.
+
+    Parameters
+    ----------
+    building_occsolids : list of OCCsolids
+        List of buildings occsolids to be analysed.
+    
+    xdim : int
+        The x dimension grid size for the building facades.
+    
+    ydim : int
+        The y dimension grid size
+    
+    rad_folderpath : string
+        The file directory to store all the result files.
+        
+    surface : string, optional
+        The string specifying what are the surface types to extract from the OCCsolid for the analysis. Options are: "facade", "roof" and "envelope", default = "facade".
+        
+    shading_occfaces : list of OCCfaces, optional
+        The other surfaces to consider when running the Radiance simulation apart from the buildings of interest. e.g. surrounding terrain or buildings.
+    
+    Returns
+    -------    
+    rad : py2radiance Rad class instance
+        The class stores all the Radiance ready geometries.
+        
+    sensor_ptlist : pyptlist
+            List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+            pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+    sensor_dirlist : pyveclist
+        List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a 
+        direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    sensor_surfacelist : list of OCCfaces
+        The gridded facade.
+        
+    bldg_dictlist : list of dictionaries
+        List of dictionaries. Each dictionary documents information on a building. Each dictionary has these keys : {"solid", "surface_index"}
+    
+        solid : OCCsolid
+            The building OCCsolid.
+            
+        surface_index : list of int
+            The integers are index to the sensor_surfacelist. It specifies which surfaces in the sensor_surfacelist belongs to this building. 
+            if the parameter surface == "envelope", the bldg_dict["surface_index"] = [envelope_index1, envelope_index2,roof_index1,roof_index2,facade_index1,facade_index2].
+            if the parameter surface == "facade" or "roof", bldg_dict["surface_index"] = [surface_index1,surface_index2].        
+    """
     #initialise py2radiance 
     rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
     rad = py2radiance.Rad(rad_base_filepath, rad_folderpath)
@@ -1193,7 +1497,7 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
         gsrf_cnt = 0
         #separate the solid into facade footprint and roof
         bldg_dict = {}
-        facades, roofs, footprints = gml3dmodel.identify_building_surfaces(bsolid)
+        facades, roofs, footprints = urbangeom.identify_building_surfaces(bsolid)
         total_surface_list = facades + roofs
         nsrfs = len(total_surface_list)
         bsrflist = facades + roofs + footprints
@@ -1202,7 +1506,7 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
         if nsrfs < 50:
             if surface == "roof" or surface == "envelope":
                 for roof in roofs:
-                    sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(roof, xdim, ydim)
+                    sensor_surfaces, sensor_pts, sensor_dirs = urbangeom.generate_sensor_surfaces(roof, xdim, ydim)
                     sensor_ptlist.extend(sensor_pts)
                     sensor_dirlist.extend(sensor_dirs)
                     sensor_surfacelist.extend(sensor_surfaces)
@@ -1215,7 +1519,7 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
                  
             if surface == "facade" or surface == "envelope":
                 for facade in facades:
-                    sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(facade, xdim, ydim)
+                    sensor_surfaces, sensor_pts, sensor_dirs = urbangeom.generate_sensor_surfaces(facade, xdim, ydim)
                     sensor_ptlist.extend(sensor_pts)
                     sensor_dirlist.extend(sensor_dirs)
                     sensor_surfacelist.extend(sensor_surfaces)
@@ -1303,6 +1607,44 @@ def initialise_vol_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
     
 def execute_cummulative_radiance(rad,start_mth,end_mth, start_date,end_date,start_hr, end_hr, 
                                  epwweatherfile, mode = "irradiance"):
+    """
+    This function executes Radiance on the buildings.
+
+    Parameters
+    ----------
+    rad : py2radiance Rad class instance
+        The class stores all the Radiance ready geometries.
+    
+    start_mth : int
+        The start month of the simulation e.g. 1. This means the simulation will run from Jan.
+        
+    end_mth : int
+        The end month of the simulation e.g. 12. This means the simulation will end on Dec.
+        
+    start_date : int
+        The start date of the simulation e.g. 1. This means the simulation will start on the 1st of the start mth.
+        
+    end_date : int
+        The start date of the simulation e.g. 31. This means the simulation will end on the 31st of the end mth.
+        
+    start_hr : int
+        The start hour of the simulation e.g. 7. This means the simulation will start on 7 am everyday.
+        
+    end_hr : int
+        The end hour of the simulation e.g. 19. This means the simulation will end on 7 pm everyday.
+        
+    epwweatherfile : string
+        The file path of the epw weatherfile.
+        
+    mode : string
+        The units of the results, "irradiance" (kWh/m2) or "illuminance" (lux), default = "irradiance".
+    
+    Returns
+    -------
+    results : list of floats
+        List of irradiance results (kWh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the mode parameter.
+            
+    """
     time = str(start_hr) + " " + str(end_hr)
     date = str(start_mth) + " " + str(start_date) + " " + str(end_mth) + " " + str(end_date)
     
@@ -1321,45 +1663,132 @@ def execute_cummulative_radiance(rad,start_mth,end_mth, start_date,end_date,star
         illum_ress = rad.eval_cumulative_rad(output = "illuminance")   
         return illum_ress
 
-def calculate_bldg_flr_area(bldg_occsolid, flr2flr_height):
-    bldg_height, nstorey = gml3dmodel.calculate_bldg_height_n_nstorey(bldg_occsolid, flr2flr_height)
-    bldg_flr_plates = gml3dmodel.get_building_plates_by_level(bldg_occsolid, nstorey, flr2flr_height)
-    bldg_flr_plates = reduce(lambda x,y :x+y ,bldg_flr_plates)
-    #py3dmodel.construct.visualise([bldg_flr_plates], ["RED"])
-    flr_area = 0
-    for flr in bldg_flr_plates:
-        flr_area = flr_area + py3dmodel.calculate.face_area(flr)
-    return flr_area
-
-def calculate_bld_up_area(bldg_occsolid_list, flr2flr_height):
-    flr_area_list = []
-    for bldg_occsolid in bldg_occsolid_list:
-        flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
-        flr_area_list.append(flr_area)
+def get_afi_dict(result_list, sensor_srflist, bldgdict_list, surface = "all_surfaces"):
+    """
+    This function rearrange the surfaces of a building accordingly for calculate_afi function after the execution of Radiance.
+    
+    Parameters
+    ----------
+    result_list : list of floats
+        List of irradiance results (kWh/m2) or illuminance in (lux) depending on the intention to cacluate either nshffai, usffai or dffai. The list corresponds to the sensor_surfacelist.
         
-    return sum(flr_area_list)
+    sensor_surfacelist : list of OCCfaces
+        The gridded facade.
+        
+    bldg_dictlist : list of dictionaries
+        List of dictionaries generated from the function initialise_srf_indexes(). Each dictionary documents information on a building. Each dictionary has these keys : {"solid", "surface_index"}
+        
+    surface : string, optional
+        The string specifying what are the surface types to extract from the OCCsolid for the analysis. Options are: "all_surfaces", "facade" and "roof", default = "all_surfaces".
+        
+    Returns
+    -------    
+    sorted_bldg_dictlist : list of dictionaries
+        List of dictionaries. Each dictionary documents information on a building. Each dictionary has these keys : {"solid", "surface", "result"}
+    
+        solid : OCCsolid
+            The building OCCsolid.
+            
+        surface : list of OCCfaces
+            The surfaces that belongs to this building.
+        
+        result : list of floats
+            List of irradiance results (kWh/m2) or illuminance in (lux) depending on the intention to cacluate either nshaffai, usffai, pvefai, pvafai or dffai. The list corresponds to the surface.
+    """
+    sorted_bldgdict_list = []
+    for bldgdict in bldgdict_list:
+        sorted_bldgdict = {}
+        surface_index = bldgdict["surface_index"]
+        bsolid = bldgdict["solid"]
+        sorted_bldgdict["solid"] = bsolid
+        if surface == "all_surfaces":
+            sorted_bldgdict["result"] = result_list[surface_index[0]:surface_index[1]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[0]:surface_index[1]]
+        if surface == "roof":
+            sorted_bldgdict["result"] = result_list[surface_index[2]:surface_index[3]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[2]:surface_index[3]]
+        if surface == "facade":
+            sorted_bldgdict["result"] = result_list[surface_index[4]:surface_index[5]]
+            sorted_bldgdict["surface"] = sensor_srflist[surface_index[4]:surface_index[5]]
+        sorted_bldgdict_list.append(sorted_bldgdict)
+            
+    return sorted_bldgdict_list
 
 def calculate_shape_factor(bldg_occsolid_list, flr2flr_height):
+    """
+    This function calculates the shape factor of all the buildings. The shape factor is the ratio of building envelope surface area over the building floor area.
+    
+    Parameters
+    ----------
+    bldg_occsolid_list : list of OCCsolids
+        The list of OCCsolids that are buildings to be calculated.
+        
+    flr2flr_height : float
+        The floor to floor height the building.
+    
+    Returns
+    -------        
+    total_bldg_shape_factor_list : list of floats
+        The list of shape factor of all the buildings.
+    """
     shape_factor_list = []
     for bldg_occsolid in bldg_occsolid_list:
-        flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        flr_area = urbangeom.calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
         bldg_occfaces = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
-        bldg_surface_area = gml3dmodel.faces_surface_area(bldg_occfaces)
+        bldg_surface_area = urbangeom.faces_surface_area(bldg_occfaces)
         shape_factor = bldg_surface_area/flr_area
         shape_factor_list.append(shape_factor)
         
     return shape_factor_list
 
-def calculate_urban_vol(bldg_occsolid_list):
-    bvol_list = []
-    for bldg_occsolid in bldg_occsolid_list:
-        bvol = py3dmodel.calculate.solid_volume(bldg_occsolid)
-        bvol_list.append(bvol)
-        
-    return bvol_list
-
 def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  afi_threshold = None):
-    """calculate area 2 floor area index"""
+    """
+    This function calculates the x (either envelope, roof or facade) area to floor area index.
+    
+    Parameters
+    ----------
+    bldgdict_list : list of dictionaries
+        List of dictionaries generated from the function get_afi_dict(). Each dictionary documents information on a building. Each dictionary has these keys : {"solid", "surface", "result"}
+        
+    result_threshold : float
+        The threshold value either irradiance (kWh/m2) or illuminance (lx) depending on the intention to calculate nshaffai, pvefai, pvafai or dffai.
+        
+    mode : str
+        The options are "nshffai", "pvefai" or "dffai". Mode "pvefai" is used form both function pvafai() and pvefai().
+        
+    flr2flr_height : float, optional
+        The floor to floor height the building, default = 3.0.
+        
+    afi_threshold : float, optional
+        The afi threshold value for calculating the afi percent, default = None. If None, afi percent will return None.
+        
+    Returns
+    -------
+    afi : float
+        The afi of the urban design.
+        
+    ai : float
+        The Facade Area Index. The ratio of the facade area that receives x (illuminance or irradiance) above/below the thresholds over the net facade area.
+    
+    percent : float
+        The percentage of the buidings that has afi higher/lower than the threshold.
+        
+    high_perf_area_list : list of floats
+        The list of the area of the facade/roof/envelope area performing above/below the threshold.
+    
+    sa_list : list of floats
+        The list of the area of the facade/roof/envelope of the building.
+    
+    shape_factor_list : list of floats
+        The list of the shape factor of the buildings.
+    
+    bsolid_list : list of OCCsolids
+        The OCCsolids of the buildings.
+        
+    afi_list : list of floats
+        The afi of each building, the list corresponds to the building solids.
+        
+    """
     afi_list = []
     compared_afi_list = []
     high_perf_area_list = []
@@ -1386,13 +1815,13 @@ def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  
                 
             bradcnt+=1
 
-        high_perf_area = gml3dmodel.faces_surface_area(high_perf_srf)
+        high_perf_area = urbangeom.faces_surface_area(high_perf_srf)
         high_perf_area_list.append(high_perf_area)
-        surface_area = gml3dmodel.faces_surface_area(surface_list)
+        surface_area = urbangeom.faces_surface_area(surface_list)
         sa_list.append(surface_area)
         bldg_occsolid = bldgdict["solid"]
         bsolid_list.append(bldg_occsolid)
-        bldg_flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        bldg_flr_area = urbangeom.calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
         total_bld_up.append(bldg_flr_area)
         shape_factor = surface_area/bldg_flr_area
         shape_factor_list.append(shape_factor)
@@ -1418,7 +1847,56 @@ def calculate_afi(bldgdict_list, result_threshold, mode, flr2flr_height = 3.0,  
     return total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list
 
 def calculate_afi2(bldgdict_list, lower_result_threshold, upper_result_threshold, mode, flr2flr_height = 3.0,  afi_threshold = None):
-    """calculate area 2 floor area index for nshffai2"""
+    """
+    This function calculates the x (either envelope, roof or facade) area to floor area index.
+    
+    Parameters
+    ----------
+    bldgdict_list : list of dictionaries
+        List of dictionaries generated from the function get_afi_dict(). Each dictionary documents information on a building. Each dictionary has these keys : {"solid", "surface", "result"}
+        
+    lower_result_threshold : float
+        The lower threshold value irradiance (kWh/m2).
+        
+    upper_result_threshold : float
+        The upper threshold value irradiance (kWh/m2).
+        
+    mode : str
+        The options are "usffai".
+        
+    flr2flr_height : float, optional
+        The floor to floor height the building, default = 3.0.
+        
+    afi_threshold : float, optional
+        The afi threshold value for calculating the afi percent, default = None. If None, afi percent will return None.
+        
+    Returns
+    -------
+    afi : float
+        The afi of the urban design.
+        
+    ai : float
+        The Facade Area Index. The ratio of the facade area that receives x (illuminance or irradiance) above/below the thresholds over the net facade area.
+    
+    percent : float
+        The percentage of the buidings that has afi higher/lower than the threshold.
+        
+    high_perf_area_list : list of floats
+        The list of the area of the facade/roof/envelope area performing above/below the threshold.
+    
+    sa_list : list of floats
+        The list of the area of the facade/roof/envelope of the building.
+        
+    shape_factor_list : list of floats
+        The list of the shape factor of the buildings.
+        
+    bsolid_list : list of OCCsolids
+        The OCCsolids of the buildings.
+        
+    afi_list : list of floats
+        The afi of each building, the list corresponds to the building solids.
+        
+    """
     afi_list = []
     compared_afi_list = []
     high_perf_area_list = []
@@ -1434,19 +1912,19 @@ def calculate_afi2(bldgdict_list, lower_result_threshold, upper_result_threshold
         
         bradcnt = 0
         for res in result_list:
-            if mode == "nshffai2":
+            if mode == "usffai":
                 if lower_result_threshold <= res <= upper_result_threshold:
                     high_perf.append(res)
                     high_perf_srf.append(surface_list[bradcnt])                
             bradcnt+=1
 
-        high_perf_area = gml3dmodel.faces_surface_area(high_perf_srf)
+        high_perf_area = urbangeom.faces_surface_area(high_perf_srf)
         high_perf_area_list.append(high_perf_area)
-        surface_area = gml3dmodel.faces_surface_area(surface_list)
+        surface_area = urbangeom.faces_surface_area(surface_list)
         sa_list.append(surface_area)
         bldg_occsolid = bldgdict["solid"]
         bsolid_list.append(bldg_occsolid)
-        bldg_flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        bldg_flr_area = urbangeom.calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
         total_bld_up.append(bldg_flr_area)
         shape_factor = surface_area/bldg_flr_area
         shape_factor_list.append(shape_factor)
@@ -1467,27 +1945,3 @@ def calculate_afi2(bldgdict_list, lower_result_threshold, upper_result_threshold
         afi_percent = None
         
     return total_afi,ai, afi_percent, high_perf_area_list, sa_list, shape_factor_list, bsolid_list, afi_list
-    
-def get_vol2srfs_dict(result_list, sensor_srflist, bldgdict_list, surface = "all_surfaces"):
-    """
-    rearrange the surfaces of a building accordingly for calculate_afi function 
-    """
-    sorted_bldgdict_list = []
-    for bldgdict in bldgdict_list:
-        sorted_bldgdict = {}
-        surface_index = bldgdict["surface_index"]
-        bsolid = bldgdict["solid"]
-        sorted_bldgdict["solid"] = bsolid
-        if surface == "all_surfaces":
-            sorted_bldgdict["result"] = result_list[surface_index[0]:surface_index[1]]
-            sorted_bldgdict["surface"] = sensor_srflist[surface_index[0]:surface_index[1]]
-        if surface == "roof":
-            sorted_bldgdict["result"] = result_list[surface_index[2]:surface_index[3]]
-            sorted_bldgdict["surface"] = sensor_srflist[surface_index[2]:surface_index[3]]
-        if surface == "facade":
-            sorted_bldgdict["result"] = result_list[surface_index[4]:surface_index[5]]
-            sorted_bldgdict["surface"] = sensor_srflist[surface_index[4]:surface_index[5]]
-        sorted_bldgdict_list.append(sorted_bldgdict)
-            
-    return sorted_bldgdict_list
-

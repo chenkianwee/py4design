@@ -345,6 +345,74 @@ class Reader(object):
                 buildings.append(building)
         return buildings
     
+    def get_relief_feature(self):
+        """
+        This function gets the relief feature cityobject.
+        
+        Returns
+        -------
+        relief features: list of lxml Elements
+            List of relief feature lxml Element.
+        """
+        relief_features = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            relief_feature = cityobject.find("dem:ReliefFeature", namespaces=self.namespaces)
+            if relief_feature is not None:
+                relief_features.append(relief_feature)
+        return relief_features
+                
+    def get_landuses(self):
+        """
+        This function gets the landuse cityobject.
+        
+        Returns
+        -------
+        landuses : list of lxml Elements
+            List of landuses lxml Element.
+        """
+        landuses = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            landuse = cityobject.find("luse:LandUse", namespaces=self.namespaces)
+            if landuse is not None:
+                landuses.append(landuse)
+        return landuses
+    
+    def get_roads(self):
+        """
+        This function gets the roads cityobject.
+        
+        Returns
+        -------
+        roads : list of lxml Elements
+            List of roads lxml Element.
+        """
+        roads = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            road = cityobject.find("trans:Road", namespaces=self.namespaces)
+            if road is not None:
+                roads.append(road)
+        return roads
+
+    def get_railways(self):
+        """
+        This function gets the railway cityobject.
+        
+        Returns
+        -------
+        railways : list of lxml Elements
+            List of railway lxml Elements.
+        """
+        rails = []
+        cityobjectmembers = self.cityobjectmembers
+        for cityobject in cityobjectmembers:
+            rail = cityobject.find("trans:Railway", namespaces=self.namespaces)
+            if rail is not None:
+                rails.append(rail)
+        return rails
+    
     def get_non_xtype_cityobject(self, xtype):
         """
         This function find all cityobject that is not of xtype.
@@ -586,39 +654,6 @@ class Reader(object):
                 
         return generic_attrib_dict
     
-    def get_relief_feature(self):
-        """
-        This function gets the relief feature cityobject.
-        
-        Returns
-        -------
-        relief features: list of lxml Elements
-            List of relief feature lxml Element.
-        """
-        relief_features = []
-        cityobjectmembers = self.cityobjectmembers
-        for cityobject in cityobjectmembers:
-            relief_feature = cityobject.find("dem:ReliefFeature", namespaces=self.namespaces)
-            if relief_feature is not None:
-                relief_features.append(relief_feature)
-        return relief_features
-                
-    def get_landuses(self):
-        """
-        This function gets the landuse cityobject.
-        
-        Returns
-        -------
-        landuses : list of lxml Elements
-            List of landuses lxml Element.
-        """
-        landuses = []
-        cityobjectmembers = self.cityobjectmembers
-        for cityobject in cityobjectmembers:
-            landuse = cityobject.find("luse:LandUse", namespaces=self.namespaces)
-            if landuse is not None:
-                landuses.append(landuse)
-        return landuses
         
     def get_landuse_name(self, lxmllanduse):
         """
@@ -679,40 +714,6 @@ class Reader(object):
                 if fclass == "1000" and ffunction == "1110":
                     stops.append(frn)
         return stops
-    
-    def get_roads(self):
-        """
-        This function gets the roads cityobject.
-        
-        Returns
-        -------
-        roads : list of lxml Elements
-            List of roads lxml Element.
-        """
-        roads = []
-        cityobjectmembers = self.cityobjectmembers
-        for cityobject in cityobjectmembers:
-            road = cityobject.find("trans:Road", namespaces=self.namespaces)
-            if road is not None:
-                roads.append(road)
-        return roads
-
-    def get_railways(self):
-        """
-        This function gets the railway cityobject.
-        
-        Returns
-        -------
-        railways : list of lxml Elements
-            List of railway lxml Elements.
-        """
-        rails = []
-        cityobjectmembers = self.cityobjectmembers
-        for cityobject in cityobjectmembers:
-            rail = cityobject.find("trans:Railway", namespaces=self.namespaces)
-            if rail is not None:
-                rails.append(rail)
-        return rails
         
     def get_epsg(self, cityobject):
         """
@@ -979,9 +980,6 @@ class SurfaceMember(object):
         
     """
     def __init__(self, pyptlist):
-        """
-        This function initialises the surface member class.
-        """
         self.pos_list = pyptlist
         
     def construct(self):

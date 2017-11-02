@@ -21,8 +21,7 @@
 """
 Py3dmodel
 ================================================
-Documentation is available in the docstrings and
-online at xxx.
+Documentation is available in the docstrings and online at xxx.
 Contents
 --------
 Submodules

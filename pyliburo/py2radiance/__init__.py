@@ -591,7 +591,7 @@ class Rad(object):
         This function reads the result file from the simulation and returns the results as a list.
         
         Returns
-        ------
+        --------
         irradiance: list of floats
             List of irradiance results (Wh/m2) that corresponds to the sensor points.
             
@@ -614,9 +614,7 @@ class Rad(object):
             illuminance = irradiance * 179
             illuminance_list.append(illuminance)
         return irradiance_list, illuminance_list
-    #=============================================================================================
-    #FOR GENCUMULATIVE SKY MODULE // START //
-    #=============================================================================================
+    
     def create_cumulative_sky_input_file(self, time, date, weatherfile_path, output = "irradiance"):
         """
         This function sets the gencummulative sky command and parameters.
@@ -633,7 +631,7 @@ class Rad(object):
             The file path of the weather file.
             
         output: str, optional
-            The units of the results, "irradiance" (Wh/m2) or "illuminance" (lux), Default = "irradiance".
+            The units of the results, "irradiance" (kWh/m2) or "illuminance" (lux), Default = "irradiance".
         """
         #execute epw2wea 
         head,tail = ntpath.split(weatherfile_path)
@@ -695,7 +693,7 @@ class Rad(object):
             The file path of the weather file.
             
         output: str, optional
-            The units of the results, "irradiance" (Wh/m2) or "illuminance" (lux), Default = "irradiance".
+            The units of the results, "irradiance" (kWh/m2) or "illuminance" (lux), Default = "irradiance".
         """
         if output == "irradiance":
             self.create_cumulative_sky_input_file(time, date, weatherfile_path)
@@ -760,7 +758,7 @@ class Rad(object):
         Returns
         ------
         results: list of floats
-            List of irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
+            List of irradiance results (kWh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
         
         """
         if self.cumulative_result_file_path == None:
@@ -784,12 +782,7 @@ class Rad(object):
                 result_list.append(illuminance)
             
         return result_list
-    #=============================================================================================
-    #FOR GENCUMULATIVE SKY MODULE //END//
-    #=============================================================================================
-    #==========================================================================================================================
-    #FUNCTION FOR DAYSIM
-    #==========================================================================================================================
+    
     def initialise_daysim(self, daysim_dir):
         """
         Run this method prior to running any Daysim simulation. This function creates the base .hea header file and all the neccessary 
@@ -1019,7 +1012,7 @@ class Rad(object):
      
         Parameters
         ----------
-        output_unit: str, optional
+        output_unit : str, optional
             The units of the results, "w/m2" or "lux".
         """
         hea_filepath = self.hea_file
@@ -1114,7 +1107,7 @@ class Rad(object):
         This function reads the daysim result file from the simulation and returns the results as a dictionaries.
             
         Returns
-        ------
+        -------
         hourly results: list of dictionaries
             List of Dictionaries of hourly irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
             Each dictionary is an hour of results of all the sensor points. Each dictionary has key "date" and "result_list". 
@@ -1148,8 +1141,8 @@ class Rad(object):
         This function reads the daysim result file from the simulation and returns a list of results.
             
         Returns
-        ------
-        results per sensor: list of results
+        -------
+        results per sensor : list of results
             Each row is a sensor srf with 8760 colume of hourly result
         
         """
@@ -1164,9 +1157,7 @@ class Rad(object):
             for rnum in range(npts):
                 sensorptlist[rnum].append(result_list[rnum])
         return sensorptlist
-            
-#==========================================================================================================================
-#==========================================================================================================================
+    
 class Surface(object):
     """
     An object that contains all the surface information running a Radiance/Daysim simulation.
@@ -1236,8 +1227,7 @@ class RadSurface(Surface):
         material = self.material
         points = self.points[:]
         return write_rad.surface(name, material, points)
-#==========================================================================================================================
-#==========================================================================================================================
+
 def calculate_reflectance(r,g,b):
     """
     This function converts r g b into reflectance value based on the equation: reflectance = (0.2125 * r) + (0.7154 * g) + (0.0721 * b)

@@ -38,70 +38,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pyliburo">
-<span id="pyliburo-package"></span><h1>pyliburo package<a class="headerlink" href="#module-pyliburo" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="pyliburo-python-library-for-urban-optimisation">
-<h2>Pyliburo: Python Library for Urban Optimisation<a class="headerlink" href="#pyliburo-python-library-for-urban-optimisation" title="Permalink to this headline">¶</a></h2>
-<p>Documentation is available in the docstrings and
-online at xxx.
-Contents
-——–
-Subpackages
-———–
-Using any of these subpackages requires an explicit import.  For example,
-<code class="docutils literal"><span class="pre">import</span> <span class="pre">pyliburo.py3dmodel</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">py2energyplus</span>                <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">write</span> <span class="n">idf</span> <span class="n">file</span> <span class="ow">and</span> <span class="n">execute</span> <span class="n">energyplus</span>
-<span class="n">py2radiance</span>                  <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">write</span> <span class="n">rad</span> <span class="n">file</span> <span class="ow">and</span> <span class="n">execute</span> <span class="n">radiance</span><span class="o">/</span><span class="n">daysim</span>
-<span class="n">py3dmodel</span>                    <span class="o">---</span> <span class="n">A</span> <span class="n">wrapper</span> <span class="n">of</span> <span class="n">CAD</span> <span class="n">Kernel</span> <span class="n">PythonOCC</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">PythonOCC</span><span class="p">,</span> <span class="n">OCCUtils</span><span class="p">,</span> <span class="n">scipy</span><span class="o">/</span><span class="n">numpy</span><span class="p">,</span> <span class="n">pycollada</span>
-<span class="n">pycitygml</span>                    <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">read</span> <span class="ow">and</span> <span class="n">write</span> <span class="n">LOD1</span> <span class="n">Citygml</span> <span class="mf">2.0</span><span class="p">,</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">lxml</span>
-<span class="n">pyoptimise</span>                   <span class="o">---</span> <span class="n">Optimisation</span> <span class="n">module</span> <span class="n">currently</span> <span class="n">includes</span> <span class="n">NSGAII</span><span class="p">,</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">matplotlib</span><span class="p">,</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="p">,</span> <span class="n">pymf</span><span class="p">,</span> <span class="n">cvxopt</span>
-</pre></div>
-</div>
-<p>Using any of these modules requires an explicit import.  For example,
-<code class="docutils literal"><span class="pre">import</span> <span class="pre">pyliburo.utility3d</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">analysisrulepalette</span>          <span class="o">---</span> <span class="n">Base</span> <span class="n">rules</span> <span class="k">for</span> <span class="n">converting</span> <span class="n">geometrical</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
-<span class="n">buildingformeval</span>             <span class="o">---</span> <span class="n">Functions</span> <span class="k">for</span> <span class="n">evaluating</span> <span class="n">building</span> <span class="n">forms</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">py2radiance</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">utility</span><span class="p">,</span> <span class="n">gml3dmodel</span>
-<span class="n">citygml2eval</span>                 <span class="o">---</span> <span class="n">Evaluation</span> <span class="n">of</span> <span class="n">CityGML</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span> <span class="n">file</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">urbanformeval</span>
-<span class="n">gml3dmodel</span>                   <span class="o">---</span> <span class="n">Funcitons</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">3</span><span class="n">D</span> <span class="n">geometries</span> <span class="n">CityGML</span> <span class="n">file</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">pycitygml</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">utility3d</span>
-<span class="n">gmlparameterise</span>              <span class="o">---</span> <span class="n">Module</span> <span class="k">for</span> <span class="n">parameterising</span> <span class="n">a</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span>
-<span class="n">gmlparmpalette</span>               <span class="o">---</span> <span class="n">Base</span> <span class="n">parameters</span> <span class="k">for</span> <span class="n">parameterisng</span> <span class="n">a</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">utility</span>
-<span class="n">massing2citygml</span>              <span class="o">---</span> <span class="n">Convert</span> <span class="n">a</span> <span class="n">massing</span> <span class="n">model</span> <span class="n">into</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">pycollada</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">pytcitygml</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">shapeattributes</span>
-<span class="n">shapeattributes</span>              <span class="o">---</span> <span class="n">A</span> <span class="k">class</span> <span class="nc">to</span> <span class="n">store</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="n">geometries</span>
-<span class="n">shp2citygml</span>                  <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">shapefiles</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">models</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">shapefile</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
-<span class="n">skyviewfactor</span>                <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">calculate</span> <span class="n">sky</span> <span class="n">view</span> <span class="n">factor</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
-<span class="n">templaterulepalette</span>          <span class="o">---</span> <span class="n">Base</span> <span class="n">template</span> <span class="n">rules</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">geometrical</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
-<span class="n">urbanformeval</span>                <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">evaluate</span> <span class="n">urban</span> <span class="n">forms</span>
-                                 <span class="n">dependencies</span><span class="p">:</span> <span class="n">networkx</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">py2radiance</span>
-                                 <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
-<span class="n">urbangeom</span>                    <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">process</span> <span class="n">urban</span> <span class="n">geometries</span>
-                                 <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
-<span class="n">utility</span>                      <span class="o">---</span> <span class="n">Utility</span> <span class="n">functions</span>
-</pre></div>
-</div>
-</div>
+  <div class="section" id="pyliburo-package">
+<h1>pyliburo package<a class="headerlink" href="#pyliburo-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -111,6 +49,7 @@ Using any of these subpackages requires an explicit import.  For example,
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.py2energyplus.idf_writer.html">pyliburo.py2energyplus.idf_writer module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pyliburo.py2energyplus.html#module-pyliburo.py2energyplus">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.py2radiance.html">pyliburo.py2radiance package</a><ul>
@@ -118,10 +57,10 @@ Using any of these subpackages requires an explicit import.  For example,
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.py2radiance.write_rad.html">pyliburo.py2radiance.write_rad module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pyliburo.py2radiance.html#module-pyliburo.py2radiance">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.py3dmodel.html">pyliburo.py3dmodel package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyliburo.py3dmodel.html#py3dmodel">Py3dmodel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyliburo.py3dmodel.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.py3dmodel.calculate.html">pyliburo.py3dmodel.calculate module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.py3dmodel.construct.html">pyliburo.py3dmodel.construct module</a></li>
@@ -131,25 +70,28 @@ Using any of these subpackages requires an explicit import.  For example,
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.py3dmodel.utility.html">pyliburo.py3dmodel.utility module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pyliburo.py3dmodel.html#module-pyliburo.py3dmodel">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyliburo.py3dmodel.html#py3dmodel">Py3dmodel</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.pycitygml.html">pyliburo.pycitygml package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyliburo.pycitygml.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyliburo.pycitygml.gmlgeometry.html">pyliburo.pycitygml.gmlgeometry module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.pycitygml.write_gml.html">pyliburo.pycitygml.write_gml module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyliburo.pycitygml.write_gmlgeometry.html">pyliburo.pycitygml.write_gmlgeometry module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pyliburo.pycitygml.html#module-pyliburo.pycitygml">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.pyoptimise.html">pyliburo.pyoptimise package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyliburo.pyoptimise.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.pyoptimise.analyse_xml.html">pyliburo.pyoptimise.analyse_xml module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.pyoptimise.draw_graph.html">pyliburo.pyoptimise.draw_graph module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyliburo.pyoptimise.hv.html">pyliburo.pyoptimise.hv module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyliburo.pyoptimise.nsga2.html">pyliburo.pyoptimise.nsga2 module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pyliburo.pyoptimise.html#module-pyliburo.pyoptimise">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -174,6 +116,42 @@ Using any of these subpackages requires an explicit import.  For example,
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.urbangeom.html">pyliburo.urbangeom module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyliburo.utility.html">pyliburo.utility module</a></li>
 </ul>
+</div>
+</div>
+<div class="section" id="module-pyliburo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyliburo" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pyliburo-python-library-for-urban-optimisation">
+<h3>Pyliburo: Python Library for Urban Optimisation<a class="headerlink" href="#pyliburo-python-library-for-urban-optimisation" title="Permalink to this headline">¶</a></h3>
+<p>Documentation is available in the docstrings and online at xxx. 
+Contents
+——–
+Subpackages &amp; Submodules
+————————
+Using any of these subpackages requires an explicit import. For example, import pyliburo.py3dmodel.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">py2energyplus</span>                <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">write</span> <span class="n">idf</span> <span class="n">file</span> <span class="ow">and</span> <span class="n">execute</span> <span class="n">energyplus</span>
+<span class="n">py2radiance</span>                  <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">write</span> <span class="n">rad</span> <span class="n">file</span> <span class="ow">and</span> <span class="n">execute</span> <span class="n">radiance</span><span class="o">/</span><span class="n">daysim</span>
+<span class="n">py3dmodel</span>                    <span class="o">---</span> <span class="n">A</span> <span class="n">wrapper</span> <span class="n">of</span> <span class="n">CAD</span> <span class="n">Kernel</span> <span class="n">PythonOCC</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">PythonOCC</span><span class="p">,</span> <span class="n">OCCUtils</span><span class="p">,</span> <span class="n">scipy</span><span class="o">/</span><span class="n">numpy</span><span class="p">,</span> <span class="n">pycollada</span>
+<span class="n">pycitygml</span>                    <span class="o">---</span> <span class="n">Python</span> <span class="n">library</span> <span class="n">to</span> <span class="n">read</span> <span class="ow">and</span> <span class="n">write</span> <span class="n">LOD1</span> <span class="n">Citygml</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">lxml</span>
+<span class="n">pyoptimise</span>                   <span class="o">---</span> <span class="n">Optimisation</span> <span class="n">module</span> <span class="n">currently</span> <span class="n">includes</span> <span class="n">NSGAII</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">matplotlib</span><span class="p">,</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="p">,</span> <span class="n">pymf</span><span class="p">,</span> <span class="n">cvxopt</span>
+</pre></div>
+</div>
+<p>Using any of these modules requires an explicit import. For example, import pyliburo.utility.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">analysisrulepalette</span>          <span class="o">---</span> <span class="n">Base</span> <span class="n">rules</span> <span class="k">for</span> <span class="n">converting</span> <span class="n">geometrical</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
+<span class="n">buildingformeval</span>             <span class="o">---</span> <span class="n">Functions</span> <span class="k">for</span> <span class="n">evaluating</span> <span class="n">building</span> <span class="n">forms</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">py2radiance</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">utility</span><span class="p">,</span> <span class="n">gml3dmodel</span>
+<span class="n">citygml2eval</span>                 <span class="o">---</span> <span class="n">Evaluation</span> <span class="n">of</span> <span class="n">CityGML</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">)</span> <span class="n">file</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">urbanformeval</span>
+<span class="n">gml3dmodel</span>                   <span class="o">---</span> <span class="n">Funcitons</span> <span class="n">to</span> <span class="n">process</span> <span class="mi">3</span><span class="n">D</span> <span class="n">geometries</span> <span class="n">CityGML</span> <span class="n">file</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">utility3d</span>
+<span class="n">gmlparameterise</span>              <span class="o">---</span> <span class="n">Module</span> <span class="k">for</span> <span class="n">parameterising</span> <span class="n">a</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span>
+<span class="n">gmlparmpalette</span>               <span class="o">---</span> <span class="n">Base</span> <span class="n">parameters</span> <span class="k">for</span> <span class="n">parameterisng</span> <span class="n">a</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">utility</span>
+<span class="n">massing2citygml</span>              <span class="o">---</span> <span class="n">Convert</span> <span class="n">a</span> <span class="n">massing</span> <span class="n">model</span> <span class="n">into</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">pycollada</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">pytcitygml</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span><span class="p">,</span> <span class="n">shapeattributes</span>
+<span class="n">shapeattributes</span>              <span class="o">---</span> <span class="n">A</span> <span class="k">class</span> <span class="nc">to</span> <span class="n">store</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="n">geometries</span>
+<span class="n">shp2citygml</span>                  <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">shapefiles</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">models</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">shapefile</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">pycitygml</span><span class="p">,</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
+<span class="n">skyviewfactor</span>                <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">calculate</span> <span class="n">sky</span> <span class="n">view</span> <span class="n">factor</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
+<span class="n">templaterulepalette</span>          <span class="o">---</span> <span class="n">Base</span> <span class="n">template</span> <span class="n">rules</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">geometrical</span> <span class="n">to</span> <span class="n">CityGML</span> <span class="n">model</span> <span class="p">(</span><span class="n">LOD1</span><span class="p">),</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
+<span class="n">urbanformeval</span>                <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">evaluate</span> <span class="n">urban</span> <span class="n">forms</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="n">networkx</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span><span class="p">,</span> <span class="n">py2radiance</span><span class="p">,</span> <span class="n">uses</span> <span class="n">modules</span><span class="p">:</span> <span class="n">gml3dmodel</span>
+<span class="n">urbangeom</span>                    <span class="o">---</span> <span class="n">Functions</span> <span class="n">to</span> <span class="n">process</span> <span class="n">urban</span> <span class="n">geometries</span><span class="p">,</span> <span class="n">uses</span> <span class="n">subpackages</span><span class="p">:</span> <span class="n">py3dmodel</span>
+<span class="n">utility</span>                      <span class="o">---</span> <span class="n">Utility</span> <span class="n">functions</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

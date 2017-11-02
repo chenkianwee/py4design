@@ -938,6 +938,77 @@ def reconstruct_building_through_floorplates(bldg_occsolid, bldg_flr_area, store
     
     return new_bldg_occsolid#, intersection_list, bounding_list
 
+def calculate_bldg_flr_area(bldg_occsolid, flr2flr_height):
+    """
+    This function calculates the building floor area.
+    
+    Parameters
+    ----------
+    bldg_occsolid : OCCsolid
+        The OCCsolid that is a building to be calculated.
+        
+    flr2flr_height : float
+        The floor to floor height the building.
+    
+    Returns
+    -------        
+    bldg_flr_area : float
+        The floor area of the building.
+    """
+    bldg_height, nstorey = calculate_bldg_height_n_nstorey(bldg_occsolid, flr2flr_height)
+    bldg_flr_plates = get_building_plates_by_level(bldg_occsolid, nstorey, flr2flr_height)
+    bldg_flr_plates = reduce(lambda x,y :x+y ,bldg_flr_plates)
+    #py3dmodel.construct.visualise([bldg_flr_plates], ["RED"])
+    flr_area = 0
+    for flr in bldg_flr_plates:
+        flr_area = flr_area + py3dmodel.calculate.face_area(flr)
+    return flr_area
+
+def calculate_bld_up_area(bldg_occsolid_list, flr2flr_height):
+    """
+    This function calculates the total floor area of all the buildings.
+    
+    Parameters
+    ----------
+    bldg_occsolid_list : list of OCCsolids
+        The list of OCCsolids that are buildings to be calculated.
+        
+    flr2flr_height : float
+        The floor to floor height the building.
+    
+    Returns
+    -------        
+    total_bldg_flr_area : float
+        The total floor area of all the buildings.
+    """
+    flr_area_list = []
+    for bldg_occsolid in bldg_occsolid_list:
+        flr_area = calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
+        flr_area_list.append(flr_area)
+        
+    return sum(flr_area_list)
+
+def calculate_urban_vol(bldg_occsolid_list):
+    """
+    This function calculates the total volume of all the buildings.
+    
+    Parameters
+    ----------
+    bldg_occsolid_list : list of OCCsolids
+        The list of OCCsolids that are buildings to be calculated.
+    
+    Returns
+    -------        
+    total_bldg_volume_list : list of floats
+        The list of volumes of all the buildings.
+    """
+    bvol_list = []
+    for bldg_occsolid in bldg_occsolid_list:
+        bvol = py3dmodel.calculate.solid_volume(bldg_occsolid)
+        bvol_list.append(bvol)
+        
+    return bvol_list
+
 def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_occface, parameters, other_occsolids = [], clash_detection = True, 
                                 boundary_detection = True):
     """
@@ -945,8 +1016,8 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_
     
     Parameters
     ----------
-    bldg_occsolid : OCCsolid
-        The OCCsolid that is a building to be positioned.
+    bldg_occsolid_list : list of OCCsolids
+        The list of OCCsolids that are buildings to be positioned.
         
     luse_gridded_pyptlist : pyptlist
         All the possible positions on the landuse plot. A list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt 

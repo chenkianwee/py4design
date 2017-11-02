@@ -1,7 +1,0 @@
-pyliburo\.py3dmodel\.OCCUtils\.vertex module
-============================================
-
-.. automodule:: pyliburo.py3dmodel.OCCUtils.vertex
-    :members:
-    :undoc-members:
-    :show-inheritance:

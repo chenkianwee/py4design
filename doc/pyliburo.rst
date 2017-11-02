@@ -1,11 +1,6 @@
 pyliburo package
 ================
 
-.. automodule:: pyliburo
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Subpackages
 -----------
 
@@ -37,3 +32,10 @@ Submodules
    pyliburo.urbangeom
    pyliburo.utility
 
+Module contents
+---------------
+
+.. automodule:: pyliburo
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,11 +1,6 @@
 pyliburo\.py2radiance package
 =============================
 
-.. automodule:: pyliburo.py2radiance
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Submodules
 ----------
 
@@ -13,3 +8,10 @@ Submodules
 
    pyliburo.py2radiance.write_rad
 
+Module contents
+---------------
+
+.. automodule:: pyliburo.py2radiance
+    :members:
+    :undoc-members:
+    :show-inheritance:

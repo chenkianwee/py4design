@@ -38,8 +38,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pyliburo.py2radiance">
-<span id="pyliburo-py2radiance-package"></span><h1>pyliburo.py2radiance package<a class="headerlink" href="#module-pyliburo.py2radiance" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pyliburo-py2radiance-package">
+<h1>pyliburo.py2radiance package<a class="headerlink" href="#pyliburo-py2radiance-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyliburo.py2radiance.write_rad.html">pyliburo.py2radiance.write_rad module</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pyliburo.py2radiance">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyliburo.py2radiance" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyliburo.py2radiance.Rad">
 <em class="property">class </em><code class="descclassname">pyliburo.py2radiance.</code><code class="descname">Rad</code><span class="sig-paren">(</span><em>base_file_path</em>, <em>data_folder_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad" title="Permalink to this definition">¶</a></dt>
@@ -236,7 +246,6 @@
 </tr>
 </tbody>
 </table>
-<p class="rubric">Methods</p>
 <dl class="method">
 <dt id="pyliburo.py2radiance.Rad.set_sensor_points">
 <code class="descname">set_sensor_points</code><span class="sig-paren">(</span><em>sensor_positions</em>, <em>sensor_normals</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.set_sensor_points" title="Permalink to this definition">¶</a></dt>
@@ -490,12 +499,22 @@ parameters specify the parameters for the ray-tracing simulation. For more infor
 <dt id="pyliburo.py2radiance.Rad.eval_rad">
 <code class="descname">eval_rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the result file from the simulation and returns the results as a list.</p>
-<dl class="docutils">
-<dt>irradiance: list of floats</dt>
-<dd>List of irradiance results (Wh/m2) that corresponds to the sensor points.</dd>
-<dt>illuminance: list of floats</dt>
-<dd>List of illuminance in (lux) results that corresponds to the sensor points.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">irradiance: list of floats</p>
+<blockquote>
+<div><p>List of irradiance results (Wh/m2) that corresponds to the sensor points.</p>
+</div></blockquote>
+<p>illuminance: list of floats</p>
+<blockquote class="last">
+<div><p>List of illuminance in (lux) results that corresponds to the sensor points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -520,7 +539,7 @@ parameters specify the parameters for the ray-tracing simulation. For more infor
 </div></blockquote>
 <p><strong>output: str, optional</strong></p>
 <blockquote class="last">
-<div><p>The units of the results, “irradiance” (Wh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
+<div><p>The units of the results, “irradiance” (kWh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -550,7 +569,7 @@ parameters specify the parameters for the ray-tracing simulation. For more infor
 </div></blockquote>
 <p><strong>output: str, optional</strong></p>
 <blockquote class="last">
-<div><p>The units of the results, “irradiance” (Wh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
+<div><p>The units of the results, “irradiance” (kWh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -592,7 +611,7 @@ parameters specify the parameters for the ray-tracing simulation. For more infor
 <p><strong>——</strong></p>
 <p><strong>results: list of floats</strong></p>
 <blockquote class="last">
-<div><p>List of irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.</p>
+<div><p>List of irradiance results (kWh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -708,7 +727,7 @@ The default settings are the complex scene 1 settings of daysimPS</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>output_unit: str, optional</strong></p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>output_unit</strong> : str, optional</p>
 <blockquote class="last">
 <div><p>The units of the results, “w/m2” or “lux”.</p>
 </div></blockquote>
@@ -728,23 +747,39 @@ The default settings are the complex scene 1 settings of daysimPS</p>
 <dt id="pyliburo.py2radiance.Rad.eval_ill">
 <code class="descname">eval_ill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_ill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the daysim result file from the simulation and returns the results as a dictionaries.</p>
-<dl class="docutils">
-<dt>hourly results: list of dictionaries</dt>
-<dd>List of Dictionaries of hourly irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">hourly results: list of dictionaries</p>
+<blockquote class="last">
+<div><p>List of Dictionaries of hourly irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
 Each dictionary is an hour of results of all the sensor points. Each dictionary has key “date” and “result_list”. 
 The “date” key points to a date string e.g. “12 31 23.500” which means Dec 31st 23hr indicating the date and hour of the result.
-The “result_list” key points to a list of results, which is the result of all the sensor points.</dd>
-</dl>
+The “result_list” key points to a list of results, which is the result of all the sensor points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.py2radiance.Rad.eval_ill_per_sensor">
 <code class="descname">eval_ill_per_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.Rad.eval_ill_per_sensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the daysim result file from the simulation and returns a list of results.</p>
-<dl class="docutils">
-<dt>results per sensor: list of results</dt>
-<dd>Each row is a sensor srf with 8760 colume of hourly result</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results per sensor</strong> : list of results</p>
+<blockquote class="last">
+<div><p>Each row is a sensor srf with 8760 colume of hourly result</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -831,7 +866,6 @@ pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2
 </tr>
 </tbody>
 </table>
-<p class="rubric">Methods</p>
 <dl class="method">
 <dt id="pyliburo.py2radiance.RadSurface.rad">
 <code class="descname">rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.py2radiance.RadSurface.rad" title="Permalink to this definition">¶</a></dt>
@@ -884,13 +918,6 @@ pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2
 </table>
 </dd></dl>
 
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pyliburo.py2radiance.write_rad.html">pyliburo.py2radiance.write_rad module</a></li>
-</ul>
-</div>
 </div>
 </div>
 

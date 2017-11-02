@@ -1,7 +1,0 @@
-pyliburo\.py3dmodel\.OCCUtils\.Topology module
-==============================================
-
-.. automodule:: pyliburo.py3dmodel.OCCUtils.Topology
-    :members:
-    :undoc-members:
-    :show-inheritance:

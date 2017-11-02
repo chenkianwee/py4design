@@ -15,12 +15,12 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import tempfile
-import shutil
 import os
+import shutil
+import tempfile
     
 import utility
 import py3dmodel
@@ -31,6 +31,39 @@ import shapeattributes
 #ETTV
 #================================================================================================================
 def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
+    """
+    This function calculates the ETTV or RETV of a building.
+    
+    Parameters
+    ----------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        The geometry with all the attributes required for the calculation. All the surfaces of the buildings need to be defined through these functions:
+        create_opaque_srf_shape_attribute(), create_glazing_shape_attribute(), create_shading_srf_shape_attribute(). 
+    
+    epwweatherfile : str
+        The file path of the epw weatherfile.
+    
+    mode : str
+        The calculation mode, options are "ettv" or "retv".
+    
+    Returns
+    -------
+    result dictionary : dictionary
+        A dictionary with this keys : {mode, "facade_area", "rttv", "roof_area"}. The key mode is dependent on what the user has specified at the mode parameter, so it can be ettv/retv.
+        
+        mode("ettv" or "retv") : float
+            The ETTV/RETV of the building.
+        
+        facade_area : float
+            The area of the facade.
+        
+        rttv : float
+            The Roof Thermal Transfer Value of the building.   
+        
+        roof_area : float
+            The area of the roof of the building. 
+    """
+    
     srfs_shp_attribs_obj_list = calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = mode)
     srfs_shp_attribs_obj_list = glazing_sc2(srfs_shp_attribs_obj_list,epwweatherfile)
     cf_list = []
@@ -126,6 +159,25 @@ def calc_ettv( srfs_shp_attribs_obj_list, epwweatherfile, mode = "ettv"):
     return result_dict
 
 def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
+    """
+    This function calculates the shading coefficient 2 of the glazings.
+    
+    Parameters
+    ----------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        The geometry with all the attributes required for the calculation. All the surfaces of the buildings need to be defined through these functions:
+        create_opaque_srf_shape_attribute(), create_glazing_shape_attribute(), create_shading_srf_shape_attribute(). 
+    
+    epwweatherfile : str
+        The file path of the epw weatherfile.
+    
+    Returns
+    -------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        List of ShapeAttributes objects appended with the sc2 attribute.
+        
+    """
+    
     rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
     #radiance simulation for shaded windows
     rad_folderpath = tempfile.mkdtemp()
@@ -221,6 +273,24 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
     return srfs_shp_attribs_obj_list
 
 def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
+    """
+    This function calculates the Correction factor, direction and pitch angle of each face of the building.
+    
+    Parameters
+    ----------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        The geometry with all the attributes required for the calculation. All the surfaces of the buildings need to be defined through these functions:
+        create_opaque_srf_shape_attribute(), create_glazing_shape_attribute(), create_shading_srf_shape_attribute(). 
+    
+    mode : str
+        The calculation will be done according to whether it is for "ettv" or "retv" calculation.
+        
+    Returns
+    -------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        List of ShapeAttributes objects appended with the "cf", "pitch_angle" and "direction" attributes.
+        
+    """
     for srf_shp_attribs in srfs_shp_attribs_obj_list:
         srf_type = srf_shp_attribs.get_value("type")
         if srf_type == "wall" or srf_type == "roof" or srf_type == "window" or srf_type == "skylight":
@@ -264,7 +334,6 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                 cf_filepath = os.path.join(os.path.dirname(__file__),'databases','ettv','rttv_correctionfactor_roof.csv')
                 pitch_angle = utility.round2nearest_base(pitch_angle)
                 if pitch_angle < 0:
-                    
                     print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 0"
                     cf = read_cf_file(cf_filepath, 0, direction)
                 elif pitch_angle > 65:
@@ -306,7 +375,29 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
     return srfs_shp_attribs_obj_list
 
 def create_glazing_shape_attribute(occ_face, uvalue, shading_coefficient1, srf_type):
-    """ srf_type can be either window or skylight"""
+    """
+    This function creates the glazing ShapeAttributes class and its attributes.
+    
+    Parameters
+    ----------
+    occ_face : list of OCCfaces
+        The faces to be appended with the glazing attributes.
+    
+    uvalue : float
+        The value of the "uvalue" attribute to be appended to the surface.
+        
+    sc1 : float
+        The value of the "sc1" attribute to be appended to the surface.
+        
+    srf_type : str
+        The type of the surface, srf_type can be either "window" or "skylight".
+        
+    Returns
+    -------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        List of ShapeAttributes objects appended with the "uvalue", "sc1" and "type" attributes.
+        
+    """
     shp_attribs = shapeattributes.ShapeAttributes()
     shp_attribs.set_shape(occ_face)
     shp_attribs.set_key_value("uvalue", uvalue)
@@ -315,7 +406,26 @@ def create_glazing_shape_attribute(occ_face, uvalue, shading_coefficient1, srf_t
     return shp_attribs
 
 def create_opaque_srf_shape_attribute(occ_face, uvalue, srf_type):
-    """ srf_type can be either wall or roof"""
+    """
+    This function creates the opaque surface ShapeAttributes class and its attributes.
+    
+    Parameters
+    ----------
+    occ_face : list of OCCfaces
+        The faces to be appended with the opaque surface attributes.
+    
+    uvalue : float
+        The value of the "uvalue" attribute to be appended to the surface.
+        
+    srf_type : str
+        The type of the surface, srf_type can be either "wall" or "roof".
+        
+    Returns
+    -------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        List of ShapeAttributes objects appended with the "uvalue" and "type" attributes.
+        
+    """
     shp_attribs = shapeattributes.ShapeAttributes()
     shp_attribs.set_shape(occ_face)
     shp_attribs.set_key_value("uvalue", uvalue)
@@ -323,13 +433,49 @@ def create_opaque_srf_shape_attribute(occ_face, uvalue, srf_type):
     return shp_attribs
 
 def create_shading_srf_shape_attribute(occ_face, srf_type):
-    """ srf_type can be either footprint, shade, surrounding"""
+    """
+    This function creates the shading surface ShapeAttributes class and its attributes.
+    
+    Parameters
+    ----------
+    occ_face : list of OCCfaces
+        The faces to be appended with the shading attributes.
+        
+    srf_type : str
+        The type of the surface, srf_type can be either "footprint", "shade" or "surrounding".
+        
+    Returns
+    -------
+    srfs_shp_attribs_obj_list : list of ShapeAttributes objects
+        List of ShapeAttributes objects appended with the "type" attributes.
+        
+    """
     shp_attribs = shapeattributes.ShapeAttributes()
     shp_attribs.set_shape(occ_face)
     shp_attribs.set_key_value("type", srf_type)
     return shp_attribs
 
 def read_cf_file(filepath, pitch_angle, direction):
+    """
+    This function reads the correction factor csv file.
+    
+    Parameters
+    ----------
+    filepath : str
+        The file path of the correction csv file.
+        
+    pitch_angle : float
+        The pitch angle of the surface.
+        
+    direction : str
+        The direction of the surface, the options are "north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest".
+        
+    Returns
+    -------
+    correction factor : float
+        The correction factor from the csv file.
+        
+    """
     if direction == "north":
         col = 1
     if direction == "south":
@@ -368,6 +514,51 @@ def read_cf_file(filepath, pitch_angle, direction):
 def calc_cooling_energy_consumption(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = 25.0, 
                                     occ_load_per_person = 75.0, light_load_per_area = 15.0, area_per_person = 10.0,
                                     m3_sec_per_person = 0.006, operation_hrs = 3120):
+    
+    """
+    This function calculates the cooling energy consumption of the conditioned space using two different systems (dvu & radiant panels and central all air).
+    
+    Parameters
+    ----------
+    facade_area : float
+        The total area of the facade of the conditioned space.
+        
+    roof_area : float
+        The total area of the roof of the conditioned space.
+        
+    floor_area : float
+        The total area of the floor of the conditioned space.
+        
+    ettv : float
+        The ettv/retv of the conditioned space.
+    
+    rttv : float
+        The rttv of the conditioned space.
+        
+    equip_load_per_area : float, optional
+        The equipment load per area of the conditioned space, default = 25.0 W/m2
+        
+    occ_load_per_person : float, optional
+        The occupancy load per person of the conditioned space, default = 75.0 W/person.
+    
+    light_load_per_area : float, optional
+        The lighting load per area of the conditioned space, default = 15.0 W/m2.
+        
+    area_per_person : float, optional
+        The amount of area for a person in the conditioned space, default = 10.0 m2/person.
+        
+    m3_sec_per_person : float, optional
+        The ventilation rate per person of the conditioned space, default = 0.006 m3/person.
+        
+    operation_hrs : int, optional
+        The total operational hours of the conditioned space, default =3120 hrs, assuming a a 12hrs day, 5 days week for 52 weeks a year.
+        
+    Returns
+    -------
+    results for the two systems: list of dictionaries
+         Refer to radiant_panel_dvu_system() & central_all_air_system() for the description of the dictionaries.
+         
+    """
     #calculate the loads
     sensible_load = calc_sensible_load(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = equip_load_per_area, 
                        occ_load_per_person = occ_load_per_person, light_load_per_area = light_load_per_area, 
@@ -387,6 +578,20 @@ def calc_cooling_energy_consumption(facade_area, roof_area, floor_area, ettv, rt
     return system_dict_list
 
 def choose_efficient_cooling_system(system_dict_list):
+    """
+    This function chooses the more efficient systems of the two systems (dvu & radiant panels and central all air).
+    
+    Parameters
+    ----------
+    system_dict_list : list of dictionaries
+        The systems to be compared and chosen. Refer to radiant_panel_dvu_system() & central_all_air_system() for the description of the dictionaries.
+        
+    Returns
+    -------
+    efficient system: list of dictionaries
+         The chosen dictionary of the system.
+         
+    """
     chosen_systems = []
     energy_consumption = float("inf")
     for system_dict in system_dict_list:
@@ -401,6 +606,92 @@ def choose_efficient_cooling_system(system_dict_list):
 
 def radiant_panel_dvu_system(sensible_load, latent_load, floor_area, area_per_person = 10.0, m3_sec_per_person = 0.006, 
                              operation_hrs = 3120, dvu_airflow_rate_m3_sec = 0.02):
+    
+    """
+    This function calculates the cooling energy consumption of the conditioned space using dvu & radiant panels.
+    
+    Parameters
+    ----------
+    sensible_load : float
+        The sensible load of the conditioned space (W).
+        
+    latent_load : float
+        The latent load of the conditioned space (W).
+        
+    floor_area : float
+        The floor area of the conditioned space.
+        
+    area_per_person : float, optional
+        The amount of area for a person in the conditioned space, default = 10.0 m2/person.
+        
+    m3_sec_per_person : float, optional
+        The ventilation rate per person of the conditioned space, default = 0.006 m3/person.
+        
+    operation_hrs : int, optional
+        The total operational hours of the conditioned space, default =3120 hrs, assuming a a 12hrs day, 5 days week for 52 weeks a year.
+        
+    dvu_airflow_rate_m3_sec : float, optional
+        The ventilation rate of the dvu system, default = 0.02 m3/s.
+        
+    Returns
+    -------
+    system result dictionary : dictionary
+        A dictionary with this keys : {"feasible", "energy_consumed_hr", "energy_consumed_yr", "energy_consumed_yr_m2", "sensible_cop", "latent_cop", "overall_cop", 
+        "required_panel_area", "available_panel_area", "supply_temperature_for_panels", "sensible_load", "latent_load", "sensible_load_dvu", "sensible_panel", "panel_max_capacity",
+        "required_dvus", "cooling_system"}.
+        
+        feasible : bool
+            True or False, if True the space can be conditioned with dvus + panels, if False cannot be conditioned.
+            
+        energy_consumed_hr : float
+            The average energy consumed by the cooling system (Wh). This key exist only if feasible = True.
+            
+        energy_consumed_yr : float
+            The energy consumed by the cooling system in a year (kWh), equals to energy_consumed_hr x operation hours. This key exist only if feasible = True.
+            
+        energy_consumed_yr_m2 : float
+            The energy consumed by the cooling system in a year normalised by the floor area (kWh/m2), equals to (energy_consumed_hr x operation hours)/floor area. This key exist only if feasible = True.
+        
+        sensible_cop : float
+            The Coefficient of Performance of the sensible chiller. This key exist only if feasible = True.
+        
+        latent_cop : float
+            The Coefficient of Performance of the latent chiller. This key exist only if feasible = True.
+            
+        overall_cop : float
+            The Coefficient of Performance of the overall system. This key exist only if feasible = True.
+            
+        required_panel_area : float
+            The area required for the radiant panels to provide sufficient sensible cooling (m2). This key exist only if feasible = True.
+            
+        available_panel_area : float
+            The area available for the radiant panels to provide sensible cooling (m2). This key exist only if feasible = True.
+            
+        supply_temperature_for_panels : float
+            The supply temperature used by the radiant panels to provide sensible cooling (K). This key exist only if feasible = True.
+            
+        sensible_load : float
+            The sensible load of the conditioned space (W).
+            
+        latent_load : float
+            The latent load of the conditioned space (W).
+            
+        sensible_load_dvu : float
+            The sensible cooling provided by the DVUs (W). This key exist only if feasible = True.
+            
+        sensible_panel : float
+            The sensible load that has to be cooled by the radiant panel (W), it is equal to sensible_load - sensible_load_dvu. This key exist only if feasible = True.
+            
+        panel_max_capacity : float
+            The maximum cooling capacity of the radiant panels (W).
+        
+        required_dvus : int
+            The number of DVUs required. This key exist only if feasible = True.
+            
+        cooling_system : str
+            Specifies the cooling system used, the value is "Radiant Panels & DVUs".
+         
+    """
     #calculate the amount of sensible cooling that will be provided by the ventilation 
     occupancy = floor_area/area_per_person
     mass_of_air = calc_mass_of_air(occupancy, m3_sec_per_person)
@@ -503,8 +794,26 @@ def radiant_panel_dvu_system(sensible_load, latent_load, floor_area, area_per_pe
     return result_dict
 
 def calc_radiant_panel_cooling_rate(supply_temp_kelvin, aust_kelvin = 298.15, indoor_air_temp_kelvin = 298.15):
-    #aust is the area weighted temperature of all indoor surfaces
-
+    """
+    This function calculates the cooling rate of the radiant panels (W/m2). The calculation is based on the ASHRAE guide.
+    
+    Parameters
+    ----------
+    supply_temp_kelvin : float
+        The supply temperature used by the radiant panels to provide sensible cooling (K).
+        
+    aust_kelvin : float, optional
+        The area weighted temperature of all indoor surfaces (K), default = 298.15.
+        
+    indoor_air_temp_kelvin : float, optional
+        The average indoor air temperature (K), default = 298.15.
+        
+    Returns
+    -------
+    cooling_rate : float
+        The cooling rate of the panels in W/m2.
+         
+    """
     tp = supply_temp_kelvin + 3.0
     tp_aust = (tp**4) - (aust_kelvin**4)
     qr_constant = 5*10**-8 
@@ -522,6 +831,53 @@ def calc_radiant_panel_cooling_rate(supply_temp_kelvin, aust_kelvin = 298.15, in
     return cooling_rate*-1
 
 def central_all_air_system(sensible_load, latent_load, floor_area, operation_hrs = 3120):
+    """
+    This function calculates the cooling energy consumption of the conditioned space using a central all air system.
+    
+    Parameters
+    ----------
+    sensible_load : float
+        The sensible load of the conditioned space (W).
+        
+    latent_load : float
+        The latent load of the conditioned space (W).
+        
+    floor_area : float
+        The floor area of the conditioned space.
+        
+    operation_hrs : int, optional
+        The total operational hours of the conditioned space, default =3120 hrs, assuming a a 12hrs day, 5 days week for 52 weeks a year.
+        
+    Returns
+    -------
+    system result dictionary : dictionary
+        A dictionary with this keys : {"feasible", "energy_consumed_hr", "energy_consumed_yr", "energy_consumed_yr_m2", "overall_cop", "sensible_load", "latent_load", "cooling_system"}
+        
+        feasible : bool
+            True or False, if True the space can be conditioned with dvus + panels, if False cannot be conditioned.
+            
+        energy_consumed_hr : float
+            The average energy consumed by the cooling system (Wh). This key exist only if feasible = True.
+            
+        energy_consumed_yr : float
+            The energy consumed by the cooling system in a year (kWh), equals to energy_consumed_hr x operation hours. This key exist only if feasible = True.
+            
+        energy_consumed_yr_m2 : float
+            The energy consumed by the cooling system in a year normalised by the floor area (kWh/m2), equals to (energy_consumed_hr x operation hours)/floor area. This key exist only if feasible = True.
+            
+        overall_cop : float
+            The Coefficient of Performance of the overall system. This key exist only if feasible = True.
+            
+        sensible_load : float
+            The sensible load of the conditioned space (W).
+            
+        latent_load : float
+            The latent load of the conditioned space (W).
+            
+        cooling_system : str
+            Specifies the cooling system used, the value is "Central All-Air System".
+         
+    """
     supply_temp = 8.0 + 273.15
     heat_rejection_temp = 28.0 + 273.15
     cooling_cop = calc_cooling_cop(supply_temp, heat_rejection_temp)
@@ -545,12 +901,72 @@ def central_all_air_system(sensible_load, latent_load, floor_area, operation_hrs
     return result_dict
 
 def calc_cooling_cop(supply_temp_kelvin, heat_rej_temp_kelvin , chiller_efficiency = 0.4):
+    """
+    This function calculates the cooling Coefficient of Performance (COP) of the chiller.
+    
+    Parameters
+    ----------
+    supply_temp_kelvin : float
+        The supply temperature used by the system to provide sensible cooling (K).
+        
+    heat_rej_temp_kelvin : float
+        The heat rejection temperature achieved by the heat rejection system. In Singapore, about 28 degree celsius can be used.
+        
+    chiller_efficiency : float, optional
+        The efficiency of the chiller, default = 0.4. A good chiller can have an efficiency of up to 0.6.
+        
+    Returns
+    -------
+    cooling_cop : float
+        The cooling cop of the system.
+         
+    """
     tr_ts = heat_rej_temp_kelvin - supply_temp_kelvin
     cooling_cop = chiller_efficiency*(supply_temp_kelvin/tr_ts)
     return cooling_cop
     
 def calc_sensible_load(facade_area, roof_area, floor_area, ettv, rttv, equip_load_per_area = 25.0, 
                        occ_load_per_person = 75.0, light_load_per_area = 15.0, area_per_person = 10.0):
+    
+    """
+    This function calculates the sensible load of an air conditioned space.
+    
+    Parameters
+    ----------
+    facade_area : float
+        The total area of the facade of the conditioned space.
+        
+    roof_area : float
+        The total area of the roof of the conditioned space.
+        
+    floor_area : float
+        The total area of the floor of the conditioned space.
+        
+    ettv : float
+        The ettv/retv of the conditioned space.
+    
+    rttv : float
+        The rttv of the conditioned space.
+        
+    equip_load_per_area : float, optional
+        The equipment load per area of the conditioned space, default = 25.0 W/m2
+        
+    occ_load_per_person : float, optional
+        The occupancy load per person of the conditioned space, default = 75.0 W/person.
+    
+    light_load_per_area : float, optional
+        The lighting load per area of the conditioned space, default = 15.0 W/m2.
+        
+    area_per_person : float, optional
+        The amount of area for a person in the conditioned space, default = 10.0 m2/person.
+    
+        
+    Returns
+    -------
+    sensible_load: float
+         The sensible load of the conditioned space (W).
+         
+    """
     #calc equipment load
     equip_load = equip_load_per_area*floor_area
     #calc occupancy load
@@ -567,6 +983,26 @@ def calc_sensible_load(facade_area, roof_area, floor_area, ettv, rttv, equip_loa
     return sensible_load
 
 def calc_latent_load(floor_area, area_per_person = 10.0, m3_sec_per_person = 0.006):
+    """
+    This function calculates the latent load of an air conditioned space.
+    
+    Parameters
+    ----------
+    floor_area : float
+        The total area of the floor of the conditioned space.
+        
+    area_per_person : float, optional
+        The amount of area for a person in the conditioned space, default = 10.0 m2/person.
+        
+    m3_sec_per_person : float, optional
+        The ventilation rate per person of the conditioned space, default = 0.006 m3/person.
+        
+    Returns
+    -------
+    laten_load: float
+         The latent load of the conditioned space (W).
+         
+    """
     #airflow_per_person is in m3/s/person
     occupancy = floor_area/area_per_person
     mass_of_air = calc_mass_of_air(occupancy, m3_sec_per_person)
@@ -575,6 +1011,23 @@ def calc_latent_load(floor_area, area_per_person = 10.0, m3_sec_per_person = 0.0
     return latent_load
 
 def calc_mass_of_air(occupancy, m3_sec_per_person):
+    """
+    This function calculates the mass of air for the ventilation.
+    
+    Parameters
+    ----------
+    occupancy : int
+        The occupancy of the conditioned space.
+        
+    m3_sec_per_person : float
+        The ventilation rate per person of the conditioned space, in Singapore it is 0.006 m3/person.
+        
+    Returns
+    -------
+    mass_of_air: float
+         The mass of air required for ventilation (kg).
+         
+    """
     vol_of_air = m3_sec_per_person*occupancy
     air_density = 1.225 #kg/m3
     mass_of_air = air_density * vol_of_air
