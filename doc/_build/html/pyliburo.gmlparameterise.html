@@ -44,25 +44,90 @@
 <dt id="pyliburo.gmlparameterise.Parameterise">
 <em class="property">class </em><code class="descclassname">pyliburo.gmlparameterise.</code><code class="descname">Parameterise</code><span class="sig-paren">(</span><em>citygmlfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparameterise.Parameterise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that extracts all the neccessary information from CityGML model and parameterise it.For more information please refer to 
+Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Parameterisation of Semantic 3D City Models for Urban Design Optimisation. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>citygml</strong></td>
+<td>(pycitygml.Reader class instance) The reader to read the CityGML.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_obj_dict_list</strong></td>
+<td>(list of dictionaries) Each dictionary has keys {“parameter_object”, “parameter_count”}. The parameter_object contains a BaseParm class instance for parameterising the model, and the parameter count is a tuple of ints that specify the index of the parameters used for generating a design alternative.</td>
+</tr>
+<tr class="row-odd"><td><strong>nparameters</strong></td>
+<td>(int) The number of parameters for the model.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pyliburo.gmlparameterise.Parameterise.add_parm">
 <code class="descname">add_parm</code><span class="sig-paren">(</span><em>parm_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparameterise.Parameterise.add_parm" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseParm object for the parameterisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_obj</strong> : BaseParm class instance</p>
+<blockquote class="last">
+<div><p>The BaseParm for parameterising the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.gmlparameterise.Parameterise.define_nparameters">
 <code class="descname">define_nparameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparameterise.Parameterise.define_nparameters" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The function determines the total parameters for the model.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.gmlparameterise.Parameterise.generate_random_parameters">
 <code class="descname">generate_random_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparameterise.Parameterise.generate_random_parameters" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The function generates a list of random parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of normalised parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.gmlparameterise.Parameterise.generate_design_variant">
 <code class="descname">generate_design_variant</code><span class="sig-paren">(</span><em>parameters</em>, <em>dv_citygml_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.gmlparameterise.Parameterise.generate_design_variant" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function defines generates a design alternative based on all the appended parameter objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parameters</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+<p><strong>dv_citygml_filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the CityGML file to write the generated design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

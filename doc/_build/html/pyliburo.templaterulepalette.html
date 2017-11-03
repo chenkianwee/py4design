@@ -44,28 +44,63 @@
 <dt id="pyliburo.templaterulepalette.BaseTemplateRule">
 <em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">BaseTemplateRule</code><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The base class for developing new template rule for analysing topologies in massing model. For more information please refer to 
+Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
 <dl class="attribute">
-<dt id="pyliburo.templaterulepalette.BaseTemplateRule.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound</p>
+<dt id="pyliburo.templaterulepalette.BaseTemplateRule.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The topological type the rule apply to: there are 7 topologies, vertex, edge, wire, face, shell, solid, compsolid, compound.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list">
 <code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.BaseTemplateRule.add_analysis_rule">
 <code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd><p>add analysis rule to this template rule and specify its bool condition for the analysis rule (either true or false)</p>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.BaseTemplateRule.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.BaseTemplateRule.identify" title="Permalink to this definition">¶</a></dt>
-<dd><p>the analysis rule is defined 
-and the method executes the analysis rule</p>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -74,25 +109,62 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings">
 <em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyBuildingMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of buildings (LOD1).</p>
 <dl class="attribute">
-<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list">
 <code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule">
 <code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyBuildingMassings.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyBuildingMassings.identify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -100,25 +172,62 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings">
 <em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyTerrainMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of terrains (LOD1).</p>
 <dl class="attribute">
-<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list">
 <code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule">
 <code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyTerrainMassings.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyTerrainMassings.identify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and not within anopther shell boundary, the shell is a terrain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -126,25 +235,62 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings">
 <em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyLandUseMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of landuse plots (LOD1).</p>
 <dl class="attribute">
-<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list">
 <code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule">
 <code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyLandUseMassings.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyLandUseMassings.identify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and within anopther shell boundary, the shell is a plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -152,25 +298,62 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.templaterulepalette.IdentifyRoadMassings">
 <em class="property">class </em><code class="descclassname">pyliburo.templaterulepalette.</code><code class="descname">IdentifyRoadMassings</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.templaterulepalette.BaseTemplateRule" title="pyliburo.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of landuse road network (LOD0).</p>
 <dl class="attribute">
-<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the edge topology.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list">
 <code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.add_analysis_rule">
 <code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.templaterulepalette.IdentifyRoadMassings.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.templaterulepalette.IdentifyRoadMassings.identify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if an edge is within anopther shell boundary, the edge is a road.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

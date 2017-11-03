@@ -44,56 +44,83 @@
 <dt id="pyliburo.massing2citygml.Massing2Citygml">
 <em class="property">class </em><code class="descclassname">pyliburo.massing2citygml.</code><code class="descname">Massing2Citygml</code><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that extracts all the neccessary information from a massing model and converts the geometries into CityGML objects with semantics, only works for LOD1 CityGML models.
+For more information please refer to Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>occshp_attribs_obj_list</strong></td>
+<td>(list of ShapeAttributes objects) The geometries are first converted to ShapeAttributes objects before into CityGML object. ShapeAttributes is an intermediate format.</td>
+</tr>
+<tr class="row-even"><td><strong>template_rule_obj_list</strong></td>
+<td>(list of BaseTemplateRule class instances) The template rules for converting the geometries.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pyliburo.massing2citygml.Massing2Citygml.read_collada">
 <code class="descname">read_collada</code><span class="sig-paren">(</span><em>dae_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.read_collada" title="Permalink to this definition">¶</a></dt>
-<dd><p>the dae file must be modelled as such:
-close_shells = buildings
-open_shells = terrain &amp; plots(land-use)
-edges = street network</p>
-<p>#TODO: a function that will convert collada to citygml base on the visual scenes and library nodes (groups and layers)
-dae = Collada(collada_file)
-nodes = dae.scene.nodes</p>
-<p>#this loops thru the visual scene 
-#loop thru the library nodes
-for node in nodes:</p>
-<blockquote>
-<div><p>name = node.xmlnode.get(‘name’)
-children_nodes = node.children
-if children_nodes:</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>for node2 in children_nodes:</dt>
-<dd><p class="first">name2 = node2.xmlnode.get(‘name’)
-print ‘name2’, name2
-children_node2 = node2.children
-if children_node2:</p>
+<dd><p>This function reads the Collada (.dae) file to be converted and convert the geometries to ShapeAttributes objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dae_filepath</strong> : str</p>
 <blockquote class="last">
-<div><dl class="docutils">
-<dt>if type(children_node2[0]) == scene.NodeNode:</dt>
-<dd>print children_node2[0].children</dd>
-</dl>
+<div><p>The file path of the Collada file to be converted.</p>
 </div></blockquote>
-</dd>
-</dl>
-</div></blockquote>
-</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.massing2citygml.Massing2Citygml.add_template_rule">
 <code class="descname">add_template_rule</code><span class="sig-paren">(</span><em>template_rule_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.add_template_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds BaseTemplateRule objects to this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>template_rule_obj</strong> : implementation of the BaseTemplateRule meta class</p>
+<blockquote class="last">
+<div><p>The template rule used for converting the geometries to semantic models.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.massing2citygml.Massing2Citygml.execute_analysis_rule">
 <code class="descname">execute_analysis_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.execute_analysis_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function adds executes the analysis rules in the template rules and append the analysis results to the ShapeAttributes objects.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.massing2citygml.Massing2Citygml.execute_template_rule">
-<code class="descname">execute_template_rule</code><span class="sig-paren">(</span><em>citygml_filepath</em>, <em>tolerance=0.01</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.execute_template_rule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">execute_template_rule</code><span class="sig-paren">(</span><em>citygml_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.massing2citygml.Massing2Citygml.execute_template_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the template rule and convert the geometry to semantic models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>citygml_filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the resultant CityGML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

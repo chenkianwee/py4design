@@ -21,21 +21,24 @@
 """
 Pyliburo: Python Library for Urban Optimisation
 ================================================
-Documentation is available in the docstrings and online at xxx. 
+Documentation is available in the docstrings and online at .... 
+
 Contents
 --------
+
 Subpackages & Submodules
 ------------------------
-Using any of these subpackages requires an explicit import. For example, import pyliburo.py3dmodel.
+
+Using any of these subpackages requires an explicit import. For example, from pyliburo import py3dmodel.
 ::
     
  py2energyplus                --- Python library to write idf file and execute energyplus
  py2radiance                  --- Python library to write rad file and execute radiance/daysim
  py3dmodel                    --- A wrapper of CAD Kernel PythonOCC, dependencies: PythonOCC, OCCUtils, scipy/numpy, pycollada
- pycitygml                    --- Python library to read and write LOD1 Citygml 2.0, dependencies: lxml
+ pycitygml                    --- Python library to read and write LOD1 Citygml 1.0, dependencies: lxml
  pyoptimise                   --- Optimisation module currently includes NSGAII, dependencies: matplotlib, scikit-learn, pymf, cvxopt
     
-Using any of these modules requires an explicit import. For example, import pyliburo.utility.
+Using any of these submodules requires an explicit import. For example, from pyliburo import utility.
 ::
     
  analysisrulepalette          --- Base rules for converting geometrical to CityGML model (LOD1), uses subpackages: py3dmodel

@@ -44,24 +44,25 @@
 <dt id="pyliburo.analysisrulepalette.BaseAnalysisRule">
 <em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">BaseAnalysisRule</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The base class for developing new analysis rule for analysing topologies in massing model. For more information please refer to 
+Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound</p>
+<dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The topological type the rule apply to: there are 7 topologies, vertex, edge, wire, face, shell, solid, compsolid, compound.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>the key to the value that will be added to the geometry dictionary, 
-the value to must always be a true or false (bool)</p>
+<dd><p>The key to the value that will be added to the ShapeAttributes class instance, the value must be a True or False (bool).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.BaseAnalysisRule.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_dict_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.BaseAnalysisRule.execute" title="Permalink to this definition">¶</a></dt>
-<dd><p>the analysis rule is defined 
-and the method executes the analysis rule</p>
+<dd><p>The definition of the analysis rule and the method executes the analysis rule</p>
 </dd></dl>
 
 </dd></dl>
@@ -70,20 +71,43 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.analysisrulepalette.IsShellClosed">
 <em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">IsShellClosed</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
+<p>An implementation of the BaseAnalysisRule class for checking if the shell in the massing models are closed.</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsShellClosed.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.analysisrulepalette.IsShellClosed.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.IsShellClosed.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The attribute name of rule result: “is_shell_closed”.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.IsShellClosed.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellClosed.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the rule to check if all the shells in the massing model are closed. Shells that are not closed will have an attribute “is_shell_closed”: False, shells that 
+are closed will have an attribute “is_shell_closed”: True.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>checked occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote class="last">
+<div><p>List of checked geometries with the appended attributes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -91,20 +115,43 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.analysisrulepalette.IsShellInBoundary">
 <em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">IsShellInBoundary</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
+<p>An implementation of the BaseAnalysisRule class for checking if the shell is in the boundary of another shell.</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.analysisrulepalette.IsShellInBoundary.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.IsShellInBoundary.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The attribute name of rule result: “is_shell_in_boundary”.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.IsShellInBoundary.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsShellInBoundary.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the rule to check if all the shells in the massing model are in the boundary of another shell. Shells that are in the boundary of another shell  will have an 
+attribute “is_shell_in_boundary”: True, shells that are not will have an attribute “is_shell_in_boundary”: False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>checked occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote class="last">
+<div><p>List of checked geometries with the appended attributes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -112,20 +159,43 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.analysisrulepalette.ShellBoundaryContains">
 <em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">ShellBoundaryContains</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
+<p>An implementation of the BaseAnalysisRule class for checking if the shell contains another shell.</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The attribute name of rule result: “shell_boundary_contains”.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.ShellBoundaryContains.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.ShellBoundaryContains.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the rule to check if all the shells in the massing model contain another shell. Shells that contain another shell will have an 
+attribute “shell_boundary_contains”: True, shells that does not contain another shell will have an attribute “shell_boundary_contains”: False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>checked occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote class="last">
+<div><p>List of checked geometries with the appended attributes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -133,20 +203,43 @@ and the method executes the analysis rule</p>
 <dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary">
 <em class="property">class </em><code class="descclassname">pyliburo.analysisrulepalette.</code><code class="descname">IsEdgeInBoundary</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyliburo.analysisrulepalette.BaseAnalysisRule" title="pyliburo.analysisrulepalette.BaseAnalysisRule"><code class="xref py py-class docutils literal"><span class="pre">pyliburo.analysisrulepalette.BaseAnalysisRule</span></code></a></p>
+<p>An implementation of the BaseAnalysisRule class for checking if the edge is in the boundary of a shell.</p>
 <dl class="attribute">
-<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type">
-<code class="descname">for_shape_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.for_shape_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the edge topology.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key">
 <code class="descname">dict_key</code><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.dict_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The attribute name of rule result: “is_edge_in_boundary”.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyliburo.analysisrulepalette.IsEdgeInBoundary.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.analysisrulepalette.IsEdgeInBoundary.execute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function executes the rule to check if all the edges in the massing model are in the boundary of another shell. Edges that are in the boundary of another shell will have an 
+attribute “is_edge_in_boundary”: True, edges that are not will have an attribute “is_edge_in_boundary”: False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be checked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>checked occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote class="last">
+<div><p>List of checked geometries with the appended attributes.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

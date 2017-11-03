@@ -43,18 +43,86 @@
 <dl class="function">
 <dt id="pyliburo.utility.frange">
 <code class="descclassname">pyliburo.utility.</code><code class="descname">frange</code><span class="sig-paren">(</span><em>start</em>, <em>end=None</em>, <em>inc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.utility.frange" title="Permalink to this definition">¶</a></dt>
-<dd><p>A range function, that does accept float increments…</p>
+<dd><p>A range function, that does accept float increments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>end</strong> : float, optional</p>
+<blockquote>
+<div><p>Generate numbers up to, but not including this number, Default = None. When None, end == start and start = 0.0.</p>
+</div></blockquote>
+<p><strong>inc</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, Default = None. When None, inc = 1.0.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sequence of floats</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>A list of float.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.utility.findmedian">
 <code class="descclassname">pyliburo.utility.</code><code class="descname">findmedian</code><span class="sig-paren">(</span><em>lst</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.utility.findmedian" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function finds the median.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lst</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The list to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>median</strong> : int/float</p>
+<blockquote class="last">
+<div><p>The median of the list.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="pyliburo.utility.round2nearest_base">
 <code class="descclassname">pyliburo.utility.</code><code class="descname">round2nearest_base</code><span class="sig-paren">(</span><em>x</em>, <em>base=5</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.utility.round2nearest_base" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function rounds the int/float to the nearest base.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : int/float</p>
+<blockquote>
+<div><p>The number to be rounded.</p>
+</div></blockquote>
+<p><strong>base</strong> : int, optional</p>
+<blockquote>
+<div><p>The base to round x to, if 5 will round to the nearest multiple of 5, if 10 will round to the nearest 10.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rounded number</strong> : int/float</p>
+<blockquote class="last">
+<div><p>The rounded number.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

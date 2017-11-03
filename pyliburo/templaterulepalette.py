@@ -15,28 +15,45 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 import abc
 import py3dmodel
 import gml3dmodel
+import urbangeom
 
 class BaseTemplateRule(object):
+    """
+    The base class for developing new template rule for analysing topologies in massing model. For more information please refer to 
+    Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+    In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.
+    """
     __metaclass__ = abc.ABCMeta
     
     @abc.abstractproperty
-    def for_shape_type(self):
-        """the shapetype the rule apply to: there are 6 shapetype, vertex, edge, face, shell, solid, compsolid, compound"""
+    def for_topo_type(self):
+        """The topological type the rule apply to: there are 7 topologies, vertex, edge, wire, face, shell, solid, compsolid, compound."""
         return 
     
     @abc.abstractmethod
     def get_analysis_rule_obj_dict_list(self):
+        """This function gets all the BaseAnalysisRule objects appended to this template rule."""
         return 
         
     @abc.abstractmethod
     def add_analysis_rule(self, analysis_rule_obj, bool_condition):
-        """add analysis rule to this template rule and specify its bool condition for the analysis rule (either true or false)"""
+        """
+        This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).
+        
+        Parameters
+        ----------
+        analysis_rule_obj : implementation of the BaseAnalysisRule meta class
+            The analysis rule and condition of the template rule.
+        
+        bool_condition : bool
+            True or False.
+        """
         analysis_rule_obj_dict = {}
         analysis_rule_obj_dict["analysis_rule_obj"] = analysis_rule_obj
         analysis_rule_obj_dict["condition"] = bool_condition
@@ -44,16 +61,24 @@ class BaseTemplateRule(object):
         
     @abc.abstractmethod
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
-        """ the analysis rule is defined 
-        and the method executes the analysis rule """
+        """
+        This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.
         
+        Parameters
+        ----------
+        occshape_attribs_obj_list : list of ShapeAttributes objects
+            The geometeries of the massing model to be identified.
+            
+        pycitygml_writer : pycitygml.Writer class instance
+            The writer to write the identified city objects into CityGML.
+        """      
         analysis_rule_obj_dict_list = self.get_analysis_rule_obj_dict_list()
         conditioned_list = []
         cnt = 0
         for occshape_attribs_obj in occshape_attribs_obj_list:
             occshp = occshape_attribs_obj.shape
-            shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == self.for_shape_type:
+            shptype = py3dmodel.fetch.get_topotype(occshp)
+            if shptype == self.for_topo_type:
                 conditioned_list.append(occshp)
                 for analysis_rule_obj_dict in analysis_rule_obj_dict_list:
                     analysis_rule_obj = analysis_rule_obj_dict["analysis_rule_obj"] 
@@ -68,21 +93,47 @@ class BaseTemplateRule(object):
         
 #========================================================================================
 class IdentifyBuildingMassings(BaseTemplateRule):
+    """An implementation of the BaseTemplateRule class for identifying the massing of buildings (LOD1)."""
     def __init__(self):
+        """Initialises the class"""
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def for_shape_type(self):
-        return py3dmodel.fetch.get_shapetype("shell")
+    def for_topo_type(self):
+        """The rule applies to the shell topology."""
+        return py3dmodel.fetch.get_topotype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
+        """This function gets all the BaseAnalysisRule objects appended to this template rule."""
         return self.analysis_rule_obj_dict_list
         
     def add_analysis_rule(self, analysis_rule_obj, bool_condition):
+        """
+        This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).
+        
+        Parameters
+        ----------
+        analysis_rule_obj : implementation of the BaseAnalysisRule meta class
+            The analysis rule and condition of the template rule.
+        
+        bool_condition : bool
+            True or False.
+        """
         analysis_rule_obj_dict = super(IdentifyBuildingMassings, self).add_analysis_rule(analysis_rule_obj,bool_condition)
         self.analysis_rule_obj_dict_list.append(analysis_rule_obj_dict)
         
-    def identify(self, occshape_attribs_obj_list, pycitygml_writer):        
+    def identify(self, occshape_attribs_obj_list, pycitygml_writer):
+        """
+        This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.
+        
+        Parameters
+        ----------
+        occshape_attribs_obj_list : list of ShapeAttributes objects
+            The geometeries of the massing model to be identified.
+            
+        pycitygml_writer : pycitygml.Writer class instance
+            The writer to write the identified city objects into CityGML.
+        """
         building_list = super(IdentifyBuildingMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
         tolerance = 1e-04
         bcnt = 0
@@ -114,8 +165,8 @@ class IdentifyBuildingMassings(BaseTemplateRule):
                 mbuilding = py3dmodel.modify.fix_shell_orientation(mbuilding)
             
             is_shell_close = py3dmodel.calculate.is_shell_closed(mbuilding)
-            is_shell_planar = gml3dmodel.is_shell_faces_planar(mbuilding)
-            is_shell_simple = gml3dmodel.is_shell_simple(mbuilding)
+            is_shell_planar = urbangeom.is_shell_faces_planar(mbuilding)
+            is_shell_simple = urbangeom.is_shell_simple(mbuilding)
             #if after removal of faces the shell is no longer close 
             #reconstruct the entire shell entirely by meshing the original geometry
             if is_shell_close == False or is_shell_planar == False or is_shell_simple == False :
@@ -129,27 +180,52 @@ class IdentifyBuildingMassings(BaseTemplateRule):
                 mbuilding = py3dmodel.modify.fix_close_solid(mbuilding)
 
             bfaces = py3dmodel.fetch.geom_explorer(mbuilding, "face")
-            gml_geometry_list =gml3dmodel.write_gml_srf_member(bfaces)
+            gml_geometry_list = gml3dmodel.write_gml_srf_member(bfaces)
             bldg_name = "bldg" + str(bcnt)
             pycitygml_writer.add_building("lod1",bldg_name, gml_geometry_list)
             bcnt+=1
             
 class IdentifyTerrainMassings(BaseTemplateRule):
+    """An implementation of the BaseTemplateRule class for identifying the massing of terrains (LOD1)."""
     def __init__(self):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def for_shape_type(self):
-        return py3dmodel.fetch.get_shapetype("shell")
+    def for_topo_type(self):
+        """The rule applies to the shell topology."""
+        return py3dmodel.fetch.get_topotype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
+        """This function gets all the BaseAnalysisRule objects appended to this template rule."""
         return self.analysis_rule_obj_dict_list
         
     def add_analysis_rule(self, analysis_rule_obj, bool_condition):
+        """
+        This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).
+        
+        Parameters
+        ----------
+        analysis_rule_obj : implementation of the BaseAnalysisRule meta class
+            The analysis rule and condition of the template rule.
+        
+        bool_condition : bool
+            True or False.
+        """
         analysis_rule_obj_dict = super(IdentifyTerrainMassings, self).add_analysis_rule(analysis_rule_obj,bool_condition)
         self.analysis_rule_obj_dict_list.append(analysis_rule_obj_dict)
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
+        """
+        This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and not within anopther shell boundary, the shell is a terrain.
+        
+        Parameters
+        ----------
+        occshape_attribs_obj_list : list of ShapeAttributes objects
+            The geometeries of the massing model to be identified.
+            
+        pycitygml_writer : pycitygml.Writer class instance
+            The writer to write the identified city objects into CityGML.
+        """
         terrain_list = super(IdentifyTerrainMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
         tolerance = 1e-04
         tcnt = 0
@@ -166,21 +242,46 @@ class IdentifyTerrainMassings(BaseTemplateRule):
             tcnt+=1
             
 class IdentifyLandUseMassings(BaseTemplateRule):
+    """An implementation of the BaseTemplateRule class for identifying the massing of landuse plots (LOD1)."""
     def __init__(self):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def for_shape_type(self):
-        return py3dmodel.fetch.get_shapetype("shell")
+    def for_topo_type(self):
+        """The rule applies to the shell topology."""
+        return py3dmodel.fetch.get_topotype("shell")
         
     def get_analysis_rule_obj_dict_list(self):
+        """This function gets all the BaseAnalysisRule objects appended to this template rule."""
         return self.analysis_rule_obj_dict_list
         
     def add_analysis_rule(self, analysis_rule_obj, bool_condition):
+        """
+        This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).
+        
+        Parameters
+        ----------
+        analysis_rule_obj : implementation of the BaseAnalysisRule meta class
+            The analysis rule and condition of the template rule.
+        
+        bool_condition : bool
+            True or False.
+        """
         analysis_rule_obj_dict = super(IdentifyLandUseMassings, self).add_analysis_rule(analysis_rule_obj,bool_condition)
         self.analysis_rule_obj_dict_list.append(analysis_rule_obj_dict)
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
+        """
+        This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and within anopther shell boundary, the shell is a plot.
+        
+        Parameters
+        ----------
+        occshape_attribs_obj_list : list of ShapeAttributes objects
+            The geometeries of the massing model to be identified.
+            
+        pycitygml_writer : pycitygml.Writer class instance
+            The writer to write the identified city objects into CityGML.
+        """
         landuse_list = super(IdentifyLandUseMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
         tolerance = 1e-04
         lcnt = 0
@@ -201,21 +302,46 @@ class IdentifyLandUseMassings(BaseTemplateRule):
             lcnt +=1
 
 class IdentifyRoadMassings(BaseTemplateRule):
+    """An implementation of the BaseTemplateRule class for identifying the massing of landuse road network (LOD0)."""
     def __init__(self):
         self.analysis_rule_obj_dict_list = []
         
     @property
-    def for_shape_type(self):
-        return py3dmodel.fetch.get_shapetype("edge")
+    def for_topo_type(self):
+        """The rule applies to the edge topology."""
+        return py3dmodel.fetch.get_topotype("edge")
         
     def get_analysis_rule_obj_dict_list(self):
+        """This function gets all the BaseAnalysisRule objects appended to this template rule."""
         return self.analysis_rule_obj_dict_list
         
     def add_analysis_rule(self, analysis_rule_obj, bool_condition):
+        """
+        This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).
+        
+        Parameters
+        ----------
+        analysis_rule_obj : implementation of the BaseAnalysisRule meta class
+            The analysis rule and condition of the template rule.
+        
+        bool_condition : bool
+            True or False.
+        """
         analysis_rule_obj_dict = super(IdentifyRoadMassings, self).add_analysis_rule(analysis_rule_obj,bool_condition)
         self.analysis_rule_obj_dict_list.append(analysis_rule_obj_dict)
         
     def identify(self, occshape_attribs_obj_list, pycitygml_writer):
+        """
+        This function executes the analysis rule and identify the city object based on the condition set. e.g. if an edge is within anopther shell boundary, the edge is a road.
+        
+        Parameters
+        ----------
+        occshape_attribs_obj_list : list of ShapeAttributes objects
+            The geometeries of the massing model to be identified.
+            
+        pycitygml_writer : pycitygml.Writer class instance
+            The writer to write the identified city objects into CityGML.
+        """
         network_list = super(IdentifyRoadMassings, self).identify(occshape_attribs_obj_list,pycitygml_writer)
         ncnt = 0
         for network in network_list:

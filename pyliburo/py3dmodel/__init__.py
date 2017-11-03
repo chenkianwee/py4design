@@ -21,12 +21,12 @@
 """
 Py3dmodel
 ================================================
-Documentation is available in the docstrings and online at xxx.
-Contents
---------
+Documentation is available in the docstrings and online at ....
+
 Submodules
 -----------
 ::
+    
  construct                    --- Functions for constructing geometries. e.g. construct a face
                                   dependencies: scipy, numpy (for delaunay function only)
  fetch                        --- Functions for fetching information from the geometries. e.g. fetch points from face

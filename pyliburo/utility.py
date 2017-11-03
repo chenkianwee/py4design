@@ -15,13 +15,31 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 import math
 
 def frange(start, end=None, inc=None):
-    """A range function, that does accept float increments..."""
+    """
+    A range function, that does accept float increments.
+    
+    Parameters
+    ----------
+    start : float
+        The starting number of the sequence.
+        
+    end : float, optional
+        Generate numbers up to, but not including this number, Default = None. When None, end == start and start = 0.0.
+        
+    inc : float, optional
+        The difference between each number in the sequence, Default = None. When None, inc = 1.0.
+        
+    Returns
+    -------
+    sequence of floats : list of floats
+        A list of float.
+    """
     if end == None:
         end = start + 0.0
         start = 0.0
@@ -39,6 +57,19 @@ def frange(start, end=None, inc=None):
     return L
     
 def findmedian(lst):
+    """
+    This function finds the median.
+    
+    Parameters
+    ----------
+    lst : list of ints/floats
+        The list to be analysed.
+        
+    Returns
+    -------
+    median : int/float
+        The median of the list.
+    """
     sortedLst = sorted(lst)
     lstLen = len(lst)
     index = (lstLen - 1) // 2
@@ -49,4 +80,20 @@ def findmedian(lst):
         return (sortedLst[index] + sortedLst[index + 1])/2.0
     
 def round2nearest_base(x, base=5):
+    """
+    This function rounds the int/float to the nearest base.
+    
+    Parameters
+    ----------
+    x : int/float
+        The number to be rounded.
+        
+    base : int, optional
+        The base to round x to, if 5 will round to the nearest multiple of 5, if 10 will round to the nearest 10.
+        
+    Returns
+    -------
+    rounded number : int/float
+        The rounded number.
+    """
     return int(base * round(float(x)/base))

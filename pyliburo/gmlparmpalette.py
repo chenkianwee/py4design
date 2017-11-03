@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 import abc
@@ -25,11 +25,34 @@ import py3dmodel
 import utility
 
 class BaseParm(object):
+    """
+    The base class for developing new parameters for parameterising a semantic model. For more information please refer to 
+    Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Parameterisation of Semantic 3D City Models for Urban Design Optimisation. 
+    In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.
+    """
     __metaclass__ = abc.ABCMeta
     
     @abc.abstractmethod
     def define_int_range(self, start, stop, step):
-        """ the method defines the int_range of the parm_range"""
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = range(start, stop+step, step)
         for parm in parm_range:
             if parm > stop:
@@ -38,7 +61,25 @@ class BaseParm(object):
         
     @abc.abstractmethod
     def define_float_range(self, start, stop, step = None):
-        """ the method defines the float_range of the parm_range"""
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         
         if step !=None:
             parm_range = utility.frange(start, stop + step, step)
@@ -52,18 +93,43 @@ class BaseParm(object):
         
     @abc.abstractmethod
     def set_parm_range(self, parm_range):
-        """ the method sets the parm_range attribute"""
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         return 
         
     @abc.abstractmethod
     def define_nparameters(self, pycitygml_reader):
-        """ the method determines how many parameters is required for 
-        this urban design """
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        """
         return
         
     @abc.abstractmethod
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
-        """ the method map the normalised parameters into the define parameters """
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         parm_range = self.parm_range
         parm_list = []
         if type(parm_range) == tuple and len(parm_range) == 2:
@@ -86,27 +152,97 @@ class BaseParm(object):
         
     @abc.abstractmethod
     def execute(self,pycitygml_reader, parameters):
-        """ the parameterisation process is defined 
-        and the method executes the parameterisation process """
+        """ 
+        This funciton defines the parameterisation process and executes the process.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        parameters : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+        """
         return 
         
 class BldgFlrAreaHeightParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its height while constraint by its floor area.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
         self.parm_range = None
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -135,25 +271,97 @@ class BldgFlrAreaHeightParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgFlrAreaHeightParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgFlrAreaHeightParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgFlrAreaHeightParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -162,6 +370,22 @@ class BldgFlrAreaHeightParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -214,22 +438,83 @@ class BldgFlrAreaHeightParm(BaseParm):
         return reader
     
 class BldgHeightParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its height.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
         self.parm_range = None
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -258,25 +543,97 @@ class BldgHeightParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgHeightParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgHeightParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgHeightParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -285,6 +642,22 @@ class BldgHeightParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -335,7 +708,31 @@ class BldgHeightParm(BaseParm):
         return reader
         
 class BldgOrientationParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its orientation.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+        
+    clash_detection : bool
+        True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.
+        
+    boundary_detection : bool
+        True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -344,15 +741,58 @@ class BldgOrientationParm(BaseParm):
         self.boundary_detection = True
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -381,31 +821,119 @@ class BldgOrientationParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def set_clash_detection(self, true_or_false):
+        """ 
+        The function declares the clash detection to be True or False.
+        
+        Parameters
+        ----------
+        true_or_false : bool
+            True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.
+        """
         self.clash_detection = true_or_false
         
     def set_boundary_detection(self, true_or_false):
+        """ 
+        The function declares the boundary detection to be True or False.
+        
+        Parameters
+        ----------
+        true_or_false : bool
+            True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.
+        """
         self.boundary_detection = true_or_false
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgOrientationParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgOrientationParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgOrientationParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -414,6 +942,22 @@ class BldgOrientationParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -489,7 +1033,37 @@ class BldgOrientationParm(BaseParm):
         return reader
         
 class BldgPositionParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its position.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+        
+    clash_detection : bool
+        True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.
+        
+    boundary_detection : bool
+        True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.
+    
+    xdim : int
+        The x-dimension of the gridded plot. The higher the dimension the more positions there are for the building.
+        
+    ydim : int
+        The y-dimension of the gridded plot. The higher the dimension the more positions there are for the building.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -500,15 +1074,58 @@ class BldgPositionParm(BaseParm):
         self.ydim = 10
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -537,35 +1154,134 @@ class BldgPositionParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def set_clash_detection(self, true_or_false):
+        """ 
+        The function declares the clash detection to be True or False.
+        
+        Parameters
+        ----------
+        true_or_false : bool
+            True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.
+        """
         self.clash_detection = true_or_false
         
     def set_boundary_detection(self, true_or_false):
+        """ 
+        The function declares the boundary detection to be True or False.
+        
+        Parameters
+        ----------
+        true_or_false : bool
+            True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.
+        """
         self.boundary_detection = true_or_false
         
     def set_xdim_ydim(self, xdim, ydim):
+        """ 
+        The function sets the xdim and ydim of the gridded plot the building is on.
+        
+        Parameters
+        ----------
+        xdim : int
+            The x-dimension of the gridded plot. The higher the dimension the more positions there are for the building.
+        
+        ydim : int
+            The y-dimension of the gridded plot. The higher the dimension the more positions there are for the building.
+        """
         self.xdim = xdim
         self.ydim = ydim
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgPositionParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgPositionParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgPositionParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -574,6 +1290,22 @@ class BldgPositionParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
         gml_bldg_list = pycitygml_reader.get_buildings()
@@ -629,7 +1361,29 @@ class BldgPositionParm(BaseParm):
         return reader
     
 class BldgTwistParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually twist the building solid according to the 
+    twist parameter.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    
+    flr2flr_height : float
+        The assumed floor to floor height of the building, default = 3m.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -637,18 +1391,69 @@ class BldgTwistParm(BaseParm):
         self.flr2flr_height = 3
         
     def define_flr2flr_height(self, flr2flr_height):
+        """ 
+        The function define the floor to floor height of the buildings to be parameterised.
+        
+        Parameters
+        ----------
+        flr2flr_height : float
+            The assumed floor to floor height of the building.
+        """
         self.flr2flr_height = flr2flr_height
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -677,25 +1482,97 @@ class BldgTwistParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgTwistParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgTwistParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgTwistParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -704,6 +1581,22 @@ class BldgTwistParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -907,7 +1800,29 @@ class BldgTwistParm(BaseParm):
         return reader
     
 class BldgBendParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually bend the building solid according to the 
+    parameter.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    
+    flr2flr_height : float
+        The assumed floor to floor height of the building, default = 3m.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -915,18 +1830,69 @@ class BldgBendParm(BaseParm):
         self.flr2flr_height = 3
         
     def define_flr2flr_height(self, flr2flr_height):
+        """ 
+        The function define the floor to floor height of the buildings to be parameterised.
+        
+        Parameters
+        ----------
+        flr2flr_height : float
+            The assumed floor to floor height of the building.
+        """
         self.flr2flr_height = flr2flr_height
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -955,25 +1921,97 @@ class BldgBendParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgBendParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgBendParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgBendParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -982,6 +2020,22 @@ class BldgBendParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -1187,7 +2241,29 @@ class BldgBendParm(BaseParm):
         return reader
     
 class BldgSlantParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually slant the building solid according to the 
+    parameter.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    
+    flr2flr_height : float
+        The assumed floor to floor height of the building, default = 3m.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -1195,18 +2271,69 @@ class BldgSlantParm(BaseParm):
         self.flr2flr_height = 3
         
     def define_flr2flr_height(self, flr2flr_height):
+        """ 
+        The function define the floor to floor height of the buildings to be parameterised.
+        
+        Parameters
+        ----------
+        flr2flr_height : float
+            The assumed floor to floor height of the building.
+        """
         self.flr2flr_height = flr2flr_height
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -1235,25 +2362,97 @@ class BldgSlantParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgSlantParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgSlantParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgSlantParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -1262,6 +2461,22 @@ class BldgSlantParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()
@@ -1477,7 +2692,29 @@ class BldgSlantParm(BaseParm):
         return reader
     
 class BldgTaperParm(BaseParm):
+    """
+    An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually taper the building solid according to the 
+    parameter.
+    
+    Attributes
+    ----------    
+    bldg_class : str
+        The string of the gml code for building class.
+    
+    bldg_function : str
+        The string of the gml code for building function.
+        
+    bldg_usage : str
+        The string of the gml code for building usage.
+        
+    parm_range : list of floats/ints
+        The list of possible parameters.
+    
+    flr2flr_height : float
+        The assumed floor to floor height of the building, default = 3m.
+    """
     def __init__(self):
+        """Initialise the class"""
         self.bldg_class = None
         self.bldg_function = None
         self.bldg_usage = None
@@ -1485,18 +2722,69 @@ class BldgTaperParm(BaseParm):
         self.flr2flr_height = 3
         
     def define_flr2flr_height(self, flr2flr_height):
+        """ 
+        The function define the floor to floor height of the buildings to be parameterised.
+        
+        Parameters
+        ----------
+        flr2flr_height : float
+            The assumed floor to floor height of the building.
+        """
         self.flr2flr_height = flr2flr_height
         
     def apply_2_bldg_class(self, bldg_class):
+        """
+        This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_class : str
+            The string of the gml code for building class.
+        """
         self.bldg_class = bldg_class
         
     def apply_2_bldg_function(self, bldg_function):
+        """
+        This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_function : str
+            The string of the gml code for building function.
+        """
         self.bldg_function = bldg_function
         
     def apply_2_bldg_usage(self, bldg_usage):
+        """
+        This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.
+        
+        Parameters
+        ----------     
+        bldg_usage : str
+            The string of the gml code for building usage.
+        """
         self.bldg_usage = bldg_usage
         
     def eligibility_test(self, gml_bldg_list, pycitygml_reader):
+        """ 
+        The function checks which are the buildings that are eligible to be parameterised.
+        
+        Parameters
+        ----------
+        gml_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+            
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        eligible_bldg_list : list of lxml.etree Element 
+            The GML building to be parameterised.
+        
+        non_eligible_bldg_list : list of lxml.etree Element 
+            The GML building that will not be parameterised.
+        """
         eligible_bldg_list = []
         non_eligible_bldg_list = []
         for gml_bldg in gml_bldg_list:
@@ -1525,25 +2813,97 @@ class BldgTaperParm(BaseParm):
         return eligible_bldg_list, non_eligible_bldg_list
         
     def define_int_range(self, start, stop, step):
+        """ 
+        The function defines the range of the parameter if the parameter type is integer.
+        
+        Parameters
+        ----------
+        start : int
+            The starting number of the sequence.
+        
+        stop : int
+            Generate numbers up to, including this number.
+        
+        step : int
+            The difference between each number in the sequence.
+        
+        Returns
+        -------        
+        parameter range : list of ints
+            List of generated parameters.
+        """
         parm_range = super(BldgTaperParm, self).define_int_range(start, stop, step)
         self.parm_range = parm_range
         return parm_range
         
     def define_float_range(self, start, stop, step=None):
+        """ 
+        The function defines the range of the parameter if the parameter type is float.
+        
+        Parameters
+        ----------
+        start : float
+            The starting number of the sequence.
+        
+        stop : float
+            Generate numbers up to, including this number.
+        
+        step : float, optional
+            The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.
+        
+        Returns
+        -------        
+        parameter range : list of floats
+            List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.
+        """
         parm_range = super(BldgTaperParm, self).define_float_range(start, stop, step=step)
         self.parm_range = parm_range
         return parm_range
         
     def set_parm_range(self, parm_range):
+        """ 
+        The function defines the range of the parameter .
+        
+        Parameters
+        ----------
+        parm_range : list of ints/floats
+            The parameter range.
+        """
         self.parm_range = parm_range
         
     def map_nrmlise_parms_2_parms(self, nrmlised_parm_list):
+        """ 
+        The function maps the the normalise parameter list to the real parameter list.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        parameter list : list of int/floats
+            List of real parameters.
+        """
         if self.parm_range == None:
             raise Exception("please define parm range")
         parm_list = super(BldgTaperParm, self).map_nrmlise_parms_2_parms(nrmlised_parm_list)
         return parm_list
         
     def define_nparameters(self,pycitygml_reader):
+        """ 
+        The function determines the total parameters for parameterising the model.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+            
+        Returns
+        -------        
+        nparameters : int
+            The number of parameters for the model.
+        """
         gml_bldg_list = pycitygml_reader.get_buildings()
         #filter through the eligible buildings
         eligible_bldg_list, non_eligible_bldg_list = self.eligibility_test(gml_bldg_list, pycitygml_reader)
@@ -1552,6 +2912,22 @@ class BldgTaperParm(BaseParm):
         return nparameters
                 
     def execute(self, pycitygml_reader, nrmlised_parm_list):
+        """ 
+        This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.
+        
+        Parameters
+        ----------
+        pycitygml_reader : pycitygml.Reader class instance
+            The reader to read the CityGML file to be parameterised.
+        
+        nrmlised_parm_list : list of ints/floats
+            The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.
+            
+        Returns
+        -------        
+        new pycitygml_reader : pycitygml.Reader class instance
+            The new design alternative generated and documented as a CityGML model.
+        """
         parm_list = self.map_nrmlise_parms_2_parms(nrmlised_parm_list)
         citygml_writer = pycitygml.Writer()
         gml_landuses = pycitygml_reader.get_landuses()

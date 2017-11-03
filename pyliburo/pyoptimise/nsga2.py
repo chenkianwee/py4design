@@ -40,7 +40,7 @@ def frange(start, end=None, inc=None):
         Generate numbers up to, but not including this number, Default = None. When None, end == start and start = 0.0.
         
     inc : float, optional
-        The different between each number in the sequence, Default = None. When None, inc = 1.0.
+        The difference between each number in the sequence, Default = None. When None, inc = 1.0.
         
     Returns
     -------

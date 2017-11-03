@@ -22,43 +22,60 @@ import py3dmodel
 import pycitygml
 import gml3dmodel
 import shapeattributes
-from collada import *
+import collada
+from collada import polylist, triangleset, lineset
 
 class Massing2Citygml(object):
+    """
+    An object that extracts all the neccessary information from a massing model and converts the geometries into CityGML objects with semantics, only works for LOD1 CityGML models.
+    For more information please refer to Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+    In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.
+    
+    Attributes
+    ----------    
+    occshp_attribs_obj_list : list of ShapeAttributes objects
+        The geometries are first converted to ShapeAttributes objects before into CityGML object. ShapeAttributes is an intermediate format.
+    
+    template_rule_obj_list : list of BaseTemplateRule class instances
+        The template rules for converting the geometries.
+    """
     def __init__(self):
+        """Initialises the class"""
         self.occshp_attribs_obj_list = None
         self.template_rule_obj_list = []
         
     def read_collada(self,dae_filepath):
-        '''
-        the dae file must be modelled as such:
-        close_shells = buildings
-        open_shells = terrain & plots(land-use)
-        edges = street network
+        """
+        This function reads the Collada (.dae) file to be converted and convert the geometries to ShapeAttributes objects.
         
+        Parameters
+        ----------
+        dae_filepath : str
+            The file path of the Collada file to be converted.
+        
+        """
         #TODO: a function that will convert collada to citygml base on the visual scenes and library nodes (groups and layers)
-        dae = Collada(collada_file)
-        nodes = dae.scene.nodes
+        #dae = Collada(collada_file)
+        #nodes = dae.scene.nodes
         
         #this loops thru the visual scene 
         #loop thru the library nodes
-        for node in nodes:
-            name = node.xmlnode.get('name')
-            children_nodes = node.children
-            if children_nodes:
-                for node2 in children_nodes:
-                    name2 = node2.xmlnode.get('name')
-                    print 'name2', name2
-                    children_node2 = node2.children
-                    if children_node2:
-                        if type(children_node2[0]) == scene.NodeNode:
-                            print children_node2[0].children
-        '''
+        #for node in nodes:
+        #    name = node.xmlnode.get('name')
+        #    children_nodes = node.children
+        #    if children_nodes:
+        #        for node2 in children_nodes:
+        #            name2 = node2.xmlnode.get('name')
+        #            print 'name2', name2
+        #            children_node2 = node2.children
+        #            if children_node2:
+        #                if type(children_node2[0]) == scene.NodeNode:
+        #                    print children_node2[0].children
         
         tolerance = 1e-04
         edgelist = []
         shelllist = []
-        mesh = Collada(dae_filepath)
+        mesh = collada.Collada(dae_filepath)
         unit = mesh.assetInfo.unitmeter or 1
         geoms = mesh.scene.objects('geometry')
         geoms = list(geoms)
@@ -150,9 +167,20 @@ class Massing2Citygml(object):
         self.occshp_attribs_obj_list = occshp_attribs_obj_list
 
     def add_template_rule(self, template_rule_obj):
+        """
+        This function adds BaseTemplateRule objects to this class.
+        
+        Parameters
+        ----------
+        template_rule_obj : implementation of the BaseTemplateRule meta class
+            The template rule used for converting the geometries to semantic models.
+        """
         self.template_rule_obj_list.append(template_rule_obj)
         
     def execute_analysis_rule(self):
+        """
+        This function adds executes the analysis rules in the template rules and append the analysis results to the ShapeAttributes objects.
+        """
         occshp_attribs_obj_list = self.occshp_attribs_obj_list
         template_rule_obj_list = self.template_rule_obj_list
         analysis_rule_obj_list = []
@@ -169,8 +197,8 @@ class Massing2Citygml(object):
         print  "GETTING FLATTEN SURFACE"
         for occshp_attribs_obj in occshp_attribs_obj_list:
             occshp = occshp_attribs_obj.shape
-            shptype = py3dmodel.fetch.get_shapetype(occshp)
-            if shptype == py3dmodel.fetch.get_shapetype("shell"):
+            shptype = py3dmodel.fetch.get_topotype(occshp)
+            if shptype == py3dmodel.fetch.get_topotype("shell"):
                 flatten_shell_face = py3dmodel.modify.flatten_shell_z_value(occshp)
                 if not flatten_shell_face == None:
                     flat_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(flatten_shell_face)
@@ -184,7 +212,15 @@ class Massing2Citygml(object):
             
         self.occshp_attribs_obj_list = occshp_attribs_obj_list
             
-    def execute_template_rule(self, citygml_filepath, tolerance = 1e-02):
+    def execute_template_rule(self, citygml_filepath):
+        """
+        This function executes the template rule and convert the geometry to semantic models.
+        
+        Parameters
+        ----------
+        citygml_filepath : str
+            The file path of the resultant CityGML file.
+        """
         template_rule_obj_list = self.template_rule_obj_list
         occshape_attribs_obj_list = self.occshp_attribs_obj_list
         pycitygml_writer = pycitygml.Writer()
