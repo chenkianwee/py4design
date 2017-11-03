@@ -320,7 +320,8 @@ class Edge(TopoDS_Edge, BaseObject):
         '''
         if isinstance(pnt_or_vertex, TopoDS_Vertex):
             pnt_or_vertex = vertex2pnt(pnt_or_vertex)
-
+            
+        self.curve
         poc = GeomAPI_ProjectPointOnCurve(pnt_or_vertex, self.curve_handle)
         return poc.LowerDistanceParameter(), poc.NearestPoint()
 

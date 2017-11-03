@@ -78,7 +78,6 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
     wp_list = []
     os_list = []
     gridded_boundary = py3dmodel.construct.grid_face(boundary_occface, xdim, ydim)
-
     bldg_dict_list = []
     bldg_fp = []
     for building_occsolid in building_occsolids:
@@ -86,7 +85,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
         footprints = urbangeom.get_bldg_footprint_frm_bldg_occsolid(building_occsolid)
         
         if not footprints:
-            face_list = py3dmodel.fetch.geom_explorer(building_occsolid, "face")
+            face_list = py3dmodel.fetch.topo_explorer(building_occsolid, "face")
             xmin, ymin, zmin, xmax, ymax, zmax = py3dmodel.calculate.get_bounding_box(building_occsolid)
             bounding_footprint = py3dmodel.construct.make_polygon([(xmin,ymin,zmin),(xmin,ymax,zmin),(xmax, ymax, zmin),(xmax, ymin, zmin)])
             bldg_footprint_list = []
@@ -110,7 +109,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
         grid_midpt = py3dmodel.calculate.face_midpt(grid)
         dest_pt = py3dmodel.modify.move_pt(grid_midpt, (0,0,-1), 10)
         m_grid = py3dmodel.modify.move(grid_midpt,dest_pt, grid)
-        m_grid = py3dmodel.fetch.shape2shapetype(m_grid)
+        m_grid = py3dmodel.fetch.topo2topotype(m_grid)
         grid_extrude = py3dmodel.construct.extrude(m_grid, (0,0,1), 1000)
         bldg_list = []
         for bldg_dict in bldg_dict_list:
@@ -129,7 +128,7 @@ def frontal_area_index(building_occsolids, boundary_occface, wind_dir, xdim = 10
             agrid_facade_list = []
             for bldg in bldg_list:
                 common_shape = py3dmodel.construct.boolean_common(grid_extrude,bldg)
-                compound_faces = py3dmodel.fetch.geom_explorer(common_shape, "face")
+                compound_faces = py3dmodel.fetch.topo_explorer(common_shape, "face")
                 facade_list, roof_list, ftprint_list = urbangeom.identify_srfs_according_2_angle(compound_faces)
                 agrid_facade_list.extend(facade_list)
             if agrid_facade_list:
@@ -205,7 +204,7 @@ def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
     for facade_face in facade_occfaces:
         surfaces_projected.append(facade_face)
         projected_pts = py3dmodel.calculate.project_face_on_faceplane(wind_plane, facade_face)
-        projected_srf = py3dmodel.construct.make_polygon(py3dmodel.fetch.occptlist2pyptlist(projected_pts))
+        projected_srf = py3dmodel.construct.make_polygon(projected_pts)
         if py3dmodel.calculate.face_area(projected_srf) >0:
             projected_facet_faces.append(projected_srf)
          
@@ -219,8 +218,8 @@ def frontal_area_index_aplot(facade_occfaces, plane_occface, wind_dir):
             else:
                 fuse_shape = py3dmodel.construct.boolean_fuse(fuse_shape, projected_facet_faces[psrf_cnt+1])
                 
-        fuse_compound = py3dmodel.fetch.shape2shapetype(fuse_shape) 
-        fuse_srfs = py3dmodel.fetch.geom_explorer(fuse_compound,"face")
+        fuse_compound = py3dmodel.fetch.topo2topotype(fuse_shape) 
+        fuse_srfs = py3dmodel.fetch.topo_explorer(fuse_compound,"face")
     
     #calculate the frontal area index
     facet_area = urbangeom.faces_surface_area(fuse_srfs)
@@ -309,7 +308,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     edges4_networkx = new_network_occedgelist + pedgelist + midpt2_network_edgelist
     fused_ntpts = []
     for ne in edges4_networkx:
-        edge_nodes = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(ne))
+        edge_nodes = py3dmodel.fetch.points_frm_edge(ne)
         edge_nodes = py3dmodel.modify.round_pyptlist(edge_nodes, ndecimal)
         if len(edge_nodes) == 2:
             xdmin,xdmax = py3dmodel.fetch.edge_domain(ne)
@@ -476,11 +475,10 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     peripheral_ptlist = []
     peripheral_parmlist = []
     peripheral_parmlist4network = []
-    boundary_pyptlist = py3dmodel.fetch.pyptlist_frm_occface(boundary_occface)
+    boundary_pyptlist = py3dmodel.fetch.points_frm_occface(boundary_occface)
     boundary_pyptlist.append(boundary_pyptlist[0])
     #extract the wire from the face and convert it to a bspline curve
     bedge = py3dmodel.construct.make_bspline_edge(boundary_pyptlist, mindegree=1, maxdegree=1)
-    
     #get all the intersection points 
     interptlist = []
     for network_occedge in network_occedgelist:
@@ -489,7 +487,7 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
             interptlist.extend(intersect_pts)
             
     #remove all duplicate points    
-    fused_interptlist = py3dmodel.modify.rmv_duplicated_pts_by_distance(interptlist, tolerance = precision)
+    fused_interptlist = py3dmodel.modify.rmv_duplicated_pts_by_distance(interptlist, distance = precision)
     
     #translate all the points to parameter
     ulist = []
@@ -654,18 +652,17 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
         pymidpt = py3dmodel.calculate.face_midpt(plot_occface)
         plot_midptlist.append(pymidpt)
         #extrude the plot into a solid
-        pextrude = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.extrude(plot_occface,(0,0,1), 10))
-        pface_list = py3dmodel.fetch.geom_explorer(pextrude, "face")
+        pextrude = py3dmodel.fetch.topo2topotype(py3dmodel.construct.extrude(plot_occface,(0,0,1), 10))
+        pface_list = py3dmodel.fetch.topo_explorer(pextrude, "face")
         for pface in pface_list:
             xmin,ymin,zmin,xmax,ymax,zmax = py3dmodel.calculate.get_bounding_box(pface)
             pface_nrml = py3dmodel.calculate.face_normal(pface)
             pface_midpt = py3dmodel.calculate.face_midpt(pface)
             pedge_midpypt = (pface_midpt[0],pface_midpt[1],zmin + 1e-06)
-            inter_occpt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pface_nrml)
+            inter_pypt, inter_face = py3dmodel.calculate.intersect_shape_with_ptdir(network_compound, pedge_midpypt, pface_nrml)
             
-            if inter_occpt != None:
+            if inter_pypt != None:
                 #it means this is an open boundary edge
-                inter_pypt = py3dmodel.fetch.occpt2pypt(inter_occpt)
                 network_ptlist.append(inter_pypt)
                 midpt2pedge = py3dmodel.construct.make_edge(pymidpt, pedge_midpypt)
                 pedge2network = py3dmodel.construct.make_edge(pedge_midpypt, inter_pypt)
@@ -750,14 +747,14 @@ def route_ard_obstruction(obstruction_face, crow_wire):
         The wire will go around the obstruction OCCface.
         
     """    
-    res = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(obstruction_face,crow_wire))
-    res2 =py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_difference(crow_wire,obstruction_face))
-    edgelist = py3dmodel.fetch.geom_explorer(res, "edge")
-    edgelist2 = py3dmodel.fetch.geom_explorer(res2, "edge")
+    res = py3dmodel.fetch.topo2topotype(py3dmodel.construct.boolean_common(obstruction_face,crow_wire))
+    res2 =py3dmodel.fetch.topo2topotype(py3dmodel.construct.boolean_difference(crow_wire,obstruction_face))
+    edgelist = py3dmodel.fetch.topo_explorer(res, "edge")
+    edgelist2 = py3dmodel.fetch.topo_explorer(res2, "edge")
     
     wire = py3dmodel.fetch.wires_frm_face(obstruction_face)[0]
     #turn the wire into a degree1 bspline curve edge
-    pyptlist = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_frm_wire(wire))
+    pyptlist = py3dmodel.modify.occpt_list_2_pyptlist(py3dmodel.fetch.points_frm_wire(wire))
     pyptlist.append(pyptlist[0])
     bspline_edge  = py3dmodel.construct.make_bspline_edge(pyptlist, mindegree=1, maxdegree=1)
     
@@ -800,7 +797,7 @@ def route_ard_obstruction(obstruction_face, crow_wire):
         if py3dmodel.fetch.is_edge_bspline(sorted_edge):
             pts = py3dmodel.fetch.poles_from_bsplinecurve_edge(sorted_edge)
         if py3dmodel.fetch.is_edge_line(sorted_edge):
-            pts = py3dmodel.fetch.occptlist2pyptlist(py3dmodel.fetch.points_from_edge(sorted_edge))
+            pts = py3dmodel.fetch.points_from_edge(sorted_edge)
             
         new_pyptlist.extend(pts)
         
@@ -830,8 +827,8 @@ def generate_directions(rot_degree):
     for dircnt in range(int(360/rot_degree)):
         degree = rot_degree*dircnt
         rot_vert = py3dmodel.modify.rotate(orig_vert, (0,0,0), (0,0,1), degree)
-        gppt = py3dmodel.fetch.vertex2point(rot_vert)
-        pypt = py3dmodel.fetch.occpt2pypt(gppt)
+        gppt = py3dmodel.modify.occvertex_2_occpt(rot_vert)
+        pypt = py3dmodel.modify.occpt_2_pypt(gppt)
         pydirlist.append(pypt)
         
     return pydirlist
@@ -1572,7 +1569,7 @@ def initialise_srf_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
              
         bsrf_cnt = 0
         for bsrf in bsrflist:
-            pypolygon = py3dmodel.fetch.pyptlist_frm_occface(bsrf)
+            pypolygon = py3dmodel.fetch.points_frm_occface(bsrf)
             srfname = "srf" + str(bldg_cnt) + str(bsrf_cnt)
             py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
             bsrf_cnt+=1
@@ -1593,7 +1590,7 @@ def initialise_srf_indexes(building_occsolids, xdim, ydim, rad_folderpath, surfa
     # the shading surfaces
     shade_cnt = 0
     for shade_srf in shading_occfaces:
-        pypolygon = py3dmodel.fetch.pyptlist_frm_occface(shade_srf)
+        pypolygon = py3dmodel.fetch.points_frm_occface(shade_srf)
         srfname = "shade" + str(shade_cnt)
         py2radiance.RadSurface(srfname, pypolygon, srfmat, rad)
         shade_cnt+=1
@@ -1734,7 +1731,7 @@ def calculate_shape_factor(bldg_occsolid_list, flr2flr_height):
     shape_factor_list = []
     for bldg_occsolid in bldg_occsolid_list:
         flr_area = urbangeom.calculate_bldg_flr_area(bldg_occsolid, flr2flr_height)
-        bldg_occfaces = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
+        bldg_occfaces = py3dmodel.fetch.topo_explorer(bldg_occsolid, "face")
         bldg_surface_area = urbangeom.faces_surface_area(bldg_occfaces)
         shape_factor = bldg_surface_area/flr_area
         shape_factor_list.append(shape_factor)

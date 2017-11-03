@@ -145,11 +145,11 @@ class IdentifyBuildingMassings(BaseTemplateRule):
             least_verts = 2
             while least_verts <3:
                 least_verts = 3
-                shell_faces = py3dmodel.fetch.geom_explorer(mbuilding, "face")
+                shell_faces = py3dmodel.fetch.topo_explorer(mbuilding, "face")
                 #this is to try to remove any unwanted small area face 
                 #this will only happens when the simplification do not work
                 for face in shell_faces:
-                    pyptlist= py3dmodel.fetch.pyptlist_frm_occface(face)
+                    pyptlist= py3dmodel.fetch.points_frm_occface(face)
                     nverts = len(pyptlist)
                     if nverts <3:
                         shell_faces.remove(face)
@@ -161,7 +161,7 @@ class IdentifyBuildingMassings(BaseTemplateRule):
                         least_verts = 2
                         
                 #reconstruct the shell with the remaining face
-                mbuilding = py3dmodel.construct.make_shell_frm_faces(shell_faces,tolerance = tolerance)[0]
+                mbuilding = py3dmodel.construct.sew_faces(shell_faces,tolerance = tolerance)[0]
                 mbuilding = py3dmodel.modify.fix_shell_orientation(mbuilding)
             
             is_shell_close = py3dmodel.calculate.is_shell_closed(mbuilding)
@@ -171,7 +171,7 @@ class IdentifyBuildingMassings(BaseTemplateRule):
             #reconstruct the entire shell entirely by meshing the original geometry
             if is_shell_close == False or is_shell_planar == False or is_shell_simple == False :
                 mesh_faces = py3dmodel.construct.simple_mesh(building)
-                mbuilding = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
+                mbuilding = py3dmodel.construct.sew_faces(mesh_faces,tolerance = tolerance)[0]
                 mbuilding = py3dmodel.modify.fix_shell_orientation(mbuilding)
                 mbuilding = py3dmodel.construct.make_solid(mbuilding)
                 mbuilding = py3dmodel.modify.fix_close_solid(mbuilding)
@@ -179,7 +179,7 @@ class IdentifyBuildingMassings(BaseTemplateRule):
                 mbuilding = py3dmodel.construct.make_solid(mbuilding)
                 mbuilding = py3dmodel.modify.fix_close_solid(mbuilding)
 
-            bfaces = py3dmodel.fetch.geom_explorer(mbuilding, "face")
+            bfaces = py3dmodel.fetch.topo_explorer(mbuilding, "face")
             gml_geometry_list = gml3dmodel.write_gml_srf_member(bfaces)
             bldg_name = "bldg" + str(bcnt)
             pycitygml_writer.add_building("lod1",bldg_name, gml_geometry_list)
@@ -235,7 +235,7 @@ class IdentifyTerrainMassings(BaseTemplateRule):
             if zrange <= tolerance:
                 terrain = py3dmodel.modify.simplify_shell(terrain, tolerance = tolerance)
             
-            tfaces =  py3dmodel.fetch.geom_explorer(terrain, "face")
+            tfaces =  py3dmodel.fetch.topo_explorer(terrain, "face")
             gml_triangle_list = gml3dmodel.write_gml_triangle(tfaces)
             tname = "terrain" + str(tcnt)
             pycitygml_writer.add_tin_relief("lod1",tname,gml_triangle_list)
@@ -292,10 +292,10 @@ class IdentifyLandUseMassings(BaseTemplateRule):
                 landuse = py3dmodel.modify.simplify_shell(landuse, tolerance = tolerance)
             else:
                 mesh_faces = py3dmodel.construct.simple_mesh(landuse)
-                landuse = py3dmodel.construct.make_shell_frm_faces(mesh_faces,tolerance = tolerance)[0]
+                landuse = py3dmodel.construct.sew_faces(mesh_faces,tolerance = tolerance)[0]
                 landuse = py3dmodel.modify.fix_shell_orientation(landuse)
                 
-            lfaces =  py3dmodel.fetch.geom_explorer(landuse, "face")
+            lfaces =  py3dmodel.fetch.topo_explorer(landuse, "face")
             gml_geometry_list = gml3dmodel.write_gml_srf_member(lfaces)
             luse_name = "luse" + str(lcnt)
             pycitygml_writer.add_landuse("lod1", luse_name, gml_geometry_list)

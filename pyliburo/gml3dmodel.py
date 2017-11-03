@@ -52,14 +52,14 @@ def citygml2collada(citygml_filepath, collada_filepath):
     for building in buildings:
         pypolgon_list = reader.get_pypolygon_list(building)
         solid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
-        bldg_shell_list = py3dmodel.fetch.geom_explorer(solid, "shell")
+        bldg_shell_list = py3dmodel.fetch.topo_explorer(solid, "shell")
         occshell_list.extend(bldg_shell_list)
 
     for landuse in landuses:
         lpolygons = reader.get_polygons(landuse)
         if lpolygons:
             for lpolygon in lpolygons:
-                landuse_pts = reader.polygon_2_pt_list(lpolygon)
+                landuse_pts = reader.polygon_2_pyptlist(lpolygon)
                 lface = py3dmodel.construct.make_polygon(landuse_pts)
                 occshell_list.append(lface)
           
@@ -81,20 +81,20 @@ def citygml2collada(citygml_filepath, collada_filepath):
         polylines = reader.get_pylinestring_list(road)
         for polyline in polylines:
             occ_wire = py3dmodel.construct.make_wire(polyline)
-            edge_list = py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+            edge_list = py3dmodel.fetch.topo_explorer(occ_wire, "edge")
             occedge_list.extend(edge_list)
     
     for rail in railways:
         polylines = reader.get_pylinestring_list(rail)
         for polyline in polylines:
             occ_wire = py3dmodel.construct.make_wire(polyline)
-            edge_list = py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+            edge_list = py3dmodel.fetch.topo_explorer(occ_wire, "edge")
             occedge_list.extend(edge_list)
             
     for stop in stops:
         pypolgon_list = reader.get_pypolygon_list(stop)
         solid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
-        stop_shell_list = py3dmodel.fetch.geom_explorer(solid, "shell")
+        stop_shell_list = py3dmodel.fetch.topo_explorer(solid, "shell")
         occshell_list.extend(stop_shell_list)
     
     py3dmodel.export_collada.write_2_collada(occshell_list, collada_filepath, occedge_list = occedge_list)
@@ -243,7 +243,7 @@ def rotate_bldg(gml_bldg, rot_angle, citygml_reader):
     bldg_occsolid = get_building_occsolid(gml_bldg,citygml_reader)
     loc_pt = urbangeom.get_building_location_pt(bldg_occsolid)
     rot_bldg_occshape = py3dmodel.modify.rotate(bldg_occsolid, loc_pt, (0,0,1), rot_angle)
-    rot_bldg_occsolid = py3dmodel.fetch.geom_explorer(rot_bldg_occshape, "solid")[0]
+    rot_bldg_occsolid = py3dmodel.fetch.topo_explorer(rot_bldg_occshape, "solid")[0]
     return rot_bldg_occsolid
 
 def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, citygml_writer, 
@@ -279,7 +279,7 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     rooftype = citygml_reader.get_building_rooftype(orgin_gml_building)
     stry_blw_grd = citygml_reader.get_building_storey_blw_grd(orgin_gml_building)
     #generic_attrib_dict = citygml_reader.get_generic_attribs(orgin_gml_building)        
-    new_bldg_occsolid = py3dmodel.fetch.geom_explorer(new_bldg_occsolid, "solid")[0]
+    new_bldg_occsolid = py3dmodel.fetch.topo_explorer(new_bldg_occsolid, "solid")[0]
     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
     face_list = py3dmodel.fetch.faces_frm_solid(new_bldg_occsolid)
     geometry_list = write_gml_srf_member(face_list)
@@ -335,7 +335,7 @@ def gml_landuse_2_occface(gml_landuse, citygml_reader):
     
     """
     lpolygon = citygml_reader.get_polygons(gml_landuse)[0]
-    landuse_pts = citygml_reader.polygon_2_pt_list(lpolygon)
+    landuse_pts = citygml_reader.polygon_2_pyptlist(lpolygon)
     landuse_occface = py3dmodel.construct.make_polygon(landuse_pts)
     return landuse_occface
             
@@ -370,7 +370,7 @@ def buildings_on_landuse(gml_landuse, gml_bldg_list, citygml_reader):
             flatten_fp = py3dmodel.modify.flatten_face_z_value(bldg_fp)
             occface_area = py3dmodel.calculate.face_area(flatten_fp)
             common_cmpd = py3dmodel.construct.boolean_common(flatten_fp, flatten_landuse_occface)
-            face_list = py3dmodel.fetch.geom_explorer(common_cmpd, "face")
+            face_list = py3dmodel.fetch.topo_explorer(common_cmpd, "face")
             if face_list:
                 common_area = 0
                 for common_face in face_list:
@@ -423,7 +423,7 @@ def write_a_gml_srf_member(occface):
         The written surface.
         
     """
-    pypt_list = py3dmodel.fetch.pyptlist_frm_occface(occface)
+    pypt_list = py3dmodel.fetch.points_frm_occface(occface)
     #pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list, roundndigit = 6)
     if len(pypt_list)>=3:
         face_nrml = py3dmodel.calculate.face_normal(occface)
@@ -478,14 +478,14 @@ def write_gml_triangle(occface_list):
     """
     gml_geometry_list = []
     for face in occface_list:
-        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        pypt_list = py3dmodel.fetch.points_frm_occface(face)
         n_pypt_list = len(pypt_list)
         if n_pypt_list>3:
             occtriangles = py3dmodel.construct.simple_mesh(face)
             for triangle in occtriangles:
                 is_face_null = py3dmodel.fetch.is_face_null(triangle)
                 if not is_face_null:
-                    t_pypt_list = py3dmodel.fetch.pyptlist_frm_occface(triangle)
+                    t_pypt_list = py3dmodel.fetch.points_frm_occface(triangle)
                     #face_nrml = py3dmodel.calculate.face_normal(triangle)
                     #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(t_pypt_list, face_nrml)
                     #if is_anticlockwise == False:
@@ -518,8 +518,7 @@ def write_gml_linestring(occedge):
         
     """
     gml_edge_list = []
-    occpt_list = py3dmodel.fetch.points_from_edge(occedge)
-    pypt_list = py3dmodel.fetch.occptlist2pyptlist(occpt_list)
+    pypt_list = py3dmodel.fetch.points_from_edge(occedge)
     linestring = pycitygml.gmlgeometry.LineString(pypt_list)
     gml_edge_list.append(linestring)
     return gml_edge_list

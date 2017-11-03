@@ -197,7 +197,7 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
     for srf_shp_attribs in srfs_shp_attribs_obj_list:
         srf_type = srf_shp_attribs.get_value("type")
         occ_face = srf_shp_attribs.shape
-        pypolygon = py3dmodel.fetch.pyptlist_frm_occface(occ_face)
+        pypolygon = py3dmodel.fetch.points_frm_occface(occ_face)
         srfname = "srf" + str(scnt)
         if srf_type == "window" or srf_type == "skylight":
             sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(occ_face, 1, 1)

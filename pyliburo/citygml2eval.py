@@ -226,7 +226,7 @@ class Evals(object):
                 occtriangle = py3dmodel.construct.make_polygon(pytriangle)
                 rf_occtriangle_list.append(occtriangle)
                 occtriangle_list.append(occtriangle)
-            rf_shell = py3dmodel.construct.make_shell_frm_faces(occtriangle_list)[0]
+            rf_shell = py3dmodel.construct.sew_faces(occtriangle_list)[0]
             rf_shell_list.append(rf_shell)
             
         self.relief_feature_occfaces = rf_occtriangle_list
@@ -237,9 +237,10 @@ class Evals(object):
         road_occedges = []
         for road in roads:
             polylines = self.citygml.get_pylinestring_list(road)
+            
             for polyline in polylines:
                 occ_wire = py3dmodel.construct.make_wire(polyline)
-                edge_list = py3dmodel.fetch.geom_explorer(occ_wire, "edge")
+                edge_list = py3dmodel.fetch.topo_explorer(occ_wire, "edge")
                 road_occedges.extend(edge_list)
                 
         self.road_occedges = road_occedges
@@ -253,12 +254,12 @@ class Evals(object):
                 lfaces = []
                 if len(lpolygons)>1:
                     for lpolygon in lpolygons:
-                        landuse_pts = self.citygml.polygon_2_pt_list(lpolygon)
+                        landuse_pts = self.citygml.polygon_2_pyptlist(lpolygon)
                         lface = py3dmodel.construct.make_polygon(landuse_pts)
                         lfaces.append(lface)
                     merged_face = py3dmodel.construct.merge_faces(lfaces)[0]
                 if len(lpolygons)==1:
-                    landuse_pts = self.citygml.polygon_2_pt_list(lpolygons[0])
+                    landuse_pts = self.citygml.polygon_2_pyptlist(lpolygons[0])
                     lface = py3dmodel.construct.make_polygon(landuse_pts)
                     merged_face = lface
                     
@@ -283,7 +284,7 @@ class Evals(object):
         for gml_bldg in gml_bldgs:
             pypolygonlist = reader.get_pypolygon_list(gml_bldg) 
             bsolid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygonlist)
-            bldg_face_list = py3dmodel.fetch.geom_explorer(bsolid, "face")
+            bldg_face_list = py3dmodel.fetch.topo_explorer(bsolid, "face")
             shading_faces.extend(bldg_face_list)
             
         reliefs = reader.get_relief_feature()
@@ -757,13 +758,8 @@ class Evals(object):
             
             all_flatten_rf_faces = []
             for rfshell in rf_shells:
-                rffaces = py3dmodel.fetch.geom_explorer(rfshell, "face")
+                rffaces = py3dmodel.fetch.topo_explorer(rfshell, "face")
                 for rfface in rffaces:
-                    #rf_nrml = py3dmodel.calculate.face_normal(rfface)
-                    #ref_nrml = (0,0,1)
-                    #print rf_nrml
-                    #angle = py3dmodel.calculate.angle_bw_2_vecs(rf_nrml,ref_nrml)
-                    #flatten the surfaces 
                     flatten_face_z = py3dmodel.modify.flatten_face_z_value(rfface, z = zmin)
                     all_flatten_rf_faces.append(flatten_face_z)         
             boundary_occface = py3dmodel.construct.merge_faces(all_flatten_rf_faces)[0]

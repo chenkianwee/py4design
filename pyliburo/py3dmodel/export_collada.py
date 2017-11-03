@@ -88,13 +88,13 @@ def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
         vcnt = []
         indices = []
         
-        face_list = fetch.geom_explorer(occshell, "face")
+        face_list = fetch.topo_explorer(occshell, "face")
         vert_cnt = 0
         for face in face_list:
-            wire_list = fetch.geom_explorer(face, "wire")
+            wire_list = fetch.topo_explorer(face, "wire")
             nwire = len(wire_list)
             if nwire == 1:
-                pyptlist = fetch.pyptlist_frm_occface(face)
+                pyptlist = fetch.points_frm_occface(face)
                 vcnt.append(len(pyptlist))
                 face_nrml = calculate.face_normal(face)
                 pyptlist.reverse()
@@ -113,7 +113,7 @@ def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
             if nwire >1:
                 tri_face_list = construct.simple_mesh(face)
                 for tface in tri_face_list:
-                    pyptlist = fetch.pyptlist_frm_occface(tface)
+                    pyptlist = fetch.points_frm_occface(tface)
                     vcnt.append(len(pyptlist))
                     face_nrml = calculate.face_normal(tface)
                     pyptlist.reverse()
@@ -241,7 +241,7 @@ def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
         corner_pt = (xmin1,ymax1,zmin1)
         corner_pt2 = (xmin,ymin,zmin)
         moved_str = modify.move(corner_pt, corner_pt2, d_str)
-        face_list = fetch.geom_explorer(moved_str, "face")
+        face_list = fetch.topo_explorer(moved_str, "face")
         meshed_list = []
         for face in face_list:    
             meshed_face_list = construct.simple_mesh(face)
@@ -383,7 +383,7 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
     if other_occedge_list !=None:
         edge_cmpd = construct.make_compound(other_occedge_list)
         edge_cmpd = modify.move(otopo_centre_pt, (0,0,0), edge_cmpd)
-        other_occedge_list = fetch.geom_explorer(edge_cmpd, "edge")
+        other_occedge_list = fetch.topo_explorer(edge_cmpd, "edge")
         mesh = occtopo_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list, 
                                  occedge_list = other_occedge_list)
         mesh.write(dae_filepath)

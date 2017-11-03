@@ -82,7 +82,7 @@ def make_box(length, width, height):
     box : OCCsolid
         OCCsolid box constructed based on the length, width and height.
     """
-    box = fetch.shape2shapetype(BRepPrimAPI_MakeBox(length,width,height).Shape())
+    box = fetch.topo2topotype(BRepPrimAPI_MakeBox(length,width,height).Shape())
     return box
 
 def make_brep_text(text_string, font_size):
@@ -524,11 +524,11 @@ def extrude_edge(occedge, pydir, magnitude):
     """
     edge_midpt = calculate.edge_midpt(occedge)
     location_pt = modify.move_pt(edge_midpt, pydir, magnitude)
-    edge2 = fetch.shape2shapetype(modify.move(edge_midpt, location_pt, occedge))
+    edge2 = fetch.topo2topotype(modify.move(edge_midpt, location_pt, occedge))
     edge_wire = make_wire_frm_edges([occedge])
     edge_wire2 = make_wire_frm_edges([edge2])
     edgeface = make_loft_with_wires([edge_wire,edge_wire2])
-    facelist = fetch.geom_explorer(edgeface, "face")
+    facelist = fetch.topo_explorer(edgeface, "face")
     return facelist[0]
 
 def make_wire_frm_edges(occedge_list):
@@ -581,7 +581,7 @@ def faces_frm_loose_edges(occedge_list):
     for i in range(wires.Length()):
         wire_shape = wires.Value(i+1)
         wire_shape = modify.fix_shape(wire_shape)
-        wire = fetch.shape2shapetype(wire_shape)            
+        wire = fetch.topo2topotype(wire_shape)            
         #visualise([edges], ['BLUE'])
         occface = BRepBuilderAPI_MakeFace(wire).Face()
         
@@ -630,11 +630,11 @@ def faces_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
     face_list = []
     for i in range(wires.Length()):
         wire_shape = wires.Value(i+1)
-        wire = fetch.shape2shapetype(wire_shape)
+        wire = fetch.topo2topotype(wire_shape)
         #occface = BRepBuilderAPI_MakeFace(wire).Face()
         #occface = modify.fix_face(occface)
         #fixed_wire = modify.fix_closed_wire(wire, occface, tolerance = 1e-06)
-        pyptlist = fetch.pyptlist_frm_occwire(wire)
+        pyptlist = fetch.points_frm_wire(wire)
         pyptlist = modify.rmv_duplicated_pts(pyptlist, roundndigit = roundndigit)
         pyptlist = modify.rmv_duplicated_pts_by_distance(pyptlist, distance = distance)
         npts = len(pyptlist)
@@ -654,14 +654,14 @@ def faces_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
             loc_pt = modify.move_pt(midpt, (0,0,-1),0.3)
             #move the face down
             m_occface = modify.move(midpt, loc_pt, face2)
-            m_occface = fetch.shape2shapetype(m_occface)
+            m_occface = fetch.topo2topotype(m_occface)
             #extrude the face
             extrude_solid = extrude(m_occface, (0,0,1), 0.6)
             extrude_list.append(extrude_solid)
             
         cmpd = make_compound(extrude_list)
         diff_cmpd = boolean_difference(occface, cmpd)
-        diff_face_list = fetch.geom_explorer(diff_cmpd, "face")
+        diff_face_list = fetch.topo_explorer(diff_cmpd, "face")
         #diff_face_list = simple_mesh(diff_cmpd)
         if diff_face_list:
             diff_list.extend(diff_face_list)
@@ -834,7 +834,7 @@ def make_offset_face2wire(occface, offset_value):
         The offsetted OCCwire.
     """
     o_wire = Construct.make_offset(occface, offset_value)
-    return fetch.shape2shapetype(o_wire)
+    return fetch.topo2topotype(o_wire)
 
 def grid_face(occface, udim, vdim):
     """
@@ -879,14 +879,14 @@ def grid_face(occface, udim, vdim):
             pt2 = pt_list[pcnt+v_div+1]
             pt3 = pt_list[pcnt+v_div+2]
             pt4 = pt_list[pcnt+1]
-            occface = make_polygon([pt1, pt2, pt3, pt4])
-            face_list.append(occface)
+            occface1 = make_polygon([pt1, pt2, pt3, pt4])
+            face_list.append(occface1)
        
     #intersect the grids and the face so that those grids that are not in the face will be erase
     intersection_list = []
     for f in face_list:
         intersection = BRepAlgoAPI_Common(f, occface).Shape()
-        compound = fetch.shape2shapetype(intersection)
+        compound = fetch.topo2topotype(intersection)
         inter_face_list = fetch.topos_frm_compound(compound)["face"]
         if inter_face_list:
             for inter_face in inter_face_list:
@@ -915,7 +915,7 @@ def extrude(occface, pydir, magnitude):
     """
     orig_pt = calculate.face_midpt(occface)
     dest_pt = modify.move_pt(orig_pt, pydir, magnitude)
-    wire_list =  fetch.geom_explorer(occface,"wire")
+    wire_list =  fetch.topo_explorer(occface,"wire")
     nwire = len(wire_list)
     if nwire > 1:
         #clockwise = hole
@@ -932,10 +932,10 @@ def extrude(occface, pydir, magnitude):
             wire_face = make_face_frm_wire(wire)
             
             moved_face = modify.move(orig_pt,dest_pt, wire_face)
-            moved_face = fetch.shape2shapetype(moved_face)
+            moved_face = fetch.topo2topotype(moved_face)
             #create solid from the faces
             loft = make_loft([wire_face, moved_face])
-            face_list = fetch.geom_explorer(loft, "face")
+            face_list = fetch.topo_explorer(loft, "face")
             face_list.append(wire_face)
             face_list.append(moved_face)
             
@@ -951,12 +951,12 @@ def extrude(occface, pydir, magnitude):
         extrude_cmpd = make_compound(face_extrude_list)
         hole_cmpd = make_compound(hole_solid_list)
         diff_cmpd = boolean_difference(extrude_cmpd, hole_cmpd)
-        solid_list = fetch.geom_explorer(diff_cmpd, "solid")
+        solid_list = fetch.topo_explorer(diff_cmpd, "solid")
         return solid_list[0]
     else:
         moved_face = modify.move(orig_pt,dest_pt, occface)
         loft = make_loft([occface, moved_face])
-        face_list = fetch.geom_explorer(loft, "face")
+        face_list = fetch.topo_explorer(loft, "face")
         face_list.append(occface)
         face_list.append(moved_face)
         shell = sew_faces(face_list)[0]
@@ -1075,8 +1075,8 @@ def sew_faces(occface_list, tolerance = 1e-06):
         sewing.Add(f)
         
     sewing.Perform()
-    sewing_shape = fetch.shape2shapetype(sewing.SewedShape())
-    shell_list = fetch.geom_explorer(sewing_shape, "shell")
+    sewing_shape = fetch.topo2topotype(sewing.SewedShape())
+    shell_list = fetch.topo_explorer(sewing_shape, "shell")
     return shell_list
     
 def make_occfaces_frm_pypolygons(pypolygon_list):
@@ -1207,7 +1207,7 @@ def boolean_common(occtopology1, occtopology2):
         An OCCcompound constructed from the intersection.
     """
     intersection = BRepAlgoAPI_Common(occtopology1, occtopology2).Shape()
-    compound = fetch.shape2shapetype(intersection)
+    compound = fetch.topo2topotype(intersection)
     return compound
     
 def boolean_fuse(occtopology1, occtopology2):
@@ -1230,7 +1230,7 @@ def boolean_fuse(occtopology1, occtopology2):
         An OCCcompound constructed from the fusion.
     """
     fused = Construct.boolean_fuse(occtopology1, occtopology2)
-    compound = fetch.shape2shapetype(fused)
+    compound = fetch.topo2topotype(fused)
     return compound
 
 def boolean_difference(occstopology2cutfrm, cutting_occtopology):
@@ -1253,7 +1253,7 @@ def boolean_difference(occstopology2cutfrm, cutting_occtopology):
         An OCCcompound constructed from the cutting.
     """
     difference = Construct.boolean_cut(occstopology2cutfrm, cutting_occtopology)
-    compound = fetch.shape2shapetype(difference)
+    compound = fetch.topo2topotype(difference)
     return compound
 
 def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance = 0.1):
@@ -1283,7 +1283,7 @@ def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance 
         An OCCcompound constructed from the cutting. The OCCcompound is a collection of OCCfaces
     """
     section = BRepAlgoAPI_Section(section_occface, occtopology2cut).Shape()
-    edges = fetch.geom_explorer(section, "edge")
+    edges = fetch.topo_explorer(section, "edge")
     face_list = faces_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
     compound = make_compound(face_list)
     #visualise([[compound]], ["BLUE"])
@@ -1311,7 +1311,7 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
     occtopology = TopoDS_Shape(occtopology)
     bt = BRep_Tool()
     BRepMesh_IncrementalMesh(occtopology, mesh_incremental_float)
-    occshape_face_list = fetch.geom_explorer(occtopology, "face")
+    occshape_face_list = fetch.topo_explorer(occtopology, "face")
     occface_list = []
     for occshape_face in occshape_face_list:
         location = TopLoc_Location()
@@ -1324,9 +1324,9 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
                 trian = tri.Value(i)
                 index1, index2, index3 = trian.Get()
                 #print index1, index2, index3
-                pypt1 = fetch.occpt2pypt(tab.Value(index1))
-                pypt2 = fetch.occpt2pypt(tab.Value(index2))
-                pypt3 = fetch.occpt2pypt(tab.Value(index3))
+                pypt1 = modify.occpt_2_pypt(tab.Value(index1))
+                pypt2 = modify.occpt_2_pypt(tab.Value(index2))
+                pypt3 = modify.occpt_2_pypt(tab.Value(index3))
                 #print pypt1, pypt2, pypt3
                 occface = make_polygon([pypt1, pypt2, pypt3])
                 occface_list.append(occface)

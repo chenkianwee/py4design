@@ -60,7 +60,7 @@ def generate_sensor_surfaces(occface, xdim, ydim, distance_offset = 0.01):
     normal = py3dmodel.calculate.face_normal(occface)
     mid_pt = py3dmodel.calculate.face_midpt(occface)
     location_pt = py3dmodel.modify.move_pt(mid_pt, normal, 0.01)
-    moved_oface = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(mid_pt, location_pt, occface))
+    moved_oface = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(mid_pt, location_pt, occface))
     #put it into occ and subdivide surfaces 
     sensor_surfaces = py3dmodel.construct.grid_face(moved_oface, xdim, ydim)
     sensor_pts = []
@@ -238,7 +238,7 @@ def extrude_move_down_occ_faces(occface_list, distance = 1):
         loc_pt = py3dmodel.modify.move_pt(midpt, (0,0,-1),1)
         #move the face down
         m_occface = py3dmodel.modify.move(midpt, loc_pt, occface)
-        m_occface = py3dmodel.fetch.shape2shapetype(m_occface)
+        m_occface = py3dmodel.fetch.topo2topotype(m_occface)
         #extrude the face
         extrude = py3dmodel.construct.extrude(m_occface, (0,0,1), 2)
         extrude_list.append(extrude)
@@ -306,7 +306,7 @@ def reconstruct_bldg_shell(bldg_occshell):
             moved_bldg_occsolid = py3dmodel.modify.move(loc_pt,moved_pt, bldg_occsolid)
             #intersection_list.append(moved_bldg_occsolid)
             flr1_list = py3dmodel.construct.boolean_common(moved_bldg_occsolid,bounding_footprint)
-            flr1_list = py3dmodel.fetch.geom_explorer(flr1_list, "face")
+            flr1_list = py3dmodel.fetch.topo_explorer(flr1_list, "face")
             nflr1 = len(flr1_list)
             if nflr1 > 1:
                 break
@@ -316,7 +316,7 @@ def reconstruct_bldg_shell(bldg_occshell):
             z = loc_pt[2]+((scnt)*flr_height)
             moved_pt = (loc_pt[0], loc_pt[1], z)
             moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-            bounding_list.append(py3dmodel.fetch.shape2shapetype(moved_f))
+            bounding_list.append(py3dmodel.fetch.topo2topotype(moved_f))
             
         if scnt == division-1:
             z = loc_pt[2]+((scnt)*flr_height)
@@ -326,28 +326,28 @@ def reconstruct_bldg_shell(bldg_occshell):
             moved_pt = (loc_pt[0], loc_pt[1], loc_pt[2]+0.1)
             moved_bldg_occsolid = py3dmodel.modify.move(loc_pt,moved_pt, bldg_occsolid)
             flr_last = py3dmodel.construct.boolean_common(moved_bldg_occsolid,moved_f )
-            flr_last = py3dmodel.fetch.geom_explorer(flr_last, "face")[0]
+            flr_last = py3dmodel.fetch.topo_explorer(flr_last, "face")[0]
         
     if nflr1 ==1:
         bounding_cmpd = py3dmodel.construct.make_compound(bounding_list)
         floors = py3dmodel.construct.boolean_common(bounding_cmpd, bldg_occsolid)
-        floors = py3dmodel.fetch.geom_explorer(floors, "face")
+        floors = py3dmodel.fetch.topo_explorer(floors, "face")
         intersection_list.append(flr1)
         intersection_list.extend(floors)
         intersection_list.append(flr_last)
     
         loft = py3dmodel.construct.make_loft(intersection_list)
-        loft = py3dmodel.fetch.shape2shapetype(loft)
-        lface_list = py3dmodel.fetch.geom_explorer(loft, "face")
+        loft = py3dmodel.fetch.topo2topotype(loft)
+        lface_list = py3dmodel.fetch.topo_explorer(loft, "face")
         
         recon_faces = []
         recon_faces.append(flr1)
         recon_faces.extend(lface_list)
         recon_faces.append(flr_last)
-        recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces)[0]
+        recon_shell = py3dmodel.construct.sew_faces(recon_faces)[0]
         recon_shell = py3dmodel.modify.fix_shell_orientation(recon_shell)
         r_loft_faces = py3dmodel.construct.simple_mesh(recon_shell)
-        recon_shell = py3dmodel.construct.make_shell_frm_faces(r_loft_faces)[0]
+        recon_shell = py3dmodel.construct.sew_faces(r_loft_faces)[0]
         recon_shell = py3dmodel.modify.fix_shell_orientation(recon_shell)
         return recon_shell
     else:
@@ -368,7 +368,7 @@ def is_shell_faces_planar(occshell):
         True or False, if True OCCshell is planar, if False OCCshell not planar.
     
     """
-    face_list = py3dmodel.fetch.geom_explorer(occshell, "face")
+    face_list = py3dmodel.fetch.topo_explorer(occshell, "face")
     for face in face_list:
         is_face_planar = py3dmodel.calculate.is_face_planar(face, 1e-06)
         if not is_face_planar:
@@ -392,7 +392,7 @@ def is_shell_simple(occshell):
     """
     #if the shell has more than triangle polygon and has more than 6 faces
     #it is not simple
-    face_list = py3dmodel.fetch.geom_explorer(occshell, "face")
+    face_list = py3dmodel.fetch.topo_explorer(occshell, "face")
     nface = len(face_list)
     for face in face_list:
         pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
@@ -449,9 +449,9 @@ def reconstruct_open_close_shells(occshell_list):
     close_shell_list, open_shell_list = identify_open_close_shells(occshell_list)
     if open_shell_list:
         open_shell_compound = py3dmodel.construct.make_compound(open_shell_list)
-        open_shell_faces = py3dmodel.fetch.geom_explorer(open_shell_compound, "face")
+        open_shell_faces = py3dmodel.fetch.topo_explorer(open_shell_compound, "face")
         #sew all the open shell faces together to check if there are solids among the open shells
-        recon_shell_list = py3dmodel.construct.make_shell_frm_faces(open_shell_faces)
+        recon_shell_list = py3dmodel.construct.sew_faces(open_shell_faces)
         recon_close_shell_list, recon_open_shell_list = identify_open_close_shells(recon_shell_list)
         if recon_close_shell_list:
             open_shell_list2 = []
@@ -535,10 +535,10 @@ def get_bldg_footprint_frm_bldg_occsolid(bldg_occsolid, tolerance = 1e-05, round
     bounding_footprint = get_building_bounding_footprint(bldg_occsolid)
     b_midpt = py3dmodel.calculate.face_midpt(bounding_footprint)
     loc_pt = (b_midpt[0], b_midpt[1], b_midpt[2]+tolerance)
-    bounding_footprint = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(b_midpt, loc_pt, bounding_footprint))
+    bounding_footprint = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(b_midpt, loc_pt, bounding_footprint))
     bldg_footprint_cmpd = py3dmodel.construct.boolean_section(bldg_occsolid, bounding_footprint, roundndigit = roundndigit, distance = distance)
-    bldg_footprint_cmpd = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, b_midpt, bldg_footprint_cmpd))
-    bldg_footprint_list = py3dmodel.fetch.geom_explorer(bldg_footprint_cmpd, "face")
+    bldg_footprint_cmpd = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(loc_pt, b_midpt, bldg_footprint_cmpd))
+    bldg_footprint_list = py3dmodel.fetch.topo_explorer(bldg_footprint_cmpd, "face")
     return bldg_footprint_list
 
 def get_building_roofplates(bldg_occsolid, nstorey, storey_height, tolerance = 1e-05, roundndigit = 6, distance = 0.1):
@@ -585,7 +585,7 @@ def get_building_roofplates(bldg_occsolid, nstorey, storey_height, tolerance = 1
     moved_pt2 = (loc_pt[0], loc_pt[1], loc_pt[2] + tolerance)
     moved_occsolid = py3dmodel.modify.move(loc_pt, moved_pt2, bldg_occsolid)
     floors = py3dmodel.construct.boolean_section(moved_f, moved_occsolid, roundndigit = roundndigit, distance = distance)
-    inter_face_list = py3dmodel.fetch.geom_explorer(floors, "face")
+    inter_face_list = py3dmodel.fetch.topo_explorer(floors, "face")
     return inter_face_list#, bounding_list
     
 def get_building_flrplates(bldg_occsolid, nstorey, storey_height):
@@ -623,8 +623,8 @@ def get_building_flrplates(bldg_occsolid, nstorey, storey_height):
            
     bounding_compound = py3dmodel.construct.make_compound(bounding_list)
     floors = py3dmodel.construct.boolean_common(bldg_occsolid, bounding_compound)
-    common_compound = py3dmodel.fetch.shape2shapetype(floors)
-    inter_face_list = py3dmodel.fetch.geom_explorer(common_compound, "face")
+    common_compound = py3dmodel.fetch.topo2topotype(floors)
+    inter_face_list = py3dmodel.fetch.topo_explorer(common_compound, "face")
     if inter_face_list:
         for inter_face in inter_face_list:
             intersection_list.append(inter_face)
@@ -673,7 +673,7 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
         moved_pt = (loc_pt[0], loc_pt[1], z)
         moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
         floor_cmpd = py3dmodel.construct.boolean_section(moved_f, bldg_occsolid, roundndigit = roundndigit, distance = distance)
-        floor_list = py3dmodel.fetch.geom_explorer(floor_cmpd, "face")
+        floor_list = py3dmodel.fetch.topo_explorer(floor_cmpd, "face")
         if floor_list:
             intersection_2dlist.append(floor_list)
         bounding_list.append(moved_f)
@@ -683,7 +683,7 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
     for intersection_list in intersection_2dlist:
         new_flr_list = []
         for floor in intersection_list:
-            wire_list = py3dmodel.fetch.geom_explorer(floor, "wire")
+            wire_list = py3dmodel.fetch.topo_explorer(floor, "wire")
             to_be_cut_list = []
             cutting_list = []
             for wire in wire_list:
@@ -714,7 +714,7 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
                     loc_pt = py3dmodel.modify.move_pt(midpt, (0,0,-1),0.3)
                     #move the face down
                     m_occface = py3dmodel.modify.move(midpt, loc_pt, cut)
-                    m_occface = py3dmodel.fetch.shape2shapetype(m_occface)
+                    m_occface = py3dmodel.fetch.topo2topotype(m_occface)
                     #extrude the face
                     extrude_solid = py3dmodel.construct.extrude(m_occface, (0,0,1), 0.6)
                     extrude_list.append(extrude_solid)
@@ -723,7 +723,7 @@ def get_building_plates_by_level(bldg_occsolid, nstorey, storey_height, roundndi
         
                 for tbc in to_be_cut_list:
                     diff_cmpd = py3dmodel.construct.boolean_difference(tbc, cmpd)
-                    cut_new_flr_list = py3dmodel.fetch.geom_explorer(diff_cmpd, "face")
+                    cut_new_flr_list = py3dmodel.fetch.topo_explorer(diff_cmpd, "face")
                     new_flr_list.extend(cut_new_flr_list)
             else:
                 new_flr_list.extend(to_be_cut_list)
@@ -750,7 +750,7 @@ def detect_clash(bldg_occsolid, other_occsolids):
     """
     compound = py3dmodel.construct.make_compound(other_occsolids)
     #extract all the faces as the boolean dun work well with just the solid
-    bldg_faces = py3dmodel.fetch.geom_explorer(bldg_occsolid, "face")
+    bldg_faces = py3dmodel.fetch.topo_explorer(bldg_occsolid, "face")
     face_cmpd = py3dmodel.construct.make_compound(bldg_faces)
     common_compound = py3dmodel.construct.boolean_common(bldg_occsolid, compound)
     common_compound2 = py3dmodel.construct.boolean_common(face_cmpd, compound)
@@ -897,11 +897,11 @@ def reconstruct_building_through_floorplates(bldg_occsolid, bldg_flr_area, store
             z = loc_pt[2]+((scnt)*storey_height)
             moved_pt = (loc_pt[0], loc_pt[1], z)
             moved_f = py3dmodel.modify.move(loc_pt, moved_pt, bounding_footprint)
-            bounding_list.append(py3dmodel.fetch.shape2shapetype(moved_f))
+            bounding_list.append(py3dmodel.fetch.topo2topotype(moved_f))
             floors = py3dmodel.construct.boolean_common(bldg_occsolid, moved_f)
             #py3dmodel.construct.visualise([[moved_f,building_solid]], ["WHITE"])
-            compound = py3dmodel.fetch.shape2shapetype(floors)
-            inter_face_list = py3dmodel.fetch.geom_explorer(compound,"face")
+            compound = py3dmodel.fetch.topo2topotype(floors)
+            inter_face_list = py3dmodel.fetch.topo_explorer(compound,"face")
             if inter_face_list:
                 for inter_face in inter_face_list:
                     flr_area = py3dmodel.calculate.face_area(inter_face)
@@ -912,7 +912,7 @@ def reconstruct_building_through_floorplates(bldg_occsolid, bldg_flr_area, store
                 #need to move a storey up 
                 loc_pt2 = (moved_pt[0], moved_pt[1], (moved_pt[2]-storey_height))
                 previous_flr = intersection_list[-1]
-                moved_f2 = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt2, moved_pt, previous_flr))
+                moved_f2 = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(loc_pt2, moved_pt, previous_flr))
                 flr_area = py3dmodel.calculate.face_area(moved_f2)
                 bldg_flr_area = bldg_flr_area - flr_area
                 intersection_list.append(moved_f2)
@@ -922,7 +922,7 @@ def reconstruct_building_through_floorplates(bldg_occsolid, bldg_flr_area, store
     last_flr = intersection_list[-1]
     rs_midpt = py3dmodel.calculate.face_midpt(last_flr)
     moved_pt = (rs_midpt[0], rs_midpt[1], (rs_midpt[2]+storey_height))
-    roof_srf = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(rs_midpt, moved_pt, last_flr))
+    roof_srf = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(rs_midpt, moved_pt, last_flr))
 
     intersection_list.append(roof_srf)
     flr_srf = intersection_list[0]
@@ -932,7 +932,7 @@ def reconstruct_building_through_floorplates(bldg_occsolid, bldg_flr_area, store
     face_list = py3dmodel.fetch.faces_frm_shell(new_building_shell) 
     face_list.append(roof_srf)
     face_list.append(flr_srf)
-    closed_shell = py3dmodel.construct.make_shell_frm_faces(face_list)[0]
+    closed_shell = py3dmodel.construct.sew_faces(face_list)[0]
     shell_list = py3dmodel.fetch.topos_frm_compound(closed_shell)["shell"]
     new_bldg_occsolid = py3dmodel.construct.make_solid(shell_list[0])
     
@@ -1062,8 +1062,8 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_
                 mpt_index = mpt_index-(npypt_list-1) 
                 
             moved_pt = luse_gridded_pyptlist[mpt_index]
-            moved_solid = py3dmodel.fetch.shape2shapetype(py3dmodel.modify.move(loc_pt, moved_pt, bldg_occsolid))
-            #shell = py3dmodel.fetch.geom_explorer(moved_solid,"shell")[0]
+            moved_solid = py3dmodel.fetch.topo2topotype(py3dmodel.modify.move(loc_pt, moved_pt, bldg_occsolid))
+            #shell = py3dmodel.fetch.topo_explorer(moved_solid,"shell")[0]
             moved_solid = py3dmodel.modify.fix_close_solid(moved_solid)
             #=======================================================================================
             if clash_detection == True and boundary_detection == False:
@@ -1143,9 +1143,9 @@ def redraw_occ_shell(occcompound, tolerance):
     
     """
     recon_shelllist = []
-    shells = py3dmodel.fetch.geom_explorer(occcompound, "shell")
+    shells = py3dmodel.fetch.topo_explorer(occcompound, "shell")
     for shell in shells:
-        faces = py3dmodel.fetch.geom_explorer(shell, "face")
+        faces = py3dmodel.fetch.topo_explorer(shell, "face")
         recon_faces = []
         for face in faces:
             pyptlist = py3dmodel.fetch.pyptlist_frm_occface(face)
@@ -1156,7 +1156,7 @@ def redraw_occ_shell(occcompound, tolerance):
             recon_shell = py3dmodel.construct.make_shell(recon_faces)
         if nrecon_faces > 1:
             #py3dmodel.construct.visualise([recon_faces], ['WHITE'])
-            recon_shell = py3dmodel.construct.make_shell_frm_faces(recon_faces, tolerance = tolerance )[0]
+            recon_shell = py3dmodel.construct.sew_faces(recon_faces, tolerance = tolerance )[0]
         recon_shelllist.append(recon_shell)    
         
     recon_compound = py3dmodel.construct.make_compound(recon_shelllist)
@@ -1180,11 +1180,10 @@ def redraw_occ_edge(occcompound, tolerance):
         The reconstructed edges.
     
     """
-    edges = py3dmodel.fetch.geom_explorer(occcompound, "edge")
+    edges = py3dmodel.fetch.topo_explorer(occcompound, "edge")
     recon_edgelist = []
     for edge in edges:
-        eptlist = py3dmodel.fetch.points_from_edge(edge)
-        epyptlist = py3dmodel.fetch.occptlist2pyptlist(eptlist)
+        epyptlist = py3dmodel.fetch.points_from_edge(edge)
         recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
         
     recon_compound = py3dmodel.construct.make_compound(recon_edgelist)

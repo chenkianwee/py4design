@@ -78,7 +78,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
     ydim = bar_length
     rectangle = construct.make_rectangle(xdim, ydim)
     rec_mid_pt = calculate.face_midpt(rectangle)
-    moved_rectangle = fetch.shape2shapetype(modify.move(rec_mid_pt, bar_pos, rectangle))
+    moved_rectangle = fetch.topo2topotype(modify.move(rec_mid_pt, bar_pos, rectangle))
     
     grid_srfs = construct.grid_face(moved_rectangle, xdim, xdim)
 
@@ -95,7 +95,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
         reversed_srf = modify.reverse_face(srf)
         grid_srfs2.append(reversed_srf)
         res_label = round(value_range[srf_cnt],2)
-        brep_str = fetch.shape2shapetype(construct.make_brep_text(str(res_label), xdim/2))
+        brep_str = fetch.topo2topotype(construct.make_brep_text(str(res_label), xdim/2))
         orig_pt = calculate.get_centre_bbox(brep_str)
         loc_pt = calculate.face_midpt(srf)
         loc_pt = modify.move_pt(loc_pt, (1,-0.3,0), xdim*1.2)
@@ -104,7 +104,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
         
         if srf_cnt == len(grid_srfs)-1:
             res_label = round(value_range[srf_cnt+1],2)
-            brep_str = fetch.shape2shapetype(construct.make_brep_text(str(res_label), xdim/2))
+            brep_str = fetch.topo2topotype(construct.make_brep_text(str(res_label), xdim/2))
             orig_pt = calculate.get_centre_bbox(brep_str)
             loc_pt3 = modify.move_pt(loc_pt, (0,1,0), xdim)
             moved_str = modify.move(orig_pt, loc_pt3, brep_str)
@@ -118,7 +118,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
             
         if description_str !=None:    
             if srf_cnt == 0:
-                d_str = fetch.shape2shapetype(construct.make_brep_text(description_str, xdim/2))
+                d_str = fetch.topo2topotype(construct.make_brep_text(description_str, xdim/2))
                 orig_pt2 = calculate.get_centre_bbox(d_str)
                 loc_pt2 = modify.move_pt(loc_pt, (0,-1,0), xdim*5)
                 moved_str = modify.move(orig_pt2, loc_pt2, d_str)
@@ -128,7 +128,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
         srf_cnt+=1
         
     cmpd = construct.make_compound(moved_str_face_list)
-    face_list = fetch.geom_explorer(cmpd, "face")
+    face_list = fetch.topo_explorer(cmpd, "face")
     meshed_list = []
     for face in face_list:    
         meshed_face_list = construct.simple_mesh(face)

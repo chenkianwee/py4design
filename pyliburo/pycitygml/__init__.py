@@ -859,7 +859,9 @@ class Reader(object):
             A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
             thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
         """
-        poslist = self.get_poslist(lxmlpolygon)[0]
+        poslist = self.get_polygon_pt_list(lxmlpolygon)[0]
+
+        #poslist = poslist[0]
         pt_list = self.get_polygon_pt_list_2_pyptlist(poslist)
             
         return pt_list
@@ -957,7 +959,7 @@ class Reader(object):
         polylines = self.get_linestring(cityobject)
         pylinestring_list = []
         for polyline in polylines:
-            pt_list = self.polygon_2_pyptlist(polyline)
+            pt_list = self.get_polygon_pt_list_2_pyptlist(polyline)
             pylinestring_list.append(pt_list)
             
         return pylinestring_list

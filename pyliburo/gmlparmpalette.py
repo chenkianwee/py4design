@@ -689,7 +689,7 @@ class BldgHeightParm(BaseParm):
                 midpt = py3dmodel.calculate.face_midpt(bldg_bounding_footprint)
                 height_ratio = float(height_parm)/height
                 scaled_bldg = py3dmodel.modify.uniform_scale(bldg_solid,1,1,height_ratio,midpt)
-                new_bldg_occsolid = py3dmodel.fetch.geom_explorer(scaled_bldg, "solid")[0]
+                new_bldg_occsolid = py3dmodel.fetch.topo_explorer(scaled_bldg, "solid")[0]
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["WHITE"])
                 
                 new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
@@ -1647,7 +1647,7 @@ class BldgTwistParm(BaseParm):
                     nxt_plate_list = plates_occface_2dlist[pcnt+1]
                     plate_cmpd = py3dmodel.construct.make_compound(nxt_plate_list)
                     rot_plate_shape = py3dmodel.modify.rotate(plate_cmpd, bldg_solid_centre, (0,0,1), twist_angle)
-                    rot_nxt_plate_list = py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")
+                    rot_nxt_plate_list = py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(rot_nxt_plate_list)
                     
@@ -1678,7 +1678,7 @@ class BldgTwistParm(BaseParm):
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
-                                rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
+                                rot_cur_plate= py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")[0]
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
@@ -1711,7 +1711,7 @@ class BldgTwistParm(BaseParm):
                             common_plate = py3dmodel.construct.boolean_common(m_cur_plate, plate_cmpd)
                             if common_plate:
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, bldg_solid_centre, (0,0,1), twist_interval)
-                                rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
+                                rot_cur_plate= py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")[0]
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
@@ -1750,7 +1750,7 @@ class BldgTwistParm(BaseParm):
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
-                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                 
                 
                 if len(new_building_shell_list)>1:
@@ -1761,7 +1761,7 @@ class BldgTwistParm(BaseParm):
                     else:
                         new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                     if len(new_building_shell_list) == 1:
                         new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
                         new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
@@ -2094,7 +2094,7 @@ class BldgBendParm(BaseParm):
                     edge_pt = (xmax,ymax,plate_midpt[2])
                     
                     rot_plate_shape = py3dmodel.modify.rotate(plate_cmpd, edge_pt, (0,1,0), bend_angle)
-                    rot_nxt_plate_list = py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")
+                    rot_nxt_plate_list = py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(rot_nxt_plate_list)
                     
@@ -2124,7 +2124,7 @@ class BldgBendParm(BaseParm):
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, edge_pt, (0,1,0), bend_interval)
-                                rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
+                                rot_cur_plate= py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
@@ -2157,7 +2157,7 @@ class BldgBendParm(BaseParm):
                             common_plate = py3dmodel.construct.boolean_common(m_cur_plate, plate_cmpd)
                             if common_plate:
                                 rot_plate_shape = py3dmodel.modify.rotate(m_cur_plate, edge_pt, (0,1,0), bend_interval)
-                                rot_cur_plate= py3dmodel.fetch.geom_explorer(rot_plate_shape, "face")[0]
+                                rot_cur_plate= py3dmodel.fetch.topo_explorer(rot_plate_shape, "face")[0]
                                 plates2loft = [cur_plate, rot_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
                                 lvl_shell_list.append(lvl_shell)
@@ -2192,7 +2192,7 @@ class BldgBendParm(BaseParm):
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
-                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
@@ -2202,7 +2202,7 @@ class BldgBendParm(BaseParm):
                     else:
                         new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                     if len(new_building_shell_list) == 1:
                         new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
                         new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
@@ -2537,7 +2537,7 @@ class BldgSlantParm(BaseParm):
                     m_plate_midpt = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), magnitude)
                     
                     trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_plate_midpt, plate_cmpd)
-                    trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
+                    trsf_nxt_plate_list = py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(trsf_nxt_plate_list)
                     
@@ -2570,7 +2570,7 @@ class BldgSlantParm(BaseParm):
                                 m_cur_midpt2 = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), interval)
                                 
                                 trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_cur_midpt2, m_cur_plate)
-                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                trsf_cur_plate= py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
@@ -2605,7 +2605,7 @@ class BldgSlantParm(BaseParm):
                                 m_cur_midpt2 = py3dmodel.modify.move_pt(plate_midpt, (1,0,0), interval)
                                 
                                 trsf_plate_shape = py3dmodel.modify.move(plate_midpt, m_cur_midpt2, m_cur_plate)
-                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                trsf_cur_plate= py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = False)
@@ -2641,7 +2641,7 @@ class BldgSlantParm(BaseParm):
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
-                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
@@ -2652,7 +2652,7 @@ class BldgSlantParm(BaseParm):
                     else:
                         new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                     if len(new_building_shell_list) == 1:
                         new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
                         new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
@@ -2987,7 +2987,7 @@ class BldgTaperParm(BaseParm):
                     #plate_midpt = py3dmodel.calculate.get_centre_bbox(plate_cmpd)
                     #taper
                     trsf_plate_shape = py3dmodel.modify.scale(plate_cmpd, magnitude, bldg_solid_midpt)
-                    trsf_nxt_plate_list = py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")
+                    trsf_nxt_plate_list = py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")
                     
                     n_cur_plates = len(cur_plate_list)
                     n_nxt_plates = len(trsf_nxt_plate_list)
@@ -3018,7 +3018,7 @@ class BldgTaperParm(BaseParm):
                                 m_cur_midpt = py3dmodel.modify.move_pt(cur_midpt, (0,0,1), flr2flr_height)
                                 m_cur_plate = py3dmodel.modify.move(cur_midpt, m_cur_midpt, cur_plate)
                                 trsf_plate_shape = py3dmodel.modify.scale(m_cur_plate, 1+interval, bldg_solid_midpt)
-                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                trsf_cur_plate= py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
@@ -3053,7 +3053,7 @@ class BldgTaperParm(BaseParm):
                                 m_cur_midpt2 = py3dmodel.modify.move_pt(m_cur_midpt, (1,0,0), interval)
                                 trsf_plate_shape = py3dmodel.modify.move(cur_midpt, m_cur_midpt2, cur_plate)
                                 trsf_plate_shape = py3dmodel.modify.scale(m_cur_plate, 1+interval, bldg_solid_midpt)
-                                trsf_cur_plate= py3dmodel.fetch.geom_explorer(trsf_plate_shape, "face")[0]
+                                trsf_cur_plate= py3dmodel.fetch.topo_explorer(trsf_plate_shape, "face")[0]
                                 
                                 plates2loft = [cur_plate, trsf_cur_plate]
                                 lvl_shell = py3dmodel.construct.make_loft(plates2loft, rule_face = True)
@@ -3089,7 +3089,7 @@ class BldgTaperParm(BaseParm):
                 external_horz_plate_cmpd = py3dmodel.construct.make_compound(external_horz_plate_list)
                 external_horz_plate_list = py3dmodel.construct.simple_mesh(external_horz_plate_cmpd)
                 new_bldg_face_list = lvl_faces + external_horz_plate_list + diff_list
-                new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                 
                 if len(new_building_shell_list)>1:
                     print "NUMBER OF SOLIDS:", len(new_building_shell_list)
@@ -3100,7 +3100,7 @@ class BldgTaperParm(BaseParm):
                     else:
                         new_bldg_face_list = lvl_faces + external_horz_plate_list
                         
-                    new_building_shell_list = py3dmodel.construct.make_shell_frm_faces(new_bldg_face_list)
+                    new_building_shell_list = py3dmodel.construct.sew_faces(new_bldg_face_list)
                     if len(new_building_shell_list) == 1:
                         new_bldg_occsolid = py3dmodel.construct.make_solid(new_building_shell_list[0])
                         new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)

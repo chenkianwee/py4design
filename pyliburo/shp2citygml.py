@@ -480,7 +480,7 @@ def terrain2d23d_contour_line(terrain_shpfile, elev_attrib_name):
     solid_list = []
     for face in face_list:
         ext_shp = py3dmodel.construct.extrude(face, (0,0,-1), 10)
-        ext_solid = py3dmodel.fetch.shape2shapetype(ext_shp)
+        ext_solid = py3dmodel.fetch.topo2topotype(ext_shp)
         solid_list.append(ext_solid)
         
     return solid_list, face_list
@@ -514,10 +514,10 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
     field_name_list = get_field_name_list(sf)
     height_index = field_name_list.index(height_attrib_name)-1
     
-    terrainshell = py3dmodel.construct.make_shell_frm_faces(terrain_surface_list)
+    terrainshell = py3dmodel.construct.sew_faces(terrain_surface_list)
     terrain_z = []
     for ts in terrain_surface_list:
-        vertexes = py3dmodel.fetch.pyptlist_frm_occface(ts)
+        vertexes = py3dmodel.fetch.points_frm_occface(ts)
         for vert in vertexes:
             z = vert[2]
             terrain_z.append(z)
@@ -535,7 +535,7 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
         face = py3dmodel.construct.make_occfaces_frm_pypolygons(pypolgyonlist)[0]
         #create a bounding box to boolean the terrain
         bbox = py3dmodel.construct.extrude(face, (0,0,1), (max_z+10))
-        bbox_terrain = py3dmodel.fetch.shape2shapetype(py3dmodel.construct.boolean_common(bbox,terrainshell))
+        bbox_terrain = py3dmodel.fetch.topo2topotype(py3dmodel.construct.boolean_common(bbox,terrainshell))
         #extract the terrain from in the bbox
         if not py3dmodel.fetch.is_compound_null(bbox_terrain):
             bbox_faces = py3dmodel.fetch.topos_frm_compound(bbox_terrain)["face"]
@@ -550,7 +550,7 @@ def building2d23d(building_shpfile, height_attrib_name, terrain_surface_list):
         pypolgyonlist3d = pypolygon_list2d_2_3d(part_list, belev)
         face3d = py3dmodel.construct.make_polygon(pypolgyonlist3d)
         building_extrude_shp = py3dmodel.construct.extrude(face3d, (0,0,1), height)
-        building_extrude_solid = py3dmodel.fetch.shape2shapetype(building_extrude_shp)
+        building_extrude_solid = py3dmodel.fetch.topo2topotype(building_extrude_shp)
         solid_list.append(building_extrude_solid)
 
     return solid_list
@@ -913,7 +913,7 @@ def shp_pypolygon_list3d_2_occface_list(pypolygon_list):
         occface_list_cmpd = py3dmodel.construct.make_compound(occface_list)
         hole_solid_list_cmpd = py3dmodel.construct.make_compound(hole_solid_list)
         diff_cmpd = py3dmodel.construct.boolean_difference(occface_list_cmpd, hole_solid_list_cmpd)
-        diff_occface_list = py3dmodel.fetch.geom_explorer(diff_cmpd, "face")
+        diff_occface_list = py3dmodel.fetch.topo_explorer(diff_cmpd, "face")
         return diff_occface_list
     else:
         occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
@@ -963,8 +963,8 @@ def face_almost_inside(occface, boundary_occface):
     #measure the srf area of the occ face
     occ_face_area = py3dmodel.calculate.face_area(occface)
     common = py3dmodel.construct.boolean_common(occface, boundary_occface)
-    shapetype = py3dmodel.fetch.shape2shapetype(common)
-    face_list = py3dmodel.fetch.geom_explorer(shapetype,"face")
+    shapetype = py3dmodel.fetch.topo2topotype(common)
+    face_list = py3dmodel.fetch.topo_explorer(shapetype,"face")
     
     if face_list:
         common_area = 0
@@ -999,6 +999,6 @@ def create_transit_stop_geometry(transit_occsolid, location_pt):
         The box that is moved to the transit stop. 
     """
     trsf_shp = py3dmodel.modify.move((0,0,0), location_pt, transit_occsolid)
-    trsf_solid = py3dmodel.fetch.shape2shapetype(trsf_shp)
+    trsf_solid = py3dmodel.fetch.topo2topotype(trsf_shp)
     trsf_solid = py3dmodel.modify.fix_close_solid(trsf_solid)
     return trsf_solid
