@@ -20,6 +20,7 @@
 # ==================================================================================================
 import abc
 import gml3dmodel
+import urbangeom
 import pycitygml
 import py3dmodel
 import utility
@@ -422,8 +423,8 @@ class BldgFlrAreaHeightParm(BaseParm):
                 bldg_occsolid = gml3dmodel.get_building_occsolid(gml_bldg,pycitygml_reader)
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(gml_bldg, pycitygml_reader)
                 new_bldg_flr_area = new_bldg_flr_area_list[cnt]
-                new_building_solid = gml3dmodel.construct_building_through_floorplates(bldg_occsolid,new_bldg_flr_area,storey_height)
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_building_solid, storey_height)
+                new_building_solid = urbangeom.reconstruct_building_through_floorplates(bldg_occsolid,new_bldg_flr_area,storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_building_solid, storey_height)
                 gml3dmodel.update_gml_building(gml_bldg,new_building_solid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -432,7 +433,7 @@ class BldgFlrAreaHeightParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -682,17 +683,16 @@ class BldgHeightParm(BaseParm):
                 
                 #extract the bldg solid
                 bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
-                print 'OCCSOLID', bldg_solid
                 #change the height of each bldg according to the parameter
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader)
-                bldg_bounding_footprint =  gml3dmodel.get_building_bounding_footprint(bldg_solid)
+                bldg_bounding_footprint =  urbangeom.get_building_bounding_footprint(bldg_solid)
                 midpt = py3dmodel.calculate.face_midpt(bldg_bounding_footprint)
                 height_ratio = float(height_parm)/height
                 scaled_bldg = py3dmodel.modify.uniform_scale(bldg_solid,1,1,height_ratio,midpt)
                 new_bldg_occsolid = py3dmodel.fetch.topo_explorer(scaled_bldg, "solid")[0]
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["WHITE"])
                 
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
@@ -702,7 +702,7 @@ class BldgHeightParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -996,20 +996,20 @@ class BldgOrientationParm(BaseParm):
                 
                 
                 if self.clash_detection == True and self.boundary_detection == False:
-                    clash_detected = gml3dmodel.detect_clash(rot_bldg_occsolid, roting_bldg_occsolid_list2)
+                    clash_detected = urbangeom.detect_clash(rot_bldg_occsolid, roting_bldg_occsolid_list2)
                     if not clash_detected:
                         #there is no clash
                         roting_bldg_occsolid_list[cnt] = rot_bldg_occsolid
                         
                 elif self.boundary_detection == True and self.clash_detection == False:
-                    is_in_boundary = gml3dmodel.detect_in_boundary(rot_bldg_occsolid, luse_occface)
+                    is_in_boundary = urbangeom.detect_in_boundary(rot_bldg_occsolid, luse_occface)
                     if is_in_boundary:
                         #it is within the boundary
                         roting_bldg_occsolid_list[cnt] = rot_bldg_occsolid
                 
                 elif self.boundary_detection == True and self.clash_detection == True:
-                    clash_detected = gml3dmodel.detect_clash(rot_bldg_occsolid, roting_bldg_occsolid_list2)
-                    is_in_boundary = gml3dmodel.detect_in_boundary(rot_bldg_occsolid, luse_occface)
+                    clash_detected = urbangeom.detect_clash(rot_bldg_occsolid, roting_bldg_occsolid_list2)
+                    is_in_boundary = urbangeom.detect_in_boundary(rot_bldg_occsolid, luse_occface)
                     if not clash_detected and is_in_boundary:
                         roting_bldg_occsolid_list[cnt] = rot_bldg_occsolid
                         
@@ -1027,7 +1027,7 @@ class BldgOrientationParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -1320,7 +1320,7 @@ class BldgPositionParm(BaseParm):
             
             #grid the plot
             luse_occface = gml3dmodel.gml_landuse_2_occface(gml_landuse, pycitygml_reader)
-            pypt_list, grid_faces = gml3dmodel.landuse_2_grid(luse_occface, self.xdim, self.ydim)
+            pypt_list, grid_faces = urbangeom.landuse_2_grid(luse_occface, self.xdim, self.ydim)
             npypt_list = len(pypt_list)
             self.define_int_range(0, npypt_list-1, 1)
             
@@ -1339,7 +1339,7 @@ class BldgPositionParm(BaseParm):
                 non_bldg_occsolid = gml3dmodel.get_building_occsolid(non_eligible_gml_bldg, pycitygml_reader)
                 non_bldg_occsolid_list.append(non_bldg_occsolid)
                 
-            posed_bldg_occsolid_list = gml3dmodel.rearrange_building_position(bldg_occsolid_list, pypt_list, luse_occface, parms_4_luse,
+            posed_bldg_occsolid_list = urbangeom.rearrange_building_position(bldg_occsolid_list, pypt_list, luse_occface, parms_4_luse,
                                                                               other_occsolids = non_bldg_occsolid_list, 
                                                                               clash_detection = self.clash_detection, 
                                                                               boundary_detection = self.boundary_detection)
@@ -1355,7 +1355,7 @@ class BldgPositionParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -1628,7 +1628,7 @@ class BldgTwistParm(BaseParm):
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
                                                                                        flr2flr_height = flr2flr_height)
 
-                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                plates_occface_2dlist = urbangeom.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
                                                                                 roundndigit = 4, distance = 0.2)
                 #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
                 #py3dmodel.construct.visualise([plates_occface_list], ["BLUE"])
@@ -1785,7 +1785,7 @@ class BldgTwistParm(BaseParm):
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                    
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -1794,7 +1794,7 @@ class BldgTwistParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -2068,7 +2068,7 @@ class BldgBendParm(BaseParm):
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
                                                                                        flr2flr_height = flr2flr_height)
 
-                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                plates_occface_2dlist = urbangeom.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
                                                                                 roundndigit = 4, distance = 0.2)
                 
                 #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
@@ -2226,7 +2226,7 @@ class BldgBendParm(BaseParm):
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -2235,7 +2235,7 @@ class BldgBendParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -2502,14 +2502,14 @@ class BldgSlantParm(BaseParm):
                 
                 #extract the bldg solid
                 bldg_solid = gml3dmodel.get_building_occsolid(eligible_gml_bldg, pycitygml_reader)
-                bldg_bf = gml3dmodel.get_building_bounding_footprint(bldg_solid)
+                bldg_bf = urbangeom.get_building_bounding_footprint(bldg_solid)
                 bf_midpt = py3dmodel.calculate.face_midpt(bldg_bf)
                 #bend each bldg according to the parameter
                 #first get all the floorplates 
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
                                                                                        flr2flr_height = flr2flr_height)
 
-                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                plates_occface_2dlist = urbangeom.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
                                                                                 roundndigit = 4, distance = 0.2)
                 
                 #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
@@ -2677,7 +2677,7 @@ class BldgSlantParm(BaseParm):
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -2686,7 +2686,7 @@ class BldgSlantParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader
@@ -2961,7 +2961,7 @@ class BldgTaperParm(BaseParm):
                 height, nstorey, storey_height = gml3dmodel.get_building_height_storey(eligible_gml_bldg, pycitygml_reader, 
                                                                                        flr2flr_height = flr2flr_height)
 
-                plates_occface_2dlist = gml3dmodel.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
+                plates_occface_2dlist = urbangeom.get_building_plates_by_level(bldg_solid, nstorey, storey_height, 
                                                                                 roundndigit = 4, distance = 0.2)
                 
                 #plates_occface_list = reduce(lambda x,y :x+y ,plates_occface_2dlist)
@@ -3124,7 +3124,7 @@ class BldgTaperParm(BaseParm):
                     new_bldg_occsolid = py3dmodel.modify.fix_close_solid(new_bldg_occsolid)
                     
                 #py3dmodel.construct.visualise([[new_bldg_occsolid]], ["RED"])
-                new_height, new_n_storey = gml3dmodel.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
+                new_height, new_n_storey = urbangeom.calculate_bldg_height_n_nstorey(new_bldg_occsolid, storey_height)
                 gml3dmodel.update_gml_building(eligible_gml_bldg,new_bldg_occsolid, pycitygml_reader, 
                                                citygml_writer, new_height = new_height, new_nstorey = new_n_storey)
                 
@@ -3133,7 +3133,7 @@ class BldgTaperParm(BaseParm):
         non_bldg_cityobjs = pycitygml_reader.get_non_xtype_cityobject("bldg:Building")
         gml3dmodel.write_citygml(non_bldg_cityobjs, citygml_writer)
         gml3dmodel.write_non_eligible_bldgs(non_eligible_bldg_list, citygml_writer)
-        citymodel_node = citygml_writer.citymodelnode
+        citymodel_node = citygml_writer.citymodel_node
         reader = pycitygml.Reader()
         reader.load_citymodel_node(citymodel_node)
         return reader

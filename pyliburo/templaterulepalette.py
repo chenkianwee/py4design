@@ -85,6 +85,7 @@ class BaseTemplateRule(object):
                     analysis_rule_key = analysis_rule_obj.dict_key
                     condition = analysis_rule_obj_dict["condition"]
                     analysis_attrib = occshape_attribs_obj.get_value(analysis_rule_key)
+                    #print analysis_rule_key, analysis_attrib
                     if analysis_attrib != condition:
                         conditioned_list.remove(occshp)
                         break

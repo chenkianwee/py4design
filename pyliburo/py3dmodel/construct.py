@@ -162,6 +162,7 @@ def make_circle(centre_pypt, normal_pydir, radius):
         
     radius : float
         Radius of the circle.
+        #TODO: currently it only works with radius bigger than 1.
         
     Returns
     -------

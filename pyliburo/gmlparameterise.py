@@ -116,6 +116,6 @@ class Parameterise(object):
             citygml_reader = parm_obj.execute(citygml_reader, parm_object_parms)
             
         citygml_writer = pycitygml.Writer()
-        citygml_writer.citymodelnode = citygml_reader.citymodelnode
+        citygml_writer.citymodel_node = citygml_reader.citymodel_node
         citygml_writer.write(dv_citygml_filepath)
 #===================================================================================================================================================

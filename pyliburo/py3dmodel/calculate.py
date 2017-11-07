@@ -490,8 +490,8 @@ def are_same_edges(occedge1, occedge2):
     True or False : bool
         If True the two edges are the same, if False the two edges are not the same.
     """
-    edgepyptlist1 = fetch.points_from_edge(occedge1)
-    edgepyptlist2 = fetch.points_from_edge(occedge2)
+    edgepyptlist1 = fetch.points_frm_edge(occedge1)
+    edgepyptlist2 = fetch.points_frm_edge(occedge2)
     if edgepyptlist1 == edgepyptlist2:
         return True
     else:

@@ -475,7 +475,7 @@ class Evals(object):
             shading_faces = rf_occfaces
             
         bsolid_list = self.building_occsolids
-        result_dict = urbanformeval.nshffai2(bsolid_list, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, 
+        result_dict = urbanformeval.usffai(bsolid_list, lower_irrad_threshold, upper_irrad_threshold, epwweatherfile, 
                                              xdim, ydim, self.nshffai_folderpath, usffai_threshold = usffai_threshold, 
                                              shading_occfaces = shading_faces)
         

@@ -261,7 +261,7 @@ def redraw_occfaces(occface_list):
     """
     recon_faces = []
     for occface in occface_list:
-        pyptlist = py3dmodel.fetch.pyptlist_frm_occface(occface)
+        pyptlist = py3dmodel.fetch.points_frm_occface(occface)
         recon_face = py3dmodel.construct.make_polygon(pyptlist)
         recon_faces.append(recon_face)
     return recon_faces
@@ -395,7 +395,7 @@ def is_shell_simple(occshell):
     face_list = py3dmodel.fetch.topo_explorer(occshell, "face")
     nface = len(face_list)
     for face in face_list:
-        pypt_list = py3dmodel.fetch.pyptlist_frm_occface(face)
+        pypt_list = py3dmodel.fetch.points_frm_occface(face)
         npypt = len(pypt_list)
         if npypt == 3 and nface>6:
             return False
@@ -1124,7 +1124,7 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_
 #========================================================================================================
 #COMPOUND INPUTS
 #========================================================================================================      
-def redraw_occ_shell(occcompound, tolerance):
+def redraw_occshell(occcompound, tolerance):
     """
     This function redraws and recombine all OCCshells in the OCCcompound.
  
@@ -1148,7 +1148,7 @@ def redraw_occ_shell(occcompound, tolerance):
         faces = py3dmodel.fetch.topo_explorer(shell, "face")
         recon_faces = []
         for face in faces:
-            pyptlist = py3dmodel.fetch.pyptlist_frm_occface(face)
+            pyptlist = py3dmodel.fetch.points_frm_occface(face)
             recon_face = py3dmodel.construct.make_polygon(pyptlist)
             recon_faces.append(recon_face)
         nrecon_faces = len(recon_faces)
@@ -1162,7 +1162,7 @@ def redraw_occ_shell(occcompound, tolerance):
     recon_compound = py3dmodel.construct.make_compound(recon_shelllist)
     return recon_compound
     
-def redraw_occ_edge(occcompound, tolerance):
+def redraw_occedge(occcompound, tolerance):
     """
     This function redraws all OCCedges in the OCCcompound.
  
@@ -1183,7 +1183,7 @@ def redraw_occ_edge(occcompound, tolerance):
     edges = py3dmodel.fetch.topo_explorer(occcompound, "edge")
     recon_edgelist = []
     for edge in edges:
-        epyptlist = py3dmodel.fetch.points_from_edge(edge)
+        epyptlist = py3dmodel.fetch.points_frm_edge(edge)
         recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
         
     recon_compound = py3dmodel.construct.make_compound(recon_edgelist)

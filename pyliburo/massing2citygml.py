@@ -20,7 +20,7 @@
 # ==================================================================================================
 import py3dmodel
 import pycitygml
-import gml3dmodel
+import urbangeom
 import shapeattributes
 import collada
 from collada import polylist, triangleset, lineset
@@ -143,12 +143,12 @@ class Massing2Citygml(object):
         scaled_shell_compound = py3dmodel.fetch.topo2topotype(scaled_shell_shape)
         scaled_edge_compound = py3dmodel.fetch.topo2topotype(scaled_edge_shape)
         
-        recon_shell_compound = gml3dmodel.redraw_occ_shell(scaled_shell_compound, tolerance)
-        recon_edge_compound = gml3dmodel.redraw_occ_edge(scaled_edge_compound, tolerance)
+        recon_shell_compound = urbangeom.redraw_occshell(scaled_shell_compound, tolerance)
+        recon_edge_compound = urbangeom.redraw_occedge(scaled_edge_compound, tolerance)
         
         #sort and recompose the shells 
         shells  = py3dmodel.fetch.topo_explorer(recon_shell_compound,"shell")
-        sewed_shells = gml3dmodel.reconstruct_open_close_shells(shells)
+        sewed_shells = urbangeom.reconstruct_open_close_shells(shells)
         
         nw_edges = py3dmodel.fetch.topo_explorer(recon_edge_compound,"edge")
 
@@ -200,6 +200,8 @@ class Massing2Citygml(object):
             shptype = py3dmodel.fetch.get_topotype(occshp)
             if shptype == py3dmodel.fetch.get_topotype("shell"):
                 flatten_shell_face = py3dmodel.modify.flatten_shell_z_value(occshp)
+                #edges = py3dmodel.fetch.topo_explorer(occshp, "edge")
+                #py3dmodel.utility.visualise([[flatten_shell_face], edges], ["RED", 'GREEN'])
                 if not flatten_shell_face == None:
                     flat_pyptlist = py3dmodel.fetch.points_frm_occface(flatten_shell_face)
                     flatten_shell_face = py3dmodel.construct.make_polygon(flat_pyptlist)

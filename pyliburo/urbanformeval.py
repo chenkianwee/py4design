@@ -296,7 +296,8 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #======================================================================
     #connect the street network: connect midpt of each plot to the street network
     #======================================================================
-    inter_peri_ptlist = peripheral_ptlist + interptlist
+    inter_peri_ptlist = peripheral_ptlist + interptlist    
+    
     new_network_occedgelist, midpt2_network_edgelist, plot_midptlist = connect_street_network2plot(network_occedgelist, plot_occfacelist, inter_peri_ptlist, precision)
     
     #======================================================================
@@ -364,6 +365,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     avg_rdi = float(sum(total_route_directness_aplot))/float(len(total_route_directness_aplot))
     rdi_percentage = float(len(pass_plots))/float((len(fail_plots) + len(pass_plots))) * 100
     circles_peri_pts = py3dmodel.construct.circles_frm_pyptlist(peripheral_ptlist, 5)    
+    
     #circles_inter_pts = py3dmodel.construct.circles_frm_pyptlist(py3dmodel.construct.make_gppntlist(midptlist), 5)  
     res_dict = {}
     res_dict["average"] = avg_rdi
@@ -479,6 +481,7 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     boundary_pyptlist.append(boundary_pyptlist[0])
     #extract the wire from the face and convert it to a bspline curve
     bedge = py3dmodel.construct.make_bspline_edge(boundary_pyptlist, mindegree=1, maxdegree=1)
+    
     #get all the intersection points 
     interptlist = []
     for network_occedge in network_occedgelist:
@@ -501,25 +504,25 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     midptlist = []
     mulist = []
     bedge_lbound, bedge_ubound = py3dmodel.fetch.edge_domain(bedge)
-
+    
     for ucnt in range(nulist):
         curparm = ulist[ucnt]
         
         if ucnt == nulist-1:
             if curparm == bedge_ubound and ulist[0] != bedge_lbound:
-                terange = ulist[0]-0
+                terange = ulist[0]-bedge_lbound
                 temidparm = terange/2
                 
             elif curparm !=bedge_ubound and ulist[0] != bedge_lbound:
-                terange1 = 1-curparm
-                terange2 =  ulist[0]-0
+                terange1 = bedge_ubound-curparm
+                terange2 =  ulist[0]-bedge_lbound
                 terange3 = terange1+terange2
                 temidparm = curparm + (terange3/2)
-                if temidparm > 1:
-                    temidparm = temidparm-1
+                if temidparm > bedge_ubound:
+                    temidparm = temidparm-bedge_ubound
                 
             elif curparm !=bedge_ubound and ulist[0] == bedge_lbound:
-                terange = 1-curparm
+                terange = bedge_ubound-curparm
                 temidparm = terange/2
 
         else:
@@ -539,18 +542,23 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
         
         if mcnt == numulist-1:
             if mcurparm == bedge_ubound and umulist[0] != bedge_lbound:
-                mcurparm = 0
+                mcurparm = bedge_lbound
                 mnextparm = umulist[0]
                 mrange = mnextparm - mcurparm
                 mlength = py3dmodel.calculate.edgelength(mcurparm,mnextparm, bedge)
                 
             elif mcurparm !=bedge_ubound and umulist[0] != bedge_lbound:
-                mlength1 = py3dmodel.calculate.edgelength(mcurparm,1, bedge)
-                mlength2 = py3dmodel.calculate.edgelength(0,umulist[0], bedge)
-                mrange1 = 1-mcurparm
-                mrange2 = umulist[0]-0
+                mlength1 = py3dmodel.calculate.edgelength(mcurparm, bedge_ubound, bedge)
+                mlength2 = py3dmodel.calculate.edgelength(bedge_lbound, umulist[0], bedge)
+                mrange1 = bedge_ubound-mcurparm
+                mrange2 = umulist[0]- bedge_lbound
                 mrange = mrange1+mrange2
                 mlength = mlength1+mlength2
+                
+            elif mcurparm !=bedge_ubound and umulist[0] == bedge_lbound:
+                mnextparm = bedge_ubound
+                mrange = mnextparm - mcurparm
+                mlength = py3dmodel.calculate.edgelength(mcurparm, bedge_ubound, bedge)
         else:
             mnextparm = umulist[mcnt+1]
             mrange = mnextparm - mcurparm
@@ -562,8 +570,8 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
             segment = mrange/nsegments
             for scnt in range(int(nsegments)-1):
                 divparm = mcurparm + ((scnt+1)*segment)
-                if divparm >1:
-                    divparm = divparm - 1
+                if divparm > bedge_ubound:
+                    divparm = divparm - bedge_ubound
                 
                 peripheral_parmlist.append(divparm)
             
@@ -571,21 +579,26 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
     peripheral_parmlist4network.sort()
     #reconstruct the boundary into curve segments 
     pcurvelist = []
+    #py3dmodel.utility.visualise([pcurvelist],["BLACK"])
     nplist = len(peripheral_parmlist4network)
     for pcnt in range(nplist):
         pcurparm = peripheral_parmlist4network[pcnt]
         if pcnt == nplist-1:
             if pcurparm == bedge_ubound and peripheral_parmlist4network[0] != bedge_lbound:
-                pcurparm = 0
+                pcurparm = bedge_lbound
                 pnextparm = peripheral_parmlist4network[0]
                 pcurve = py3dmodel.modify.trimedge(pcurparm, pnextparm, bedge)
                 pcurvelist.append(pcurve)
                 
             elif pcurparm !=bedge_ubound and peripheral_parmlist4network[0] != bedge_lbound:
-                pcurve1 = py3dmodel.modify.trimedge(pcurparm, 1, bedge)
+                pcurve1 = py3dmodel.modify.trimedge(pcurparm, bedge_ubound, bedge)
                 pcurve2 = py3dmodel.modify.trimedge(0, peripheral_parmlist4network[0], bedge)
                 pcurvelist.append(pcurve1)
                 pcurvelist.append(pcurve2)
+            
+            elif pcurparm !=bedge_ubound and peripheral_parmlist4network[0] == bedge_lbound:
+                pcurve1 = py3dmodel.modify.trimedge(pcurparm, bedge_ubound, bedge)
+                pcurvelist.append(pcurve1)
         else:
             pnextparm = peripheral_parmlist4network[pcnt+1]
             pcurve = py3dmodel.modify.trimedge(pcurparm, pnextparm, bedge)
@@ -600,6 +613,7 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
         
     pedgelist = []
     ppoles_all = []
+    
     for pc in pcurvelist:
         ppoles = py3dmodel.fetch.poles_from_bsplinecurve_edge(pc)
         ppoles_all.append(ppoles)
@@ -607,6 +621,8 @@ def designate_peripheral_pts(boundary_occface, network_occedgelist, precision):
         pedges = py3dmodel.fetch.edges_frm_wire(pwire)
         pedgelist.extend(pedges)
         
+    #ppts = py3dmodel.construct.circles_frm_pyptlist(peripheral_ptlist, 10)
+    #py3dmodel.utility.visualise([pedgelist, ppts], ["BLACK", "BLACK"])
     return peripheral_ptlist, pedgelist, fused_interptlist
     
 def connect_street_network2plot(network_occedgelist, plot_occfacelist, peripheral_n_inter_ptlist, precision):
@@ -694,37 +710,39 @@ def connect_street_network2plot(network_occedgelist, plot_occfacelist, periphera
         network_vert = py3dmodel.construct.make_vertex(networkpt)
         for nedge in new_network_occedgelist:
             #find the edge the point belongs to 
-            env_mindist = py3dmodel.calculate.minimum_distance(network_vert,nedge)
-            if env_mindist <= precision:
-                #that means the point belongs to this edge
-                #remove the original edge
-                new_network_occedgelist.remove(nedge)
-                #find the parameter then reconstruct the edge accordingly
-                dmin, dmax = py3dmodel.fetch.edge_domain(nedge)
-                domain_list = [dmin, dmax]
-                inter_parm = py3dmodel.calculate.pt2edgeparameter(networkpt, nedge)
-                domain_list.append(round(inter_parm, 5))
-                #make domain_list unique
-                domain_list = list(set(domain_list))
-                domain_list.sort()
-                #reconstruct the edge 
-                if len(domain_list) == 2:
-                    pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
-                    pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
-                    n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
-                    new_network_occedgelist.append(n_nedge1)
-                if len(domain_list) == 3:
-                    pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
-                    pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
-                    pypt3 = py3dmodel.calculate.edgeparameter2pt(domain_list[2], nedge)
-                    if pypt1 != pypt2:
+            nnedgepts = len(py3dmodel.fetch.points_frm_edge(nedge))
+            if nnedgepts == 2:
+                env_mindist = py3dmodel.calculate.minimum_distance(network_vert,nedge)     
+                if env_mindist <= precision:
+                    #that means the point belongs to this edge
+                    #remove the original edge
+                    new_network_occedgelist.remove(nedge)
+                    #find the parameter then reconstruct the edge accordingly
+                    dmin, dmax = py3dmodel.fetch.edge_domain(nedge)
+                    domain_list = [dmin, dmax]
+                    inter_parm = py3dmodel.calculate.pt2edgeparameter(networkpt, nedge)
+                    domain_list.append(round(inter_parm, 5))
+                    #make domain_list unique
+                    domain_list = list(set(domain_list))
+                    domain_list.sort()
+                    #reconstruct the edge 
+                    if len(domain_list) == 2:
+                        pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
+                        pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
                         n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
                         new_network_occedgelist.append(n_nedge1)
-                    if pypt2 != pypt3:
-                        n_nedge2 = py3dmodel.construct.make_edge(pypt2, pypt3)
-                        new_network_occedgelist.append(n_nedge2)
-                break
-            
+                    if len(domain_list) == 3:
+                        pypt1 = py3dmodel.calculate.edgeparameter2pt(domain_list[0], nedge)
+                        pypt2 = py3dmodel.calculate.edgeparameter2pt(domain_list[1], nedge)
+                        pypt3 = py3dmodel.calculate.edgeparameter2pt(domain_list[2], nedge)
+                        if pypt1 != pypt2:
+                            n_nedge1 = py3dmodel.construct.make_edge(pypt1, pypt2)
+                            new_network_occedgelist.append(n_nedge1)
+                        if pypt2 != pypt3:
+                            n_nedge2 = py3dmodel.construct.make_edge(pypt2, pypt3)
+                            new_network_occedgelist.append(n_nedge2)
+                    break
+  
     return new_network_occedgelist, midpt2_network_edgelist, plot_midptlist
     
     
@@ -1932,7 +1950,7 @@ def calculate_afi2(bldgdict_list, lower_result_threshold, upper_result_threshold
         if afi_threshold != None:
             if afi >= afi_threshold:
                 compared_afi_list.append(afi)
-    
+                
     total_afi = sum(high_perf_area_list)/sum(total_bld_up)
     ai = sum(high_perf_area_list)/sum(sa_list)
     

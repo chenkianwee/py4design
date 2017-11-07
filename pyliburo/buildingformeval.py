@@ -24,7 +24,7 @@ import tempfile
     
 import utility
 import py3dmodel
-import gml3dmodel
+import urbangeom
 import py2radiance
 import shapeattributes
 #================================================================================================================
@@ -200,7 +200,7 @@ def glazing_sc2(srfs_shp_attribs_obj_list, epwweatherfile):
         pypolygon = py3dmodel.fetch.points_frm_occface(occ_face)
         srfname = "srf" + str(scnt)
         if srf_type == "window" or srf_type == "skylight":
-            sensor_surfaces, sensor_pts, sensor_dirs = gml3dmodel.generate_sensor_surfaces(occ_face, 1, 1)
+            sensor_surfaces, sensor_pts, sensor_dirs = urbangeom.generate_sensor_surfaces(occ_face, 1, 1)
             sensor_ptlist.extend(sensor_pts)
             sensor_dirlist.extend(sensor_dirs)
             sensor_surfacelist.extend(sensor_surfaces)

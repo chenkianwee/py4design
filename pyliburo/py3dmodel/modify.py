@@ -643,12 +643,14 @@ def flatten_shell_z_value(occshell, z=0):
     flatten_shell = construct.make_compound(face_list)
     nfaces = len(face_list)
     merged_faces = construct.merge_faces(face_list)
-    dest_pt = [b_mid_pt[0], b_mid_pt[1], z]
+    dest_pt = [b_mid_pt[0], b_mid_pt[1], z]    
     #depending on how complicated is the shell we decide which is the best way to flatten it 
     #1.) if it is an open shell and when everything is flatten it fits nicely as a flat surface 
     if len(merged_faces) == 1:
-        flatten_face = fetch.topo2topotype(move(b_mid_pt, dest_pt,merged_faces[0]))
-        return flatten_face
+        m_area = calculate.face_area(merged_faces[0])
+        if m_area > 1e-06:
+            flatten_face = fetch.topo2topotype(move(b_mid_pt, dest_pt,merged_faces[0]))
+            return flatten_face
        
     #2.) if it is a complex shell with less than 500 faces we fused and create a single surface
     if nfaces < 50:

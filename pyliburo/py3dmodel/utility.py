@@ -297,8 +297,9 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
     for c_cnt in range(len(c_srf_list)):
         c_srfs = c_srf_list[c_cnt]
         colour = colour_list[c_cnt]
+        from OCC.Quantity import Quantity_TOC_RGB, Quantity_Color
         compound = construct.make_compound(c_srfs)
-        display.DisplayColoredShape(compound, color=colour, update=True)
+        display.DisplayColoredShape(compound, color=Quantity_Color(colour[0], colour[1], colour[2], Quantity_TOC_RGB), update=True)
         
     #display the edges of the grid
     tedges = []

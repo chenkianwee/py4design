@@ -98,36 +98,38 @@ def map_osm2citygml_building_class(bldg_class):
     if bldg_class == "residential":
         #habitation
         bclass = "1000"
-    if bldg_class == "transport":
+    elif bldg_class == "transport":
         #traffic area
         bclass = "1170"
-    if bldg_class == "recreation_ground":
+    elif bldg_class == "recreation_ground":
         #recreation
         bclass = "1050"
-    if bldg_class == "education":
+    elif bldg_class == "education":
         #schools education research 
         bclass = "1100"
-    if bldg_class == "commercial":
+    elif bldg_class == "commercial":
         #business trade
         bclass = "1030"
-    if bldg_class == "civic":
+    elif bldg_class == "civic":
         #administration
         bclass = "1020"
-    if bldg_class == "mixed":
+    elif bldg_class == "mixed":
         #habitation
         bclass = "1000"
-    if bldg_class == "place_of_worship":
+    elif bldg_class == "place_of_worship":
         #church instituition
         bclass = "1080"
-    if bldg_class == "reserve":
+    elif bldg_class == "reserve":
         #function
         bclass = "1180"
-    if bldg_class == "utility":
+    elif bldg_class == "utility":
         #function
         bclass = "1180"
-    if bldg_class == "health":
+    elif bldg_class == "health":
         #healthcare
         bclass = "1120"
+    else:
+        bclass = "1180"
     return bclass
 
 def map_osm2citygml_building_function(bldg_function):
@@ -147,36 +149,38 @@ def map_osm2citygml_building_function(bldg_function):
     if bldg_function == "residential":
         #residential building
         function = "1000"
-    if bldg_function == "transport":
+    elif bldg_function == "transport":
         #others
         function = "2700"
-    if bldg_function == "recreation_ground":
+    elif bldg_function == "recreation_ground":
         #others
         function = "2700"
-    if bldg_function == "education":
+    elif bldg_function == "education":
         #building for education and research
         function = "2070"
-    if bldg_function == "commercial":
+    elif bldg_function == "commercial":
         #business building
         function = "1150"
-    if bldg_function == "civic":
+    elif bldg_function == "civic":
         #public building
         function = "1960"
-    if bldg_function == "mixed":
+    elif bldg_function == "mixed":
         #residential and commercial building
         function = "1080"
-    if bldg_function == "place_of_worship":
+    elif bldg_function == "place_of_worship":
         #place of worship
         function = "2260"
-    if bldg_function == "reserve":
+    elif bldg_function == "reserve":
         #others
         function = "2700"
-    if bldg_function == "utility":
+    elif bldg_function == "utility":
         #others
         function = "2700"
-    if bldg_function == "health":
+    elif bldg_function == "health":
         #building for health care
         function = "2300"
+    else:
+        function = "2700"
     return function
 
 def map_osm2citygml_building_amenity_function(amenity):
@@ -348,7 +352,7 @@ def get_buildings(shpfile):
             building.strip()
             
             #if the polygon has a building attribute it is a building footprint
-            if not building.isspace():
+            if building != "":
                 building_dict = {}
                 #get the geometry of the building footprint
                 geom = get_geometry(rec)
@@ -378,7 +382,11 @@ def get_buildings(shpfile):
                     building_l = poly_attribs[building_l_index]
                     building_l.strip()
                     if not building_l.isspace():
-                        building_dict["building_l"] = int(building_l)
+                        try:
+                            building_dict["building_l"] = int(building_l)
+                        except:
+                            pass
+                            
                     building_list.append(building_dict)
                     
                     id_ = poly_attribs[id_index]
@@ -739,7 +747,7 @@ def trpst2citygml(trpt_type, rec, name, trpst_attrib, generic_attrib_dict, cityg
     part_list = get_geometry(rec)
     geometry_list = []
     for part in part_list:
-        linestring = pycitygml.gmlgeometry.LineString(pypt_list2d_2_3d(part,0.0))
+        linestring = pycitygml.LineString(pypt_list2d_2_3d(part,0.0))
         geometry_list.append(linestring)
         
     citygml_writer.add_transportation(trpt_type, "lod0", name, geometry_list, rd_class = trpst_class, 

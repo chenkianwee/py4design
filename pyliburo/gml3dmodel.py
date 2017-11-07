@@ -289,11 +289,11 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     if new_nstorey !=None:
         citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                     function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd)
+                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = str(stry_blw_grd))
     if new_nstorey ==None:
         citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                     function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                    stry_blw_grd = stry_blw_grd)
+                                    stry_blw_grd = str(stry_blw_grd))
         
 def write_non_eligible_bldgs(gml_bldgs, citygml_writer):
     """
@@ -308,7 +308,7 @@ def write_non_eligible_bldgs(gml_bldgs, citygml_writer):
         The writer is used to write information to the GML building.
     
     """
-    citygml_root = citygml_writer.citymodelnode
+    citygml_root = citygml_writer.citymodel_node
     for non_eligible_bldg in gml_bldgs:
         city_obj = citygml_writer.create_cityobjectmember()
         city_obj.append(non_eligible_bldg)
@@ -401,7 +401,7 @@ def write_citygml(cityobjmembers, citygml_writer):
         The writer is used to write information to the GML building.
     
     """
-    citygml_root = citygml_writer.citymodelnode
+    citygml_root = citygml_writer.citymodel_node
     for cityobj in cityobjmembers:
         citygml_root.append(cityobj)
                   
@@ -419,7 +419,7 @@ def write_a_gml_srf_member(occface):
         
     Returns
     -------
-    surface : pycitygml.gmlgeometry.SurfaceMember class instance
+    surface : pycitygml.SurfaceMember class instance
         The written surface.
         
     """
@@ -433,7 +433,7 @@ def write_a_gml_srf_member(occface):
     
         first_pt = pypt_list[0]
         pypt_list.append(first_pt)
-        srf = pycitygml.gmlgeometry.SurfaceMember(pypt_list)
+        srf = pycitygml.SurfaceMember(pypt_list)
         return srf
     else:
         return None
@@ -449,7 +449,7 @@ def write_gml_srf_member(occface_list):
         
     Returns
     -------
-    list of surface : list of pycitygml.gmlgeometry.SurfaceMember class instances
+    list of surface : list of pycitygml.SurfaceMember class instances
         The written list of surfaces.
         
     """
@@ -472,7 +472,7 @@ def write_gml_triangle(occface_list):
         
     Returns
     -------
-    list of surface : list of pycitygml.gmlgeometry.SurfaceMember class instances
+    list of surface : list of pycitygml.SurfaceMember class instances
         The written list of surfaces.
         
     """
@@ -490,14 +490,14 @@ def write_gml_triangle(occface_list):
                     #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(t_pypt_list, face_nrml)
                     #if is_anticlockwise == False:
                     #    t_pypt_list.reverse()
-                    gml_tri = pycitygml.gmlgeometry.Triangle(t_pypt_list)
+                    gml_tri = pycitygml.Triangle(t_pypt_list)
                     gml_geometry_list.append(gml_tri)
         else:
             #face_nrml = py3dmodel.calculate.face_normal(face)
             #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
             #if is_anticlockwise == False:
             #    pypt_list.reverse()
-            gml_tri = pycitygml.gmlgeometry.Triangle(pypt_list)
+            gml_tri = pycitygml.Triangle(pypt_list)
             gml_geometry_list.append(gml_tri)
             
     return gml_geometry_list
@@ -513,12 +513,12 @@ def write_gml_linestring(occedge):
         
     Returns
     -------
-    edge : pycitygml.gmlgeometry.LineString class instance
+    edge : pycitygml.LineString class instance
         The written edge.
         
     """
     gml_edge_list = []
-    pypt_list = py3dmodel.fetch.points_from_edge(occedge)
-    linestring = pycitygml.gmlgeometry.LineString(pypt_list)
+    pypt_list = py3dmodel.fetch.points_frm_edge(occedge)
+    linestring = pycitygml.LineString(pypt_list)
     gml_edge_list.append(linestring)
     return gml_edge_list
