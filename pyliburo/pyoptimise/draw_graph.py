@@ -126,8 +126,10 @@ def scatter_plot3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel =
     azim : float, optional
         The angle of the view, Default = -45.
     """
+    from mpl_toolkits.mplot3d import Axes3D
     fig = plt.figure()
-    ax = fig.gca(projection='3d')
+    ax = Axes3D(fig)
+    #ax = fig.gca(projection='3d')
     x =[]
     y = []
     z=[]
@@ -190,8 +192,11 @@ def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], 
     azim : float, optional
         The angle of the view, Default = -45.
     """
+    from mpl_toolkits.mplot3d import Axes3D
+    
     fig = plt.figure()
-    ax = fig.gca(projection='3d')
+    ax = Axes3D(fig)
+    #fig.gca(projection='3d')
     x =[]
     y = []
     z=[]

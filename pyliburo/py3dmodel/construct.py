@@ -927,7 +927,7 @@ def extrude(occface, pydir, magnitude):
         
         for wire in wire_list:
             #first check if there are holes and which wire are holes
-            pyptlist = fetch.pyptlist_frm_occwire(wire)
+            pyptlist = fetch.points_frm_wire(wire)
             is_anticlockwise = calculate.is_anticlockwise(pyptlist, face_nrml)
             #create face from the wires
             wire_face = make_face_frm_wire(wire)

@@ -612,7 +612,10 @@ class Reader(object):
         """
         sbg = lxmlbuilding.find("bldg:storeysBelowGround", namespaces=self.namespaces)
         if sbg != None:
-            return int(sbg.text)
+            if sbg.text != "None":
+                return int(sbg.text)
+            else:
+                return None
         else:
             return None
         

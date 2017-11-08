@@ -329,7 +329,7 @@ class Evals(object):
             for gmlbldg in gmlbldg_on_luse:
                 pypolygon = reader.get_pypolygon_list(gmlbldg)
                 bsolid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolygon)
-                b_flr_area = urbanformeval.calculate_bldg_flr_area(bsolid, flr2flr_height)
+                b_flr_area = urbangeom.calculate_bldg_flr_area(bsolid, flr2flr_height)
                 flr_area_list.append(b_flr_area)
                 
             far = sum(flr_area_list)/luse_area
@@ -710,7 +710,7 @@ class Evals(object):
                                                                                              
         return result_dict
 
-    def fai(self, wind_dir, boundary_occface = None):
+    def fai(self, wind_dir, boundary_occface = None, xdim = 100, ydim = 100):
         """
         This function calculates the frontal area index of an urban massing.
         
@@ -722,6 +722,12 @@ class Evals(object):
         boundary_occface : OCCface, optional
             The boundary of the FAI analysis. This face will be gridded. If None will process the terrain and use the terrain bounding box as the boundary face.
         
+        xdim : int
+            The x dimension grid size for the boundary.
+        
+        ydim : int
+            The y dimension grid size for the boundary.
+            
         Returns
         -------
         result dictionary : dictionary
@@ -766,7 +772,7 @@ class Evals(object):
             
         bsolid_list = self.building_occsolids
         print "ANALYSING FAI ..."
-        res_dict = urbanformeval.frontal_area_index(bsolid_list, boundary_occface,wind_dir,xdim = 100, ydim = 100)
+        res_dict = urbanformeval.frontal_area_index(bsolid_list, boundary_occface,wind_dir,xdim = xdim, ydim = ydim)
                                                                                                          
         return res_dict
         

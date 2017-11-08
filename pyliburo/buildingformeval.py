@@ -306,8 +306,8 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                 ref_plane_vec = (0,0,1)
                 flatten_nrml = (nrml[0],nrml[1],0)
                 #the angle is measuring counter-clockwise
-                dir_angle = py3dmodel.calculate.angle_bw_2_vecs_w_ref(ref_dir_vec,flatten_nrml,
-                                                                      ref_plane_vec)
+                dir_angle = py3dmodel.calculate.angle_bw_2_vecs_w_ref(ref_dir_vec,flatten_nrml, ref_plane_vec)
+                                                                      
                 if 22.5>=dir_angle>=0:
                     direction = "north"
                 if 360>=dir_angle>=337.5:
@@ -338,7 +338,6 @@ def calc_dir_pitch_angle(srfs_shp_attribs_obj_list, mode = "ettv"):
                     cf = read_cf_file(cf_filepath, 0, direction)
                 elif pitch_angle > 65:
                     print "error: pitch angle" + str(pitch_angle) + "out of range... choosing the nearest angle 65"
-                    py3dmodel.construct.visualise([[occ_face]],["WHITE"])
                     cf = read_cf_file(cf_filepath, 65, direction)#TODO: fix this 
                 else:
                     cf = read_cf_file(cf_filepath, pitch_angle, direction)
