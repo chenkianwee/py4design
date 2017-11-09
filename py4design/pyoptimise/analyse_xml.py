@@ -2,20 +2,20 @@
 #
 #    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
 #
-#    This file is part of pyliburo
+#    This file is part of py4design
 #
-#    pyliburo is free software: you can redistribute it and/or modify
+#    py4design is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    pyliburo is distributed in the hope that it will be useful,
+#    py4design is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Pyliburo.  If not, see <http://www.gnu.org/licenses/>.
+#    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 from xml.dom.minidom import Node
@@ -821,9 +821,8 @@ def kmeans_inds(inds, attribs_2_cluster, n_clusters = None):
     Returns
     -------
     result dictionary : dictionary
-        The dictionary is in this format. 
-        {"cluster_list": [[cluster1-ind1, cluster1-ind2, cluster1-indx],[cluster2-ind1, cluster2-ind2, cluster2-indx],[cluster3-ind1, cluster3-ind2, cluster3-indx]]
-         "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
+        The dictionary is in this format. {"cluster_list": [[cluster1-ind1, cluster1-ind2, cluster1-indx],[cluster2-ind1, cluster2-ind2, cluster2-indx],[cluster3-ind1, cluster3-ind2, cluster3-indx]]
+        "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
     """
     from sklearn.cluster import KMeans
     import numpy as np
@@ -887,9 +886,8 @@ def kmeans(np_array, n_clusters):
     Returns
     -------
     result dictionary : dictionary
-        The dictionary is in this format. 
-        {"cluster_list": [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]
-         "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
+        The dictionary is in this format. {"cluster_list": [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]
+        "centroids": [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]
     """
     from sklearn.cluster import KMeans
     import numpy as np

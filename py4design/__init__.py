@@ -2,25 +2,25 @@
 #
 #    Copyright (c) 2016, Chen Kian Wee (chenkianwee@gmail.com)
 #
-#    This file is part of pyliburo
+#    This file is part of py4design
 #
-#    pyliburo is free software: you can redistribute it and/or modify
+#    py4design is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    pyliburo is distributed in the hope that it will be useful,
+#    py4design is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Dexen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
 """
-Pyliburo: Python Library for Urban Optimisation
-================================================
+Py4design: Python Library for Rapid Development of Design Workflows (previously known as Pyliburo)
+==========================================================================================================
 Documentation is available in the docstrings and online at .... 
 
 Contents
@@ -29,7 +29,7 @@ Contents
 Subpackages & Submodules
 ------------------------
 
-Using any of these subpackages requires an explicit import. For example, from pyliburo import py3dmodel.
+Using any of these subpackages requires an explicit import. For example, from py4design import py3dmodel.
 ::
     
  py2energyplus                --- Python library to write idf file and execute energyplus
@@ -38,7 +38,7 @@ Using any of these subpackages requires an explicit import. For example, from py
  pycitygml                    --- Python library to read and write LOD1 Citygml 1.0, dependencies: lxml
  pyoptimise                   --- Optimisation module currently includes NSGAII, dependencies: matplotlib, scikit-learn, pymf, cvxopt
     
-Using any of these submodules requires an explicit import. For example, from pyliburo import utility.
+Using any of these submodules requires an explicit import. For example, from py4design import utility.
 ::
     
  analysisrulepalette          --- Base rules for converting geometrical to CityGML model (LOD1), uses subpackages: py3dmodel

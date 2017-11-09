@@ -1,5 +1,5 @@
 #========================================================
-Previously known as Pyliburo
+Py4design previously known as Pyliburo
 #========================================================
 To run the environment:
 

@@ -20,7 +20,7 @@ setup(name='py4design',
 		  'py4design': ['py2radiance/*.rad']
           },
       version=__version__,
-      description='Python Library for Rapid Development of Bespoke Design Workflows',
+      description='Python Library for Rapid Development of Design Workflows',
       long_description=LONG_DESCRIPTION,
       author=__author__,
       author_email=__email__,
