@@ -21,7 +21,7 @@
 """
 Pyoptimise
 ================================================
-Documentation is available in the docstrings and online at ....
+Documentation is available in the docstrings and online at http://chenkianwee.github.io/py4design/
 
 Submodules
 -----------

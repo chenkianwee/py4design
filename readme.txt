@@ -1,6 +1,10 @@
 #========================================================
 Py4design previously known as Pyliburo
 #========================================================
+
+API documentation available at http://chenkianwee.github.io/py4design/
+Working examples are available at https://github.com/chenkianwee/py4design_examples
+
 To run the environment:
 
 1.) install miniconda for python2.7
@@ -19,9 +23,6 @@ To run the environment:
     a.) if c:/daysim/radiance/bin on env path, delete it
 	
 5.) conda install spyder (for editing the scripts)
-
-6.) download example files from 
-(https://github.com/chenkianwee/py4design_examples)
 
 #========================================================
 list of libraries used in py4design

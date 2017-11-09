@@ -21,7 +21,7 @@
 """
 Py4design: Python Library for Rapid Development of Design Workflows (previously known as Pyliburo)
 ==========================================================================================================
-Documentation is available in the docstrings and online at .... 
+Documentation is available in the docstrings and online at http://chenkianwee.github.io/py4design/ 
 
 Contents
 --------
