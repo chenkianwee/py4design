@@ -1,0 +1,787 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyliburo.shp2citygml module &#8212; Pyliburo 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyliburo.shp2citygml">
+<span id="pyliburo-shp2citygml-module"></span><h1>pyliburo.shp2citygml module<a class="headerlink" href="#module-pyliburo.shp2citygml" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_landuse_function">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_landuse_function</code><span class="sig-paren">(</span><em>landuse</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_landuse_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these landuse to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>landuse</strong> : str</p>
+<blockquote>
+<div><p>The landuse to be mapped. Options: “residential”, “transport”, “recreation_ground”, “education”, “commercial”, “civic”, “mixed”, “place_of_worship”, “reserve”, “utility”, “health”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml landuse function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_building_class">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_building_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_building_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these building class to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote>
+<div><p>The class to be mapped. Options: “residential”, “transport”, “recreation_ground”, “education”, “commercial”, “civic”, “mixed”, “place_of_worship”, “reserve”, “utility”, “health”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_building_function">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_building_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_building_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these building function to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote>
+<div><p>The function to be mapped. Options: “residential”, “transport”, “recreation_ground”, “education”, “commercial”, “civic”, “mixed”, “place_of_worship”, “reserve”, “utility”, “health”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_building_amenity_function">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_building_amenity_function</code><span class="sig-paren">(</span><em>amenity</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_building_amenity_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these amenity to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>amenity</strong> : str</p>
+<blockquote>
+<div><p>The amenity to be mapped. Options: “parking”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml amenity function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_trpst_complex_class">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_trpst_complex_class</code><span class="sig-paren">(</span><em>trpst</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_trpst_complex_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these transportation to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>trpst</strong> : str</p>
+<blockquote>
+<div><p>The transport to be mapped. Options: “subway”, “light_rail”, “unclassified”, “tertiary”, “service”, “secondary_link”, “secondary”, “residential”, “primary”, “motoway_link”, “motorway”,
+“construction”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml amenity function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.map_osm2citygml_trpst_complex_function">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">map_osm2citygml_trpst_complex_function</code><span class="sig-paren">(</span><em>trpst</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.map_osm2citygml_trpst_complex_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps these transportation complex to the gml function codes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>trpst</strong> : str</p>
+<blockquote>
+<div><p>The transport to be mapped. Options: “subway”, “light_rail”, “unclassified”, “tertiary”, “service”, “secondary_link”, “secondary”, “residential”, “primary”, “motoway_link”, “motorway”,
+“construction”, “track”, “steps”, “path”, “footway”, “cycleway”.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>gml function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The code of the gml amenity function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.calc_residential_parking_area">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">calc_residential_parking_area</code><span class="sig-paren">(</span><em>total_build_up</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.calc_residential_parking_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the parking area required based on the built up area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>total_build_up</strong> : float</p>
+<blockquote>
+<div><p>The total built up area.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>the parking area</strong> : float</p>
+<blockquote class="last">
+<div><p>The calculated parking area.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.get_buildings">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">get_buildings</code><span class="sig-paren">(</span><em>shpfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.get_buildings" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function get all the building polygons in this shapefile and convert them into a dictionary format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shpfile</strong> : str</p>
+<blockquote>
+<div><p>The file path of the shape file.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of building dictionary</strong> : list of dictionary</p>
+<blockquote class="last">
+<div><p>The list of building dictionary that documents all the information from the shape file. Each dictionary has this information:
+building_dictionary = {“building”: string describing the building,  “geometry”: OCCface list, “amenity”: amenity string, “parking”: parking string, “name”: building name string, 
+“building_l”: number of building level int}</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.terrain2d23d_tin">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">terrain2d23d_tin</code><span class="sig-paren">(</span><em>terrain_shpfile</em>, <em>elev_attrib_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.terrain2d23d_tin" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generate a TIN from a terrain shpfile that is polygonised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>terrain_shpfile</strong> : str</p>
+<blockquote>
+<div><p>The file path of the terrain shape file.</p>
+</div></blockquote>
+<p><strong>elev_attrib_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the attribute that documents the height of each polygon.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>triangle surfaces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>The triangle TIN faces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.terrain2d23d_contour_line">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">terrain2d23d_contour_line</code><span class="sig-paren">(</span><em>terrain_shpfile</em>, <em>elev_attrib_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.terrain2d23d_contour_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extrude each polygon according to its elevation attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>terrain_shpfile</strong> : str</p>
+<blockquote>
+<div><p>The file path of the terrain shape file.</p>
+</div></blockquote>
+<p><strong>elev_attrib_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the attribute that documents the height of each polygon.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>solids</strong> : list of OCCsolids</p>
+<blockquote>
+<div><p>The extruded polygons.</p>
+</div></blockquote>
+<p><strong>faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>The faces of the polygons.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.building2d23d">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">building2d23d</code><span class="sig-paren">(</span><em>building_shpfile</em>, <em>height_attrib_name</em>, <em>terrain_surface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.building2d23d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extrude each building and place them on the terrain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>building_shpfile</strong> : str</p>
+<blockquote>
+<div><p>The file path of the building shape file.</p>
+</div></blockquote>
+<p><strong>height_attrib_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the attribute that documents the building height.</p>
+</div></blockquote>
+<p><strong>terrain_surface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The TIN of the terrain. Each OCCface is triangular.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of extruded buildings</strong> : list of OCCsolids</p>
+<blockquote class="last">
+<div><p>The extruded buildings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.get_shpfile_epsg">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">get_shpfile_epsg</code><span class="sig-paren">(</span><em>shpfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.get_shpfile_epsg" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the epsg of the shape file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shpfile</strong> : str</p>
+<blockquote>
+<div><p>The file path of the shape file.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>epsg</strong> : str</p>
+<blockquote class="last">
+<div><p>The epsg of the shape file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.get_field_name_list">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">get_field_name_list</code><span class="sig-paren">(</span><em>sf</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.get_field_name_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the attribute names of the shapefile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sf</strong> : shapefile.Reader() class instance</p>
+<blockquote>
+<div><p>The reader class instance of a shape file.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of attribute names</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The list of attribute names in the shape file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.get_geometry">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">get_geometry</code><span class="sig-paren">(</span><em>shape_record</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.get_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the geometry in the shape record.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shape_record</strong> : list of shapefile.Reader().shapeRecords()</p>
+<blockquote>
+<div><p>The shape records for extraction of geometry.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of geometries</strong> : pypolygonlist (polygon and polylines shape file) or pyptlist (point shape file)</p>
+<blockquote class="last">
+<div><p>Pypolygon_list is a 2d list of tuples.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolygon or pyptlist is a list of pypt e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.buildings_on_plot">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">buildings_on_plot</code><span class="sig-paren">(</span><em>plot_rec</em>, <em>building_dict_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.buildings_on_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function identify the buildings that is on this landuse plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>plot_rec</strong> : shapefile.Reader().shapeRecords()</p>
+<blockquote>
+<div><p>The plot shape record.</p>
+</div></blockquote>
+<p><strong>building_dict_list</strong> : list of dictionaries</p>
+<blockquote>
+<div><p>The building to be identified. The list of dictionary is generated from the function get_buildings().</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>buildings on plot</strong> : list of dictionaries</p>
+<blockquote class="last">
+<div><p>The building dictionary that are on the plot.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.get_plot_area">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">get_plot_area</code><span class="sig-paren">(</span><em>plot_rec</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.get_plot_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculate the plot area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>plot_rec</strong> : A shapefile.Reader().shapeRecords()</p>
+<blockquote>
+<div><p>The plot shape record.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>area</strong> : float</p>
+<blockquote class="last">
+<div><p>The plot area (m2).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.trpst2citygml">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">trpst2citygml</code><span class="sig-paren">(</span><em>trpt_type</em>, <em>rec</em>, <em>name</em>, <em>trpst_attrib</em>, <em>generic_attrib_dict</em>, <em>citygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.trpst2citygml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts records from the shapefile into transportation GML.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>trpt_type</strong> : str</p>
+<blockquote>
+<div><p>The transportation type. The options are: “Road”, “Railway”, “Track”, “Square”.</p>
+</div></blockquote>
+<p><strong>plot_rec</strong> : A shapefile.Reader().shapeRecords()</p>
+<blockquote>
+<div><p>The shape record of the roads, must be a polyline shape file.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the transportation object.</p>
+</div></blockquote>
+<p><strong>trpst_attrib</strong> : str</p>
+<blockquote>
+<div><p>The class/function of the transportation. Options: “subway”, “light_rail”, “unclassified”, “tertiary”, “service”, “secondary_link”, “secondary”, “residential”, “primary”, “motoway_link”, “motorway”,
+“construction”.</p>
+</div></blockquote>
+<p><strong>generic_attrib_dict</strong> : dictionary, optional</p>
+<blockquote>
+<div><p>Extra attributes to be appended to the object, Default = None.
+The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+<p><strong>citygml_writer</strong> : Pycitygml.Writer() class instance</p>
+<blockquote class="last">
+<div><p>The writer is used to write information to the GML transportation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.building2citygml">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">building2citygml</code><span class="sig-paren">(</span><em>building_dict</em>, <em>height</em>, <em>citygml_writer</em>, <em>building_function</em>, <em>storey</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.building2citygml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts the building dictionariesinto building GML.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>building_dict</strong> : dictionary</p>
+<blockquote>
+<div><p>The building to be converted. The dictionary is generated from the function get_buildings().</p>
+</div></blockquote>
+<p><strong>height</strong> : float</p>
+<blockquote>
+<div><p>The building height.</p>
+</div></blockquote>
+<p><strong>citygml_writer</strong> : Pycitygml.Writer() class instance</p>
+<blockquote>
+<div><p>The writer is used to write information to the GML transportation.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the transportation object.</p>
+</div></blockquote>
+<p><strong>building_function</strong> : str</p>
+<blockquote>
+<div><p>The class/function of the building. Options: Options: “residential”, “transport”, “recreation_ground”, “education”, “commercial”, “civic”, “mixed”, “place_of_worship”, “reserve”, “utility”, “health”.</p>
+</div></blockquote>
+<p><strong>storey</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of storeys of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.pypt2d_2_3d">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">pypt2d_2_3d</code><span class="sig-paren">(</span><em>pypt2d</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.pypt2d_2_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts the pypt 2d to pypt 3d.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt2d</strong> : pypt2d</p>
+<blockquote>
+<div><p>The pypt2d to be converted. A pypt2d is a tuple that documents the xy coordinates of a pt e.g. (x,y).</p>
+</div></blockquote>
+<p><strong>z</strong> : float</p>
+<blockquote>
+<div><p>The z-value of pypt3d</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pypt3d</strong> : pypt</p>
+<blockquote class="last">
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.pypt_list2d_2_3d">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">pypt_list2d_2_3d</code><span class="sig-paren">(</span><em>pypt_list2d</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.pypt_list2d_2_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a list of pypt 2d to a list of pypt 3d.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt_list2d</strong> : pypt2d</p>
+<blockquote>
+<div><p>The list pypt2d to be converted. A pypt2d is a tuple that documents the xy coordinates of a pt e.g. (x,y). A list of pypt2d is [(x1,y1), (x2,y2), …]</p>
+</div></blockquote>
+<p><strong>z</strong> : float</p>
+<blockquote>
+<div><p>The z-value of pypt3d</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of pypt3d</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). A pyptlist is a list of pypt e.g. [(x1,y1,z1), (x2,y2,z2), …].</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.pypolygon_list2d_2_3d">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">pypolygon_list2d_2_3d</code><span class="sig-paren">(</span><em>pypolygon_list2d</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.pypolygon_list2d_2_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a list of pypolygon 2d to a list of pypolygon 3d.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypolygon_list2d</strong> : pypolygon_list2d</p>
+<blockquote>
+<div><p>The list pypolgon 2d to be converted. A pypolygon_list2d is a 2d list of tuples e.g. [[(x11,y11), (x12,y12), …], [(x21,y21), (x22,y22), …], …]</p>
+</div></blockquote>
+<p><strong>z</strong> : float</p>
+<blockquote>
+<div><p>The z-value of pypolygon3d</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of pypolygon3d</strong> : pypolygon_list</p>
+<blockquote class="last">
+<div><p>A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.shp_pypolygon_list3d_2_occface_list">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">shp_pypolygon_list3d_2_occface_list</code><span class="sig-paren">(</span><em>pypolygon_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.shp_pypolygon_list3d_2_occface_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a pypolygon_list to list of OCCfaces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypolygon_list</strong> : pypolygon_list</p>
+<blockquote>
+<div><p>Pypolygon_list is a 2d list of tuples.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolygon or pyptlist is a list of pypt e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.extrude_building_n_fetch_faces">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">extrude_building_n_fetch_faces</code><span class="sig-paren">(</span><em>building_footprint</em>, <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.extrude_building_n_fetch_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extrudes a building and returns all its faces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>building_footprint</strong> : OCCface</p>
+<blockquote>
+<div><p>The building footprint to be extruded.</p>
+</div></blockquote>
+<p><strong>height</strong> : float</p>
+<blockquote>
+<div><p>The building height.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>A list of OCCfaces of the extruded building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.face_almost_inside">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">face_almost_inside</code><span class="sig-paren">(</span><em>occface</em>, <em>boundary_occface</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.face_almost_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions measures if occ_face is almost inside the boundary face. Almost inside is define as 50% of the occ face is inside the boundary face</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The face to analyse.</p>
+</div></blockquote>
+<p><strong>boundary_occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The boundary face.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>is almost inside</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True face is almost inside, if False face is not almost inside.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyliburo.shp2citygml.create_transit_stop_geometry">
+<code class="descclassname">pyliburo.shp2citygml.</code><code class="descname">create_transit_stop_geometry</code><span class="sig-paren">(</span><em>transit_occsolid</em>, <em>location_pt</em><span class="sig-paren">)</span><a class="headerlink" href="#pyliburo.shp2citygml.create_transit_stop_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions creates the geometry for the transit stop.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>transit_occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The geometry of the transit stop.</p>
+</div></blockquote>
+<p><strong>location_pt</strong> : pypt</p>
+<blockquote>
+<div><p>The location of the transit box. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>the box moved to the location point</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>The box that is moved to the transit stop.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pyliburo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chen Kian Wee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pyliburo.shp2citygml.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
