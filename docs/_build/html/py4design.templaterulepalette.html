@@ -1,0 +1,416 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.templaterulepalette module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.templaterulepalette">
+<span id="py4design-templaterulepalette-module"></span><h1>py4design.templaterulepalette module<a class="headerlink" href="#module-py4design.templaterulepalette" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="py4design.templaterulepalette.BaseTemplateRule">
+<em class="property">class </em><code class="descclassname">py4design.templaterulepalette.</code><code class="descname">BaseTemplateRule</code><a class="headerlink" href="#py4design.templaterulepalette.BaseTemplateRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The base class for developing new template rule for analysing topologies in massing model. For more information please refer to 
+Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Generation of Semantic 3D City Models from Conceptual Massing Models. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
+<dl class="attribute">
+<dt id="py4design.templaterulepalette.BaseTemplateRule.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#py4design.templaterulepalette.BaseTemplateRule.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The topological type the rule apply to: there are 7 topologies, vertex, edge, wire, face, shell, solid, compsolid, compound.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.BaseTemplateRule.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.BaseTemplateRule.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.BaseTemplateRule.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.BaseTemplateRule.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.BaseTemplateRule.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.templaterulepalette.IdentifyBuildingMassings">
+<em class="property">class </em><code class="descclassname">py4design.templaterulepalette.</code><code class="descname">IdentifyBuildingMassings</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyBuildingMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.templaterulepalette.BaseTemplateRule" title="py4design.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">py4design.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of buildings (LOD1).</p>
+<dl class="attribute">
+<dt id="py4design.templaterulepalette.IdentifyBuildingMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyBuildingMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyBuildingMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyBuildingMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyBuildingMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyBuildingMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is closed and within anopther shell boundary, the shell is a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.templaterulepalette.IdentifyTerrainMassings">
+<em class="property">class </em><code class="descclassname">py4design.templaterulepalette.</code><code class="descname">IdentifyTerrainMassings</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyTerrainMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.templaterulepalette.BaseTemplateRule" title="py4design.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">py4design.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of terrains (LOD1).</p>
+<dl class="attribute">
+<dt id="py4design.templaterulepalette.IdentifyTerrainMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyTerrainMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyTerrainMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyTerrainMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyTerrainMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyTerrainMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and not within anopther shell boundary, the shell is a terrain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.templaterulepalette.IdentifyLandUseMassings">
+<em class="property">class </em><code class="descclassname">py4design.templaterulepalette.</code><code class="descname">IdentifyLandUseMassings</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyLandUseMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.templaterulepalette.BaseTemplateRule" title="py4design.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">py4design.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of landuse plots (LOD1).</p>
+<dl class="attribute">
+<dt id="py4design.templaterulepalette.IdentifyLandUseMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyLandUseMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the shell topology.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyLandUseMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyLandUseMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyLandUseMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyLandUseMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if a shell is opened and within anopther shell boundary, the shell is a plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.templaterulepalette.IdentifyRoadMassings">
+<em class="property">class </em><code class="descclassname">py4design.templaterulepalette.</code><code class="descname">IdentifyRoadMassings</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyRoadMassings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.templaterulepalette.BaseTemplateRule" title="py4design.templaterulepalette.BaseTemplateRule"><code class="xref py py-class docutils literal"><span class="pre">py4design.templaterulepalette.BaseTemplateRule</span></code></a></p>
+<p>An implementation of the BaseTemplateRule class for identifying the massing of landuse road network (LOD0).</p>
+<dl class="attribute">
+<dt id="py4design.templaterulepalette.IdentifyRoadMassings.for_topo_type">
+<code class="descname">for_topo_type</code><a class="headerlink" href="#py4design.templaterulepalette.IdentifyRoadMassings.for_topo_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rule applies to the edge topology.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list">
+<code class="descname">get_analysis_rule_obj_dict_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyRoadMassings.get_analysis_rule_obj_dict_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the BaseAnalysisRule objects appended to this template rule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyRoadMassings.add_analysis_rule">
+<code class="descname">add_analysis_rule</code><span class="sig-paren">(</span><em>analysis_rule_obj</em>, <em>bool_condition</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyRoadMassings.add_analysis_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds BaseAnalysisRule object to this template rule and specify its bool condition for the analysis rule (either True or False).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>analysis_rule_obj</strong> : implementation of the BaseAnalysisRule meta class</p>
+<blockquote>
+<div><p>The analysis rule and condition of the template rule.</p>
+</div></blockquote>
+<p><strong>bool_condition</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.templaterulepalette.IdentifyRoadMassings.identify">
+<code class="descname">identify</code><span class="sig-paren">(</span><em>occshape_attribs_obj_list</em>, <em>pycitygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.templaterulepalette.IdentifyRoadMassings.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the analysis rule and identify the city object based on the condition set. e.g. if an edge is within anopther shell boundary, the edge is a road.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshape_attribs_obj_list</strong> : list of ShapeAttributes objects</p>
+<blockquote>
+<div><p>The geometeries of the massing model to be identified.</p>
+</div></blockquote>
+<p><strong>pycitygml_writer</strong> : pycitygml.Writer class instance</p>
+<blockquote class="last">
+<div><p>The writer to write the identified city objects into CityGML.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.templaterulepalette.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

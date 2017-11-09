@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.py3dmodel.export_collada module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.py3dmodel.export_collada">
+<span id="py4design-py3dmodel-export-collada-module"></span><h1>py4design.py3dmodel.export_collada module<a class="headerlink" href="#module-py4design.py3dmodel.export_collada" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.py3dmodel.export_collada.occtopo_2_collada">
+<code class="descclassname">py4design.py3dmodel.export_collada.</code><code class="descname">occtopo_2_collada</code><span class="sig-paren">(</span><em>occface_list</em>, <em>dae_filepath</em>, <em>face_rgb_colour_list=None</em>, <em>occedge_list=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.export_collada.occtopo_2_collada" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts OCCtopologies into a pycollada Collada class. The units are in meter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+OCCsolid, OCCshell, OCCface.</p>
+</div></blockquote>
+<p><strong>dae_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the DAE (Collada) file.</p>
+</div></blockquote>
+<p><strong>face_rgb_colour_list</strong> : list of tuple of floats, optional</p>
+<blockquote>
+<div><p>Each tuple is a r,g,b that is specifying the colour of the face. The number of colours must correspond to the number of OCCfaces.</p>
+</div></blockquote>
+<p><strong>occedge_list</strong> : list of OCCedges, optional</p>
+<blockquote>
+<div><p>OCCedges to be visualised together, Default = None.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>mesh</strong> : pycollada Collada class object</p>
+<blockquote class="last">
+<div><p>The collada object from pycollada library.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.export_collada.write_2_collada">
+<code class="descclassname">py4design.py3dmodel.export_collada.</code><code class="descname">write_2_collada</code><span class="sig-paren">(</span><em>occface_list</em>, <em>dae_filepath</em>, <em>face_rgb_colour_list=None</em>, <em>occedge_list=None</em>, <em>text_string=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.export_collada.write_2_collada" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a 3D model into a Collada file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+OCCsolid, OCCshell, OCCface.</p>
+</div></blockquote>
+<p><strong>dae_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the DAE (Collada) file.</p>
+</div></blockquote>
+<p><strong>face_rgb_colour_list</strong> : list of tuple of floats, optional</p>
+<blockquote>
+<div><p>Each tuple is a r,g,b that is specifying the colour of the face,Default = None. 
+The number of colours must correspond to the number of OCCfaces.</p>
+</div></blockquote>
+<p><strong>occedge_list</strong> : list of OCCedges, optional</p>
+<blockquote>
+<div><p>OCCedges to be visualised together, Default = None.</p>
+</div></blockquote>
+<p><strong>text_string</strong> : str, optional</p>
+<blockquote>
+<div><p>Description for the 3D model, Default = None.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>None</strong> : None</p>
+<blockquote class="last">
+<div><p>The geometries are written to a DAE file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.export_collada.write_2_collada_falsecolour">
+<code class="descclassname">py4design.py3dmodel.export_collada.</code><code class="descname">write_2_collada_falsecolour</code><span class="sig-paren">(</span><em>occface_list</em>, <em>result_list</em>, <em>unit_str</em>, <em>dae_filepath</em>, <em>description_str=None</em>, <em>minval=None</em>, <em>maxval=None</em>, <em>other_occface_list=None</em>, <em>other_occedge_list=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.export_collada.write_2_collada_falsecolour" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a falsecolour 3D model into a Collada file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
+are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+OCCsolid, OCCshell, OCCface.</p>
+</div></blockquote>
+<p><strong>result_list</strong> : list of floats</p>
+<blockquote>
+<div><p>The results to be visualised. The list of results must correspond to the occface_list.</p>
+</div></blockquote>
+<p><strong>unit_str</strong> : str</p>
+<blockquote>
+<div><p>The string of the unit to be displayed on the bar.</p>
+</div></blockquote>
+<p><strong>dae_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the DAE (Collada) file.</p>
+</div></blockquote>
+<p><strong>description_str</strong> : str, optional</p>
+<blockquote>
+<div><p>Description for the falsecolour bar, Default = None.</p>
+</div></blockquote>
+<p><strong>minval</strong> : float, optional</p>
+<blockquote>
+<div><p>The minimum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the maximum value from the results.</p>
+</div></blockquote>
+<p><strong>maxval</strong> : float, optional</p>
+<blockquote>
+<div><p>The maximum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the minimum value from the results.</p>
+</div></blockquote>
+<p><strong>other_occface_list</strong> : list of OCCfaces, optional</p>
+<blockquote>
+<div><p>Other geometries to be visualised together with the results, Default = None. Other OCCtopologies
+are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
+OCCsolid, OCCshell, OCCface.</p>
+</div></blockquote>
+<p><strong>other_occedge_list</strong> : list of OCCedges, optional</p>
+<blockquote>
+<div><p>Other OCCedges to be visualised together with the results, Default = None.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>None</strong> : None</p>
+<blockquote class="last">
+<div><p>The geometries are written to a DAE file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.py3dmodel.export_collada.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

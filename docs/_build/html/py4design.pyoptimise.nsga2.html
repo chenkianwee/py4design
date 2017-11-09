@@ -1,0 +1,967 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.pyoptimise.nsga2 module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.pyoptimise.nsga2">
+<span id="py4design-pyoptimise-nsga2-module"></span><h1>py4design.pyoptimise.nsga2 module<a class="headerlink" href="#module-py4design.pyoptimise.nsga2" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.pyoptimise.nsga2.frange">
+<code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">frange</code><span class="sig-paren">(</span><em>start</em>, <em>end=None</em>, <em>inc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.frange" title="Permalink to this definition">¶</a></dt>
+<dd><p>A range function, that does accept float increments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>end</strong> : float, optional</p>
+<blockquote>
+<div><p>Generate numbers up to, but not including this number, Default = None. When None, end == start and start = 0.0.</p>
+</div></blockquote>
+<p><strong>inc</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, Default = None. When None, inc = 1.0.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sequence of floats</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>A list of float.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.Gene">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">Gene</code><span class="sig-paren">(</span><em>gene_type</em>, <em>value_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the gene information for running a NSGA2 optimisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gene_type</strong> : str</p>
+<blockquote>
+<div><p>The type of the gene. There are four options: “int_range”, “int_choice”, “float_range”, “float_choice”.</p>
+</div></blockquote>
+<p><strong>value_range</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of ints/floats. If the gene_type is “int_range” or “float_range”, the list has three elements. The first element is the starting number, 
+the second element is the ending number (not included in the sequence), and the last element is the difference between each number in the sequence.
+If the gene_type is “int_choice” or “float_choice”, the list is made up of all the possible options.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>gene_type</strong></td>
+<td>(str) see Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>value_range</strong></td>
+<td>(list of int/floats) see Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>position</strong></td>
+<td>(int) The position of the gene in the genotype. If the position is 0 the gene is in the first postion.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.GenotypeMeta">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">GenotypeMeta</code><a class="headerlink" href="#py4design.pyoptimise.nsga2.GenotypeMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the meta information of a genotype for running a NSGA2 optimisation.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>gene_list</strong></td>
+<td>(list of Gene class instances) The list of Gene class instances that will be developed in the Genotype class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.GenotypeMeta.add_gene">
+<code class="descname">add_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.GenotypeMeta.add_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a gene to the gene list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gene</strong> : Gene class instance</p>
+<blockquote class="last">
+<div><p>The gene to be added to the Genotype class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.GenotypeMeta.gene_position">
+<code class="descname">gene_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.GenotypeMeta.gene_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function assigns a position to each gene in the gene list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.GenotypeMeta.length">
+<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.GenotypeMeta.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the number of genes in the gene list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>length</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of genes in the gene list.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.Genotype">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">Genotype</code><span class="sig-paren">(</span><em>genotype_meta</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Genotype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the information and methods for developing a genotype for an individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>genotype_meta</strong> : GenotypeMeta class instance</p>
+<blockquote class="last">
+<div><p>The meta information of the genotype.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>genotype_meta</strong></td>
+<td>(GenotypeMeta class instance) See Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>values</strong></td>
+<td>(list of floats/ints) The Genotype values of an individual to develop the individual’s phenotype.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Genotype.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Genotype.randomise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function randomly generates the Genotype values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Genotype.mutate">
+<code class="descname">mutate</code><span class="sig-paren">(</span><em>mutation_prob</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Genotype.mutate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function mutates the genotype values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>mutation_prob</strong> : float</p>
+<blockquote class="last">
+<div><p>The mutation probability, the probability is between 0 to 1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Genotype.read_str">
+<code class="descname">read_str</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Genotype.read_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads a string and convert it into a list for values attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>string</strong> : str</p>
+<blockquote class="last">
+<div><p>The values in string format, e.g. “0.2 3.2 5 0 6.5”. The string will be converted to a list and saved as the values attribute.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Genotype.write_str">
+<code class="descname">write_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Genotype.write_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the values attribute into a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>string</strong> : str</p>
+<blockquote class="last">
+<div><p>The values is converted from [0.2, 3.2, 5, 0, 6.5] to string format “0.2 3.2 5 0 6.5”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.DerivedParams">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">DerivedParams</code><a class="headerlink" href="#py4design.pyoptimise.nsga2.DerivedParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the information of derived parameters extracted from the individual.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>values</strong></td>
+<td>(list of floats/ints) The values of each derived parameter of an individual.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.DerivedParams.add_param">
+<code class="descname">add_param</code><span class="sig-paren">(</span><em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.DerivedParams.add_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a derived parameter value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>param</strong> : float</p>
+<blockquote class="last">
+<div><p>The value of a derived parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.DerivedParams.length">
+<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.DerivedParams.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the number of derived parameter values in the values attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>length</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of derived parameter values in the values attribute.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.DerivedParams.read_str">
+<code class="descname">read_str</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.DerivedParams.read_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads a string and convert it into a list for values attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>string</strong> : str</p>
+<blockquote class="last">
+<div><p>The values in string format, e.g. “0.2 3.2 5 0 6.5”. The string will be converted to a list and saved as the values attribute.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.DerivedParams.write_str">
+<code class="descname">write_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.DerivedParams.write_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the values attribute into a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>string</strong> : str</p>
+<blockquote class="last">
+<div><p>The values is converted from [0.2, 3.2, 5, 0, 6.5] to string format “0.2 3.2 5 0 6.5”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.Individual">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">Individual</code><span class="sig-paren">(</span><em>idx</em>, <em>genotype_meta</em>, <em>score_meta</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the information and methods for developing an individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>idx</strong> : int</p>
+<blockquote>
+<div><p>A unique number to identify the individual.</p>
+</div></blockquote>
+<p><strong>genotype_meta</strong> : GenotypeMeta class instance</p>
+<blockquote>
+<div><p>A GenotypeMeta class instance that provide all the information for developing the Genotype.</p>
+</div></blockquote>
+<p><strong>score_meta</strong> : ScoreMeta class instance</p>
+<blockquote class="last">
+<div><p>The meta information of the performance objectives of the individual.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>idx</strong></td>
+<td>(int) See Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>genotype_meta</strong></td>
+<td>(GenotypeMeta class instance) See Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>genotype</strong></td>
+<td>(Genotype class instance) A Genotype class instance that provide all the information for developing an individual.</td>
+</tr>
+<tr class="row-even"><td><strong>live</strong></td>
+<td>(bool) True or False. If True the individual is alive, if False individual is dead.</td>
+</tr>
+<tr class="row-odd"><td><strong>scores</strong></td>
+<td>(list of floats) The list containing the performance of this individual.</td>
+</tr>
+<tr class="row-even"><td><strong>derivedparams</strong></td>
+<td>(DerivedParams class instance) A DerivedParams class instance containing all the derived parameters informaiton.</td>
+</tr>
+<tr class="row-odd"><td><strong>generation</strong></td>
+<td>(int) The generation this individual is borned in.</td>
+</tr>
+<tr class="row-even"><td><strong>distance</strong></td>
+<td>(float) The crowding distance of this individual.</td>
+</tr>
+<tr class="row-odd"><td><strong>rank</strong></td>
+<td>(int) The Pareto rank of this individual.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.randomise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function randomly generates the Genotype values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.set_score">
+<code class="descname">set_score</code><span class="sig-paren">(</span><em>index</em>, <em>score</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.set_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function set the score for the individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>index</strong> : int</p>
+<blockquote>
+<div><p>The index of the score in the score list to be set.</p>
+</div></blockquote>
+<p><strong>score</strong> : float</p>
+<blockquote class="last">
+<div><p>The value of the score.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.get_score">
+<code class="descname">get_score</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.get_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function get the score for the individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>index</strong> : int</p>
+<blockquote>
+<div><p>The index of the score in the score list to get.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>score</strong> : float</p>
+<blockquote class="last">
+<div><p>The value of the score.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.is_not_evaluated">
+<code class="descname">is_not_evaluated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.is_not_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the individual has already been evaluated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>is not evaluated</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True the individual is not evaluated, if False the individual is evaluated.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.add_derivedparams">
+<code class="descname">add_derivedparams</code><span class="sig-paren">(</span><em>derivedparams</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.add_derivedparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds derived parameter values to the individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>derivedparams</strong> : list of floats/ints</p>
+<blockquote class="last">
+<div><p>The list of derived parameter values to be added to the individual.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.add_generation">
+<code class="descname">add_generation</code><span class="sig-paren">(</span><em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.add_generation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds the generation this individual is borned in to the individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>generation</strong> : int</p>
+<blockquote class="last">
+<div><p>The generation this individual is borned in.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Individual.xml">
+<code class="descname">xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Individual.xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the individual to an xml format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>xml individual</strong> : str</p>
+<blockquote class="last">
+<div><p>The xml string of the individual.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.ScoreMeta">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">ScoreMeta</code><span class="sig-paren">(</span><em>score_names</em>, <em>scores_min_max</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.ScoreMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the information of the scores of an individual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_names</strong> : list of str</p>
+<blockquote>
+<div><p>A list of the names of the score.</p>
+</div></blockquote>
+<p><strong>scores_min_max</strong> : list of int</p>
+<blockquote class="last">
+<div><p>A list of int. The int can only be either 0 or 1. O indicates the score has to be minimise, 1 to be maximised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>See Parameters.</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="py4design.pyoptimise.nsga2.ScoreMeta.MIN">
+<code class="descname">MIN</code><em class="property"> = 0</em><a class="headerlink" href="#py4design.pyoptimise.nsga2.ScoreMeta.MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="py4design.pyoptimise.nsga2.ScoreMeta.MAX">
+<code class="descname">MAX</code><em class="property"> = 1</em><a class="headerlink" href="#py4design.pyoptimise.nsga2.ScoreMeta.MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.ScoreMeta.get_num_scores">
+<code class="descname">get_num_scores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.ScoreMeta.get_num_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function count the number of scores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>number of scores</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of scores.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pyoptimise.nsga2.Population">
+<em class="property">class </em><code class="descclassname">py4design.pyoptimise.nsga2.</code><code class="descname">Population</code><span class="sig-paren">(</span><em>size</em>, <em>genotype_meta</em>, <em>score_meta</em>, <em>live_xml_filepath</em>, <em>dead_xml_filepath</em>, <em>mutation_prob</em>, <em>crossover_rate</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the information and methods for optimising a population of individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>size</strong> : int</p>
+<blockquote>
+<div><p>The population size.</p>
+</div></blockquote>
+<p><strong>genotype_meta</strong> : GenotypeMeta class instance</p>
+<blockquote>
+<div><p>A GenotypeMeta class instance that provide all the information for developing the Genotype.</p>
+</div></blockquote>
+<p><strong>score_meta</strong> : ScoreMeta class instance</p>
+<blockquote>
+<div><p>The meta information of the performance objectives of the individual.</p>
+</div></blockquote>
+<p><strong>live_xml_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the living individuals.</p>
+</div></blockquote>
+<p><strong>dead_xml_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file that documents all the dead individuals.</p>
+</div></blockquote>
+<p><strong>mutation_prob</strong> : float</p>
+<blockquote>
+<div><p>The mutation probability, the probability is between 0 to 1. The usual mutation probability is about 0.01.</p>
+</div></blockquote>
+<p><strong>crossover_rate</strong> : float</p>
+<blockquote class="last">
+<div><p>The crossover rate, the rate is between 0 to 1. The usual crossover rate is about 0.8.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>size</strong></td>
+<td>(int) See Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>genotype_meta</strong></td>
+<td>(GenotypeMeta class instance) See Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>individuals</strong></td>
+<td>(list of Individuals class instances) List of individuals of the population.</td>
+</tr>
+<tr class="row-even"><td><strong>live_xml_filepath</strong></td>
+<td>(str) See Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>dead_xml_filepath</strong></td>
+<td>(str) See Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>score_meta</strong></td>
+<td>(ScoreMeta class instance) See Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>mutation_prob</strong></td>
+<td>(float) See Parameters.</td>
+</tr>
+<tr class="row-even"><td><strong>crossover_rate</strong></td>
+<td>(float) See Parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>num_archived_individuals</strong></td>
+<td>(int) The number of individuals on the dead xml file.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.select_random_inds">
+<code class="descname">select_random_inds</code><span class="sig-paren">(</span><em>num_inds</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.select_random_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function randomly selects a number of individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>num_inds</strong> : int</p>
+<blockquote>
+<div><p>The number of individuals to select.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>selected individuals</strong> : list of Individual class instances</p>
+<blockquote class="last">
+<div><p>The list of randomly chosen individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.rank">
+<code class="descname">rank</code><span class="sig-paren">(</span><em>inds</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function Pareto ranks the individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of Individual class instances</p>
+<blockquote>
+<div><p>The list of individuals’ to be ranked.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ranked individuals</strong> : 2d list of Individual class instances</p>
+<blockquote class="last">
+<div><p>Each list of list of individuals are ranked accordingly. The first list of individuals in the 2d list has the best Pareto rankings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.crowd_distance_assignment">
+<code class="descname">crowd_distance_assignment</code><span class="sig-paren">(</span><em>individuals</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.crowd_distance_assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates and assigns the crowding distance for the individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>individuals</strong> : list of Individual class instances</p>
+<blockquote>
+<div><p>The list of individuals’ to be assigned their crowding distance.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>assigned individuals</strong> : list of Individual class instances</p>
+<blockquote class="last">
+<div><p>Each individual is assigned a crowding distance.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.crowded_comparison">
+<code class="descname">crowded_comparison</code><span class="sig-paren">(</span><em>ind1</em>, <em>ind2</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.crowded_comparison" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compare the two individuals based on crowded comparison.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind1</strong> : Individual class instance</p>
+<blockquote>
+<div><p>Check if this Individual is better than the other individual.</p>
+</div></blockquote>
+<p><strong>ind2</strong> : Individual class instance</p>
+<blockquote>
+<div><p>Individual 2.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>comparison</strong> : int</p>
+<blockquote class="last">
+<div><p>If 1 ind1 is better than ind2, if -1 ind2 is better than ind1, if 0 means both individuals are the same.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.sort_objectives">
+<code class="descname">sort_objectives</code><span class="sig-paren">(</span><em>individuals</em>, <em>obj_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.sort_objectives" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function arranges the individuals in ascending orders according to a chosen performance objective.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>individuals</strong> : list of Individual class instances</p>
+<blockquote>
+<div><p>The list of individuals’ to arranged.</p>
+</div></blockquote>
+<p><strong>obj_idx</strong> : int</p>
+<blockquote>
+<div><p>The index of the chosen objective for arranging the individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sorted individuals</strong> : list of Individual class instances</p>
+<blockquote class="last">
+<div><p>The sorted list of individuals in ascending orders according to the chosen objective.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.crossover">
+<code class="descname">crossover</code><span class="sig-paren">(</span><em>ind1</em>, <em>ind2</em>, <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.crossover" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs crossover between two individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind1</strong> : Individual class instance</p>
+<blockquote>
+<div><p>The parent individual.</p>
+</div></blockquote>
+<p><strong>ind2</strong> : Individual class instance</p>
+<blockquote>
+<div><p>The parent individual.</p>
+</div></blockquote>
+<p><strong>genertaion</strong> : int</p>
+<blockquote>
+<div><p>The generation of the child individual.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>child individual</strong> : Individual class instance</p>
+<blockquote class="last">
+<div><p>The child individual from the crossover.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.reproduce">
+<code class="descname">reproduce</code><span class="sig-paren">(</span><em>individuals</em>, <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.reproduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs reproduction for the current generation of individuals, kills of the current population and replace them with the reproduced population.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>individuals</strong> : list of Individual class instances</p>
+<blockquote>
+<div><p>The list of individuals’ for reproduction.</p>
+</div></blockquote>
+<p><strong>genertaion</strong> : int</p>
+<blockquote class="last">
+<div><p>The generation of the new reproduced population.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.get_max_id">
+<code class="descname">get_max_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.get_max_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets total number of individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>total number of individuals</strong> : int</p>
+<blockquote class="last">
+<div><p>The total number of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.randomise">
+<code class="descname">randomise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.randomise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function randomly generates a population of individuals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes all the individuals into xml, the living individuals into the live xml file, the dead ones in the dead xml file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pyoptimise.nsga2.Population.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.nsga2.Population.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the xml files into Python objects.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.pyoptimise.nsga2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

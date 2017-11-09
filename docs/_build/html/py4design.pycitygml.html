@@ -1,0 +1,1364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.pycitygml package &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="py4design-pycitygml-package">
+<h1>py4design.pycitygml package<a class="headerlink" href="#py4design-pycitygml-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="py4design.pycitygml.write_gml.html">py4design.pycitygml.write_gml module</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-py4design.pycitygml">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-py4design.pycitygml" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="py4design.pycitygml.Writer">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">Writer</code><a class="headerlink" href="#py4design.pycitygml.Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>lxml.etree Element object that contains the CityGML information. Currently all methods only work with lod1 CityGML models.</p>
+<p>…</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>citymodel_node</strong></td>
+<td>( lxml.etree Element) The Element class that contains all the CityGML information.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.create_cityobjectmember">
+<code class="descname">create_cityobjectmember</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.create_cityobjectmember" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a cityObjectMember.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_landuse">
+<code class="descname">add_landuse</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_landuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a landuse object into the CityGML model. Currently, only works for lod1 landuse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lod</strong> : str</p>
+<blockquote>
+<div><p>The level of detail of the geometry of the landuse. The string should be in this form: “lod1”.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the landuse.</p>
+</div></blockquote>
+<p><strong>geometry_list</strong> : list of SurfaceMember</p>
+<blockquote>
+<div><p>The geometry of the landuse.</p>
+</div></blockquote>
+<p><strong>function</strong> : str, optional</p>
+<blockquote>
+<div><p>The function of the landuse in gml code, e.g. for residential specify “1010”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>generic_attrib_dict</strong> : dictionary, optional</p>
+<blockquote class="last">
+<div><p>Extra attributes to be appended to the object, Default = None.
+The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_transportation">
+<code class="descname">add_transportation</code><span class="sig-paren">(</span><em>trpt_type</em>, <em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>rd_class=None</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_transportation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a transportation object into the CityGML model. Transportation object includes road, railway, track and square.
+Currently only works for lod0 transportation network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>trpt_type</strong> : str</p>
+<blockquote>
+<div><p>The transportation type. The options are: “Road”, “Railway”, “Track”, “Square”.</p>
+</div></blockquote>
+<p><strong>lod</strong> : str</p>
+<blockquote>
+<div><p>The level of detail of the geometry of the transportation. The string should be in this form: “lod0”.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the transportation object.</p>
+</div></blockquote>
+<p><strong>geometry_list</strong> : list of Linestring</p>
+<blockquote>
+<div><p>The geometry of the landuse.</p>
+</div></blockquote>
+<p><strong>rd_class</strong> : str, optional</p>
+<blockquote>
+<div><p>The class of the transportation gml code, e.g. for road specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>function</strong> : str, optional</p>
+<blockquote>
+<div><p>The function of the transportation gml code, e.g. for road specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>generic_attrib_dict</strong> : dictionary, optional</p>
+<blockquote class="last">
+<div><p>Extra attributes to be appended to the object, Default = None.
+The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_building">
+<code class="descname">add_building</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>bldg_class=None</em>, <em>function=None</em>, <em>usage=None</em>, <em>yr_constr=None</em>, <em>rooftype=None</em>, <em>height=None</em>, <em>stry_abv_grd=None</em>, <em>stry_blw_grd=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_building" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a building object into the CityGML model. Currently, only works for lod1 building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lod</strong> : str</p>
+<blockquote>
+<div><p>The level of detail of the geometry of the building. The string should be in this form: “lod1”.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the building.</p>
+</div></blockquote>
+<p><strong>geometry_list</strong> : list of SurfaceMember</p>
+<blockquote>
+<div><p>The geometry of the building.</p>
+</div></blockquote>
+<p><strong>bldg_class</strong> : str, optional</p>
+<blockquote>
+<div><p>The building class of the building in gml code e.g. for habitation specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>function</strong> : str, optional</p>
+<blockquote>
+<div><p>The function of the building in gml code e.g. for residential specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>usage</strong> : str, optional</p>
+<blockquote>
+<div><p>The usage of the building in gml code e.g. for residential specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>yr_constr</strong> : str, optional</p>
+<blockquote>
+<div><p>The year the building is constructed e.g. “2017”, Default = None.</p>
+</div></blockquote>
+<p><strong>rooftype</strong> : str, optional</p>
+<blockquote>
+<div><p>The rooftype of the building in gml code e.g. for flat roof specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>height</strong> : str, optional</p>
+<blockquote>
+<div><p>The height of the building, e.g. “48”, Default = None.</p>
+</div></blockquote>
+<p><strong>stry_abv_grd</strong> : str, optional</p>
+<blockquote>
+<div><p>The number of storey of the building above ground, e.g. “12”, Default = None.</p>
+</div></blockquote>
+<p><strong>stry_blw_grd</strong> : str, optional</p>
+<blockquote>
+<div><p>The number of storey of the building below ground, e.g. “2”, Default = None.</p>
+</div></blockquote>
+<p><strong>generic_attrib_dict</strong> : dictionary, optional</p>
+<blockquote class="last">
+<div><p>Extra attributes to be appended to the object, Default = None.
+The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_cityfurniture">
+<code class="descname">add_cityfurniture</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em>, <em>furn_class=None</em>, <em>function=None</em>, <em>generic_attrib_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_cityfurniture" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a city furniture object into the CityGML model. Currently, only works for lod1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lod</strong> : str</p>
+<blockquote>
+<div><p>The level of detail of the geometry of the furniture. The string should be in this form: “lod1”.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the furniture.</p>
+</div></blockquote>
+<p><strong>geometry_list</strong> : list of SurfaceMember</p>
+<blockquote>
+<div><p>The geometry of the furniture.</p>
+</div></blockquote>
+<p><strong>furn_class</strong> : str, optional</p>
+<blockquote>
+<div><p>The furniture class of the city furniture in gml code, for traffic specify “1000”, Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>function</strong> : str, optional</p>
+<blockquote>
+<div><p>The function of the city furniture in gml code, for bus stop specify “1110”,Default = None. Refer to CityGML 
+documentation for more information. <a class="reference external" href="https://www.citygml.org/">https://www.citygml.org/</a></p>
+</div></blockquote>
+<p><strong>generic_attrib_dict</strong> : dictionary, optional</p>
+<blockquote class="last">
+<div><p>Extra attributes to be appended to the object, Default = None.
+The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_tin_relief">
+<code class="descname">add_tin_relief</code><span class="sig-paren">(</span><em>lod</em>, <em>name</em>, <em>geometry_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_tin_relief" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a TIN relief object into the CityGML model. Currently, only works for lod1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lod</strong> : str</p>
+<blockquote>
+<div><p>The level of detail of the geometry of the tin relief. The string should be in this form: “lod1”.</p>
+</div></blockquote>
+<p><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the relief feature.</p>
+</div></blockquote>
+<p><strong>geometry_list</strong> : list of Triangle</p>
+<blockquote class="last">
+<div><p>The geometry of the relief.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.add_bounded_by">
+<code class="descname">add_bounded_by</code><span class="sig-paren">(</span><em>epsg</em>, <em>lower_bound</em>, <em>upper_bound</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.add_bounded_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds a bounded by object into the CityGML model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>epsg</strong> : str</p>
+<blockquote>
+<div><p>The epsg of the coordinate system.</p>
+</div></blockquote>
+<p><strong>lower_bound</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A tuple of floats that is specifying the xyz coordinate of the lower bound.</p>
+</div></blockquote>
+<p><strong>upper_bound</strong> : tuple of floats</p>
+<blockquote class="last">
+<div><p>A tuple of floats that is specifying the xyz coordinate of the upper bound.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.write2string">
+<code class="descname">write2string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.write2string" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints all the information into a string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Writer.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Writer.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes all the information into a CityGML file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the CityGML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pycitygml.Reader">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">Reader</code><a class="headerlink" href="#py4design.pycitygml.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Reads a CityGML file and stores it in a lxml.etree Element object that contains the CityGML information.</p>
+<p>…</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>citymodel_node</strong></td>
+<td>( lxml.etree Element) The Element class that contains all the CityGML information.</td>
+</tr>
+<tr class="row-even"><td><strong>cityobjectmembers</strong></td>
+<td>(list of lxml.etree Element) A list of Element class of all the cityobjectmembers in the CityGML file.</td>
+</tr>
+<tr class="row-odd"><td><strong>namespaces</strong></td>
+<td>(dictionary of XMLNamespaces from write_gml module) A dictionary of XMLNamespaces.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.load_filepath">
+<code class="descname">load_filepath</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.load_filepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads the CityGML file and all the information into the citymodelnode and populate the cityobjectmembers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the CityGML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.load_citymodel_node">
+<code class="descname">load_citymodel_node</code><span class="sig-paren">(</span><em>citymodel_node</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.load_citymodel_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads a citymodel_node and populate the cityobjectmembers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the CityGML file.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>Exception</strong></p>
+<blockquote class="last">
+<div><p>when a CityGML file has already been loaded.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_buildings">
+<code class="descname">get_buildings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_buildings" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all the buildings from the loaded CityGML file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>buildings</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>A list of lxml Elements buildings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_relief_feature">
+<code class="descname">get_relief_feature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_relief_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the relief feature cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">relief features: list of lxml Elements</p>
+<blockquote class="last">
+<div><p>List of relief feature lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_landuses">
+<code class="descname">get_landuses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_landuses" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the landuse cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>landuses</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>List of landuses lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_roads">
+<code class="descname">get_roads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_roads" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the roads cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>roads</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>List of roads lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_railways">
+<code class="descname">get_railways</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_railways" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the railway cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>railways</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>List of railway lxml Elements.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_non_xtype_cityobject">
+<code class="descname">get_non_xtype_cityobject</code><span class="sig-paren">(</span><em>xtype</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_non_xtype_cityobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function find all cityobject that is not of xtype.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xtype</strong> : str</p>
+<blockquote>
+<div><p>A cityobject type, e.g. “bldg:Building”</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>non-xtype cityobject</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>A list of lxml Elements non-xtype cityobjects.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_height">
+<code class="descname">get_building_height</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the height of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building height</strong> : float</p>
+<blockquote class="last">
+<div><p>The building height, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_storey">
+<code class="descname">get_building_storey</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_storey" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the number of building storey above ground of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building storey above ground</strong> : int</p>
+<blockquote class="last">
+<div><p>The building storey above ground, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_function">
+<code class="descname">get_building_function</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the function of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building function code</strong> : str</p>
+<blockquote class="last">
+<div><p>The building function in gml code, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_usage">
+<code class="descname">get_building_usage</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the function of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building usage code</strong> : str</p>
+<blockquote class="last">
+<div><p>The building usage in gml code, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_class">
+<code class="descname">get_building_class</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the class of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building class code</strong> : str</p>
+<blockquote class="last">
+<div><p>The building class in gml code, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_yr_constr">
+<code class="descname">get_building_yr_constr</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_yr_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets year of construction of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building year of construction</strong> : str</p>
+<blockquote class="last">
+<div><p>The building year of construction, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_rooftype">
+<code class="descname">get_building_rooftype</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_rooftype" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets year of construction of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building rooftype</strong> : str</p>
+<blockquote class="last">
+<div><p>The building rooftype in gml code, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_epsg">
+<code class="descname">get_building_epsg</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_epsg" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the coordinate system epsg of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building epsg</strong> : str</p>
+<blockquote class="last">
+<div><p>The building epsg, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_building_storey_blw_grd">
+<code class="descname">get_building_storey_blw_grd</code><span class="sig-paren">(</span><em>lxmlbuilding</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_building_storey_blw_grd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the number of building storey below ground of the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlbuilding</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml building object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building storey below ground</strong> : int</p>
+<blockquote class="last">
+<div><p>The building storey below ground, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_generic_attribs">
+<code class="descname">get_generic_attribs</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_generic_attribs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the generic attribute of the cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary generic attributes</strong> : dictionary</p>
+<blockquote class="last">
+<div><p>The dictionary have a string key which will be the name of the generic attributes, and either an int, float or str value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_landuse_name">
+<code class="descname">get_landuse_name</code><span class="sig-paren">(</span><em>lxmllanduse</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_landuse_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the name of the landuse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmllanduse</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml landuse object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>landuse name</strong> : str</p>
+<blockquote class="last">
+<div><p>The name of the landuse.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_landuse_function">
+<code class="descname">get_landuse_function</code><span class="sig-paren">(</span><em>lxmllanduse</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_landuse_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the function of the landuse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmllanduse</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml landuse object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>landuse function</strong> : str</p>
+<blockquote class="last">
+<div><p>The function of the landuse.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_bus_stops">
+<code class="descname">get_bus_stops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_bus_stops" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the busstop cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>bus stops</strong> : list of lxml Elements</p>
+<blockquote class="last">
+<div><p>List of bus stops lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_epsg">
+<code class="descname">get_epsg</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_epsg" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the coordinate system epsg of the cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>epsg</strong> : str</p>
+<blockquote class="last">
+<div><p>The cityobject epsg, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_gml_id">
+<code class="descname">get_gml_id</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_gml_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the id of the cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>id</strong> : str</p>
+<blockquote class="last">
+<div><p>The cityobject id, if attribute is not available return None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_triangles">
+<code class="descname">get_triangles</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_triangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the triangles geometry of the cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>triangles</strong> : list of lxml triangles</p>
+<blockquote class="last">
+<div><p>List of lxml triangles.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_polygons">
+<code class="descname">get_polygons</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the polygon geometry of the cityobject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>polygons</strong> : list of lxml polygons</p>
+<blockquote class="last">
+<div><p>List of lxml polygons.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_polygon_pt_list">
+<code class="descname">get_polygon_pt_list</code><span class="sig-paren">(</span><em>lxmlpolygon</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_polygon_pt_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the list of points that defines the polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlpolygon</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml polygon object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of polygon points</strong> : list of polygon point lxml Elements</p>
+<blockquote class="last">
+<div><p>The list of polygon point lxml elements. Each element is a polygon.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_polygon_pt_list_2_pyptlist">
+<code class="descname">get_polygon_pt_list_2_pyptlist</code><span class="sig-paren">(</span><em>lxmlpolygon_pt_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_polygon_pt_list_2_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the list of points that defines the polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlpolygon_pt_list</strong> : list of lxml Elements</p>
+<blockquote>
+<div><p>A list of lxml polygon point object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.polygon_2_pyptlist">
+<code class="descname">polygon_2_pyptlist</code><span class="sig-paren">(</span><em>lxmlpolygon</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.polygon_2_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the list of points that defines the polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lxmlpolygon</strong> : list of lxml Elements</p>
+<blockquote>
+<div><p>A list of lxml polygon object.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_pypolygon_list">
+<code class="descname">get_pypolygon_list</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_pypolygon_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets a 2d list of points that defines the polygon. Pypolygon_list is a 2d list of tuples.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Elements</p>
+<blockquote>
+<div><p>A cityobject lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>2d list of points</strong> : pypolygon_list</p>
+<blockquote class="last">
+<div><p>A 2d list that defines a list of polygons.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_pytriangle_list">
+<code class="descname">get_pytriangle_list</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_pytriangle_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets a 2d list of points that defines the triangle. Pytriangle_list is a 2d list of tuples.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pytriangle is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pytriangle_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Elements</p>
+<blockquote>
+<div><p>A cityobject lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>2d list of points</strong> : pytriangle_list</p>
+<blockquote class="last">
+<div><p>A 2d list that defines a list of triangles.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_linestring">
+<code class="descname">get_linestring</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_linestring" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the linestring (polyline) geometry of the cityobject. Currently, this method only works with lod0Network</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Element</p>
+<blockquote>
+<div><p>A lxml cityobject.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>polylines</strong> : list of lxml polylines</p>
+<blockquote class="last">
+<div><p>List of lxml polylines.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.pycitygml.Reader.get_pylinestring_list">
+<code class="descname">get_pylinestring_list</code><span class="sig-paren">(</span><em>cityobject</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Reader.get_pylinestring_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets a 2d list of points that defines the polylines. Pypolyline_list is a 2d list of tuples.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+A pypolyline is a list of pypt that forms a polyline e.g. [(x1,y1,z1), (x2,y2,z2), …].
+A pypolyline_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), …], [(x21,y21,z21), (x22,y22,z22), …], …]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobject</strong> : lxml Elements</p>
+<blockquote>
+<div><p>A cityobject lxml Element.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>2d list of points</strong> : pypolyline_list</p>
+<blockquote class="last">
+<div><p>A 2d list that defines a list of polylines.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pycitygml.SurfaceMember">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">SurfaceMember</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.SurfaceMember" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Writes a surface member object instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> :  list of tuples of floats</p>
+<blockquote class="last">
+<div><p>List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>pos_list</strong></td>
+<td>( pyptlist) List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.SurfaceMember.construct">
+<code class="descname">construct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.SurfaceMember.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a GML surface member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>surface member</strong> :  lxml Element</p>
+<blockquote class="last">
+<div><p>lxml surface member element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pycitygml.Triangle">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">Triangle</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Writes a triangle object instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> :  list of tuples of floats</p>
+<blockquote class="last">
+<div><p>List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>pos_list</strong></td>
+<td>( pyptlist) List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.Triangle.construct">
+<code class="descname">construct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Triangle.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a GML triangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>triangle</strong> :  lxml Element</p>
+<blockquote class="last">
+<div><p>lxml triangle element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pycitygml.LineString">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">LineString</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.LineString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Writes a linestring object instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> :  list of tuples of floats</p>
+<blockquote class="last">
+<div><p>List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>pos_list</strong></td>
+<td>( pyptlist) List of points to be written. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.LineString.construct">
+<code class="descname">construct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.LineString.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a GML linestring.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>linestring</strong> :  lxml Element</p>
+<blockquote class="last">
+<div><p>lxml linestring element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.pycitygml.Point">
+<em class="property">class </em><code class="descclassname">py4design.pycitygml.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>pypt</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Writes a point object instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> :  tuple of floats</p>
+<blockquote class="last">
+<div><p>A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>pos_list</strong></td>
+<td>( pypt) A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.pycitygml.Point.construct">
+<code class="descname">construct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pycitygml.Point.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a GML point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> :  lxml Element</p>
+<blockquote class="last">
+<div><p>lxml point element.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.pycitygml.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

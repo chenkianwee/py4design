@@ -1,0 +1,527 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.gml3dmodel module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.gml3dmodel">
+<span id="py4design-gml3dmodel-module"></span><h1>py4design.gml3dmodel module<a class="headerlink" href="#module-py4design.gml3dmodel" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.gml3dmodel.citygml2collada">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">citygml2collada</code><span class="sig-paren">(</span><em>citygml_filepath</em>, <em>collada_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.citygml2collada" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function convert a CityGML to Collada. Currently only works with LOD1 buildings, landuses and terrain. LOD0 transportation network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>citygml_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the CityGML file.</p>
+</div></blockquote>
+<p><strong>collada_filepath</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the Collada file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.get_building_footprint">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">get_building_footprint</code><span class="sig-paren">(</span><em>gml_bldg</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.get_building_footprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the footprint of a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be analysed.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>footprints</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>List of OCCfaces identified as footprints.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.get_building_occsolid">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">get_building_occsolid</code><span class="sig-paren">(</span><em>gml_bldg</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.get_building_occsolid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the geometry of a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be analysed.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>building solid</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>The geometry (OCCsolid) of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.get_building_height_storey">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">get_building_height_storey</code><span class="sig-paren">(</span><em>gml_bldg</em>, <em>citygml_reader</em>, <em>flr2flr_height=3</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.get_building_height_storey" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the height, number of storeys and storey height of a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be analysed.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+<p><strong>flr2flr_height</strong> : float, optional</p>
+<blockquote>
+<div><p>The floor to floor height of the building, Default = 3.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>height</strong> : float</p>
+<blockquote>
+<div><p>The building height.</p>
+</div></blockquote>
+<p><strong>storey</strong> : int</p>
+<blockquote>
+<div><p>The the number of storeys of the building.</p>
+</div></blockquote>
+<p><strong>storey height</strong> : float</p>
+<blockquote class="last">
+<div><p>The floor to floor height of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.get_bulding_floor_area">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">get_bulding_floor_area</code><span class="sig-paren">(</span><em>gml_bldg</em>, <em>nstorey</em>, <em>storey_height</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.get_bulding_floor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the floor area of a building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be analysed.</p>
+</div></blockquote>
+<p><strong>nstorey</strong> : int</p>
+<blockquote>
+<div><p>The the number of storeys of the building.</p>
+</div></blockquote>
+<p><strong>storey height</strong> : float</p>
+<blockquote>
+<div><p>The floor to floor height of the building.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>height</strong> : float</p>
+<blockquote>
+<div><p>The floor area of the building.</p>
+</div></blockquote>
+<p><strong>floor plates</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>The list of floor plates of the buildings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.rotate_bldg">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">rotate_bldg</code><span class="sig-paren">(</span><em>gml_bldg</em>, <em>rot_angle</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.rotate_bldg" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function rotates the building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be analysed.</p>
+</div></blockquote>
+<p><strong>rot_angle</strong> : float</p>
+<blockquote>
+<div><p>The the angle of rotation.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rotated building</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>The rotated building OCCsolid.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.update_gml_building">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">update_gml_building</code><span class="sig-paren">(</span><em>orgin_gml_building</em>, <em>new_bldg_occsolid</em>, <em>citygml_reader</em>, <em>citygml_writer</em>, <em>new_height=None</em>, <em>new_nstorey=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.update_gml_building" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function updates the information of the GML building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be updated.</p>
+</div></blockquote>
+<p><strong>new_bldg_occsolid building</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The new geometry of the building. The update is based on this geometry.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+<p><strong>citygml_writer</strong> : Pycitygml.Writer() class instance</p>
+<blockquote>
+<div><p>The writer is used to write information to the GML building.</p>
+</div></blockquote>
+<p><strong>new_height</strong> : float, optional</p>
+<blockquote>
+<div><p>The new building height, Default = None.</p>
+</div></blockquote>
+<p><strong>new_nstorey</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>The new number of storeys of the building, Default = None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_non_eligible_bldgs">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_non_eligible_bldgs</code><span class="sig-paren">(</span><em>gml_bldgs</em>, <em>citygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_non_eligible_bldgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function updates the information of the GML building.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldgs</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be updated.</p>
+</div></blockquote>
+<p><strong>citygml_writer</strong> : Pycitygml.Writer() class instance</p>
+<blockquote class="last">
+<div><p>The writer is used to write information to the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.gml_landuse_2_occface">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">gml_landuse_2_occface</code><span class="sig-paren">(</span><em>gml_landuse</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.gml_landuse_2_occface" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the geometry from the landuse and converts it to an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_landuse</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML landuse to be analysed.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>landuse geometry</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The landuse OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.buildings_on_landuse">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">buildings_on_landuse</code><span class="sig-paren">(</span><em>gml_landuse</em>, <em>gml_bldg_list</em>, <em>citygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.buildings_on_landuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function identify the GML buildings that is on this GML landuse plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_landuse</strong> : lxml.etree Element</p>
+<blockquote>
+<div><p>The GML landuse to be analysed.</p>
+</div></blockquote>
+<p><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be identified.</p>
+</div></blockquote>
+<p><strong>citygml_reader</strong> : Pycitygml.Reader() class instance</p>
+<blockquote>
+<div><p>The reader is used to extract information from the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>buildings on plot</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that are on the plot.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_citygml">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_citygml</code><span class="sig-paren">(</span><em>cityobjmembers</em>, <em>citygml_writer</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_citygml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function identify the GML buildings that is on this GML landuse plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cityobjmembers</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML cityobjectmembers to be written.</p>
+</div></blockquote>
+<p><strong>citygml_writer</strong> : Pycitygml.Writer() class instance</p>
+<blockquote class="last">
+<div><p>The writer is used to write information to the GML building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_a_gml_srf_member">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_a_gml_srf_member</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_a_gml_srf_member" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a OCCface to GML surface member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>OCCface to be written.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>surface</strong> : pycitygml.SurfaceMember class instance</p>
+<blockquote class="last">
+<div><p>The written surface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_gml_srf_member">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_gml_srf_member</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_gml_srf_member" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a OCCface to GML surface member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCface to be written.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of surface</strong> : list of pycitygml.SurfaceMember class instances</p>
+<blockquote class="last">
+<div><p>The written list of surfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_gml_triangle">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_gml_triangle</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_gml_triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a OCCface to GML triangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>List of OCCface to be written.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of surface</strong> : list of pycitygml.SurfaceMember class instances</p>
+<blockquote class="last">
+<div><p>The written list of surfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.gml3dmodel.write_gml_linestring">
+<code class="descclassname">py4design.gml3dmodel.</code><code class="descname">write_gml_linestring</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gml3dmodel.write_gml_linestring" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a OCCedge to GML linestring.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>OCCedge to be written.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>edge</strong> : pycitygml.LineString class instance</p>
+<blockquote class="last">
+<div><p>The written edge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.gml3dmodel.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

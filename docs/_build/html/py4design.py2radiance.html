@@ -1,0 +1,978 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.py2radiance package &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="py4design-py2radiance-package">
+<h1>py4design.py2radiance package<a class="headerlink" href="#py4design-py2radiance-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="py4design.py2radiance.write_rad.html">py4design.py2radiance.write_rad module</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-py4design.py2radiance">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-py4design.py2radiance" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="py4design.py2radiance.Rad">
+<em class="property">class </em><code class="descclassname">py4design.py2radiance.</code><code class="descname">Rad</code><span class="sig-paren">(</span><em>base_file_path</em>, <em>data_folder_path</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the neccessary information for running a Radiance/Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>base_file_path</strong> :  str</p>
+<blockquote>
+<div><p>The file path of the base.rad file. The base.rad file documents all the basic information of the simulation e.g. materials, constructions … It is distributed together with py2radiance.</p>
+</div></blockquote>
+<p><strong>data_folder_path</strong> :  str</p>
+<blockquote class="last">
+<div><p>The directory to write all the results file to.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<dl class="docutils">
+<dt>#initialise the rad class</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span> <span class="o">=</span> <span class="n">Rad</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\b</span><span class="s2">ase.rad&quot;</span><span class="p">,</span> <span class="s2">&quot;C:</span><span class="se">\r</span><span class="s2">ad_results&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#append surfaces for the simulation</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RadSurface</span><span class="p">(</span><span class="s2">&quot;srfname1&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="s2">&quot;srfmat&quot;</span><span class="p">,</span> <span class="n">rad</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#set sensor points</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">set_sensor_points</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)],[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#set the sky</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">set_sky</span><span class="p">(</span> <span class="s2">&quot;!gensky 1 31 15 -c -a 1.3 -o -103.9 -m -120&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="o">.</span><span class="mf">0.2</span><span class="o">.</span><span class="mf">0.2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_oconv</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_parm</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ab&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span> <span class="s2">&quot;ar&quot;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="s2">&quot;ad&quot;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span> <span class="s2">&quot;as&quot;</span><span class="p">:</span><span class="mi">256</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_rtrace</span><span class="p">(</span><span class="n">dict_parm</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#evaluate the result</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">eval_rad</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>#for rpict rvu and falsecolor</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vd</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_rvu</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span> <span class="n">vd</span><span class="p">,</span> <span class="n">dict_parm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_rpict</span><span class="p">(</span><span class="s2">&quot;pict1&quot;</span><span class="p">,</span> <span class="s2">&quot;640&quot;</span><span class="p">,</span> <span class="s2">&quot;480&quot;</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">vd</span><span class="p">,</span> <span class="n">dict_parm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_falsecolor</span><span class="p">(</span><span class="s2">&quot;C:\i_pict.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;C:\l_pict.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;falsecolor_pict&quot;</span><span class="p">,</span> <span class="s2">&quot;1000&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="n">illuminance</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#FOR GENCUMULATIVE SKY MODULE</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span> <span class="o">=</span> <span class="n">Rad</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\b</span><span class="s2">ase.rad&quot;</span><span class="p">,</span> <span class="s2">&quot;C:</span><span class="se">\r</span><span class="s2">ad_results&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">RadSurface</span><span class="p">(</span><span class="s2">&quot;srfname1&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="s2">&quot;srfmat&quot;</span><span class="p">,</span> <span class="n">rad</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">set_sensor_points</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)],[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#the gencumulative sky</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_cumulative_oconv</span><span class="p">(</span><span class="s2">&quot;7 19&quot;</span><span class="p">,</span> <span class="s2">&quot;1 1 12 31&quot;</span><span class="p">,</span> <span class="s2">&quot;c:\weatherfile.epw&quot;</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;irradiance&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_cumulative_rtrace</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#FOR DAYSIM MODULE</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span> <span class="o">=</span> <span class="n">Rad</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\b</span><span class="s2">ase.rad&quot;</span><span class="p">,</span> <span class="s2">&quot;C:</span><span class="se">\r</span><span class="s2">ad_results&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">RadSurface</span><span class="p">(</span><span class="s2">&quot;srfname1&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="s2">&quot;srfmat&quot;</span><span class="p">,</span> <span class="n">rad</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#for daysim you need to create the sensor files</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">set_sensor_points</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)],[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">create_sensor_input_file</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>#initialise the daysim module</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">initialise_daysim</span><span class="p">(</span><span class="s2">&quot;c:\daysim_dir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#convert the epw to wea</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_epw2wea</span><span class="p">(</span><span class="n">weatherfilepath</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>#convert the rad files to daysim files</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">create_rad_input_file</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_radfiles2daysim</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>#write the default radiance parameters</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">write_default_radiance_parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>#execute the gen_dc and ds_illum</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_gen_dc</span><span class="p">(</span><span class="s2">&quot;w/m2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rad</span><span class="o">.</span><span class="n">execute_ds_illum</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>#evaluate the result</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">res_dict</span> <span class="o">=</span> <span class="n">rad</span><span class="o">.</span><span class="n">eval_ill</span><span class="p">()</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>base_file_path</strong></td>
+<td>( str) The file path of the base.rad file.</td>
+</tr>
+<tr class="row-even"><td><strong>data_folder_path</strong></td>
+<td>( str) The directory to write all the results file to.</td>
+</tr>
+<tr class="row-odd"><td><strong>command_file: str</strong></td>
+<td>The file path of the command.txt. The command file documents all the executed Radiance/Daysim commands.</td>
+</tr>
+<tr class="row-even"><td><strong>surfaces: list of Surface class instances</strong></td>
+<td>The list of surfaces that will be analysed by Radiance/Daysim.</td>
+</tr>
+<tr class="row-odd"><td><strong>sensor_positions: pyptlist</strong></td>
+<td>List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</td>
+</tr>
+<tr class="row-even"><td><strong>sensor_normals: pyveclist</strong></td>
+<td>List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</td>
+</tr>
+<tr class="row-odd"><td><strong>sensor_file_path</strong></td>
+<td>( str) The file path of the sensor file.</td>
+</tr>
+<tr class="row-even"><td><strong>rad_file_path</strong></td>
+<td>( str) The file path of the rad file.</td>
+</tr>
+<tr class="row-odd"><td><strong>sky_file_path</strong></td>
+<td>( str) The file path of the sky file.</td>
+</tr>
+<tr class="row-even"><td><strong>oconv_file_path</strong></td>
+<td>( str) The file path of the oconv file.</td>
+</tr>
+<tr class="row-odd"><td><strong>cumulative_sky_file_path</strong></td>
+<td>( str) The file path of the cumulative sky file.</td>
+</tr>
+<tr class="row-even"><td><strong>cumulative_oconv_file_path</strong></td>
+<td>( str) The file path of the cumulative sky oconv file.</td>
+</tr>
+<tr class="row-odd"><td><strong>result_file</strong></td>
+<td>( str) The file path of the result file.</td>
+</tr>
+<tr class="row-even"><td><strong>cumulative_result_file_path</strong></td>
+<td>( str) The file path of the cumulative result file.</td>
+</tr>
+<tr class="row-odd"><td><strong>daysimdir_ies</strong></td>
+<td>( str) The daysim ies directory path.</td>
+</tr>
+<tr class="row-even"><td><strong>daysimdir_pts</strong></td>
+<td>( str) The daysim points directory path.</td>
+</tr>
+<tr class="row-odd"><td><strong>daysimdir_rad</strong></td>
+<td>( str) The daysim rad directory path.</td>
+</tr>
+<tr class="row-even"><td><strong>daysimdir_res</strong></td>
+<td>( str) The daysim res directory path.</td>
+</tr>
+<tr class="row-odd"><td><strong>daysimdir_tmp</strong></td>
+<td>( str) The daysim tmp directory path.</td>
+</tr>
+<tr class="row-even"><td><strong>daysimdir_wea</strong></td>
+<td>( str) The daysim wea directory path.</td>
+</tr>
+<tr class="row-odd"><td><strong>hea_file</strong></td>
+<td>( str) The file path of the hea header daysim file.</td>
+</tr>
+<tr class="row-even"><td><strong>hea_filename</strong></td>
+<td>( str) The name of the hea header daysim file.</td>
+</tr>
+<tr class="row-odd"><td><strong>sunuphrs</strong></td>
+<td>( int) The number of daylight hours in the weather file.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.set_sensor_points">
+<code class="descname">set_sensor_points</code><span class="sig-paren">(</span><em>sensor_positions</em>, <em>sensor_normals</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.set_sensor_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets the sensor points and their normals for the Radiance/Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_positions: pyptlist</strong></p>
+<blockquote>
+<div><p>List of positions for sensing. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>sensor_normals: pyveclist</strong></p>
+<blockquote class="last">
+<div><p>List of normals of the points sensing. Pyveclist is a list of tuples of floats. A pyvec is a tuple that documents the xyz coordinates of a 
+direction e.g. (x,y,z), thus a pyveclist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.create_sensor_input_file">
+<code class="descname">create_sensor_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.create_sensor_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates the sensor file. It requires the set_sensor_points() function to be executed prior to this function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.set_sky">
+<code class="descname">set_sky</code><span class="sig-paren">(</span><em>gensky_command</em>, <em>sky_colour</em>, <em>ground_colour</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.set_sky" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets the gensky command and parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gensky_command: str</strong></p>
+<blockquote>
+<div><p>The gensky command, e.g. “!gensky 1 31 15 -c -a 1.3 -o -103.9 -m -120”. The command is constructing a sky model for:
+Jan 31st at 15hr cloudy sky (-c) at latitude 1.3 and longitude -103.9 (to the east)  and standard meridian -120 (to the east). 
+The different sky models are -s sunny without sun, +s sunny with sun, -c cloudy sky, -i intermediate sky without sun,  
++i intermediate with sun, -u uniform cloudy sky.
+For more information visit: <a class="reference external" href="https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/gensky.pdf/view">https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/gensky.pdf/view</a></p>
+</div></blockquote>
+<p><strong>sky_colour: tuple of floats</strong></p>
+<blockquote>
+<div><p>A tuple of floats describing the sky colour. e.g. (1,1,1) for a white sky.</p>
+</div></blockquote>
+<p><strong>ground_colour: tuple of floats</strong></p>
+<blockquote class="last">
+<div><p>A tuple of floats describing the ground colour. e.g. (0.2,0.2,0.2) for a grey ground.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.create_sky_input_file">
+<code class="descname">create_sky_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.create_sky_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates the sky file. It requires the set_sky() function to be executed prior to this function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.create_rad_input_file">
+<code class="descname">create_rad_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.create_rad_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates the geometry rad file. It requires self.surfaces to be populated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_oconv">
+<code class="descname">execute_oconv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_oconv" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates the geometry oconv file. It requires set_sky() to be executed prior and self.surfaces to be populated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_rtrace">
+<code class="descname">execute_rtrace</code><span class="sig-paren">(</span><em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_rtrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rtrace Radiance program and simulates the Irradiance. It requires the execute _oconv() to be executed prior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dict_parm: dictionary</strong></p>
+<blockquote class="last">
+<div><p>The dictionary needs to have the following keys and values: e.g. {“ab”: 2, “aa”: 0.15, “ar”: 128, “ad”: 512, “as”:256}. The 
+parameters specify the parameters for the ray-tracing simulation. For more information visit:
+<a class="reference external" href="https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view">https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view</a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_rvu">
+<code class="descname">execute_rvu</code><span class="sig-paren">(</span><em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_rvu" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rvu Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vp: str</strong></p>
+<blockquote>
+<div><p>The focal point of a perspective view or the center of a parallel projection. e.g. “0 0 0”</p>
+</div></blockquote>
+<p><strong>vd: str</strong></p>
+<blockquote>
+<div><p>the view direction vector. The length of this vector indicates the focal distance. e.g. “1 0 0”</p>
+</div></blockquote>
+<p><strong>dict_parm: dictionary</strong></p>
+<blockquote class="last">
+<div><p>The dictionary needs to have the following keys and values: e.g. {“ab”: 2, “aa”: 0.15, “ar”: 128, “ad”: 512, “as”:256}. The 
+parameters specify the parameters for the ray-tracing simulation. For more information visit:
+<a class="reference external" href="https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view">https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view</a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_rpict">
+<code class="descname">execute_rpict</code><span class="sig-paren">(</span><em>filename</em>, <em>x_resolution</em>, <em>y_resolution</em>, <em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_rpict" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename: str</strong></p>
+<blockquote>
+<div><p>The name of generated tif picture. e.g. “pict1”. The picture will be saved to the data_folder_path. The tif file is a 
+will have an angular fisheye distortion.</p>
+</div></blockquote>
+<p><strong>x_resolution: str</strong></p>
+<blockquote>
+<div><p>The x-resolution of the generated tif picture. e.g. “640”.</p>
+</div></blockquote>
+<p><strong>y_resolution: str</strong></p>
+<blockquote>
+<div><p>The y-resolution of the generated tif picture. e.g. “480”.</p>
+</div></blockquote>
+<p><strong>vp: str</strong></p>
+<blockquote>
+<div><p>The focal point of a perspective view or the center of a parallel projection. e.g. “0 0 0”.</p>
+</div></blockquote>
+<p><strong>vd: str</strong></p>
+<blockquote>
+<div><p>the view direction vector. The length of this vector indicates the focal distance. e.g. “1 0 0”.</p>
+</div></blockquote>
+<p><strong>dict_parm: dictionary</strong></p>
+<blockquote class="last">
+<div><p>The dictionary needs to have the following keys and values: e.g. {“ab”: 2, “aa”: 0.15, “ar”: 128, “ad”: 512, “as”:256}. The 
+parameters specify the parameters for the ray-tracing simulation. For more information visit:
+<a class="reference external" href="https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view">https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view</a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_falsecolour">
+<code class="descname">execute_falsecolour</code><span class="sig-paren">(</span><em>i_basefile_path</em>, <em>l_basefile_path</em>, <em>filename</em>, <em>range_max</em>, <em>range_division</em>, <em>illuminance=True</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_falsecolour" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>i_basefile_path</strong> : str</p>
+<blockquote>
+<div><p>The path of the illuminance tif picture. This tif picture can be generated using the execute_rpict)() function.</p>
+</div></blockquote>
+<p><strong>l_basefile_path</strong> : str</p>
+<blockquote>
+<div><p>The path of the luminance tif picture. This tif picture can be generated using the execute_rpict)() function.</p>
+</div></blockquote>
+<p><strong>filename</strong> : str</p>
+<blockquote>
+<div><p>The name of generated tif picture. e.g. “pict1”. The picture will be saved to the data_folder_path. The tif file is a 
+will have an angular fisheye distortion.</p>
+</div></blockquote>
+<p><strong>range_max</strong> : str</p>
+<blockquote>
+<div><p>The maximum value of the falsecolour. e.g. “1200”.</p>
+</div></blockquote>
+<p><strong>range_division</strong> : str</p>
+<blockquote>
+<div><p>The division of the falsecolour. e.g. “10”.</p>
+</div></blockquote>
+<p><strong>illuminance</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False. If True will generate a falsecolour image of the illuminance value. If False will generate a falsecolour image
+of the luminance value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>filename</em>, <em>x_resolution</em>, <em>y_resolution</em>, <em>vp</em>, <em>vd</em>, <em>dict_parm</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rpict Radiance program and renders the scene. It requires the execute _oconv() to be executed prior.
+The difference between render() and execute_rpict() is that this function do not produce illuminance and luminance tif.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename: str</strong></p>
+<blockquote>
+<div><p>The name of generated tif picture. e.g. “pict1”. The picture will be saved to the data_folder_path. The tif file is a 
+will have an angular fisheye distortion.</p>
+</div></blockquote>
+<p><strong>x_resolution: str</strong></p>
+<blockquote>
+<div><p>The x-resolution of the generated tif picture. e.g. “640”.</p>
+</div></blockquote>
+<p><strong>y_resolution: str</strong></p>
+<blockquote>
+<div><p>The y-resolution of the generated tif picture. e.g. “480”.</p>
+</div></blockquote>
+<p><strong>vp: str</strong></p>
+<blockquote>
+<div><p>The focal point of a perspective view or the center of a parallel projection. e.g. “0 0 0”.</p>
+</div></blockquote>
+<p><strong>vd: str</strong></p>
+<blockquote>
+<div><p>the view direction vector. The length of this vector indicates the focal distance. e.g. “1 0 0”.</p>
+</div></blockquote>
+<p><strong>dict_parm: dictionary</strong></p>
+<blockquote class="last">
+<div><p>The dictionary needs to have the following keys and values: e.g. {“ab”: 2, “aa”: 0.15, “ar”: 128, “ad”: 512, “as”:256}. The 
+parameters specify the parameters for the ray-tracing simulation. For more information visit:
+<a class="reference external" href="https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view">https://www.radiance-online.org/learning/documentation/manual-pages/pdfs/rtrace.pdf/view</a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.eval_rad">
+<code class="descname">eval_rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.eval_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the result file from the simulation and returns the results as a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">irradiance: list of floats</p>
+<blockquote>
+<div><p>List of irradiance results (Wh/m2) that corresponds to the sensor points.</p>
+</div></blockquote>
+<p>illuminance: list of floats</p>
+<blockquote class="last">
+<div><p>List of illuminance in (lux) results that corresponds to the sensor points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.create_cumulative_sky_input_file">
+<code class="descname">create_cumulative_sky_input_file</code><span class="sig-paren">(</span><em>time</em>, <em>date</em>, <em>weatherfile_path</em>, <em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.create_cumulative_sky_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets the gencummulative sky command and parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>time: str</strong></p>
+<blockquote>
+<div><p>The time duration of the simulation e.g. “7 19”. This means the simulation will run from 7am to 7pm.</p>
+</div></blockquote>
+<p><strong>date: str</strong></p>
+<blockquote>
+<div><p>The dates of the simulation e.g. “1 1 12 31”. This means the simulation will run from Jan 1st to Dec 31st.</p>
+</div></blockquote>
+<p><strong>weatherfile_path: str</strong></p>
+<blockquote>
+<div><p>The file path of the weather file.</p>
+</div></blockquote>
+<p><strong>output: str, optional</strong></p>
+<blockquote class="last">
+<div><p>The units of the results, “irradiance” (kWh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_cumulative_oconv">
+<code class="descname">execute_cumulative_oconv</code><span class="sig-paren">(</span><em>time</em>, <em>date</em>, <em>weatherfile_path</em>, <em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_cumulative_oconv" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the gencummulative oconv command and parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>time: str</strong></p>
+<blockquote>
+<div><p>The time duration of the simulation e.g. “7 19”. This means the simulation will run from 7am to 7pm.</p>
+</div></blockquote>
+<p><strong>date: str</strong></p>
+<blockquote>
+<div><p>The dates of the simulation e.g. “1 1 12 31”. This means the simulation will run from Jan 1st to Dec 31st.</p>
+</div></blockquote>
+<p><strong>weatherfile_path: str</strong></p>
+<blockquote>
+<div><p>The file path of the weather file.</p>
+</div></blockquote>
+<p><strong>output: str, optional</strong></p>
+<blockquote class="last">
+<div><p>The units of the results, “irradiance” (kWh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_cumulative_rtrace">
+<code class="descname">execute_cumulative_rtrace</code><span class="sig-paren">(</span><em>ab</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_cumulative_rtrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the rtrace with the cummulative sky. This function requires the execution of execute_cumulative_oconv() prior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ab: str</strong></p>
+<blockquote class="last">
+<div><p>The number of ambient bounces for the ray-tracing. e.g. “2”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.eval_cumulative_rad">
+<code class="descname">eval_cumulative_rad</code><span class="sig-paren">(</span><em>output='irradiance'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.eval_cumulative_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the cummulative result file from the simulation and returns the results as a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>output: str, optional</strong></p>
+<blockquote>
+<div><p>The units of the results, “irradiance” (Wh/m2) or “illuminance” (lux), Default = “irradiance”.</p>
+</div></blockquote>
+<p><strong>Returns</strong></p>
+<p><strong>——</strong></p>
+<p><strong>results: list of floats</strong></p>
+<blockquote class="last">
+<div><p>List of irradiance results (kWh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.initialise_daysim">
+<code class="descname">initialise_daysim</code><span class="sig-paren">(</span><em>daysim_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.initialise_daysim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run this method prior to running any Daysim simulation. This function creates the base .hea header file and all the neccessary 
+folders for the Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>daysim_dir</strong> :  str</p>
+<blockquote class="last">
+<div><p>The directory to write all the daysim results file to.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_epw2wea">
+<code class="descname">execute_epw2wea</code><span class="sig-paren">(</span><em>epwweatherfile</em>, <em>ground_reflectance=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_epw2wea" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the epw2wea.exe and convert an epw weatherfile into a .wea weather file. Daysim uses .wea weatherfile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>epwweatherfile</strong> :  str</p>
+<blockquote>
+<div><p>The file path of the epw weather file.</p>
+</div></blockquote>
+<p><strong>ground_reflectance</strong> : float, optional</p>
+<blockquote class="last">
+<div><p>The ground reflectance, default = 0.2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_radfiles2daysim">
+<code class="descname">execute_radfiles2daysim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_radfiles2daysim" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the radfiles2daysim.exe and convert an all the rad geometry and material files to daysim files.
+The create_rad function needs to be executed prior to this function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.write_static_shading">
+<code class="descname">write_static_shading</code><span class="sig-paren">(</span><em>hea_file</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.write_static_shading" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the static shading into the hea file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>hea_file</strong> :  open file mode “a”</p>
+<blockquote class="last">
+<div><p>The opened file of the header file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.write_radiance_parameters">
+<code class="descname">write_radiance_parameters</code><span class="sig-paren">(</span><em>rad_ab</em>, <em>rad_ad</em>, <em>rad_as</em>, <em>rad_ar</em>, <em>rad_aa</em>, <em>rad_lr</em>, <em>rad_st</em>, <em>rad_sj</em>, <em>rad_lw</em>, <em>rad_dj</em>, <em>rad_ds</em>, <em>rad_dr</em>, <em>rad_dp</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.write_radiance_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function write the radiance parameters for the Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>rad_ab</strong> :  int</p>
+<p><strong>rad_ad</strong> :  int</p>
+<p><strong>rad_as</strong> :  int</p>
+<p><strong>rad_ar</strong> :  int</p>
+<p><strong>rad_aa</strong> :  float</p>
+<p><strong>rad_lr</strong> :  int</p>
+<p><strong>rad_st</strong> :  float</p>
+<p><strong>rad_sj</strong> :  float</p>
+<p><strong>rad_lw</strong> :  float</p>
+<p><strong>rad_dj</strong> :  float</p>
+<p><strong>rad_ds</strong> :  float</p>
+<p><strong>rad_dr</strong> :  int</p>
+<p class="last"><strong>rad_dp</strong> :  int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.write_default_radiance_parameters">
+<code class="descname">write_default_radiance_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.write_default_radiance_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function write the default radiance parameters for the Daysim simulation. 
+The default settings are the complex scene 1 settings of daysimPS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_gen_dc">
+<code class="descname">execute_gen_dc</code><span class="sig-paren">(</span><em>output_unit</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_gen_dc" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the gen_dc Daysim command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>output_unit</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>The units of the results, “w/m2” or “lux”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.execute_ds_illum">
+<code class="descname">execute_ds_illum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.execute_ds_illum" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function executes the ds_illum Daysim command.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.eval_ill">
+<code class="descname">eval_ill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.eval_ill" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the daysim result file from the simulation and returns the results as a dictionaries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">hourly results: list of dictionaries</p>
+<blockquote class="last">
+<div><p>List of Dictionaries of hourly irradiance results (Wh/m2) or illuminance in (lux) that corresponds to the sensor points depending on the output parameter.
+Each dictionary is an hour of results of all the sensor points. Each dictionary has key “date” and “result_list”. 
+The “date” key points to a date string e.g. “12 31 23.500” which means Dec 31st 23hr indicating the date and hour of the result.
+The “result_list” key points to a list of results, which is the result of all the sensor points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.py2radiance.Rad.eval_ill_per_sensor">
+<code class="descname">eval_ill_per_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Rad.eval_ill_per_sensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the daysim result file from the simulation and returns a list of results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results per sensor</strong> : list of results</p>
+<blockquote class="last">
+<div><p>Each row is a sensor srf with 8760 colume of hourly result</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.py2radiance.Surface">
+<em class="property">class </em><code class="descclassname">py4design.py2radiance.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>name</em>, <em>points</em>, <em>material</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.Surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An object that contains all the surface information running a Radiance/Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> :  str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>points</strong> :  pyptlist</p>
+<blockquote>
+<div><p>List of points defining the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>material</strong> :  str</p>
+<blockquote class="last">
+<div><p>The name of the material of the surface. The material name must be in the base.rad file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>see Parameters.</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.py2radiance.RadSurface">
+<em class="property">class </em><code class="descclassname">py4design.py2radiance.</code><code class="descname">RadSurface</code><span class="sig-paren">(</span><em>name</em>, <em>points</em>, <em>material</em>, <em>radgeom</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.RadSurface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.py2radiance.Surface" title="py4design.py2radiance.Surface"><code class="xref py py-class docutils literal"><span class="pre">py4design.py2radiance.Surface</span></code></a></p>
+<p>An object that contains all the surface information running a Radiance/Daysim simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> :  str</p>
+<blockquote>
+<div><p>The name of the surface.</p>
+</div></blockquote>
+<p><strong>points</strong> :  pyptlist</p>
+<blockquote>
+<div><p>List of points defining the surface. Pyptlist is a list of tuples of floats. A pypt is a tuple that documents the xyz coordinates of a 
+pt e.g. (x,y,z), thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>material</strong> :  str</p>
+<blockquote>
+<div><p>The name of the material of the surface. The material name must be in the base.rad file.</p>
+</div></blockquote>
+<p><strong>radgeom</strong> : Rad class</p>
+<blockquote class="last">
+<div><p>The Rad class that contains all the information for running a Radiance/Daysim simulation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>see Parameters.</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.py2radiance.RadSurface.rad">
+<code class="descname">rad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.RadSurface.rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the surface information into Radiance readable string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rad surface</strong> :  str</p>
+<blockquote class="last">
+<div><p>The surface writtenn into radiance readable string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py2radiance.calculate_reflectance">
+<code class="descclassname">py4design.py2radiance.</code><code class="descname">calculate_reflectance</code><span class="sig-paren">(</span><em>r</em>, <em>g</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py2radiance.calculate_reflectance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts r g b into reflectance value based on the equation: reflectance = (0.2125 * r) + (0.7154 * g) + (0.0721 * b)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>r</strong> :  float</p>
+<blockquote>
+<div><p>The r value.</p>
+</div></blockquote>
+<p><strong>g</strong> :  float</p>
+<blockquote>
+<div><p>The g value.</p>
+</div></blockquote>
+<p><strong>b</strong> :  float</p>
+<blockquote>
+<div><p>The b value.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reflectance</strong> :  float</p>
+<blockquote class="last">
+<div><p>The reflectance value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.py2radiance.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

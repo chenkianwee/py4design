@@ -1,0 +1,2630 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.gmlparmpalette module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.gmlparmpalette">
+<span id="py4design-gmlparmpalette-module"></span><h1>py4design.gmlparmpalette module<a class="headerlink" href="#module-py4design.gmlparmpalette" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BaseParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BaseParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The base class for developing new parameters for parameterising a semantic model. For more information please refer to 
+Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. Automatic Parameterisation of Semantic 3D City Models for Urban Design Optimisation. 
+In Future Trajectories of Computation in Design, Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, pp 84 to 100. Istanbul, Turkey.</p>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BaseParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BaseParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>parameters</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgFlrAreaHeightParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its height while constraint by its floor area.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgFlrAreaHeightParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgFlrAreaHeightParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgHeightParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgHeightParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its height.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgHeightParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgHeightParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgOrientationParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its orientation.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>clash_detection</strong></td>
+<td>(bool) True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.</td>
+</tr>
+<tr class="row-even"><td><strong>boundary_detection</strong></td>
+<td>(bool) True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.set_clash_detection">
+<code class="descname">set_clash_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.set_clash_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function declares the clash detection to be True or False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>true_or_false</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.set_boundary_detection">
+<code class="descname">set_boundary_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.set_boundary_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function declares the boundary detection to be True or False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>true_or_false</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgOrientationParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgOrientationParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgPositionParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgPositionParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its position.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>clash_detection</strong></td>
+<td>(bool) True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.</td>
+</tr>
+<tr class="row-even"><td><strong>boundary_detection</strong></td>
+<td>(bool) True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.</td>
+</tr>
+<tr class="row-odd"><td><strong>xdim</strong></td>
+<td>(int) The x-dimension of the gridded plot. The higher the dimension the more positions there are for the building.</td>
+</tr>
+<tr class="row-even"><td><strong>ydim</strong></td>
+<td>(int) The y-dimension of the gridded plot. The higher the dimension the more positions there are for the building.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.set_clash_detection">
+<code class="descname">set_clash_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.set_clash_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function declares the clash detection to be True or False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>true_or_false</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True the design alternative is not allowed to clash with any other buildings, if clashes occur the original building is returned.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.set_boundary_detection">
+<code class="descname">set_boundary_detection</code><span class="sig-paren">(</span><em>true_or_false</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.set_boundary_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function declares the boundary detection to be True or False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>true_or_false</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True the design alternative is not allowed to be outside the plot boundary, if outside the original building is returned.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.set_xdim_ydim">
+<code class="descname">set_xdim_ydim</code><span class="sig-paren">(</span><em>xdim</em>, <em>ydim</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.set_xdim_ydim" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function sets the xdim and ydim of the gridded plot the building is on.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xdim</strong> : int</p>
+<blockquote>
+<div><p>The x-dimension of the gridded plot. The higher the dimension the more positions there are for the building.</p>
+</div></blockquote>
+<p><strong>ydim</strong> : int</p>
+<blockquote class="last">
+<div><p>The y-dimension of the gridded plot. The higher the dimension the more positions there are for the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgPositionParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgPositionParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgTwistParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgTwistParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually twist the building solid according to the 
+twist parameter.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>flr2flr_height</strong></td>
+<td>(float) The assumed floor to floor height of the building, default = 3m.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function define the floor to floor height of the buildings to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>flr2flr_height</strong> : float</p>
+<blockquote class="last">
+<div><p>The assumed floor to floor height of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTwistParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTwistParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgBendParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgBendParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually bend the building solid according to the 
+parameter.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>flr2flr_height</strong></td>
+<td>(float) The assumed floor to floor height of the building, default = 3m.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function define the floor to floor height of the buildings to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>flr2flr_height</strong> : float</p>
+<blockquote class="last">
+<div><p>The assumed floor to floor height of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgBendParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgBendParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgSlantParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgSlantParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually slant the building solid according to the 
+parameter.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>flr2flr_height</strong></td>
+<td>(float) The assumed floor to floor height of the building, default = 3m.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function define the floor to floor height of the buildings to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>flr2flr_height</strong> : float</p>
+<blockquote class="last">
+<div><p>The assumed floor to floor height of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgSlantParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgSlantParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="py4design.gmlparmpalette.BldgTaperParm">
+<em class="property">class </em><code class="descclassname">py4design.gmlparmpalette.</code><code class="descname">BldgTaperParm</code><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py4design.gmlparmpalette.BaseParm" title="py4design.gmlparmpalette.BaseParm"><code class="xref py py-class docutils literal"><span class="pre">py4design.gmlparmpalette.BaseParm</span></code></a></p>
+<p>An implementation of the BaseParm class for parameterising the massing of buildings (LOD1) in terms of its geometry. This parameter will gradually taper the building solid according to the 
+parameter.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>bldg_class</strong></td>
+<td>(str) The string of the gml code for building class.</td>
+</tr>
+<tr class="row-even"><td><strong>bldg_function</strong></td>
+<td>(str) The string of the gml code for building function.</td>
+</tr>
+<tr class="row-odd"><td><strong>bldg_usage</strong></td>
+<td>(str) The string of the gml code for building usage.</td>
+</tr>
+<tr class="row-even"><td><strong>parm_range</strong></td>
+<td>(list of floats/ints) The list of possible parameters.</td>
+</tr>
+<tr class="row-odd"><td><strong>flr2flr_height</strong></td>
+<td>(float) The assumed floor to floor height of the building, default = 3m.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.define_flr2flr_height">
+<code class="descname">define_flr2flr_height</code><span class="sig-paren">(</span><em>flr2flr_height</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.define_flr2flr_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function define the floor to floor height of the buildings to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>flr2flr_height</strong> : float</p>
+<blockquote class="last">
+<div><p>The assumed floor to floor height of the building.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_class">
+<code class="descname">apply_2_bldg_class</code><span class="sig-paren">(</span><em>bldg_class</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building class that will have this parameter, buildings which is not this class will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_class</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building class.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_function">
+<code class="descname">apply_2_bldg_function</code><span class="sig-paren">(</span><em>bldg_function</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building function that will have this parameter, buildings which is not this function will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_function</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_usage">
+<code class="descname">apply_2_bldg_usage</code><span class="sig-paren">(</span><em>bldg_usage</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.apply_2_bldg_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function declares the building usage that will have this parameter, buildings which is not this usage will not be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bldg_usage</strong> : str</p>
+<blockquote class="last">
+<div><p>The string of the gml code for building usage.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.eligibility_test">
+<code class="descname">eligibility_test</code><span class="sig-paren">(</span><em>gml_bldg_list</em>, <em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.eligibility_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks which are the buildings that are eligible to be parameterised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gml_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote>
+<div><p>The GML building to be parameterised.</p>
+</div></blockquote>
+<p><strong>non_eligible_bldg_list</strong> : list of lxml.etree Element</p>
+<blockquote class="last">
+<div><p>The GML building that will not be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.define_int_range">
+<code class="descname">define_int_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.define_int_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : int</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : int</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : int</p>
+<blockquote>
+<div><p>The difference between each number in the sequence.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>List of generated parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.define_float_range">
+<code class="descname">define_float_range</code><span class="sig-paren">(</span><em>start</em>, <em>stop</em>, <em>step=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.define_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter if the parameter type is float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : float</p>
+<blockquote>
+<div><p>The starting number of the sequence.</p>
+</div></blockquote>
+<p><strong>stop</strong> : float</p>
+<blockquote>
+<div><p>Generate numbers up to, including this number.</p>
+</div></blockquote>
+<p><strong>step</strong> : float, optional</p>
+<blockquote>
+<div><p>The difference between each number in the sequence, default = None. When None the parameter is a continuous parameter, if not None the parameter is a discrete parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter range</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>List of generated float parameters if step = None, if step != None the parameter range is made up of two numbers the start and the end of the continuous parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.set_parm_range">
+<code class="descname">set_parm_range</code><span class="sig-paren">(</span><em>parm_range</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.set_parm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function defines the range of the parameter .</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parm_range</strong> : list of ints/floats</p>
+<blockquote class="last">
+<div><p>The parameter range.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.map_nrmlise_parms_2_parms">
+<code class="descname">map_nrmlise_parms_2_parms</code><span class="sig-paren">(</span><em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.map_nrmlise_parms_2_parms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function maps the the normalise parameter list to the real parameter list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>parameter list</strong> : list of int/floats</p>
+<blockquote class="last">
+<div><p>List of real parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.define_nparameters">
+<code class="descname">define_nparameters</code><span class="sig-paren">(</span><em>pycitygml_reader</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.define_nparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function determines the total parameters for parameterising the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>nparameters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of parameters for the model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="py4design.gmlparmpalette.BldgTaperParm.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>pycitygml_reader</em>, <em>nrmlised_parm_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.gmlparmpalette.BldgTaperParm.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This funciton defines the parameterisation process and executes the process. A design alternative of the parametric model is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote>
+<div><p>The reader to read the CityGML file to be parameterised.</p>
+</div></blockquote>
+<p><strong>nrmlised_parm_list</strong> : list of ints/floats</p>
+<blockquote>
+<div><p>The normalised parameters to be mapped to the real parameters defined, the parameters will be used to generate a design alternative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new pycitygml_reader</strong> : pycitygml.Reader class instance</p>
+<blockquote class="last">
+<div><p>The new design alternative generated and documented as a CityGML model.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.gmlparmpalette.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

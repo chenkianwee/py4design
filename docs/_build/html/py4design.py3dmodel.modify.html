@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.py3dmodel.modify module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.py3dmodel.modify">
+<span id="py4design-py3dmodel-modify-module"></span><h1>py4design.py3dmodel.modify module<a class="headerlink" href="#module-py4design.py3dmodel.modify" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.occpt_2_pypt">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">occpt_2_pypt</code><span class="sig-paren">(</span><em>occpt</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.occpt_2_pypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a point (pypt) from an OCC point (gp_pnt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt</strong> : OCC point (gp_pnt)</p>
+<blockquote>
+<div><p>OCC point (gp_pnt) to be converted to a pypt.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>A pypt constructed from the OCC point (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.occpt_list_2_pyptlist">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">occpt_list_2_pyptlist</code><span class="sig-paren">(</span><em>occpt_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.occpt_list_2_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of points (pyptlist) from a list of OCC points (gp_pnt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occpt_list</strong> : list of OCC points (gp_pnt)</p>
+<blockquote>
+<div><p>list of OCC points (gp_pnt) to be converted to a pyptlist.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>A pyptlist constructed from the list of OCC points (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.occvertex_2_occpt">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">occvertex_2_occpt</code><span class="sig-paren">(</span><em>occvertex</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.occvertex_2_occpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs an OCC point (gp_pnt) from an OCCvertex.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex</strong> : OCCvertex</p>
+<blockquote>
+<div><p>OCCvertex to be converted to a OCC point (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> : OCC point (gp_pnt)</p>
+<blockquote class="last">
+<div><p>An OCC point constructed from the OCCvertex.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.occvertex_list_2_occpt_list">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">occvertex_list_2_occpt_list</code><span class="sig-paren">(</span><em>occvertex_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.occvertex_list_2_occpt_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a list of OCC points (gp_pnt) from a list of OCCvertices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occvertex_list</strong> : list of OCCvertices</p>
+<blockquote>
+<div><p>List of OCCvertices to be converted to a list of OCC points (gp_pnt).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of points</strong> : list of OCC points (gp_pnt)</p>
+<blockquote class="last">
+<div><p>A list of OCC points (gp_pnt) constructed from the list of OCCvertices.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.gpvec_2_pyvec">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">gpvec_2_pyvec</code><span class="sig-paren">(</span><em>gpvec</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.gpvec_2_pyvec" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function construct a pyvec from a OCC vector (gp_vec).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gpvec</strong> : gp_vec</p>
+<blockquote>
+<div><p>OCCvector to be converted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised vector</strong> : pyvec</p>
+<blockquote class="last">
+<div><p>Tuple of floats.  A pyvec is a tuple that documents the xyz vector of a dir e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.normalise_vec">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">normalise_vec</code><span class="sig-paren">(</span><em>gpvec</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.normalise_vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function normalises a OCC vector (gp_vec).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>gpvec</strong> : gp_vec</p>
+<blockquote>
+<div><p>OCCvector to be normalised.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised vector</strong> : pyvec</p>
+<blockquote class="last">
+<div><p>Tuple of floats.  A pyvec is a tuple that documents the xyz vector of a dir e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.reverse_vector">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">reverse_vector</code><span class="sig-paren">(</span><em>pyvec</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.reverse_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reverses a vector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyvec</strong> : tuple of floats</p>
+<blockquote>
+<div><p>A pyvec is a tuple that documents the xyz vector of a dir e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reversed vector</strong> : pyvec</p>
+<blockquote class="last">
+<div><p>Tuple of floats.  A pyvec is a tuple that documents the xyz vector of a dir e.g. (x,y,z).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.move_pt">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">move_pt</code><span class="sig-paren">(</span><em>orig_pypt</em>, <em>pydir2move</em>, <em>magnitude</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.move_pt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function moves a point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>orig_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The original point to be moved. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pydir2move</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The direction to move the point. A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z).</p>
+</div></blockquote>
+<p><strong>magnitude</strong> : float</p>
+<blockquote>
+<div><p>The distance of the move.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>moved point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The moved point.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.round_pypt">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">round_pypt</code><span class="sig-paren">(</span><em>pypt</em>, <em>roundndigit</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.round_pypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function rounds a point according to the roundndigit input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The point to be rounded. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z).</p>
+</div></blockquote>
+<p><strong>roundndigit</strong> : int</p>
+<blockquote>
+<div><p>The number of decimal place the points will be rounded to.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rounded point</strong> : pypt</p>
+<blockquote class="last">
+<div><p>The rounded point.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.round_pyptlist">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">round_pyptlist</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>roundndigit</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.round_pyptlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function rounds a list of points according to the roundndigit input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points to be rounded. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>roundndigit</strong> : int</p>
+<blockquote>
+<div><p>The number of decimal place the points will be rounded to.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of rounded points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of rounded points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.rmv_duplicated_pts_by_distance">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">rmv_duplicated_pts_by_distance</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>distance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.rmv_duplicated_pts_by_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fuses all the points within a certain distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points to be fused. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>distance</strong> : float, optional</p>
+<blockquote>
+<div><p>The minimal distance between two points, default = 1e-06. Any points closer than this distance will be fused.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of fused points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of fused points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.rmv_duplicated_pts">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">rmv_duplicated_pts</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>roundndigit=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.rmv_duplicated_pts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes duplicated points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>List of points to be analysed. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>roundndigit</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of decimal place the points will be rounded to. Default= None</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of fused points</strong> : pyptlist</p>
+<blockquote class="last">
+<div><p>The list of fused points.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.rmv_duplicated_edges">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">rmv_duplicated_edges</code><span class="sig-paren">(</span><em>occedge_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.rmv_duplicated_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes duplicated OCCedges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge_list</strong> : a list of OCCedges</p>
+<blockquote>
+<div><p>The list of OCCedges to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of non-duplicated edges</strong> : list of OCCedges</p>
+<blockquote class="last">
+<div><p>The list of non-duplicated OCCedges.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.trimedge">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">trimedge</code><span class="sig-paren">(</span><em>lbound</em>, <em>ubound</em>, <em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.trimedge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function trims the OCCedge according to the specified lower and upper bound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lbound</strong> : float</p>
+<blockquote>
+<div><p>The lower bound of the OCCedge.</p>
+</div></blockquote>
+<p><strong>ubound</strong> : float</p>
+<blockquote>
+<div><p>The upper bound of the OCCedge.</p>
+</div></blockquote>
+<p><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be trimmed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>trimmed edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>The trimmed OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.flatten_edge_z_value">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">flatten_edge_z_value</code><span class="sig-paren">(</span><em>occedge</em>, <em>z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.flatten_edge_z_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function flattens the Z-dimension of the OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occedge</strong> : OCCedge</p>
+<blockquote>
+<div><p>The edge to be flatten.</p>
+</div></blockquote>
+<p><strong>z</strong> : float, optional</p>
+<blockquote>
+<div><p>The Z-value to flatten to. Default = 0.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>flatten edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>The flatten OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.fix_closed_wire">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_closed_wire</code><span class="sig-paren">(</span><em>occwire</em>, <em>occface</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_closed_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will try to closed an open wire.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be fixed.</p>
+</div></blockquote>
+<p><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The reference OCCface used for closing the OCCwire.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float, optional</p>
+<blockquote>
+<div><p>The precision for the fix, Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fixed wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>The fixed OCCwire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.trim_wire">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">trim_wire</code><span class="sig-paren">(</span><em>occwire</em>, <em>pypt1</em>, <em>pypt2</em>, <em>is_periodic=False</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.trim_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function trims the wire.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be fixed.</p>
+</div></blockquote>
+<p><strong>pypt1</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The starting point of the trim. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pypt2</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The ending point of the trim. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>is_periodic</strong> : bool, optional</p>
+<blockquote>
+<div><p>Indicates if the wire is open or close, True for close, False for open, Default = False.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>trimmed wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>The trimmed OCCwire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.wire_2_bsplinecurve_edge">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">wire_2_bsplinecurve_edge</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.wire_2_bsplinecurve_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function covnerts an OCCwire to a bspline OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be converted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted bspline edge</strong> : OCCedge</p>
+<blockquote class="last">
+<div><p>The converted OCCedge.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.resample_wire">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">resample_wire</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.resample_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function resamples an OCCwire uniformly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occwire</strong> : OCCwire</p>
+<blockquote>
+<div><p>The OCCwire to be resampled.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>resampled wire</strong> : OCCwire</p>
+<blockquote class="last">
+<div><p>The resampled OCCwire.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.reverse_face">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">reverse_face</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.reverse_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reverse an OCCface orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be reversed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reversed face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The reverse OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.fix_face">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_face</code><span class="sig-paren">(</span><em>occ_face</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fixes an OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be fixed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fixed face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The fixed OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.rmv_duplicated_faces">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">rmv_duplicated_faces</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.rmv_duplicated_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes duplicated faces from a list of OCCfaces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The list of OCCfaces to be analysed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>non-duplicated list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>The list of non-duplicated OCCfaces.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.flatten_face_z_value">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">flatten_face_z_value</code><span class="sig-paren">(</span><em>occface</em>, <em>z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.flatten_face_z_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function flatten the OCCface to the Z-value specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface</strong> : OCCface</p>
+<blockquote>
+<div><p>The OCCface to be flatten.</p>
+</div></blockquote>
+<p><strong>z</strong> : float, optional</p>
+<blockquote>
+<div><p>The Z-value to flatten to. Default = 0.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>flatten face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>The flatten OCCface.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.fix_shell_orientation">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_shell_orientation</code><span class="sig-paren">(</span><em>occshell</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_shell_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fixes the OCCshell orientation. The fix will orientate all the OCCfaces in the shell towards the same direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell</strong> : OCCshell</p>
+<blockquote>
+<div><p>The OCCshell to be fixed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fixed shell</strong> : OCCshell</p>
+<blockquote class="last">
+<div><p>The fixed OCCshell.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.flatten_shell_z_value">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">flatten_shell_z_value</code><span class="sig-paren">(</span><em>occshell</em>, <em>z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.flatten_shell_z_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function flatten the OCCshell to the Z-value specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell</strong> : OCCshell</p>
+<blockquote>
+<div><p>The OCCshell to be flattened.</p>
+</div></blockquote>
+<p><strong>z</strong> : float, optional</p>
+<blockquote>
+<div><p>The Z-value to flatten to. Default = 0.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>flatten shell</strong> : OCCshell</p>
+<blockquote class="last">
+<div><p>The flatten OCCshell.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.simplify_shell">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">simplify_shell</code><span class="sig-paren">(</span><em>occshell</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.simplify_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function simplifies the OCCshell by merging all the coincidental OCCfaces in the shell into a single OCCface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occshell</strong> : OCCshell</p>
+<blockquote>
+<div><p>The OCCshell to be simplified.</p>
+</div></blockquote>
+<p><strong>tolerance</strong> : float, optional</p>
+<blockquote>
+<div><p>The precision of the simplification, Default = 1e-06.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>simplified shell</strong> : OCCshell</p>
+<blockquote class="last">
+<div><p>The simplified OCCshell.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.fix_close_solid">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_close_solid</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_close_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fixes an OCCsolid by making sure all the OCCfaces in the solid have an outward orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occsolid</strong> : OCCsolid</p>
+<blockquote>
+<div><p>The OCCsolid to be fixed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fixed solid</strong> : OCCsolid</p>
+<blockquote class="last">
+<div><p>The fixed OCCsolid. If None it means the solid is not fixed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.move">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">move</code><span class="sig-paren">(</span><em>orig_pypt</em>, <em>location_pypt</em>, <em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function moves an OCCtopology from the orig_pypt to the location_pypt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>orig_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The OCCtopology will move in reference to this point.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>location_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The destination of where the OCCtopology will be moved in relation to the orig_pypt.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be moved.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>moved topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The moved OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.map_cs">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">map_cs</code><span class="sig-paren">(</span><em>occgp_ax3_1</em>, <em>occgp_ax3_2</em>, <em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.map_cs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function maps an OCCtopology from one OCC coordinate sytem to another.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occgp_ax3_1</strong> : gp_ax3</p>
+<blockquote>
+<div><p>The original OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.</p>
+</div></blockquote>
+<p><strong>occgp_ax3_2</strong> : gp_ax3</p>
+<blockquote>
+<div><p>The destination OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.</p>
+</div></blockquote>
+<p><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be mapped.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>mapped topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The mapped OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.rotate">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">rotate</code><span class="sig-paren">(</span><em>occtopology</em>, <em>rot_pypt</em>, <em>pyaxis</em>, <em>degree</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function rotates an OCCtopology based on the rotation point, an axis and the rotation degree.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be rotated.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+<p><strong>rot_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The OCCtopology will rotate in reference to this point.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>pyaxis</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The OCCtopology will rotate along this axis.
+A pyaxis is a tuple that documents the xyz of a direction e.g. (x,y,z)</p>
+</div></blockquote>
+<p><strong>degree</strong> : float</p>
+<blockquote>
+<div><p>The degree of rotation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rotated topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The rotated OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.uniform_scale">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">uniform_scale</code><span class="sig-paren">(</span><em>occtopology</em>, <em>tx</em>, <em>ty</em>, <em>tz</em>, <em>ref_pypt</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.uniform_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function uniformly scales an OCCtopology based on the reference point and tx,ty,tz factors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be scaled.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+<p><strong>tx</strong> : float</p>
+<blockquote>
+<div><p>The scale factor in the X-axis.</p>
+</div></blockquote>
+<p><strong>ty</strong> : float</p>
+<blockquote>
+<div><p>The scale factor in the Y-axis.</p>
+</div></blockquote>
+<p><strong>tz</strong> : float</p>
+<blockquote>
+<div><p>The scale factor in the Z-axis.</p>
+</div></blockquote>
+<p><strong>ref_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The OCCtopology will scale in reference to this point.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scaled topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The scaled OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.scale">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">scale</code><span class="sig-paren">(</span><em>occtopology</em>, <em>scale_factor</em>, <em>ref_pypt</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function uniformly scales an OCCtopology based on the reference point and the scale factor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be scaled.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+<p><strong>scale_factor</strong> : float</p>
+<blockquote>
+<div><p>The scale factor.</p>
+</div></blockquote>
+<p><strong>ref_pypt</strong> : tuple of floats</p>
+<blockquote>
+<div><p>The OCCtopology will scale in reference to this point.
+A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scaled topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The scaled OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.modify.fix_shape">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_shape</code><span class="sig-paren">(</span><em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fixes an OCCtopology.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occtopology</strong> : OCCtopology</p>
+<blockquote>
+<div><p>The OCCtopology to be fixed.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fixed topology</strong> : OCCtopology (OCCshape)</p>
+<blockquote class="last">
+<div><p>The fixed OCCtopology.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.py3dmodel.modify.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

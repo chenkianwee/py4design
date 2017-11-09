@@ -1,0 +1,327 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.pyoptimise.draw_graph module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.pyoptimise.draw_graph">
+<span id="py4design-pyoptimise-draw-graph-module"></span><h1>py4design.pyoptimise.draw_graph module<a class="headerlink" href="#module-py4design.pyoptimise.draw_graph" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.pyoptimise.draw_graph.scatter_plot">
+<code class="descclassname">py4design.pyoptimise.draw_graph.</code><code class="descname">scatter_plot</code><span class="sig-paren">(</span><em>pts2plotlist</em>, <em>colourlist</em>, <em>pt_arealist</em>, <em>label_size=16</em>, <em>labellist=[]</em>, <em>xlabel=''</em>, <em>ylabel=''</em>, <em>title=''</em>, <em>savefile=''</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.draw_graph.scatter_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a scatter plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pts2plotlist</strong> : 2d list of floats</p>
+<blockquote>
+<div><p>The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y]</p>
+</div></blockquote>
+<p><strong>colourlist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”.</p>
+</div></blockquote>
+<p><strong>pt_arealist</strong> : list of floats</p>
+<blockquote>
+<div><p>List of floats describing the size of each point.</p>
+</div></blockquote>
+<p><strong>label_size</strong> : int, optional</p>
+<blockquote>
+<div><p>The font size of the labels, Default = 16.</p>
+</div></blockquote>
+<p><strong>labellist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the points.</p>
+</div></blockquote>
+<p><strong>xlabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the x-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>ylabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the y-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>title</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the graph, Default = “”.</p>
+</div></blockquote>
+<p><strong>savefile</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>The filepath to save the generated graph image, Default = “”.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.draw_graph.scatter_plot3d">
+<code class="descclassname">py4design.pyoptimise.draw_graph.</code><code class="descname">scatter_plot3d</code><span class="sig-paren">(</span><em>pt3d_list</em>, <em>colour_list</em>, <em>pt_arealist</em>, <em>labellist=[]</em>, <em>xlabel=''</em>, <em>ylabel=''</em>, <em>zlabel=''</em>, <em>title=''</em>, <em>savefile=''</em>, <em>elev=30</em>, <em>azim=-45</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.draw_graph.scatter_plot3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a 3d scatter plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pt3d_list</strong> : 2d list of floats</p>
+<blockquote>
+<div><p>The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y,z]</p>
+</div></blockquote>
+<p><strong>colourlist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”.</p>
+</div></blockquote>
+<p><strong>pt_arealist</strong> : list of floats</p>
+<blockquote>
+<div><p>List of floats describing the size of each point.</p>
+</div></blockquote>
+<p><strong>label_size</strong> : int, optional</p>
+<blockquote>
+<div><p>The font size of the labels, Default = 16.</p>
+</div></blockquote>
+<p><strong>labellist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the points.</p>
+</div></blockquote>
+<p><strong>xlabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the x-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>ylabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the y-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>zlabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the z-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>title</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the graph, Default = “”.</p>
+</div></blockquote>
+<p><strong>savefile</strong> : str, optional</p>
+<blockquote>
+<div><p>The filepath to save the generated graph image, Default = “”.</p>
+</div></blockquote>
+<p><strong>elev</strong> : float, optional</p>
+<blockquote>
+<div><p>The elevation of the view, Default = 30.</p>
+</div></blockquote>
+<p><strong>azim</strong> : float, optional</p>
+<blockquote class="last">
+<div><p>The angle of the view, Default = -45.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.draw_graph.scatter_plot_surface3d">
+<code class="descclassname">py4design.pyoptimise.draw_graph.</code><code class="descname">scatter_plot_surface3d</code><span class="sig-paren">(</span><em>pt3d_list</em>, <em>colour_list</em>, <em>pt_arealist</em>, <em>labellist=[]</em>, <em>xlabel=''</em>, <em>ylabel=''</em>, <em>zlabel=''</em>, <em>title=''</em>, <em>savefile=''</em>, <em>elev=30</em>, <em>azim=-45</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.draw_graph.scatter_plot_surface3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a 3d surface scatter plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pt3d_list</strong> : 2d list of floats</p>
+<blockquote>
+<div><p>The pts2plotlist is in this format: [point1, point2, pointx], pointx = [x,y,z]</p>
+</div></blockquote>
+<p><strong>colourlist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”.</p>
+</div></blockquote>
+<p><strong>pt_arealist</strong> : list of floats</p>
+<blockquote>
+<div><p>List of floats describing the size of each point.</p>
+</div></blockquote>
+<p><strong>label_size</strong> : int, optional</p>
+<blockquote>
+<div><p>The font size of the labels, Default = 16.</p>
+</div></blockquote>
+<p><strong>labellist</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing the points.</p>
+</div></blockquote>
+<p><strong>xlabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the x-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>ylabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the y-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>zlabel</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the z-axis, Default = “”.</p>
+</div></blockquote>
+<p><strong>title</strong> : str, optional</p>
+<blockquote>
+<div><p>String describing the graph, Default = “”.</p>
+</div></blockquote>
+<p><strong>savefile</strong> : str, optional</p>
+<blockquote>
+<div><p>The filepath to save the generated graph image, Default = “”.</p>
+</div></blockquote>
+<p><strong>elev</strong> : float, optional</p>
+<blockquote>
+<div><p>The elevation of the view, Default = 30.</p>
+</div></blockquote>
+<p><strong>azim</strong> : float, optional</p>
+<blockquote class="last">
+<div><p>The angle of the view, Default = -45.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.draw_graph.parallel_coordinates">
+<code class="descclassname">py4design.pyoptimise.draw_graph.</code><code class="descname">parallel_coordinates</code><span class="sig-paren">(</span><em>data_sets</em>, <em>parmlabels</em>, <em>savefile=''</em>, <em>style=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.draw_graph.parallel_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a parallel coordinate plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_sets</strong> : 2d list of floats</p>
+<blockquote>
+<div><p>Each list in the 2d list is a line on the PCP.</p>
+</div></blockquote>
+<p><strong>parmlabels</strong> : list of str</p>
+<blockquote>
+<div><p>List of string describing each axis of the PCP.</p>
+</div></blockquote>
+<p><strong>savefile</strong> : str, optional</p>
+<blockquote>
+<div><p>The filepath to save the generated graph image, Default = “”.</p>
+</div></blockquote>
+<p><strong>style</strong> : list of str, optional</p>
+<blockquote class="last">
+<div><p>List of string describing the colours, e.g. “red”, “blue”, “yellow”. If None all the lines are black.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.draw_graph.create_int_normalise">
+<code class="descclassname">py4design.pyoptimise.draw_graph.</code><code class="descname">create_int_normalise</code><span class="sig-paren">(</span><em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.draw_graph.create_int_normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list of normalise integers within the specified range.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<blockquote>
+<div><p>The range.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised list</strong> : list of integers</p>
+<blockquote class="last">
+<div><p>List of normalised integers.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.pyoptimise.draw_graph.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
