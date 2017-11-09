@@ -1,15 +1,18 @@
-to run the environment:
+#========================================================
+Previously known as Pyliburo
+#========================================================
+To run the environment:
 
-1.) install anaconda for python2.7
+1.) install miniconda for python2.7
 (instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html)
 
 2.) libraries to download:
 
-    a.) conda install -c https://conda.anaconda.org/dlr-sc pythonocc-core=0.17
+    a.) conda install -c https://conda.anaconda.org/dlr-sc pythonocc-core=0.18
 
     b.) conda install scipy (BSD accepted license)
 
-3.) pip install pyliburo
+3.) pip install py4design
 
 4.) install Daysim from http://daysim.ning.com/ for the daylighting analysis
 
@@ -18,12 +21,10 @@ to run the environment:
 5.) conda install spyder (for editing the scripts)
 
 6.) download example files from 
-(https://github.com/chenkianwee/pyliburo_example_files)
+(https://github.com/chenkianwee/py4design_examples)
 
 #========================================================
-
-#list of libraries used in pyliburo
-
+list of libraries used in py4design
 #========================================================
 
 1.) lxml ((BSD) libxml2 and libxslt2 (MIT))

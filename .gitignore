@@ -53,5 +53,6 @@ examples/citygmlenv_examples/shapefile2daysim.py
 =======
 *.pyc
 dist/
+doc/
 py4design.egg-info/
 >>>>>>> refs/remotes/origin/master
