@@ -1,19 +1,23 @@
 #========================================================
 Py4design previously known as Pyliburo
 #========================================================
-If you are using the library for your research work, you can cite the library with this:
+The citation if you are using the library for your research work:
+
 Chen, Kian Wee, and Leslie Norford. 2017. “Developing an Open Python Library for Urban Design Optimisation - Pyliburo.” In Building Simulation 2017, 486–493. San Francisco, USA.
 
 Publications that have used Py4design:
+
 Chen, Kian Wee, and Leslie Norford. 2017. “Evaluating Urban Forms for Comparison Studies in the Massing Design Stage.” Sustainability 9 (6). doi:10.3390/su9060987.
+
 Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. “Automatic Parameterisation of Semantic 3D City Models for Urban Design Optimisation.” In Future Trajectories of Computation in Design – Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, 51–65. Istanbul, Turkey.
+
 Chen, Kian Wee, Patrick Janssen, and Leslie Norford. 2017. “Automatic Generation of Semantic 3D City Models from Conceptual Massing Models.” In Future Trajectories of Computation in Design – Proceedings of the 17th International Conference on Computer Aided Architectural Design Futures, 84–100. Istanbul, Turkey.
+
 Chen, Kian Wee, and Leslie K Norford. 2016. “Workflow for Generating 3D Urban Models from Open City Data for Performance-Based Urban Design.” In Asim 2016 IBPSA Asia Conference. Jeju, Korea.
 
 API documentation available at http://chenkianwee.github.io/py4design/
 Working examples are available at https://github.com/chenkianwee/py4design_examples
 
-If you are using the library 
 To run the environment:
 
 1.) install miniconda for python2.7
