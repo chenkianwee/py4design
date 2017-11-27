@@ -25,7 +25,7 @@ To run the environment:
 
 2.) libraries to download:
 
-    a.) conda install -c https://conda.anaconda.org/dlr-sc pythonocc-core=0.18
+    a.) follow the conda install instruction for pythonocc from this link: http://www.pythonocc.org/download/ 
 
     b.) conda install scipy (BSD accepted license)
 
