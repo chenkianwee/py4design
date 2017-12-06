@@ -586,6 +586,35 @@ def flatten_face_z_value(occface, z=0):
     
     flatten_face = construct.make_polygon(pyptlist_2d)
     return flatten_face
+
+def sort_face_by_xy(occface_list):
+    """
+    This function sorts the faces in order of the xy direction.
+ 
+    Parameters
+    ----------        
+    occface_list : list of OCCfaces
+        The list of OCCfaces to be sorted.
+
+    Returns
+    -------
+    sorted list of faces : list of OCCfaces
+        The list of sorted OCCfaces in xy direction.
+    """
+    fdict = {}
+    for face in occface_list:
+        cpt = calculate.face_midpt(face)
+        fdict[cpt] = face
+        
+    fitems = fdict.items()
+    fitems.sort(key=lambda x: [x[0][1], x[0][0]])
+
+    flist = []
+    for f in fitems:
+        flist.append(f[1])
+        
+    return flist
+        
 #========================================================================================================
 #SHELL INPUTS
 #======================================================================================================== 

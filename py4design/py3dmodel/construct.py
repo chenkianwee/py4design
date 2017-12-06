@@ -839,7 +839,7 @@ def make_offset_face2wire(occface, offset_value):
 
 def grid_face(occface, udim, vdim):
     """
-    This function creates a list of OCCfaces grids from an OCCface.
+    This function creates a list of OCCfaces grids from an OCCface. The OCCface must be planar.
  
     Parameters
     ----------
@@ -884,15 +884,17 @@ def grid_face(occface, udim, vdim):
             face_list.append(occface1)
        
     #intersect the grids and the face so that those grids that are not in the face will be erase
+    
     intersection_list = []
     for f in face_list:
         intersection = BRepAlgoAPI_Common(f, occface).Shape()
         compound = fetch.topo2topotype(intersection)
-        inter_face_list = fetch.topos_frm_compound(compound)["face"]
+        inter_face_list = fetch.topo_explorer(compound, "face")
         if inter_face_list:
             for inter_face in inter_face_list:
                 intersection_list.append(inter_face)
-    return intersection_list
+
+    return face_list
     
 def extrude(occface, pydir, magnitude):
     """
