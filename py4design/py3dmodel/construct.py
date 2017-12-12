@@ -894,7 +894,7 @@ def grid_face(occface, udim, vdim):
             for inter_face in inter_face_list:
                 intersection_list.append(inter_face)
 
-    return face_list
+    return intersection_list
     
 def extrude(occface, pydir, magnitude):
     """

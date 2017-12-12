@@ -602,10 +602,15 @@ def sort_face_by_xy(occface_list):
         The list of sorted OCCfaces in xy direction.
     """
     fdict = {}
+    vlist =[]
     for face in occface_list:
         cpt = calculate.face_midpt(face)
+        v = construct.make_vertex(cpt)
+        vlist.append(v)
         fdict[cpt] = face
-        
+       
+    #import utility
+    #utility.visualise([occface_list, vlist], ["WHITE", "BLUE"])
     fitems = fdict.items()
     fitems.sort(key=lambda x: [x[0][1], x[0][0]])
 
