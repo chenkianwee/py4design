@@ -51,14 +51,16 @@ list of libraries used in py4design
 
 5.) scipy (BSD 3-clause "New" or "Revised" License)
 
-6.) pycollada (BSD 3-clause "New" or "Revised" License)
+6.) sympy (BSD 3-clause "New" or "Revised" License)
 
-7.) networkx (BSD 3-clause "New" or "Revised" License)
+7.) pycollada (BSD 3-clause "New" or "Revised" License)
 
-8.) scikit-learn (BSD 3-clause "New" or "Revised" License)
+8.) networkx (BSD 3-clause "New" or "Revised" License)
 
-9.) pymf
+9.) scikit-learn (BSD 3-clause "New" or "Revised" License)
 
-10.) cvxopt (GNU General Public License v3.0)
+10.) pymf
 
-11.) matplotlib 
+11.) cvxopt (GNU General Public License v3.0)
+
+12.) matplotlib 

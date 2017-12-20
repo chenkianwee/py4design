@@ -451,7 +451,7 @@ def circles_frm_pyptlist(pyptlist, radius):
     
 def delaunay3d(pyptlist, tolerance = 1e-06):
     """
-    This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional points.
+    This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional xy points.
  
     Parameters
     ----------
@@ -500,6 +500,92 @@ def delaunay3d(pyptlist, tolerance = 1e-06):
         if tri_area > tolerance:
             occtriangles.append(occtriangle)
     return occtriangles
+
+def convex_hull3d(pyptlist, return_area_volume = False ):
+    """
+    This function constructs a convex hull (list of triangle OCCfaces) from a list of points. The points cannot be coplanar.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    return_area_volume : bool, optional
+        If set to True, will only return the area and volume of the hull and not the faces, default = False
+ 
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of meshed OCCfaces (triangles) constructed from the hull. Return faces only when return_area_volume == False.
+    
+    hull area : float
+        Area of hull. Return area only when return_area_volume == True.
+        
+    hull volume : float
+        Volume of hull. Return volume only when return_area_volume == True.
+    """
+    import numpy as np
+    from scipy.spatial import ConvexHull
+    points = np.array(pyptlist)
+    hull = ConvexHull(points)
+    if return_area_volume:
+        hull_area = hull.area
+        hull_volume = hull.volume
+        return hull_area, hull_volume
+    else:
+        face_list = []
+        for simplex in hull.simplices:
+            pt1 = list(points[simplex[0]])
+            pt2 = list(points[simplex[1]])
+            pt3 = list(points[simplex[2]])
+            face = make_polygon([pt1,pt2,pt3])
+            face_list.append(face)
+        
+        return face_list
+
+def convex_hull2d(pyptlist):
+    """
+    This function constructs a 2d convex hull (list of triangle OCCfaces) from a list of points. Only work on 2d xy points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+ 
+    Returns
+    -------
+    face : OCCface
+        A OCCface polygon constructed from the hull. Return faces only when return_area == False.
+        
+    """
+    import numpy as np
+    from scipy.spatial import ConvexHull
+    pyptlist2d = []
+    occvert_list = []
+    for pypt in pyptlist:
+        pypt2d = (pypt[0],pypt[1])
+        occvert = make_vertex(pypt)
+        occvert_list.append(occvert)
+        pyptlist2d.append(pypt2d)
+        
+    cmpd = make_compound(occvert_list)
+    centre_pt = calculate.get_centre_bbox(cmpd)
+    
+    points = np.array(pyptlist2d)
+    hull = ConvexHull(points)
+
+    verts = hull.vertices
+    hull_pt_list = []
+    for v in verts:
+        pt = pyptlist[v]
+        pt2 = (pt[0],pt[1], centre_pt[2])
+        hull_pt_list.append(pt2)
+    face = make_polygon(hull_pt_list)
+    
+    return face
+    
 #========================================================================================================
 #EDGE INPUTS
 #========================================================================================================

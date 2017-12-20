@@ -264,6 +264,54 @@ def is_anticlockwise(pyptlist, ref_pyvec):
         return False 
     else:
         return True
+    
+def is_collinear(pyptlist):
+    """
+    This function checks if the list of points are collinear. 
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    True or False : bool
+        If True the list of points are collinear.
+    """
+    from sympy import Point3D
+    sympt_list = []
+    for pypt in pyptlist:
+        sympt = Point3D(pypt[0], pypt[1], pypt[2])
+        sympt_list.append(sympt)
+    
+    collinear = Point3D.are_collinear(*sympt_list)
+    return collinear
+
+def is_coplanar(pyptlist):
+    """
+    This function checks if the list of points are coplanar. 
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    True or False : bool
+        If True the list of points are coplanar.
+    """
+    from sympy import Point3D
+    sympt_list = []
+    for pypt in pyptlist:
+        sympt = Point3D(pypt[0], pypt[1], pypt[2])
+        sympt_list.append(sympt)
+    
+    coplanar = Point3D.are_coplanar(*sympt_list)
+    return coplanar
 
 #========================================================================================================
 #EDGE INPUTS
