@@ -1044,3 +1044,66 @@ def archetypal_analysis(np_array, max_archetypes, niter = 200):
         archetypes.append(zk)
     #f = m.ferr[-1]/(np_array.shape[0] + np_array.shape[1])
     return archetypes
+
+def crowd_distance_assignment(score_2dlist):
+    """
+    This function calculates and assigns the crowding distance.
+    
+    Parameters
+    ----------            
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals.
+    
+    Returns
+    -------
+    assigned individuals : list of floats
+        Each individual is assigned a crowding distance the list is in the order of the score_2dlist.
+    """
+    num_inds = len(score_2dlist)
+    num_score = len(score_2dlist[0])
+    dist_list = []
+    for _ in range(num_inds):
+        dist_list.append(0)
+    #for each objective 
+    for i in range(num_score):
+        individuals = sort_objectives(score_2dlist, i)
+        dist_list[0] = float("inf")
+        dist_list[num_inds-1] = float("inf")
+        norm = individuals[num_inds-1][i] - individuals[0][i]
+        #print individuals[num_inds-1][i], individuals[0][i], norm
+        for j in range(1, num_inds -1):
+            #for fronts that have all scores that are 0
+            if norm == 0:
+                dist_list[j] += 0
+            else:
+                dist_list[j] += (individuals[j+1][i] - individuals[j-1][i])/norm
+    
+    return dist_list
+
+def sort_objectives(score_2dlist, obj_idx):
+    """
+    This function arranges the individuals in ascending orders according to a chosen performance objective.
+    
+    Parameters
+    ----------            
+    score_2dlist : 2dlist of floats
+        The performance objectives of a population of individuals.
+        
+    obj_idx : int
+        The index of the chosen objective for arranging the individuals.
+    
+    Returns
+    -------
+    sorted individuals : 2d list of floats
+        The sorted list of individuals in ascending orders according to the chosen objective.
+    """
+    #arrange in ascending order
+    for i in range(len(score_2dlist) - 1, -1, -1):
+        for j in range(1, i + 1):
+            s1 = score_2dlist[j - 1]
+            s2 = score_2dlist[j]
+            if s1[obj_idx] > s2[obj_idx]:
+                score_2dlist[j-1] = s2
+                score_2dlist[j] = s1
+    return score_2dlist
+    
