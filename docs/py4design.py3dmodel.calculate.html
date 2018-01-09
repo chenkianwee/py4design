@@ -282,6 +282,56 @@ A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="py4design.py3dmodel.calculate.is_collinear">
+<code class="descclassname">py4design.py3dmodel.calculate.</code><code class="descname">is_collinear</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.calculate.is_collinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the list of points are collinear.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the list of points are collinear.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.calculate.is_coplanar">
+<code class="descclassname">py4design.py3dmodel.calculate.</code><code class="descname">is_coplanar</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.calculate.is_coplanar" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the list of points are coplanar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>True or False</strong> : bool</p>
+<blockquote class="last">
+<div><p>If True the list of points are coplanar.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="py4design.py3dmodel.calculate.edge_midpt">
 <code class="descclassname">py4design.py3dmodel.calculate.</code><code class="descname">edge_midpt</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.calculate.edge_midpt" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calcuates the midpoint of an OCCedge.</p>

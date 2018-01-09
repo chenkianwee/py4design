@@ -543,7 +543,7 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <dl class="function">
 <dt id="py4design.py3dmodel.construct.delaunay3d">
 <code class="descclassname">py4design.py3dmodel.construct.</code><code class="descname">delaunay3d</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>tolerance=1e-06</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.construct.delaunay3d" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional points.</p>
+<dd><p>This function constructs a mesh (list of triangle OCCfaces) from a list of points. Currently only works for two dimensional xy points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -562,6 +562,68 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of face</strong> : list of OCCfaces</p>
 <blockquote class="last">
 <div><p>A list of meshed OCCfaces (triangles) constructed from the meshing.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.construct.convex_hull3d">
+<code class="descclassname">py4design.py3dmodel.construct.</code><code class="descname">convex_hull3d</code><span class="sig-paren">(</span><em>pyptlist</em>, <em>return_area_volume=False</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.construct.convex_hull3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a convex hull (list of triangle OCCfaces) from a list of points. The points cannot be coplanar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+<p><strong>return_area_volume</strong> : bool, optional</p>
+<blockquote>
+<div><p>If set to True, will only return the area and volume of the hull and not the faces, default = False</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list of face</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>A list of meshed OCCfaces (triangles) constructed from the hull. Return faces only when return_area_volume == False.</p>
+</div></blockquote>
+<p><strong>hull area</strong> : float</p>
+<blockquote>
+<div><p>Area of hull. Return area only when return_area_volume == True.</p>
+</div></blockquote>
+<p><strong>hull volume</strong> : float</p>
+<blockquote class="last">
+<div><p>Volume of hull. Return volume only when return_area_volume == True.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.construct.convex_hull2d">
+<code class="descclassname">py4design.py3dmodel.construct.</code><code class="descname">convex_hull2d</code><span class="sig-paren">(</span><em>pyptlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.construct.convex_hull2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a 2d convex hull (list of triangle OCCfaces) from a list of points. Only work on 2d xy points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pyptlist</strong> : a list of tuples</p>
+<blockquote>
+<div><p>The list of points to be triangulated. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>face</strong> : OCCface</p>
+<blockquote class="last">
+<div><p>A OCCface polygon constructed from the hull. Return faces only when return_area == False.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -820,7 +882,7 @@ The further the distance the less precise is the resultant faces.</p>
 <dl class="function">
 <dt id="py4design.py3dmodel.construct.grid_face">
 <code class="descclassname">py4design.py3dmodel.construct.</code><code class="descname">grid_face</code><span class="sig-paren">(</span><em>occface</em>, <em>udim</em>, <em>vdim</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.construct.grid_face" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function creates a list of OCCfaces grids from an OCCface.</p>
+<dd><p>This function creates a list of OCCfaces grids from an OCCface. The OCCface must be planar.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -656,6 +656,30 @@ thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), …]</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="py4design.py3dmodel.modify.sort_face_by_xy">
+<code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">sort_face_by_xy</code><span class="sig-paren">(</span><em>occface_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.sort_face_by_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sorts the faces in order of the xy direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>occface_list</strong> : list of OCCfaces</p>
+<blockquote>
+<div><p>The list of OCCfaces to be sorted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sorted list of faces</strong> : list of OCCfaces</p>
+<blockquote class="last">
+<div><p>The list of sorted OCCfaces in xy direction.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="py4design.py3dmodel.modify.fix_shell_orientation">
 <code class="descclassname">py4design.py3dmodel.modify.</code><code class="descname">fix_shell_orientation</code><span class="sig-paren">(</span><em>occshell</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.modify.fix_shell_orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function fixes the OCCshell orientation. The fix will orientate all the OCCfaces in the shell towards the same direction.</p>
