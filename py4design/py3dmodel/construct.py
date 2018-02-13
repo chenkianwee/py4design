@@ -162,17 +162,75 @@ def make_circle(centre_pypt, normal_pydir, radius):
         
     radius : float
         Radius of the circle.
-        #TODO: currently it only works with radius bigger than 1.
+        
+    Returns
+    -------
+    circle : OCCedge
+        An OCCedge circle.
+    """    
+    if radius <1:
+        circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), 1)
+        circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
+        circle_edge = fetch.topo2topotype(modify.scale(circle_edge, radius, centre_pypt))
+        
+    else:
+        circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), radius)
+        circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
+    
+    return circle_edge.Edge()
+
+def make_polygon_circle(centre_pypt, normal_pydir, radius, division = 10):
+    """
+    This function constructs an polygon circle based on the centre point, the orientation direction and the radius.
+ 
+    Parameters
+    ----------
+    centre_pypt : tuple of floats
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    normal_pydir : tuple of floats
+        A pydir is a tuple that documents the xyz vector of a dir e.g. (x,y,z)
+        
+    radius : float
+        Radius of the circle.
+        
+    distance : float, optional
+        The smallest distance between two points from the edges, Default = 0.01. 
+        The further the distance the less precise is the resultant faces.
         
     Returns
     -------
     circle : OCCedge
         An OCCedge circle.
     """
-    circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), radius)
-    circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
-    return circle_edge.Edge()
-
+    if radius <1:
+        ref_c = make_circle(centre_pypt, normal_pydir, 1)
+        lb, ub = fetch.edge_domain(ref_c)
+        domain = ub - lb
+        interval = domain/float(division)
+        pt_list = []
+        for i in range(division):
+            parm = i*interval
+            pt = calculate.edgeparameter2pt(parm, ref_c)
+            pt_list.append(pt)
+            
+        poly_c = make_polygon(pt_list)
+        circle = fetch.topo2topotype(modify.scale(poly_c, radius, centre_pypt))
+        return circle
+    else:
+        circle = make_circle(centre_pypt, normal_pydir, radius)
+        lb, ub = fetch.edge_domain(circle)
+        domain = ub - lb
+        interval = domain/float(division)
+        pt_list = []
+        for i in range(division):
+            parm = i*interval
+            pt = calculate.edgeparameter2pt(parm, circle)
+            pt_list.append(pt)
+            
+        poly_c = make_polygon(pt_list)
+        return poly_c
+    
 def make_edge(pypt1, pypt2):
     """
     This function constructs an OCCedge from two points.

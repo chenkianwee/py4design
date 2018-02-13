@@ -24,7 +24,7 @@ import fetch
 import modify
 import utility
 
-def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None, 
+def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=None, 
                     occedge_list = None):
     """
     This function converts OCCtopologies into a pycollada Collada class. The units are in meter.
@@ -82,40 +82,22 @@ def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
         
     geomnode_list = []
     shell_cnt = 0
-    for occshell in occface_list:
-        vert_floats = []
-        normal_floats = []
-        vcnt = []
-        indices = []
-        
-        face_list = fetch.topo_explorer(occshell, "face")
-        vert_cnt = 0
-        for face in face_list:
-            wire_list = fetch.topo_explorer(face, "wire")
-            nwire = len(wire_list)
-            if nwire == 1:
-                pyptlist = fetch.points_frm_occface(face)
-                vcnt.append(len(pyptlist))
-                face_nrml = calculate.face_normal(face)
-                pyptlist.reverse()
-                for pypt in pyptlist:
-                    vert_floats.append(pypt[0])
-                    vert_floats.append(pypt[1])
-                    vert_floats.append(pypt[2])
-                    
-                    normal_floats.append(face_nrml[0])
-                    normal_floats.append(face_nrml[1])
-                    normal_floats.append(face_nrml[2])
-                    
-                    indices.append(vert_cnt)
-                    vert_cnt+=1
-                    
-            if nwire >1:
-                tri_face_list = construct.simple_mesh(face)
-                for tface in tri_face_list:
-                    pyptlist = fetch.points_frm_occface(tface)
+    if occface_list:
+        for occshell in occface_list:
+            vert_floats = []
+            normal_floats = []
+            vcnt = []
+            indices = []
+            
+            face_list = fetch.topo_explorer(occshell, "face")
+            vert_cnt = 0
+            for face in face_list:
+                wire_list = fetch.topo_explorer(face, "wire")
+                nwire = len(wire_list)
+                if nwire == 1:
+                    pyptlist = fetch.points_frm_occface(face)
                     vcnt.append(len(pyptlist))
-                    face_nrml = calculate.face_normal(tface)
+                    face_nrml = calculate.face_normal(face)
                     pyptlist.reverse()
                     for pypt in pyptlist:
                         vert_floats.append(pypt[0])
@@ -128,39 +110,58 @@ def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
                         
                         indices.append(vert_cnt)
                         vert_cnt+=1
+                        
+                if nwire >1:
+                    tri_face_list = construct.simple_mesh(face)
+                    for tface in tri_face_list:
+                        pyptlist = fetch.points_frm_occface(tface)
+                        vcnt.append(len(pyptlist))
+                        face_nrml = calculate.face_normal(tface)
+                        pyptlist.reverse()
+                        for pypt in pyptlist:
+                            vert_floats.append(pypt[0])
+                            vert_floats.append(pypt[1])
+                            vert_floats.append(pypt[2])
+                            
+                            normal_floats.append(face_nrml[0])
+                            normal_floats.append(face_nrml[1])
+                            normal_floats.append(face_nrml[2])
+                            
+                            indices.append(vert_cnt)
+                            vert_cnt+=1
+                    
+            vert_id = "ID"+str(shell_cnt) + "1"
+            vert_src = source.FloatSource(vert_id, numpy.array(vert_floats), ('X', 'Y', 'Z'))
+            normal_id = "ID"+str(shell_cnt) + "2"
+            normal_src = source.FloatSource(normal_id, numpy.array(normal_floats), ('X', 'Y', 'Z'))
+            geom = geometry.Geometry(mesh, "geometry" + str(shell_cnt), "geometry" + str(shell_cnt), [vert_src, normal_src])
+            input_list = source.InputList()
+            input_list.addInput(0, 'VERTEX', "#"+vert_id)
+            #input_list.addInput(1, 'NORMAL', "#"+normal_id)
+            
+            vcnt = numpy.array(vcnt)
+            indices = numpy.array(indices)
+            
+            if face_rgb_colour_list!=None:
+                mat_name="materialref"+ str(shell_cnt)
+                polylist = geom.createPolylist(indices, vcnt, input_list,  mat_name)
+                geom.primitives.append(polylist)
+                mesh.geometries.append(geom)
                 
-        vert_id = "ID"+str(shell_cnt) + "1"
-        vert_src = source.FloatSource(vert_id, numpy.array(vert_floats), ('X', 'Y', 'Z'))
-        normal_id = "ID"+str(shell_cnt) + "2"
-        normal_src = source.FloatSource(normal_id, numpy.array(normal_floats), ('X', 'Y', 'Z'))
-        geom = geometry.Geometry(mesh, "geometry" + str(shell_cnt), "geometry" + str(shell_cnt), [vert_src, normal_src])
-        input_list = source.InputList()
-        input_list.addInput(0, 'VERTEX', "#"+vert_id)
-        #input_list.addInput(1, 'NORMAL', "#"+normal_id)
-        
-        vcnt = numpy.array(vcnt)
-        indices = numpy.array(indices)
-        
-        if face_rgb_colour_list!=None:
-            mat_name="materialref"+ str(shell_cnt)
-            polylist = geom.createPolylist(indices, vcnt, input_list,  mat_name)
-            geom.primitives.append(polylist)
-            mesh.geometries.append(geom)
-            
-            matnode = scene.MaterialNode(mat_name, mat_list[shell_cnt], inputs=[])
-            geomnode = scene.GeometryNode(geom, [matnode])
-            geomnode_list.append(geomnode)
-        else:
-            mat_name="materialref"
-            polylist = geom.createPolylist(indices, vcnt, input_list,  mat_name)
-            geom.primitives.append(polylist)
-            mesh.geometries.append(geom)
-            
-            matnode = scene.MaterialNode(mat_name, mat, inputs=[])
-            geomnode = scene.GeometryNode(geom, [matnode])
-            geomnode_list.append(geomnode)
-            
-        shell_cnt +=1
+                matnode = scene.MaterialNode(mat_name, mat_list[shell_cnt], inputs=[])
+                geomnode = scene.GeometryNode(geom, [matnode])
+                geomnode_list.append(geomnode)
+            else:
+                mat_name="materialref"
+                polylist = geom.createPolylist(indices, vcnt, input_list,  mat_name)
+                geom.primitives.append(polylist)
+                mesh.geometries.append(geom)
+                
+                matnode = scene.MaterialNode(mat_name, mat, inputs=[])
+                geomnode = scene.GeometryNode(geom, [matnode])
+                geomnode_list.append(geomnode)
+                
+            shell_cnt +=1
         
     if occedge_list:
         edge_cnt = 0
@@ -201,7 +202,7 @@ def occtopo_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
     mesh.scene = myscene
     return mesh
     
-def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None, 
+def write_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=None, 
                     occedge_list = None, text_string = None):
                                 
     """
@@ -209,14 +210,14 @@ def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
  
     Parameters
     ----------
-    occface_list : list of OCCfaces
+    dae_filepath : str
+        The file path of the DAE (Collada) file.
+        
+    occface_list : list of OCCfaces, optional
         The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
         are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
         OCCsolid, OCCshell, OCCface. 
         
-    dae_filepath : str
-        The file path of the DAE (Collada) file.
-    
     face_rgb_colour_list : list of tuple of floats, optional
         Each tuple is a r,g,b that is specifying the colour of the face,Default = None. 
         The number of colours must correspond to the number of OCCfaces.
@@ -233,7 +234,12 @@ def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
         The geometries are written to a DAE file.
     """   
     if text_string != None:
-        overall_cmpd = construct.make_compound(occface_list)
+        if occface_list != None:
+            overall_cmpd = construct.make_compound(occface_list)
+        else:
+            overall_cmpd = construct.make_compound(occedge_list)
+            occface_list = []
+            
         xmin, ymin, zmin, xmax, ymax, zmax = calculate.get_bounding_box(overall_cmpd)
         xdim = xmax-xmin
         d_str = fetch.topo2topotype(construct.make_brep_text(text_string,xdim/10))
@@ -257,7 +263,7 @@ def write_2_collada(occface_list, dae_filepath, face_rgb_colour_list=None,
         if face_rgb_colour_list !=None:
             face_rgb_colour_list.append((0,0,0))
         
-    mesh = occtopo_2_collada(occface_list, dae_filepath, 
+    mesh = occtopo_2_collada(dae_filepath, occface_list = occface_list,
                       face_rgb_colour_list=face_rgb_colour_list, 
                       occedge_list = occedge_list)
     
@@ -384,9 +390,11 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
         edge_cmpd = construct.make_compound(other_occedge_list)
         edge_cmpd = modify.move(otopo_centre_pt, (0,0,0), edge_cmpd)
         other_occedge_list = fetch.topo_explorer(edge_cmpd, "edge")
-        mesh = occtopo_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list, 
+        mesh = occtopo_2_collada(dae_filepath, occface_list= to_be_written_occface_list,
+                                 face_rgb_colour_list = to_be_written_colour_list, 
                                  occedge_list = other_occedge_list)
         mesh.write(dae_filepath)
     else:
-        mesh = occtopo_2_collada(to_be_written_occface_list, dae_filepath, face_rgb_colour_list = to_be_written_colour_list)
+        mesh = occtopo_2_collada(dae_filepath, occface_list = to_be_written_occface_list,
+                                 face_rgb_colour_list = to_be_written_colour_list)
         mesh.write(dae_filepath)
