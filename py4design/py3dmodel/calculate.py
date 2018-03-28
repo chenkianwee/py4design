@@ -197,6 +197,54 @@ def angle_bw_2_vecs(pyvec1, pyvec2):
     radangle = vec1.Angle(vec2)
     angle = radangle * (180.0/math.pi)
     return angle
+
+def cross_product(pyvec1, pyvec2):
+    """
+    This function measures the angle between two vectors. 
+ 
+    Parameters
+    ----------
+    pyvec1 : tuple of floats
+        The first vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)
+    
+    pyvec2 : tuple of floats
+        The second vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)
+        
+    Returns
+    -------
+    cross product : pyvec
+        The cross product.
+    """
+    vec1 = gp_Vec(pyvec1[0], pyvec1[1], pyvec1[2])
+    vec2 = gp_Vec(pyvec2[0], pyvec2[1], pyvec2[2])
+    cross_vec = vec1.Crossed(vec2)
+    cross_pyvec = (cross_vec.X(), cross_vec.Y(), cross_vec.Z())
+
+    return cross_pyvec
+
+def dot_product(pyvec1, pyvec2):
+    """
+    This function measures the angle between two vectors. 
+ 
+    Parameters
+    ----------
+    pyvec1 : tuple of floats
+        The first vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)
+    
+    pyvec2 : tuple of floats
+        The second vector to be measured. A pyvec is a tuple that documents the xyz direction of a vector e.g. (x,y,z)
+        
+    Returns
+    -------
+    dot product : float
+        The dot product.
+    """
+    vec1 = gp_Vec(pyvec1[0], pyvec1[1], pyvec1[2])
+    vec2 = gp_Vec(pyvec2[0], pyvec2[1], pyvec2[2])
+    dot = vec1.Dot(vec2)
+
+    return dot
+
     
 def distance_between_2_pts(pypt1, pypt2):
     """
@@ -219,6 +267,44 @@ def distance_between_2_pts(pypt1, pypt2):
     gp_pnt2 = gp_Pnt(pypt2[0], pypt2[1], pypt2[2])
     distance = gp_pnt1.Distance(gp_pnt2)
     return distance
+
+def points_mean(pyptlist):
+    """
+    This function calculates the mean of all points. 
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+    Returns
+    -------
+    midpt : pypt
+        The mean of all the points.
+    """
+    x_list = []
+    y_list = []
+    z_list = []
+    
+    for pypt in pyptlist:
+        x = pypt[0]
+        y = pypt[1]
+        z = pypt[2]
+        
+        x_list.append(x)
+        y_list.append(y)
+        z_list.append(z)
+        
+        
+    npts = len(x_list)
+    x_mean = sum(x_list)/npts
+    y_mean = sum(y_list)/npts
+    z_mean = sum(z_list)/npts
+    
+    centre_pt = (x_mean, y_mean, z_mean)
+
+    return centre_pt
 
 def is_anticlockwise(pyptlist, ref_pyvec):
     """

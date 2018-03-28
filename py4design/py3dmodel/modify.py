@@ -871,10 +871,10 @@ def map_cs(occgp_ax3_1, occgp_ax3_2, occtopology):
     Parameters
     ----------        
     occgp_ax3_1 : gp_ax3
-        The original OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.
+        The destination OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.
         
     occgp_ax3_2 : gp_ax3
-       The destination OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.
+       The original OCC coordinate system, OCC coordinate system can be created using construct.make_gp_ax3 function.
         
     occtopology : OCCtopology
         The OCCtopology to be mapped.

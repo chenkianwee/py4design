@@ -29,7 +29,7 @@ from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFa
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
 from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Cut, BRepAlgoAPI_Fuse
 from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
 from OCC.GeomAPI import GeomAPI_PointsToBSpline
 from OCC.TColgp import TColgp_Array1OfPnt
@@ -37,6 +37,7 @@ from OCC.BRep import BRep_Builder, BRep_Tool
 from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.TopLoc import TopLoc_Location
+from OCC.Visualization import Tesselator
 
 #========================================================================================================
 #NUMERIC & TEXT INPUTS
@@ -170,14 +171,15 @@ def make_circle(centre_pypt, normal_pydir, radius):
     """    
     if radius <1:
         circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), 1)
-        circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
+        circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length()).Edge()
         circle_edge = fetch.topo2topotype(modify.scale(circle_edge, radius, centre_pypt))
+        return circle_edge
         
     else:
         circle = gp_Circ(gp_Ax2(gp_Pnt(centre_pypt[0], centre_pypt[1], centre_pypt[2]), gp_Dir(normal_pydir[0], normal_pydir[1], normal_pydir[2])), radius)
         circle_edge = BRepBuilderAPI_MakeEdge(circle, 0, circle.Length())
     
-    return circle_edge.Edge()
+        return circle_edge.Edge()
 
 def make_polygon_circle(centre_pypt, normal_pydir, radius, division = 10):
     """
@@ -615,7 +617,7 @@ def convex_hull2d(pyptlist):
     Returns
     -------
     face : OCCface
-        A OCCface polygon constructed from the hull. Return faces only when return_area == False.
+        A OCCface polygon constructed from the hull.
         
     """
     import numpy as np
@@ -892,7 +894,6 @@ def arrange_edges_2_wires(occedge_list, isclosed = False):
                         except Exception, err:
                             raise RuntimeError, "Overlay2D: build wire: Creation of Wire number " + str(i) + " from edge(s) failed. \n" + str(err)
             
-            print wirebuilder
             wirebuilder.Build()
             aWire = wirebuilder.Wire()
             wirelist.append(aWire)
@@ -991,10 +992,10 @@ def grid_face(occface, udim, vdim):
         The OCCface to be gridded.
         
     udim : int
-        The number of rows of the grid.
+        The x dimension of the grid.
     
     vdim : int
-        The number of columns of the grid.
+        The y dimension of the grid.
         
     Returns
     -------
@@ -1376,8 +1377,11 @@ def boolean_fuse(occtopology1, occtopology2):
     compound : OCCcompound
         An OCCcompound constructed from the fusion.
     """
-    fused = Construct.boolean_fuse(occtopology1, occtopology2)
-    compound = fetch.topo2topotype(fused)
+    join = BRepAlgoAPI_Fuse(occtopology1, occtopology2)
+    join.RefineEdges()
+    join.FuseEdges()
+    shape = join.Shape()
+    compound = fetch.topo2topotype(shape)
     return compound
 
 def boolean_difference(occstopology2cutfrm, cutting_occtopology):
@@ -1399,7 +1403,12 @@ def boolean_difference(occstopology2cutfrm, cutting_occtopology):
     compound : OCCcompound
         An OCCcompound constructed from the cutting.
     """
-    difference = Construct.boolean_cut(occstopology2cutfrm, cutting_occtopology)
+    #difference = Construct.boolean_cut(occstopology2cutfrm, cutting_occtopology)
+    
+    difference = BRepAlgoAPI_Cut(occstopology2cutfrm, cutting_occtopology)
+    difference.RefineEdges()
+    difference.FuseEdges()
+    difference  = difference.Shape()
     compound = fetch.topo2topotype(difference)
     return compound
 
@@ -1436,9 +1445,10 @@ def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance 
     #visualise([[compound]], ["BLUE"])
     return compound
     
-def simple_mesh(occtopology, mesh_incremental_float = 0.8):
+def simple_mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5):
     """
-    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology.
+    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology. For explaination on what is linear deflection and angle deflection refer to 
+    https://www.opencascade.com/doc/occt-7.1.0/overview/html/occt_user_guides__modeling_algos.html#occt_modalg_11_2
  
     Parameters
     ----------
@@ -1457,12 +1467,12 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
     #TODO: figure out why is it that some surfaces do not work
     occtopology = TopoDS_Shape(occtopology)
     bt = BRep_Tool()
-    BRepMesh_IncrementalMesh(occtopology, mesh_incremental_float)
+    BRepMesh_IncrementalMesh(occtopology, linear_deflection,True, angle_deflection, True)
     occshape_face_list = fetch.topo_explorer(occtopology, "face")
     occface_list = []
+    cnt = 0
     for occshape_face in occshape_face_list:
         location = TopLoc_Location()
-        #occshape_face = modify.fix_face(occshape_face)
         facing = bt.Triangulation(occshape_face, location).GetObject()
         if facing:
             tab = facing.Nodes()
@@ -1477,4 +1487,121 @@ def simple_mesh(occtopology, mesh_incremental_float = 0.8):
                 #print pypt1, pypt2, pypt3
                 occface = make_polygon([pypt1, pypt2, pypt3])
                 occface_list.append(occface)
+        cnt+=1
     return occface_list
+
+def tessellator(occtopology):
+    """
+    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology. 
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        The OCCtopology to be meshed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of meshed OCCfaces (triangles) constructed from the meshing.
+    """
+    # compute the tesselation
+    tess = Tesselator(occtopology)
+    tess.Compute()
+    
+    # get vertices
+    n_verts = tess.ObjGetVertexCount()
+    vert_list = []
+    n_list = []
+    
+    for vi in range(n_verts):
+        vert = tess.GetVertex(vi)
+        vert_list.append(vert)
+        n = tess.GetNormal(vi)
+        n_list.append(n)
+        
+    n_tri = tess.ObjGetTriangleCount()
+    
+    tri_list = []
+    for ti in range(n_tri):
+        tri_indexes = tess.GetTriangleIndex(ti)
+        tri_verts = []
+        tri_ns = []
+        for index in tri_indexes:
+            tri_vert = vert_list[index]
+            tri_n = n_list[index]
+            tri_ns.append(tri_n)
+            tri_verts.append(tri_vert)
+            
+        avg_n = calculate.points_mean(tri_ns)
+        tri = make_polygon(tri_verts)
+        tri_n2 = calculate.face_normal(tri)
+        angle = calculate.angle_bw_2_vecs(avg_n, tri_n2)
+        if angle > 170:
+            print angle
+            tri = modify.reverse_face(tri)
+        tri_list.append(tri)
+        
+    return tri_list
+    
+def mesh_3d(occtopology, stl_filepath):
+    """
+    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology. 
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        The OCCtopology to be meshed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    Returns
+    -------
+    list of face : list of OCCfaces
+        A list of meshed OCCfaces (triangles) constructed from the meshing.
+    """
+    from OCC.SMESH import SMESH_Gen
+    from OCC.StdMeshers import StdMeshers_Propagation, StdMeshers_AutomaticLength, StdMeshers_UseExisting_2D, StdMeshers_QuadraticMesh, StdMeshers_Arithmetic1D, StdMeshers_TrianglePreference, StdMeshers_Regular_1D, StdMeshers_Projection_3D,StdMeshers_MEFISTO_2D, StdMeshers_Prism_3D, StdMeshers_QuadranglePreference, StdMeshers_Quadrangle_2D
+    
+    # Create the Mesh
+    print 'Creating mesh ...'
+    aMeshGen = SMESH_Gen()
+    aMesh = aMeshGen.CreateMesh(0, True)
+    print 'Done.'
+    
+    print 'Adding hypothesis and algorithms ...'
+    # 1D
+    an1DHypothesis = StdMeshers_Arithmetic1D(0, 0, aMeshGen)#discretization of the wire
+    an1DHypothesis.SetLength(0.01, False) #the smallest distance between 2 points
+    an1DHypothesis.SetLength(0.5, True) # the longest distance between 2 points
+    an1DAlgo = StdMeshers_Regular_1D(1, 0, aMeshGen) # interpolation
+    
+    # 2D
+    #a2dHypothseis = StdMeshers_TrianglePreference(2, 0, aMeshGen)  # define the boundary
+    a2dHypothseis = StdMeshers_QuadraticMesh(2, 0, aMeshGen)
+    #a2dHypothseis = StdMeshers_Propagation(2,0,aMeshGen)
+    
+    #a2dAlgo = StdMeshers_UseExisting_2D(3, 0, aMeshGen) # the 2D mesh
+    a2dAlgo = StdMeshers_MEFISTO_2D(3, 0, aMeshGen)
+    
+    # 3D: Just uncomment the line to use the volumic mesher you want
+    #a3dHypothesis = StdMeshers_Prism_3D(4, 0, aMeshGen) #OK
+    a3dHypothesis = StdMeshers_Projection_3D(4, 0, aMeshGen)
+    
+    #Calculate mesh
+    aMesh.ShapeToMesh(occtopology)
+    
+    #Assign hyptothesis to mesh
+    aMesh.AddHypothesis(occtopology, 0)
+    aMesh.AddHypothesis(occtopology, 1)
+    aMesh.AddHypothesis(occtopology, 2)
+    aMesh.AddHypothesis(occtopology, 3)
+    aMesh.AddHypothesis(occtopology, 4)
+    print 'Done.'
+    
+    #Compute the data
+    print 'Computing mesh ...'
+    aMeshGen.Compute(aMesh,aMesh.GetShapeToMesh())
+    print 'Done.'
+    
+    print aMesh.NbNodes()
+    aMesh.ExportSTL(stl_filepath, False)

@@ -24,6 +24,8 @@ import construct
 import calculate
 import fetch
 import modify
+import os
+import sys
 
 from OCC.Display.SimpleGui import init_display
 from OCCUtils import Topology
@@ -365,7 +367,7 @@ def visualise(occtopo_2dlist, colour_list = None, backend = "qt-pyqt5"):
     display.FitAll()
     start_display()
     
-def write_2_stl(occtopology, stl_filepath, mesh_incremental_float = 0.8):
+def write_2_stl(occtopology, stl_filepath, linear_deflection = 0.8, angle_deflection = 0.5):
     """
     This function writes a 3D model into STL format.
  
@@ -388,10 +390,205 @@ def write_2_stl(occtopology, stl_filepath, mesh_incremental_float = 0.8):
     """       
     from OCC.StlAPI import StlAPI_Writer
     from OCC.BRepMesh import BRepMesh_IncrementalMesh
+    from OCC.TopoDS import TopoDS_Shape
     # Export to STL
     stl_writer = StlAPI_Writer()
     stl_writer.SetASCIIMode(True)
-    mesh = BRepMesh_IncrementalMesh(occtopology, mesh_incremental_float)
-    mesh.Perform()
+    occtopology = TopoDS_Shape(occtopology)
+    mesh = BRepMesh_IncrementalMesh(occtopology, linear_deflection, True, angle_deflection, True)
     assert mesh.IsDone()
+        
     stl_writer.Write(occtopology,stl_filepath)
+    
+def write_2_stl2(occtopology, stl_filepath, is_meshed = True, linear_deflection = 0.8, angle_deflection = 0.5):
+    """
+    This function writes a 3D model into STL format. This is different from write2stl as it uses the numpy-stl library.
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        Geometries to be written into STL.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    stl_filepath : str
+        The file path of the STL file. 
+        
+    mesh_incremental_float : float, optional
+        Default = 0.8.
+        
+    Returns
+    -------
+    None : None
+        The geometries are written to a STL file.
+    """       
+    import numpy as np
+    from stl import mesh
+    
+    if is_meshed == False:
+        tri_faces = construct.simple_mesh(occtopology, linear_deflection = linear_deflection, angle_deflection = angle_deflection)
+        occtopology = construct.make_compound(tri_faces)
+        
+    face_list = fetch.topo_explorer(occtopology, "face")
+    vlist = fetch.topo_explorer(occtopology, "vertex")
+    occptlist = modify.occvertex_list_2_occpt_list(vlist)
+    pyptlist = modify.occpt_list_2_pyptlist(occptlist)
+    pyptlist = modify.rmv_duplicated_pts(pyptlist)
+    vertices = np.array(pyptlist)
+    
+    face_index_2dlsit = []
+    for face in face_list:
+        f_pyptlist = fetch.points_frm_occface(face)
+        f_pyptlist.reverse()            
+        if len(f_pyptlist) == 3:
+            index_list = []
+            for fp in f_pyptlist:
+                p_index = pyptlist.index(fp)
+                index_list.append(p_index)
+            face_index_2dlsit.append(index_list)
+        elif len(f_pyptlist) > 3:
+            print "THE FACE HAS THE WRONG NUMBER OF VERTICES, IT HAS:", len(f_pyptlist), "VERTICES"
+            tri_faces = construct.simple_mesh(face)
+            for tri_face in tri_faces:
+                tps = fetch.points_frm_occface(tri_face)
+                index_list = []
+                for tp in tps:
+                    p_index = pyptlist.index(tp)
+                    index_list.append(p_index)
+                face_index_2dlsit.append(index_list)
+#        else:
+#            print "THE FACE HAS THE WRONG NUMBER OF VERTICES, IT HAS:", len(f_pyptlist), "VERTICES"
+        
+    faces = np.array(face_index_2dlsit)
+    shape_mesh = mesh.Mesh(np.zeros(faces.shape[0], dtype = mesh.Mesh.dtype))
+    for i, f in enumerate(faces):
+        for j in range(3):
+            shape_mesh.vectors[i][j] = vertices[f[j],:]
+            
+    shape_mesh.save(stl_filepath)
+    
+    
+def read_stl(stl_filepath):
+    """
+    This function reads STL format.
+ 
+    Parameters
+    ----------
+    stl_filepath : str
+        The file path of the STL file. 
+        
+    Returns
+    -------
+    occtopology : OCCtopology
+        The geometries from an STL file.
+    """       
+    from OCC.StlAPI import StlAPI_Reader
+    from OCC.TopoDS import TopoDS_Shape
+    
+    stl_reader = StlAPI_Reader()
+    the_shape = TopoDS_Shape()
+    stl_reader.Read(the_shape, stl_filepath)
+
+    assert not the_shape.IsNull()
+
+    return the_shape
+
+def write_brep(occtopology, brep_filepath):
+    """
+    This function writes a 3D model into brep format.
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        Geometries to be written into STL.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    brep_filepath : str
+        The file path of the brep file. 
+        
+    Returns
+    -------
+    None : None
+        The geometries are written to a brep file.
+    """       
+    from OCC.BRepTools import breptools_Write
+    breptools_Write(occtopology, brep_filepath)
+    
+def read_brep(brep_filepath):
+    """
+    This function writes a 3D model into brep format.
+ 
+    Parameters
+    ----------
+    brep_filepath : str
+        The file path of the brep file. 
+        
+    Returns
+    -------
+    occtopology : OCCtopology
+        Geometries read from the brep.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+    """       
+    from OCC.BRepTools import breptools_Read
+    from OCC.TopoDS import TopoDS_Shape
+    from OCC.BRep import BRep_Builder
+    
+    shape = TopoDS_Shape()
+    builder = BRep_Builder()
+    breptools_Read(shape, brep_filepath, builder)
+    return shape
+    
+def write_2_stl_gmsh(occtopology, stl_filepath, min_length = 1, max_length = 5,
+                     gmsh_location = "C:\\gmsh\\gmsh.exe"):
+    """
+    This function mesh an occtopology using gmsh http://gmsh.info/.
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        Geometries to be written into STL.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    stl_filepath : str
+        The file path of the STL file. 
+        
+    Returns
+    -------
+    None : None
+        The geometries are meshed and written to a stl file.
+    """
+    # dump the geometry to a brep file
+    from OCC.BRepTools import breptools_Write
+    import subprocess
+    
+    parent_path = os.path.abspath(os.path.join(stl_filepath, os.pardir))
+    filename = os.path.splitext(stl_filepath)[0]
+    # create the brep file
+    brep_file = os.path.join(parent_path, filename +".brep")
+    breptools_Write(occtopology,brep_file)
+    
+    # create the gmesh file
+    geo_file = os.path.join(parent_path, "shape.geo")
+    set_factory_str = 'SetFactory("OpenCASCADE");\n'
+    mesh_min_length = 'Mesh.CharacteristicLengthMin = ' + str(min_length)+';\n'
+    mesh_max_length = 'Mesh.CharacteristicLengthMax = ' + str(max_length) + ';\n'
+    brep_file_str = 'a() = ShapeFromFile("' + brep_file +'");'
+    gmsh_geo_file_content = set_factory_str+mesh_min_length+mesh_max_length+brep_file_str
+    gmsh_geo_file = open(geo_file, "w")
+    gmsh_geo_file.write(gmsh_geo_file_content)
+    gmsh_geo_file.close()
+
+    # call gmsh
+    cwd = os.getcwd()
+    gmsh_dir = os.path.abspath(os.path.join(gmsh_location, os.pardir))
+    os.chdir(gmsh_dir)
+
+    command = "gmsh " +  geo_file + " -2 -o " + stl_filepath + " -format stl"
+    process = subprocess.call(command)
+
+    
+    # load the stl file
+    if process == 0 and os.path.isfile(stl_filepath) :
+        print "WROTE TO:", stl_filepath
+        os.chdir(cwd)
+    else:
+        print "Be sure gmsh is in your PATH"

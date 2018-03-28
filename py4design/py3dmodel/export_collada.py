@@ -31,13 +31,13 @@ def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=No
  
     Parameters
     ----------
+    dae_filepath : str
+        The file path of the DAE (Collada) file.
+        
     occface_list : list of OCCfaces
         The geometries to be visualised with the results. The list of geometries must correspond to the list of results. Other OCCtopologies
         are also accepted, but the OCCtopology must contain OCCfaces. OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, 
         OCCsolid, OCCshell, OCCface. 
-        
-    dae_filepath : str
-        The file path of the DAE (Collada) file.
     
     face_rgb_colour_list : list of tuple of floats, optional
         Each tuple is a r,g,b that is specifying the colour of the face. The number of colours must correspond to the number of OCCfaces.

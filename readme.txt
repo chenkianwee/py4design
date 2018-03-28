@@ -28,6 +28,8 @@ To run the environment:
     a.) follow the conda install instruction for pythonocc from this link: http://www.pythonocc.org/download/ 
 
     b.) conda install scipy (BSD accepted license)
+    
+    c.) pip install numpy-stl
 
 3.) pip install py4design
 
@@ -64,3 +66,5 @@ list of libraries used in py4design
 11.) cvxopt (GNU General Public License v3.0)
 
 12.) matplotlib 
+
+13.) numpy-stl
