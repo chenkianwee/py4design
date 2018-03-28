@@ -25,7 +25,6 @@ import calculate
 import fetch
 import modify
 import os
-import sys
 
 from OCC.Display.SimpleGui import init_display
 from OCCUtils import Topology
@@ -537,7 +536,7 @@ def read_brep(brep_filepath):
     breptools_Read(shape, brep_filepath, builder)
     return shape
     
-def write_2_stl_gmsh(occtopology, stl_filepath, min_length = 1, max_length = 5,
+def write_2_stl_gmsh(occtopology, stl_filepath, mesh_dim = 2, min_length = 1, max_length = 5,
                      gmsh_location = "C:\\gmsh\\gmsh.exe"):
     """
     This function mesh an occtopology using gmsh http://gmsh.info/.
@@ -550,6 +549,18 @@ def write_2_stl_gmsh(occtopology, stl_filepath, min_length = 1, max_length = 5,
         
     stl_filepath : str
         The file path of the STL file. 
+        
+    mesh_dim : int, optional
+        Perform 1D, 2D or 3D mesh generation.
+        
+    min_length : float, optional
+        The minimum edge length of the mesh.
+    
+    max_length : float, optional
+        The max edge length of the mesh.
+        
+    gmsh_location : str
+        The location where the gmsh program is located. We assumed it is isntalled in C:\\gmsh\\gmsh.exe
         
     Returns
     -------
@@ -582,7 +593,8 @@ def write_2_stl_gmsh(occtopology, stl_filepath, min_length = 1, max_length = 5,
     gmsh_dir = os.path.abspath(os.path.join(gmsh_location, os.pardir))
     os.chdir(gmsh_dir)
 
-    command = "gmsh " +  geo_file + " -2 -o " + stl_filepath + " -format stl"
+    command = "gmsh " +  geo_file + " -" + str(mesh_dim) + " -algo meshadapt -o " + stl_filepath + " -format stl"
+    print command
     process = subprocess.call(command)
 
     
