@@ -593,7 +593,7 @@ def write_2_stl_gmsh(occtopology, stl_filepath, mesh_dim = 2, min_length = 1, ma
     gmsh_dir = os.path.abspath(os.path.join(gmsh_location, os.pardir))
     os.chdir(gmsh_dir)
 
-    command = "gmsh " +  geo_file + " -" + str(mesh_dim) + " -algo meshadapt -o " + stl_filepath + " -format stl"
+    command = "gmsh " +  geo_file + " -" + str(mesh_dim) + " -algo del3d -o " + stl_filepath + " -format stl"
     print command
     process = subprocess.call(command)
 
