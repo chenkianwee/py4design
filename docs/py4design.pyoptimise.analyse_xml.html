@@ -1,0 +1,1060 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.pyoptimise.analyse_xml module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.pyoptimise.analyse_xml">
+<span id="py4design-pyoptimise-analyse-xml-module"></span><h1>py4design.pyoptimise.analyse_xml module<a class="headerlink" href="#module-py4design.pyoptimise.analyse_xml" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_childnode_values">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_values</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_childnode_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the node to be retrieved.</p>
+</div></blockquote>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The values of the node.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_childnode_attributes">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_attributes</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>attribute_name</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_childnode_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the node to be retrieved.</p>
+</div></blockquote>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+<p><strong>attribute_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the attributes to retrieve.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>values</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The values of the attributes of the node.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_childnode_value">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_childnode_value</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_childnode_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the node to be retrieved.</p>
+</div></blockquote>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>value</strong> : str</p>
+<blockquote class="last">
+<div><p>The value of the node.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.edit_nodevalue">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">edit_nodevalue</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>change_value</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.edit_nodevalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the node value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the node to be retrieved.</p>
+</div></blockquote>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+<p><strong>change_value</strong> : str</p>
+<blockquote class="last">
+<div><p>The new value of the node.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.create_childnode">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">create_childnode</code><span class="sig-paren">(</span><em>node_name</em>, <em>parent_node</em>, <em>value</em>, <em>doc</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.create_childnode" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>node_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the node to be created.</p>
+</div></blockquote>
+<p><strong>parent_node</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The parent node.</p>
+</div></blockquote>
+<p><strong>value</strong> : str</p>
+<blockquote>
+<div><p>The value of the node.</p>
+</div></blockquote>
+<p><strong>doc</strong> : xml minidom Document</p>
+<blockquote class="last">
+<div><p>The document to append the created node into.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.create_xml_file">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">create_xml_file</code><span class="sig-paren">(</span><em>doc</em>, <em>ind</em>, <em>status</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.create_xml_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a invidual node in the xml document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>doc</strong> : xml minidom Document</p>
+<blockquote>
+<div><p>The document to append the created node into.</p>
+</div></blockquote>
+<p><strong>ind</strong> : nsga2.Individual class instance</p>
+<blockquote>
+<div><p>The individual object from the optimisation.</p>
+</div></blockquote>
+<p><strong>status</strong> : bool</p>
+<blockquote>
+<div><p>True or False, if True the individual is alived, if False it is not.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>doc</strong> : xml minidom Document</p>
+<blockquote class="last">
+<div><p>The document to append the created node into.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.create_xml_individual">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">create_xml_individual</code><span class="sig-paren">(</span><em>doc</em>, <em>identity</em>, <em>generation</em>, <em>status</em>, <em>genotype</em>, <em>ind_derivedparams</em>, <em>ind_scores</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.create_xml_individual" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a invidual node in the xml document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>doc</strong> : xml minidom Document</p>
+<blockquote>
+<div><p>The document to append the created node into.</p>
+</div></blockquote>
+<p><strong>identity</strong> : int</p>
+<blockquote>
+<div><p>The unique id of an individual.</p>
+</div></blockquote>
+<p><strong>generation</strong> : int</p>
+<blockquote>
+<div><p>The generation of the individual.</p>
+</div></blockquote>
+<p><strong>status</strong> : bool</p>
+<blockquote>
+<div><p>True or False, if True the individual is alived, if False it is not.</p>
+</div></blockquote>
+<p><strong>genotype</strong> : Genotype class instance</p>
+<blockquote>
+<div><p>The genotype of the individual.</p>
+</div></blockquote>
+<p><strong>ind_derivedparams</strong> : DerivedParams class instance</p>
+<blockquote>
+<div><p>The derived parameters of the individual.</p>
+</div></blockquote>
+<p><strong>ind_scores</strong> : list of floats</p>
+<blockquote>
+<div><p>The scores of the individual.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>doc</strong> : xml minidom Document</p>
+<blockquote class="last">
+<div><p>The document to append the created node into.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_score">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_score</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the scores of an invidual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The individual node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scores</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>The scores of the individual</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_inputparam">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_inputparam</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_inputparam" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the input parameters (genotype) of an invidual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The individual node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>input parameters</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>The input parameters of the individual</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_derivedparam">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_derivedparam</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_derivedparam" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the derived parameters of an invidual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The individual node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>derived parameters</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>The derived parameters of the individual</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_id">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_id</code><span class="sig-paren">(</span><em>ind</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the unique id of an invidual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ind</strong> : xml minidom Node</p>
+<blockquote>
+<div><p>The individual node.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>id</strong> : str</p>
+<blockquote class="last">
+<div><p>The id of the individual</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.get_inds_frm_xml">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">get_inds_frm_xml</code><span class="sig-paren">(</span><em>xml_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.get_inds_frm_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets the individuals minidom Node from an XML file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xml_filepath</strong> : str</p>
+<blockquote>
+<div><p>The file path of the XML file.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>individuals</strong> : list of xml minidom Node</p>
+<blockquote class="last">
+<div><p>All the individuals in the xml file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.write_inds_2_xml">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">write_inds_2_xml</code><span class="sig-paren">(</span><em>inds</em>, <em>res_path</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.write_inds_2_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes the individuals minidom Node into an XML file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>All the individuals to be written to the xml file.</p>
+</div></blockquote>
+<p><strong>res_path</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the XML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.combine_xml_files">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">combine_xml_files</code><span class="sig-paren">(</span><em>xmlfile1</em>, <em>xmlfile2</em>, <em>resxml_file</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.combine_xml_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function combines two xml file into a single xml file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile1</strong> : str</p>
+<blockquote>
+<div><p>The file path of the first XML file.</p>
+</div></blockquote>
+<p><strong>xmlfile2</strong> : str</p>
+<blockquote>
+<div><p>The file path of the second XML file.</p>
+</div></blockquote>
+<p><strong>resxml_file</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the resultant XML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.rmv_unevaluated_inds">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">rmv_unevaluated_inds</code><span class="sig-paren">(</span><em>xmlfile</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.rmv_unevaluated_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes all the individuals that are unevaluated from the xml file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>xmlfile</strong> : str</p>
+<blockquote class="last">
+<div><p>The file path of the XML file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.dominates">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">dominates</code><span class="sig-paren">(</span><em>result_list1</em>, <em>result_list2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.dominates" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines if result_list1 dominates result_list2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>result_list2</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dominates</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True result_list1 dominates result_list2, if false result_list1 does not dominate result_list2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.on_pareto_front">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">on_pareto_front</code><span class="sig-paren">(</span><em>score_list</em>, <em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.on_pareto_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines if the score_list is on the pareto front.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>result_list1</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>on pareto</strong> : bool</p>
+<blockquote class="last">
+<div><p>True or False, if True score_list is on the Pareto front, if False score_list is not on the Pareto front.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.extract_pareto_front">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.extract_pareto_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>non pareto front</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.c_measures">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">c_measures</code><span class="sig-paren">(</span><em>score_2dlist1</em>, <em>score_2dlist2</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.c_measures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the c-measure btween two Pareto front.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist1</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>score_2dlist2</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>c-measure</strong> : float</p>
+<blockquote class="last">
+<div><p>The c-measure. 1 means score_2dlist1 totally dominates score_2dlist2.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.minimise_score_4_hypervolume">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">minimise_score_4_hypervolume</code><span class="sig-paren">(</span><em>score_list</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.minimise_score_4_hypervolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_list</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives of an individual.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score list</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>The list of converted floats.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.prepare_front_4_hypervolume">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">prepare_front_4_hypervolume</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.prepare_front_4_hypervolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts maximuse scores to be minimise in preparation for the hypervolume calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>converted score 2dlist</strong> : 2d list of floats</p>
+<blockquote class="last">
+<div><p>The 2d list of converted floats.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.hyper_volume">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">hyper_volume</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>ref_pt</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.hyper_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the hypervolume calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals on the Pareto front.</p>
+</div></blockquote>
+<p><strong>ref_pt</strong> : list of floats</p>
+<blockquote>
+<div><p>The performance objectives that is coverted by every individual on the Pareto front.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>hyper volume</strong> : float</p>
+<blockquote class="last">
+<div><p>The hyper volume of the front.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.inds_2_score_2dlist">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">inds_2_score_2dlist</code><span class="sig-paren">(</span><em>inds</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.inds_2_score_2dlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts xml minidom individual node into score 2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>All the individuals to be converted.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.extract_pareto_front_inds">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">extract_pareto_front_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>min_max_list</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.extract_pareto_front_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extract the Pareto front from the list of score_2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>The individuals to extract the Pareto front from.</p>
+</div></blockquote>
+<p><strong>min_max_list</strong> : list of ints</p>
+<blockquote>
+<div><p>The min max list is in this format, [0,1]. 0 = minimise, 1 = maximise. The min max list must correspond to the two result lists.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pareto front</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>The population of individuals on the front.</p>
+</div></blockquote>
+<p><strong>non pareto front</strong> : list of xml minidom Node</p>
+<blockquote class="last">
+<div><p>The population of individuals not on the front.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.calc_min_max_range">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">calc_min_max_range</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.calc_min_max_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the minimum and maximum range of the 2d data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>min max range</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The range of the 2d data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.normalise">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">normalise</code><span class="sig-paren">(</span><em>data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function normalise all the data into 0.0-1.0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>normalised 2d list</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The normalised 2d data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.denormalise">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">denormalise</code><span class="sig-paren">(</span><em>data_2dlist</em>, <em>orig_data_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.denormalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a 2d data list back into its original range based on the orig_data_2dlist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The normalised list of floats.</p>
+</div></blockquote>
+<p><strong>orig_data_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The 2d list of floats.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>denormalised 2d list</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The denormalised 2d data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.kmeans_inds">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">kmeans_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>attribs_2_cluster</em>, <em>n_clusters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.kmeans_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs k-means clustering on the specified attributes of the individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>All the individuals to be clustered.</p>
+</div></blockquote>
+<p><strong>attribs_2_cluster</strong> : str</p>
+<blockquote>
+<div><p>Options: “score”, “inputparam”, “derivedparam”.</p>
+</div></blockquote>
+<p><strong>n_clusters</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of clusters to generate, Default = None. If None the elbow test is used to automatically decide the number of clusters.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result dictionary</strong> : dictionary</p>
+<blockquote class="last">
+<div><p>The dictionary is in this format. {“cluster_list”: [[cluster1-ind1, cluster1-ind2, cluster1-indx],[cluster2-ind1, cluster2-ind2, cluster2-indx],[cluster3-ind1, cluster3-ind2, cluster3-indx]]
+“centroids”: [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.kmeans">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">kmeans</code><span class="sig-paren">(</span><em>np_array</em>, <em>n_clusters</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.kmeans" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs k-means clustering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
+<blockquote>
+<div><p>2d list of floats.</p>
+</div></blockquote>
+<p><strong>n_clusters</strong> : int</p>
+<blockquote>
+<div><p>The number of clusters to generate.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result dictionary</strong> : dictionary</p>
+<blockquote class="last">
+<div><p>The dictionary is in this format. {“cluster_list”: [[cluster1-array1, cluster1-array2, cluster1-arrayx],[cluster2-array1, cluster2-array2, cluster2-arrayx],[cluster3-array1, cluster3-array2, cluster3-arrayx]]
+“centroids”: [cluster1-centroid, cluster2-centroid, cluster3-centroid}, centroid = [x,y,z]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.elbow_test">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">elbow_test</code><span class="sig-paren">(</span><em>X</em>, <em>max_cluster</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.elbow_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the elbow test to determine the number of clusters for k-means clustering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy array</p>
+<blockquote>
+<div><p>2d list of floats.</p>
+</div></blockquote>
+<p><strong>max_cluster</strong> : int</p>
+<blockquote>
+<div><p>The maximum number of clusters to desirable.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>number of clusters</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of clusters for kmeans clustering</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.archetypal_analysis_inds">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis_inds</code><span class="sig-paren">(</span><em>inds</em>, <em>attribs_2_cluster</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.archetypal_analysis_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs archetypal analysis on the specified attributes of the individuals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>inds</strong> : list of xml minidom Node</p>
+<blockquote>
+<div><p>All the individuals to be analysed.</p>
+</div></blockquote>
+<p><strong>attribs_2_cluster</strong> : str</p>
+<blockquote>
+<div><p>Options: “score”, “inputparam”, “derivedparam”.</p>
+</div></blockquote>
+<p><strong>max_archetypes</strong> : int</p>
+<blockquote>
+<div><p>The maximum permissible number of archetypes to generate.</p>
+</div></blockquote>
+<p><strong>niter</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of iterations of the analysis, Default = 200.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.archetypal_analysis">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">archetypal_analysis</code><span class="sig-paren">(</span><em>np_array</em>, <em>max_archetypes</em>, <em>niter=200</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.archetypal_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs archetypal analysis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>np_array</strong> : numpy array</p>
+<blockquote>
+<div><p>2d list of floats.</p>
+</div></blockquote>
+<p><strong>max_archetypes</strong> : int</p>
+<blockquote>
+<div><p>The maximum permissible number of archetypes to generate.</p>
+</div></blockquote>
+<p><strong>niter</strong> : int, optional</p>
+<blockquote>
+<div><p>The number of iterations of the analysis, Default = 200.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>archetypes</strong> : 2dlist of floats</p>
+<blockquote class="last">
+<div><p>The 2d list of floats is in this format: [archetype1,archetype2,archetype3], archetype = [x,y,z]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.crowd_distance_assignment">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">crowd_distance_assignment</code><span class="sig-paren">(</span><em>score_2dlist</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.crowd_distance_assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates and assigns the crowding distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>assigned individuals</strong> : list of floats</p>
+<blockquote class="last">
+<div><p>Each individual is assigned a crowding distance the list is in the order of the score_2dlist.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.pyoptimise.analyse_xml.sort_objectives">
+<code class="descclassname">py4design.pyoptimise.analyse_xml.</code><code class="descname">sort_objectives</code><span class="sig-paren">(</span><em>score_2dlist</em>, <em>obj_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.pyoptimise.analyse_xml.sort_objectives" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function arranges the individuals in ascending orders according to a chosen performance objective.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>score_2dlist</strong> : 2dlist of floats</p>
+<blockquote>
+<div><p>The performance objectives of a population of individuals.</p>
+</div></blockquote>
+<p><strong>obj_idx</strong> : int</p>
+<blockquote>
+<div><p>The index of the chosen objective for arranging the individuals.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sorted individuals</strong> : 2d list of floats</p>
+<blockquote class="last">
+<div><p>The sorted list of individuals in ascending orders according to the chosen objective.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.pyoptimise.analyse_xml.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

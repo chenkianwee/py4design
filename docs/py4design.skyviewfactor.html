@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py4design.skyviewfactor module &#8212; py4design 0.2a1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-py4design.skyviewfactor">
+<span id="py4design-skyviewfactor-module"></span><h1>py4design.skyviewfactor module<a class="headerlink" href="#module-py4design.skyviewfactor" title="Permalink to this headline">¶</a></h1>
+<p>PART 1 - DISCRETIZATION OF 4-PI SPACE
+&#64;author: Tiangang Yin
+Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J., 2013. A new approach of direction discretization and oversampling for 3D anisotropic radiative transfer modeling. Remote Sensing of Environment, 135, pp.213-223.</p>
+<dl class="function">
+<dt id="py4design.skyviewfactor.wrapTo2PI">
+<code class="descclassname">py4design.skyviewfactor.</code><code class="descname">wrapTo2PI</code><span class="sig-paren">(</span><em>stradiance</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.wrapTo2PI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="py4design.skyviewfactor.direction">
+<em class="property">class </em><code class="descclassname">py4design.skyviewfactor.</code><code class="descname">direction</code><span class="sig-paren">(</span><em>x1=0.0</em>, <em>y1=0.0</em>, <em>z1=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="py4design.skyviewfactor.direction.printNorm">
+<code class="descname">printNorm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.direction.printNorm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.direction.reverseDir">
+<code class="descname">reverseDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.direction.reverseDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.skyviewfactor.thetaPhiToVectorDir">
+<code class="descclassname">py4design.skyviewfactor.</code><code class="descname">thetaPhiToVectorDir</code><span class="sig-paren">(</span><em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.thetaPhiToVectorDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="py4design.skyviewfactor.tgDirs">
+<em class="property">class </em><code class="descclassname">py4design.skyviewfactor.</code><code class="descname">tgDirs</code><span class="sig-paren">(</span><em>nbDirs=2000</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>classdocs</p>
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.generateDirs">
+<code class="descname">generateDirs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.generateDirs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.printDirList">
+<code class="descname">printDirList</code><span class="sig-paren">(</span><em>mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.printDirList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.getDirList">
+<code class="descname">getDirList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.getDirList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.getDirUpperHemisphere">
+<code class="descname">getDirUpperHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.getDirUpperHemisphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.getDirLowerHemisphere">
+<code class="descname">getDirLowerHemisphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.getDirLowerHemisphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="py4design.skyviewfactor.tgDirs.getNbDir">
+<code class="descname">getNbDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.tgDirs.getNbDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.skyviewfactor.calc_SVF">
+<code class="descclassname">py4design.skyviewfactor.</code><code class="descname">calc_SVF</code><span class="sig-paren">(</span><em>coord</em>, <em>compound</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.skyviewfactor.calc_SVF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py4design</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, chenkianwee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/py4design.skyviewfactor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
