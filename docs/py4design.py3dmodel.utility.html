@@ -29,8 +29,429 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="py4design-py3dmodel-utility-module">
-<h1>py4design.py3dmodel.utility module<a class="headerlink" href="#py4design-py3dmodel-utility-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-py4design.py3dmodel.utility">
+<span id="py4design-py3dmodel-utility-module"></span><h1>py4design.py3dmodel.utility module<a class="headerlink" href="#module-py4design.py3dmodel.utility" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.generate_falsecolour_bar">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">generate_falsecolour_bar</code><span class="sig-paren">(</span><em>minval</em>, <em>maxval</em>, <em>unit_str</em>, <em>bar_length</em>, <em>description_str=None</em>, <em>bar_pos=(0</em>, <em>0</em>, <em>0)</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.generate_falsecolour_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a falsecolour diagram.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>minval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The minimum value of the falsecolour bar.</p>
+</dd>
+<dt><strong>maxval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The maximum value of the falsecolour bar.</p>
+</dd>
+<dt><strong>unit_str</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The string of the unit to be displayed on the bar.</p>
+</dd>
+<dt><strong>bar_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The length of the falsecolour bar.</p>
+</dd>
+<dt><strong>description_str</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">Description for the falsecolour bar, Default = None.</p>
+</dd>
+<dt><strong>bar_pos</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of floats, optional</span></dt>
+<dd><p class="first last">The position of the bar, Default = (0,0,0).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>falsecolour bar</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCfaces</span></dt>
+<dd><p class="first last">The falsecolor bar which is a list of OCCfaces.</p>
+</dd>
+<dt><strong>bar colour</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of tuple of floats</span></dt>
+<dd><p class="first last">Each tuple is a r,g,b that is specifying the colour of the bar.</p>
+</dd>
+<dt><strong>geometries of text: OCCcompound</strong></dt>
+<dd><p class="first last">The geometries of the text.</p>
+</dd>
+<dt><strong>str_colour_list</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of tuple of floats</span></dt>
+<dd><p class="first last">Each tuple is a r,g,b that is specifying the colour of the string.</p>
+</dd>
+<dt><strong>value of each falsecolour</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of floats</span></dt>
+<dd><p class="first last">The value of each falsecolour.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.pseudocolor">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">pseudocolor</code><span class="sig-paren">(</span><em>val</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.pseudocolor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a value into a rgb value with reference to the minimum and maximum value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The value to be converted into rgb.</p>
+</dd>
+<dt><strong>minval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The minimum value of the falsecolour rgb.</p>
+</dd>
+<dt><strong>maxval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The maximum value of the falsecolour rgb.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rgb value</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of floats</span></dt>
+<dd><p class="first last">The converted rgb value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.falsecolour">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">falsecolour</code><span class="sig-paren">(</span><em>vals</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.falsecolour" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a list of values into a list of rgb values with reference to the minimum and maximum value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>vals</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of float</span></dt>
+<dd><p class="first last">A list of values to be converted into rgb.</p>
+</dd>
+<dt><strong>minval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The minimum value of the falsecolour rgb.</p>
+</dd>
+<dt><strong>maxval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The maximum value of the falsecolour rgb.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rgb value</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of tuple of floats</span></dt>
+<dd><p class="first last">The converted list of rgb value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.rgb2val">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">rgb2val</code><span class="sig-paren">(</span><em>rgb</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.rgb2val" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a rgb of value into its original value with reference to the minimum and maximum value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>rgb</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of floats</span></dt>
+<dd><p class="first last">The rgb value to be converted.</p>
+</dd>
+<dt><strong>minval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The minimum value of the falsecolour rgb.</p>
+</dd>
+<dt><strong>maxval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The maximum value of the falsecolour rgb.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>original value</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The orignal float value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.visualise_falsecolour_topo">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">visualise_falsecolour_topo</code><span class="sig-paren">(</span><em>occtopo_list</em>, <em>results</em>, <em>other_occtopo_2dlist=None</em>, <em>other_colour_list=None</em>, <em>minval=None</em>, <em>maxval=None</em>, <em>backend='qt-pyqt5'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.visualise_falsecolour_topo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function visualise a falsecolour 3D model using the PythonOCC viewer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopo_list</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCtopologies</span></dt>
+<dd><p class="first last">The geometries to be visualised with the results. The list of geometries must correspond to the list of results.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of floats</span></dt>
+<dd><p class="first last">The results to be visualised. The list of results must correspond to the occtopo_list.</p>
+</dd>
+<dt><strong>other_occtopo_2dlist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d list of OCCtopologies, optional</span></dt>
+<dd><p class="first last">Other geometries to be visualised together with the results, Default = None.</p>
+</dd>
+<dt><strong>other_colour_list</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd><p class="first last">The colours of the other_topo2dlist, Default = None. The colour strings include: “WHITE”, “BLUE”, “RED”, “GREEN”, “YELLOW”, “CYAN”,
+“BLACK”, “ORANGE”. The number of colours must correspond to the number of list in the other_topo2dlist.</p>
+</dd>
+<dt><strong>minval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">The minimum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the maximum value from the results.</p>
+</dd>
+<dt><strong>maxval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">The maximum value of the falsecolour rgb, Default = None. If None the maximum value is equal to the minimum value from the results.</p>
+</dd>
+<dt><strong>backend</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The graphic interface to use for visualisation, Default = qt-pyqt5. Other options include:”qt-pyqt4”, “qt-pyside”, “wx”</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">A qt window pops up displaying the geometries.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.visualise">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">visualise</code><span class="sig-paren">(</span><em>occtopo_2dlist</em>, <em>colour_list=None</em>, <em>backend='qt-pyqt5'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.visualise" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function visualise a 3D model using the PythonOCC viewer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopo_2dlist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d list of OCCtopologies</span></dt>
+<dd><p class="first last">Geometries to be visualised together with the results.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>colour_list</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd><p class="first last">The colours of the occtopo_2dlist, Default = None. If None all the geometries are displayed in white.
+The colour strings include: “WHITE”, “BLUE”, “RED”, “GREEN”, “YELLOW”, “CYAN”, “BLACK”, “ORANGE”. 
+The number of colours must correspond to the number of list in the other_topo2dlist.</p>
+</dd>
+<dt><strong>backend</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The graphic interface to use for visualisation, Default = qt-pyqt5. Other options include:”qt-pyqt4”, “qt-pyside”, “wx”</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">A qt window pops up displaying the geometries.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.write_2_stl">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">write_2_stl</code><span class="sig-paren">(</span><em>occtopology</em>, <em>stl_filepath</em>, <em>linear_deflection=0.8</em>, <em>angle_deflection=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.write_2_stl" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a 3D model into STL format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">Geometries to be written into STL.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>stl_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the STL file.</p>
+</dd>
+<dt><strong>mesh_incremental_float</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Default = 0.8.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">The geometries are written to a STL file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.write_2_stl2">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">write_2_stl2</code><span class="sig-paren">(</span><em>occtopology</em>, <em>stl_filepath</em>, <em>is_meshed=True</em>, <em>linear_deflection=0.8</em>, <em>angle_deflection=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.write_2_stl2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a 3D model into STL format. This is different from write2stl as it uses the numpy-stl library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">Geometries to be written into STL.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>stl_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the STL file.</p>
+</dd>
+<dt><strong>mesh_incremental_float</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Default = 0.8.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">The geometries are written to a STL file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.read_stl">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">read_stl</code><span class="sig-paren">(</span><em>stl_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.read_stl" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads STL format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>stl_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the STL file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">The geometries from an STL file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.write_brep">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">write_brep</code><span class="sig-paren">(</span><em>occtopology</em>, <em>brep_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.write_brep" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a 3D model into brep format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">Geometries to be written into STL.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>brep_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the brep file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">The geometries are written to a brep file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.read_brep">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">read_brep</code><span class="sig-paren">(</span><em>brep_filepath</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.read_brep" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function writes a 3D model into brep format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>brep_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the brep file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">Geometries read from the brep.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.utility.write_2_stl_gmsh">
+<code class="descclassname">py4design.py3dmodel.utility.</code><code class="descname">write_2_stl_gmsh</code><span class="sig-paren">(</span><em>occtopology</em>, <em>stl_filepath</em>, <em>mesh_dim=2</em>, <em>min_length=1</em>, <em>max_length=5</em>, <em>gmsh_location='C:\\gmsh\\gmsh.exe'</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.utility.write_2_stl_gmsh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function mesh an occtopology using gmsh <a class="reference external" href="http://gmsh.info/">http://gmsh.info/</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">Geometries to be written into STL.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>stl_filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The file path of the STL file.</p>
+</dd>
+<dt><strong>mesh_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Perform 1D, 2D or 3D mesh generation.</p>
+</dd>
+<dt><strong>min_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">The minimum edge length of the mesh.</p>
+</dd>
+<dt><strong>max_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">The max edge length of the mesh.</p>
+</dd>
+<dt><strong>gmsh_location</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The location where the gmsh program is located. We assumed it is isntalled in C:gmshgmsh.exe</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>None</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">The geometries are meshed and written to a stl file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 

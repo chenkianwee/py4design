@@ -29,7 +29,9 @@ To run the environment:
 
     b.) conda install scipy (BSD accepted license)
     
-    c.) pip install numpy-stl
+    c.) conda install sympy
+    
+    d.) pip install numpy-stl
 
 3.) pip install py4design
 

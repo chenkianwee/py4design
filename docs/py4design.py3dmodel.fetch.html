@@ -29,8 +29,540 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="py4design-py3dmodel-fetch-module">
-<h1>py4design.py3dmodel.fetch module<a class="headerlink" href="#py4design-py3dmodel-fetch-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-py4design.py3dmodel.fetch">
+<span id="py4design-py3dmodel-fetch-module"></span><h1>py4design.py3dmodel.fetch module<a class="headerlink" href="#module-py4design.py3dmodel.fetch" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.points_frm_edge">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">points_frm_edge</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.points_frm_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of points from the OCCedge. The list of points consist of the starting and ending point of the edge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occedge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCedge</span></dt>
+<dd><p class="first last">The OCCedge to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of points</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pyptlist</span></dt>
+<dd><p class="first last">The list of points extracted from the OCCedge.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.is_edge_bspline">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">is_edge_bspline</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.is_edge_bspline" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if an OCCedge contains a bspline curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occedge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCedge</span></dt>
+<dd><p class="first last">The OCCedge to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>True or False</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">True or False if the edge contains a bspline curve.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.is_edge_line">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">is_edge_line</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.is_edge_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if an OCCedge contains a line.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occedge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCedge</span></dt>
+<dd><p class="first last">The OCCedge to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>True or False</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">True or False if the edge contains a line.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.poles_from_bsplinecurve_edge">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">poles_from_bsplinecurve_edge</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.poles_from_bsplinecurve_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches the poles of a bspline OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occedge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCedge</span></dt>
+<dd><p class="first last">The OCCedge to be examined. The OCCedge needs to contain a bspline curve</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>List of poles</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pyptlist</span></dt>
+<dd><p class="first last">List of poles of the bspline curve</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.edge_domain">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">edge_domain</code><span class="sig-paren">(</span><em>occedge</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.edge_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches the domain of an OCCedge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occedge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCedge</span></dt>
+<dd><p class="first last">The OCCedge to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>lower bound: float</strong></dt>
+<dd><p class="first last">The lower bound of the OCCedge domain</p>
+</dd>
+<dt><strong>upper bound: float</strong></dt>
+<dd><p class="first last">The upper bound of the OCCedge domain</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.points_frm_wire">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">points_frm_wire</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.points_frm_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of points from the OCCwire. The wire is constructed based on the list of points.
+TODO: WHEN DEALING WITH OPEN WIRE IT WILL NOT RETURN THE LAST VERTEX</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occwire</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCwire</span></dt>
+<dd><p class="first last">The OCCwire to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of points</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pyptlist</span></dt>
+<dd><p class="first last">The list of points extracted from the OCCwire.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.edges_frm_wire">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">edges_frm_wire</code><span class="sig-paren">(</span><em>occwire</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.edges_frm_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCedges from the OCCwire. The wire is constructed based on the list of edges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occwire</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCwire</span></dt>
+<dd><p class="first last">The OCCwire to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of edges</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCedges</span></dt>
+<dd><p class="first last">The list of OCCedges extracted from the OCCwire.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.points_frm_occface">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">points_frm_occface</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.points_frm_occface" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of points from the OCCface. The face is constructed based on the list of points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occface</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCface</span></dt>
+<dd><p class="first last">The OCCface to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of points</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pyptlist</span></dt>
+<dd><p class="first last">The list of points extracted from the OCCface.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.wires_frm_face">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">wires_frm_face</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.wires_frm_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCwires from the OCCface. The face is constructed based on the list of wires.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occface</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCface</span></dt>
+<dd><p class="first last">The OCCface to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of wires</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCwires</span></dt>
+<dd><p class="first last">The list of OCCwires extracted from the OCCface.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.is_face_null">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">is_face_null</code><span class="sig-paren">(</span><em>occface</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.is_face_null" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the OCCface is null. Null means it is a degenerated face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occface</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCface</span></dt>
+<dd><p class="first last">The OCCface to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>True or False</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">If True OCCface is null, if False OCCface is not null.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.faces_frm_shell">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">faces_frm_shell</code><span class="sig-paren">(</span><em>occshell</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.faces_frm_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCfaces from the OCCshell. The shell is constructed based on the list of faces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occshell</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCshell</span></dt>
+<dd><p class="first last">The OCCshell to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of faces</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCfaces</span></dt>
+<dd><p class="first last">The list of OCCfaces extracted from the OCCshell.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.faces_frm_solid">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">faces_frm_solid</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.faces_frm_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCfaces from the OCCsolid. The solid is constructed based on the list of faces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occsolid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCsolid</span></dt>
+<dd><p class="first last">The OCCsolid to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of faces</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCfaces</span></dt>
+<dd><p class="first last">The list of OCCfaces extracted from the OCCsolid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.shells_frm_solid">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">shells_frm_solid</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.shells_frm_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCshells from the OCCsolid. The solid is constructed based on the list of shells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occsolid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCsolid</span></dt>
+<dd><p class="first last">The OCCsolid to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of shells</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCshells</span></dt>
+<dd><p class="first last">The list of OCCshells extracted from the OCCsolid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.points_frm_solid">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">points_frm_solid</code><span class="sig-paren">(</span><em>occsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.points_frm_solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of points from the OCCsolid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occsolid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCsolid</span></dt>
+<dd><p class="first last">The OCCsolid to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of points</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pyptlist</span></dt>
+<dd><p class="first last">The list of points extracted from the OCCsolid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.solids_frm_compsolid">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">solids_frm_compsolid</code><span class="sig-paren">(</span><em>occcompsolid</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.solids_frm_compsolid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches a list of OCCsolids from the OCCcompsolid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occcompsolid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCcompsolid</span></dt>
+<dd><p class="first last">The OCCcompsolid to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of solids</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCsolids</span></dt>
+<dd><p class="first last">The list of OCCsolids extracted from the occcompsolid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.topos_frm_compound">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">topos_frm_compound</code><span class="sig-paren">(</span><em>occcompound</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.topos_frm_compound" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts all the topologies in the OCCcompound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occcompound</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCcompound</span></dt>
+<dd><p class="first last">The OCCcompound to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>dictionary of topologies</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary of OCCtopologies</span></dt>
+<dd><p class="first last">The dictionary of OCCtopologies extracted from the occcompound. Specify the topology as keywords to obtain each topology list.
+e.g. dictionary of topologies[“face”] to extract the list of OCCfaces in the OCCcompound.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.is_compound_null">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">is_compound_null</code><span class="sig-paren">(</span><em>occ_compound</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.is_compound_null" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the OCCcompound is null. Null means its empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occcompound</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCcompound</span></dt>
+<dd><p class="first last">The OCCcompound to be examined.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>True or False</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">If True the compound is null, if False compound is not null.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.get_topotype">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">get_topotype</code><span class="sig-paren">(</span><em>occtopology_or_topo_str</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.get_topotype" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fetches the OCCtopology class object based on the specified OCCtopology or a string describing the topology. e.g. “face”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology_or_topo_str</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology or a string describing the topology.</span></dt>
+<dd><p class="first last">The strings can be e.g. “compound”, “compsolid”, “solid”, “shell”, “face”, “wire”, “edge”, “vertex”.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>topology class</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology class (TopABS_xx)</span></dt>
+<dd><p class="first last">The OCCtopology class based on the specified inputs.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.topo2topotype">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">topo2topotype</code><span class="sig-paren">(</span><em>occtopology</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.topo2topotype" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts the original OCCtopology of the given topology. e.g. an OCCcompound that is originally an OCCface etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">The OCCtopology to be converted. 
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>original topology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">The original OCCtopology of the input.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py4design.py3dmodel.fetch.topo_explorer">
+<code class="descclassname">py4design.py3dmodel.fetch.</code><code class="descname">topo_explorer</code><span class="sig-paren">(</span><em>occtopo2explore</em>, <em>topotype2find</em><span class="sig-paren">)</span><a class="headerlink" href="#py4design.py3dmodel.fetch.topo_explorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function explores and fetches the specified topological type from the given OCCtopology.
+e.g. find a list of OCCfaces in an OCCcompound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>occtopo2explore</strong> <span class="classifier-delimiter">:</span> <span class="classifier">OCCtopology</span></dt>
+<dd><p class="first last">The OCCtopology to be explored.
+OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex</p>
+</dd>
+<dt><strong>topotype2find</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The string describing the topology to find. 
+The strings can be e.g. “compound”, “compsolid”, “solid”, “shell”, “face”, “wire”, “edge”, “vertex”.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of topology</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of OCCtopology</span></dt>
+<dd><p class="first last">The list of OCCtopology found in the specified OCCtopology.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
