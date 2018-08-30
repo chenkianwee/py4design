@@ -1184,8 +1184,7 @@ def redraw_occedge(occcompound, tolerance):
     recon_edgelist = []
     for edge in edges:
         epyptlist = py3dmodel.fetch.points_frm_edge(edge)
-        if len(epyptlist) >= 2:
-            recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
+        recon_edgelist.append(py3dmodel.construct.make_edge(epyptlist[0], epyptlist[1]))
         
     recon_compound = py3dmodel.construct.make_compound(recon_edgelist)
     return recon_compound

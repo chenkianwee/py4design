@@ -100,9 +100,7 @@ class Massing2Citygml(object):
                                     spyptlist.append(sorted_pyptlist)
                                     occpolygon = py3dmodel.construct.make_polygon(pyptlist)
                                     if not py3dmodel.fetch.is_face_null(occpolygon):
-                                        npts = len(py3dmodel.fetch.points_frm_occface(occpolygon))
-                                        if npts >=3:
-                                            faces.append(occpolygon)
+                                        faces.append(occpolygon)
 
                             elif type(prim) == lineset.Line:
                                 pyptlist = prim.vertices.tolist()
@@ -203,11 +201,12 @@ class Massing2Citygml(object):
             if shptype == py3dmodel.fetch.get_topotype("shell"):
                 flatten_shell_face = py3dmodel.modify.flatten_shell_z_value(occshp)
                 #edges = py3dmodel.fetch.topo_explorer(occshp, "edge")
-                #py3dmodel.utility.visualise([[occshp], edges], ["RED", 'GREEN'])
+                #py3dmodel.utility.visualise([[flatten_shell_face], edges], ["RED", 'GREEN'])
                 if not flatten_shell_face == None:
                     flat_pyptlist = py3dmodel.fetch.points_frm_occface(flatten_shell_face)
                     flatten_shell_face = py3dmodel.construct.make_polygon(flat_pyptlist)
                     occshp_attribs_obj.dictionary["flatten_shell_face"] = flatten_shell_face
+
 
         for analysis_rule_obj in analysis_rule_obj_list:
             print analysis_rule_obj

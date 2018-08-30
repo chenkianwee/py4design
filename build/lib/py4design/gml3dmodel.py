@@ -289,11 +289,11 @@ def update_gml_building(orgin_gml_building, new_bldg_occsolid, citygml_reader, c
     if new_nstorey !=None:
         citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                     function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = stry_blw_grd)
-    if new_nstorey == None:
+                                    stry_abv_grd = str(new_nstorey), stry_blw_grd = str(stry_blw_grd))
+    if new_nstorey ==None:
         citygml_writer.add_building("lod1", building_name, geometry_list, bldg_class =  bclass, 
                                     function = bfunction, usage = bfunction, rooftype = rooftype,height = str(new_height),
-                                    stry_blw_grd = stry_blw_grd)
+                                    stry_blw_grd = str(stry_blw_grd))
         
 def write_non_eligible_bldgs(gml_bldgs, citygml_writer):
     """

@@ -904,7 +904,7 @@ def shp_pypolygon_list3d_2_occface_list(pypolygon_list):
             anti_clockwise.append(pyptlist)
         else:
             clockwise.append(pyptlist)
-    
+            
     nholes = len(anti_clockwise)
     if nholes > 0:
         occface_list_holes = py3dmodel.construct.make_occfaces_frm_pypolygons(anti_clockwise)
