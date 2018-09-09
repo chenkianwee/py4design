@@ -32,7 +32,9 @@ from OCCUtils import Topology
 #========================================================================================================
 #NUMERIC & TEXT INPUTS
 #========================================================================================================
-def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_str = None, bar_pos = (0,0,0)):
+def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, 
+                             description_str = None, bar_pos = (0,0,0),
+                             inverse = False):
     """
     This function constructs a falsecolour diagram.
  
@@ -55,6 +57,9 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
         
     bar_pos : tuple of floats, optional
         The position of the bar, Default = (0,0,0).
+    
+    inverse : bool
+        False for red being max, True for blue being maximum.
         
     Returns
     -------
@@ -88,7 +93,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
     value_range = list(numpy.arange(minval, maxval+0.1, inc1))
     inc2 = inc1/2.0
     value_range_midpts = list(numpy.arange(minval+inc2, maxval, inc1))
-    bar_colour = falsecolour(value_range_midpts, minval, maxval)
+    bar_colour = falsecolour(value_range_midpts, minval, maxval, inverse=inverse)
     grid_srfs2 = []
     moved_str_face_list = []
     srf_cnt = 0
@@ -143,7 +148,7 @@ def generate_falsecolour_bar(minval, maxval, unit_str, bar_length, description_s
     str_colour_list = [(0,0,0)]
     return grid_srfs2, bar_colour, meshed_str_cmpd, str_colour_list, value_range_midpts
 
-def pseudocolor(val, minval, maxval):
+def pseudocolor(val, minval, maxval, inverse = False):
     """
     This function converts a value into a rgb value with reference to the minimum and maximum value.
  
@@ -157,6 +162,9 @@ def pseudocolor(val, minval, maxval):
         
     maxval : float
         The maximum value of the falsecolour rgb.
+    
+    inverse : bool
+        False for red being max, True for blue being maximum.
         
     Returns
     -------
@@ -166,17 +174,26 @@ def pseudocolor(val, minval, maxval):
     # convert val in range minval..maxval to the range 0..120 degrees which
     # correspond to the colors red..green in the HSV colorspace
     if val <= minval:
-        h = 250.0
+        if inverse == False:
+            h = 250.0
+        else:
+            h=0.0
     elif val>=maxval:
-        h = 0.0
+        if inverse == False:
+            h = 0.0
+        else:
+            h=250.0
     else:
-        h = 250 - (((float(val-minval)) / (float(maxval-minval)))*250)
+        if inverse == False:
+            h = 250 - (((float(val-minval)) / (float(maxval-minval)))*250)
+        else:
+            h = (((float(val-minval)) / (float(maxval-minval)))*250)
     # convert hsv color (h,1,1) to its rgb equivalent
     # note: the hsv_to_rgb() function expects h to be in the range 0..1 not 0..360
     r, g, b = colorsys.hsv_to_rgb(h/360, 1., 1.)
     return r, g, b
     
-def falsecolour(vals, minval, maxval):
+def falsecolour(vals, minval, maxval, inverse = False):
     """
     This function converts a list of values into a list of rgb values with reference to the minimum and maximum value.
  
@@ -190,6 +207,9 @@ def falsecolour(vals, minval, maxval):
         
     maxval : float
         The maximum value of the falsecolour rgb.
+    
+    inverse : bool
+        False for red being max, True for blue being maximum.
         
     Returns
     -------
@@ -198,7 +218,7 @@ def falsecolour(vals, minval, maxval):
     """
     res_colours = []
     for result in vals:
-        r,g,b = pseudocolor(result, minval, maxval)
+        r,g,b = pseudocolor(result, minval, maxval, inverse=inverse)
         colour = (r, g, b)
         res_colours.append(colour)
     return res_colours
@@ -234,7 +254,8 @@ def rgb2val(rgb, minval, maxval):
 #OCCTOPOLOGY INPUTS
 #========================================================================================================
 def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = None, other_colour_list = None, 
-                               minval = None, maxval = None, backend = "qt-pyqt5"):
+                               minval = None, maxval = None, backend = "qt-pyqt5",
+                               inverse = False):
     """
     This function visualise a falsecolour 3D model using the PythonOCC viewer.
  
@@ -263,6 +284,9 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
     backend : str, optional
         The graphic interface to use for visualisation, Default = qt-pyqt5. Other options include:"qt-pyqt4", "qt-pyside", "wx"
         
+    inverse : bool
+        False for red being max, True for blue being maximum.
+        
     Returns
     -------
     None : None
@@ -280,7 +304,7 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
     elif maxval != None: 
         maxval1 = maxval
         
-    res_colours = falsecolour(results, minval1, maxval1)
+    res_colours = falsecolour(results, minval1, maxval1, inverse=inverse)
 
     colour_list = []
     c_srf_list = []

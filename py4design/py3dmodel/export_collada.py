@@ -270,7 +270,8 @@ def write_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=None
     mesh.write(dae_filepath)
         
 def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepath, description_str = None, 
-                                minval = None, maxval=None, other_occface_list = None, other_occedge_list = None):
+                                minval = None, maxval=None, other_occface_list = None, other_occedge_list = None,
+                                inverse = False):
     """
     This function writes a falsecolour 3D model into a Collada file.
  
@@ -307,6 +308,9 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
     other_occedge_list : list of OCCedges, optional
         Other OCCedges to be visualised together with the results, Default = None.
         
+    inverse : bool
+        False for red being max, True for blue being maximum.
+        
     Returns
     -------
     None : None
@@ -328,11 +332,11 @@ def write_2_collada_falsecolour(occface_list, result_list, unit_str, dae_filepat
     y_extend = ymax-ymin
     topo_centre_pt = calculate.get_centre_bbox(topo_cmpd)
     topo_centre_pt = (topo_centre_pt[0], topo_centre_pt[1], zmin)
-    loc_pt = modify.move_pt(topo_centre_pt, (1,0,0), x_extend/1.5)
+    loc_pt = modify.move_pt(topo_centre_pt, (1,0,0), x_extend*1.3)
     
     grid_srfs, bar_colour, str_cmpd, str_colour_list, value_midpts = utility.generate_falsecolour_bar(minval, maxval, unit_str, y_extend, 
                                                                                               description_str = description_str, 
-                                                                                              bar_pos = loc_pt)
+                                                                                              bar_pos = loc_pt, inverse=inverse)
                                                                                        
     
     #DIVIDE THE RESULT INTO 10 DIVISION LIKE THE FALSECOLOUR BAR
