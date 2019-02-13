@@ -98,7 +98,7 @@ def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=No
                     pyptlist = fetch.points_frm_occface(face)
                     vcnt.append(len(pyptlist))
                     face_nrml = calculate.face_normal(face)
-                    pyptlist.reverse()
+                    #pyptlist.reverse()
                     for pypt in pyptlist:
                         vert_floats.append(pypt[0])
                         vert_floats.append(pypt[1])
@@ -117,7 +117,7 @@ def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=No
                         pyptlist = fetch.points_frm_occface(tface)
                         vcnt.append(len(pyptlist))
                         face_nrml = calculate.face_normal(tface)
-                        pyptlist.reverse()
+                        #pyptlist.reverse()
                         for pypt in pyptlist:
                             vert_floats.append(pypt[0])
                             vert_floats.append(pypt[1])

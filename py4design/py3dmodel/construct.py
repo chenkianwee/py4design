@@ -1456,8 +1456,11 @@ def simple_mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5):
         The OCCtopology to be meshed.
         OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
         
-    mesh_incremental_float : float, optional
+    mesh_incremental : float, optional
         Default = 0.8.
+        
+    angle_deflection : float, optional
+        Default = 0.5.
         
     Returns
     -------
@@ -1489,6 +1492,58 @@ def simple_mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5):
                 occface_list.append(occface)
         cnt+=1
     return occface_list
+
+def face2mesh(occface, linear_deflection = 0.8, angle_deflection = 0.5):
+    """
+    This function creates a mesh (a dictionary of nodes and indexes are returned) of 
+    the OCCface. For explaination on what is linear deflection and angle deflection 
+    refer to https://www.opencascade.com/doc/occt-7.1.0/overview/html/occt_user_guides__modeling_algos.html#occt_modalg_11_2
+ 
+    Parameters
+    ----------
+    occface : OCCface
+        The OCCface to be meshed.
+        
+    mesh_incremental : float, optional
+        Default = 0.8.
+    
+    angle_deflection : float, optional
+        Default = 0.5.
+        
+    Returns
+    -------
+    dictionary : dictionary of vertices and indexes
+        A dictionary containing the vertices and indexes of the mesh. key 'vertices' & 'indices'
+    """
+    #TODO: figure out why is it that some surfaces do not work
+    d = {}
+    occtopology = TopoDS_Shape(occface)
+    bt = BRep_Tool()
+    BRepMesh_IncrementalMesh(occtopology, linear_deflection,True, angle_deflection, True)
+    occshape_face_list = fetch.topo_explorer(occtopology, "face")
+    index_list = []
+    vert_list = []
+    cnt = 0
+    for occshape_face in occshape_face_list:
+        location = TopLoc_Location()
+        facing = bt.Triangulation(occshape_face, location).GetObject()
+        if facing:
+            tab = facing.Nodes()
+            for v in range(tab.Length()):
+                pypt = modify.occpt_2_pypt(tab.Value(v+1))
+                vert_list.append(pypt)
+                
+            tri = facing.Triangles()
+            for i in range(1, facing.NbTriangles()+1):
+                trian = tri.Value(i)
+                index1, index2, index3 = trian.Get()
+                indices = [index1-1, index2-1, index3-1]
+                index_list.append(indices)
+                
+        cnt+=1
+    d["vertices"] = vert_list
+    d["indices"] = index_list
+    return d
 
 def tessellator(occtopology):
     """
