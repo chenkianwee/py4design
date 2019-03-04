@@ -20,7 +20,6 @@
 # ==================================================================================================
 
 import os
-import ntpath
 import subprocess
 import shutil
 
@@ -632,7 +631,7 @@ class Rad(object):
             The units of the results, "irradiance" (kWh/m2) or "illuminance" (lux), Default = "irradiance".
         """
         #execute epw2wea 
-        head,tail = ntpath.split(weatherfile_path)
+        head,tail = os.path.split(weatherfile_path)
         wfilename_no_extension = tail.replace(".epw", "")
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(self.data_folder_path, weaweatherfilename)
@@ -795,7 +794,7 @@ class Rad(object):
         if not os.path.isdir(daysim_dir):
             os.mkdir(daysim_dir)
             
-        head,tail = ntpath.split(daysim_dir)
+        head,tail = os.path.split(daysim_dir)
         #create an empty .hea file
         hea_filepath = os.path.join(daysim_dir, tail + ".hea")
         hea_file = open(hea_filepath,  "w")
@@ -858,7 +857,7 @@ class Rad(object):
         daysimdir_wea = self.daysimdir_wea
         if daysimdir_wea == None:
             raise NameError("run .initialise_daysim function before running execute_epw2wea")
-        head,tail = ntpath.split(epwweatherfile)
+        head,tail = os.path.split(epwweatherfile)
         wfilename_no_extension = tail.replace(".epw", "")
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(daysimdir_wea, weaweatherfilename)
@@ -910,7 +909,7 @@ class Rad(object):
         """
         
         hea_filepath = self.hea_file
-        head,tail = ntpath.split(hea_filepath)
+        head,tail = os.path.split(hea_filepath)
         radfilename = tail.replace(".hea", "")
         radgeomfilepath = self.rad_file_path
         radmaterialfile = self.base_file_path
@@ -940,7 +939,7 @@ class Rad(object):
             
         """
         hea_filepath = self.hea_file
-        head,tail = ntpath.split(hea_filepath)
+        head,tail = os.path.split(hea_filepath)
         tail = tail.replace(".hea", "")
         self.hea_filename = tail
         dc_file = os.path.join("res",tail + ".dc")
@@ -1024,7 +1023,7 @@ class Rad(object):
             raise NameError("run .initialise_daysim function before running execute_gen_dc")
         
         #first specify the sensor pts
-        head,tail = ntpath.split(sensor_filepath)
+        head,tail = os.path.split(sensor_filepath)
         #move the pts file to the daysim folder
         dest_filepath = os.path.join(daysim_pts_dir, tail)
         shutil.move(sensor_filepath, dest_filepath)
@@ -1033,7 +1032,7 @@ class Rad(object):
         #write the shading header
         self.write_static_shading(hea_file)
         #write analysis result file
-        head,tail = ntpath.split(hea_filepath)
+        head,tail = os.path.split(hea_filepath)
         tail = tail.replace(".hea", "")
         #hea_file.write("\nDDS_sensor_file" + " " + os.path.join("res", tail + ".dds"))
         #hea_file.write("\nDDS_file" + " " + os.path.join("res", tail + ".sen"))
