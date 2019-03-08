@@ -781,7 +781,7 @@ class Rad(object):
 
         return result_list
 
-    def initialise_daysim(self, daysim_dir):
+    def initialise_daysim(self, daysim_dir, bin_directory=r"C:\Daysim\bin"):
         """
         Run this method prior to running any Daysim simulation. This function creates the base .hea header file and all the neccessary 
         folders for the Daysim simulation.
@@ -804,7 +804,7 @@ class Rad(object):
         # write the project directory
         hea_file.write("project_directory" + " " + os.path.join(daysim_dir, "") + "\n")
         # bin directory, assumes daysim is always installed at the default c drive
-        hea_file.write("bin_directory" + " " + os.path.join("c:/daysim", "bin", "") + "\n")
+        hea_file.write("bin_directory" + " " + bin_directory + "\n")
         # write tmp directory
         hea_file.write("tmp_directory" + " " + os.path.join("tmp", "") + "\n")
         # write material directory
