@@ -78,7 +78,7 @@ def scatter_plot(pts2plotlist, colourlist, pt_arealist, label_size = 16, labelli
     if title:
         plt.title(title, fontsize=label_size )
     if savefile:
-        plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+        plt.savefig(savefile, bbox_inches = "tight", dpi = 300,transparent=True,papertype="a3")
         
     plt.tick_params(axis='both', which='major', labelsize=label_size)
     plt.show()
@@ -147,7 +147,7 @@ def scatter_plot3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel =
     ax.set_zlabel(zlabel)
     plt.title(title )
     ax.view_init(elev=elev, azim=-azim)
-    plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+    plt.savefig(savefile, bbox_inches = "tight", dpi = 300,transparent=True,papertype="a3")
     
 def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], xlabel = "", ylabel = "", zlabel = "", title = "", 
                  savefile = "", elev=30, azim = -45):
@@ -214,7 +214,7 @@ def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], 
     ax.set_zlabel(zlabel)
     plt.title(title )
     ax.view_init(elev=elev, azim=-azim)
-    plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+    plt.savefig(savefile, bbox_inches = "tight", dpi = 300,transparent=True,papertype="a3")
     
 def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
     """
@@ -351,7 +351,7 @@ def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
     # Stack the subplots 
     plt.subplots_adjust(wspace=0)
     if savefile:
-        plt.savefig(savefile, dpi = 300,transparent=True,papertype="a3")
+        plt.savefig(savefile, bbox_inches = "tight", dpi = 300,transparent=True,papertype="a3")
     plt.show()
 
 def create_int_normalise(r):
