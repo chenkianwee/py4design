@@ -216,7 +216,7 @@ def scatter_plot_surface3d(pt3d_list, colour_list, pt_arealist, labellist = [], 
     ax.view_init(elev=elev, azim=-azim)
     plt.savefig(savefile, bbox_inches = "tight", dpi = 300,transparent=True,papertype="a3")
     
-def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
+def parallel_coordinates(data_sets, parmlabels, savefile = "", style = None, transparency = None ):
     """
     This function plots a parallel coordinate plot.
     
@@ -233,6 +233,9 @@ def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
         
     style : list of str, optional
         List of string describing the colours, e.g. "red", "blue", "yellow". If None all the lines are black.
+    
+    transparency : list of float, optional
+        List of float describing the transparency, e.g. 0 being totally transparent, 1 being totally opaque. If None all are opaque.
         
     """
     dims = len(data_sets[0])
@@ -241,6 +244,9 @@ def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
 
     if style is None:
         style = ['black']*len(data_sets)
+        
+    if transparency is None:
+        transparency = [1.0]*len(data_sets)
 
     # Calculate the limits on the data
     min_max_range = list()
@@ -275,7 +281,7 @@ def parallel_coordinates(data_sets, parmlabels, savefile = "", style=None):
     # Plot the datasets on all the subplots
     for i, ax in enumerate(axes):
         for dsi, d in enumerate(data_sets):
-            ax.plot(x, d, style[dsi])
+            ax.plot(x, d, style[dsi], alpha = transparency[dsi])
         ax.set_xlim([x[i], x[i+1]])
         #set the x tick labels for first few dimensions 
         ax.set_xticks([0])
