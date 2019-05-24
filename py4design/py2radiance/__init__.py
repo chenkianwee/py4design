@@ -804,7 +804,7 @@ class Rad(object):
         # write the project directory
         hea_file.write("project_directory" + " " + os.path.join(daysim_dir, "") + "\n")
         # bin directory, assumes daysim is always installed at the default c drive
-        hea_file.write("bin_directory" + " " + bin_directory + "\n")
+        hea_file.write("bin_directory" + " " + bin_directory + '/' + '\n')
         # write tmp directory
         hea_file.write("tmp_directory" + " " + os.path.join("tmp", "") + "\n")
         # write material directory
