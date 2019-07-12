@@ -636,7 +636,7 @@ class Rad(object):
         wfilename_no_extension = tail.replace(".epw", "")
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(self.data_folder_path, weaweatherfilename)
-        command1 = "epw2wea" + " " + weatherfile_path + " " + weaweatherfile
+        command1 = "epw2wea" + ' "' + weatherfile_path + '" "' + weaweatherfile + '"'
         proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
         site_headers = proc.stdout.read()
         site_headers_list = site_headers.split("\r\n")
@@ -862,7 +862,7 @@ class Rad(object):
         wfilename_no_extension = tail.replace(".epw", "")
         weaweatherfilename = wfilename_no_extension + "_60min.wea"
         weaweatherfile = os.path.join(daysimdir_wea, weaweatherfilename)
-        command1 = "epw2wea" + " " + epwweatherfile + " " + weaweatherfile
+        command1 = "epw2wea" + ' "' + epwweatherfile + '" "' + weaweatherfile + '"'
         f = open(self.command_file, "a")
         f.write(command1)
         f.write("\n")
