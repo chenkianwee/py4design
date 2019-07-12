@@ -404,7 +404,45 @@ def make_polygon(pyptlist):
     occface = BRepBuilderAPI_MakeFace(wire)
     return occface.Face()
     
+def make_polygon_w_holes(pyptlist, pyhole_list):
+    """
+    This function constructs a OCCface polygon from a list of points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    pyhole_list : a 2d list of tuples
+        List of polygon for constructing the list of holes. The hole polygons must be the reverse direction of the pyptlist.
+        A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z). 
+        A pypolygon is a list of pypt that forms a polygon e.g. [(x1,y1,z1), (x2,y2,z2), ...].
+        A pypolygon_list is a 2d list of tuples e.g. [[(x11,y11,z11), (x12,y12,z12), ...], [(x21,y21,z21), (x22,y22,z22), ...], ...]
+ 
+    Returns
+    -------
+    polygon : OCCface
+        An OCCface constructed from the list of points
+    """
+    array = []
+    for pt in pyptlist:
+        array.append(gp_Pnt(pt[0],pt[1],pt[2]))
+
+    poly = BRepBuilderAPI_MakePolygon()
+    map(poly.Add, array)
+    poly.Build()
+    poly.Close()
     
+    wire = poly.Wire()
+    occface = BRepBuilderAPI_MakeFace(wire).Face()
+    
+    for hole in pyhole_list:
+        iwire = make_wire(hole)
+        occface = BRepBuilderAPI_MakeFace(occface, iwire).Face()
+        
+    return occface
+ 
 def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):
     """
     This function constructs an bspline OCCedge from a list of points.
@@ -606,7 +644,7 @@ def convex_hull3d(pyptlist, return_area_volume = False ):
 
 def convex_hull2d(pyptlist):
     """
-    This function constructs a 2d convex hull (list of triangle OCCfaces) from a list of points. Only work on 2d xy points.
+    This function constructs a 2d convex hull from a list of points. Only work on 2d xy points.
  
     Parameters
     ----------

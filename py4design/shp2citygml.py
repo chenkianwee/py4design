@@ -907,22 +907,35 @@ def shp_pypolygon_list3d_2_occface_list(pypolygon_list):
     
     nholes = len(anti_clockwise)
     if nholes > 0:
-        occface_list_holes = py3dmodel.construct.make_occfaces_frm_pypolygons(anti_clockwise)
-        occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
+        nface = len(clockwise)
+        if nface == 1:
+            occface = py3dmodel.construct.make_polygon_w_holes(clockwise[0], anti_clockwise)
+            return [occface]
         
-        hole_solid_list = []
-        for hole in occface_list_holes:
-            hole_midpt = py3dmodel.calculate.face_midpt(hole)
-            hole_solid = py3dmodel.construct.extrude(hole,(0,0,1),1)
-            hole_midpt_mv = py3dmodel.modify.move_pt(hole_midpt, (0,0,-1), 0.5)
-            hole_solid_mv = py3dmodel.modify.move(hole_midpt, hole_midpt_mv, hole_solid)
-            hole_solid_list.append(hole_solid_mv)
-            
-        occface_list_cmpd = py3dmodel.construct.make_compound(occface_list)
-        hole_solid_list_cmpd = py3dmodel.construct.make_compound(hole_solid_list)
-        diff_cmpd = py3dmodel.construct.boolean_difference(occface_list_cmpd, hole_solid_list_cmpd)
-        diff_occface_list = py3dmodel.fetch.topo_explorer(diff_cmpd, "face")
-        return diff_occface_list
+        else:
+            occface_list_holes = py3dmodel.construct.make_occfaces_frm_pypolygons(anti_clockwise)
+            occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
+        
+            hole_solid_list = []
+            for hole in occface_list_holes:
+                hole_midpt = py3dmodel.calculate.face_midpt(hole)
+                hole_solid = py3dmodel.construct.extrude(hole,(0,0,1),1)
+                hole_midpt_mv = py3dmodel.modify.move_pt(hole_midpt, (0,0,-1), 0.5)
+                hole_solid_mv = py3dmodel.modify.move(hole_midpt, hole_midpt_mv, hole_solid)
+                hole_solid_list.append(hole_solid_mv)
+                
+            if len(occface_list) == 1:
+                diff_cmpd = occface_list[0]
+                for h in hole_solid_list:
+                    diff_cmpd = py3dmodel.construct.boolean_difference(diff_cmpd, h)
+                
+            else:
+                occface_list_cmpd = py3dmodel.construct.make_compound(occface_list)
+                hole_solid_list_cmpd = py3dmodel.construct.make_compound(hole_solid_list)
+                diff_cmpd = py3dmodel.construct.boolean_difference(occface_list_cmpd, hole_solid_list_cmpd)
+                
+            diff_occface_list = py3dmodel.fetch.topo_explorer(diff_cmpd, "face")
+            return diff_occface_list
     else:
         occface_list = py3dmodel.construct.make_occfaces_frm_pypolygons(clockwise)
         return occface_list
