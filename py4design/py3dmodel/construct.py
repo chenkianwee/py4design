@@ -437,10 +437,16 @@ def make_polygon_w_holes(pyptlist, pyhole_list):
     wire = poly.Wire()
     occface = BRepBuilderAPI_MakeFace(wire).Face()
     
+    wcnt = 0
     for hole in pyhole_list:
+        firstpt = hole[0]
+        lastpt = hole[-1]
+        if firstpt != lastpt:
+            hole.append(hole[0])
         iwire = make_wire(hole)
-        occface = BRepBuilderAPI_MakeFace(occface, iwire).Face()
         
+        occface = BRepBuilderAPI_MakeFace(occface, iwire).Face()
+        wcnt +=1
     return occface
  
 def make_bspline_edge(pyptlist, mindegree=3, maxdegree = 8):

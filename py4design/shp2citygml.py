@@ -908,6 +908,7 @@ def shp_pypolygon_list3d_2_occface_list(pypolygon_list):
     nholes = len(anti_clockwise)
     if nholes > 0:
         nface = len(clockwise)
+        
         if nface == 1:
             occface = py3dmodel.construct.make_polygon_w_holes(clockwise[0], anti_clockwise)
             return [occface]
