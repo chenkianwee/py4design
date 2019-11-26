@@ -1537,6 +1537,78 @@ def simple_mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5):
         cnt+=1
     return occface_list
 
+def topo2mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5, reverse = False):
+    """
+    This function creates a mesh (list of triangle OCCfaces) of the OCCtopology. For explaination on what is linear deflection and angle deflection refer to 
+    https://www.opencascade.com/doc/occt-7.1.0/overview/html/occt_user_guides__modeling_algos.html#occt_modalg_11_2
+ 
+    Parameters
+    ----------
+    occtopology : OCCtopology
+        The OCCtopology to be meshed.
+        OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
+        
+    mesh_incremental : float, optional
+        Default = 0.8.
+        
+    angle_deflection : float, optional
+        Default = 0.5.
+    
+    reverse : bool, optional
+        Default = False. Reverse the normal of the faces created.
+        
+    Returns
+    -------
+    dictionary : dictionary of vertices and indexes
+        A dictionary containing the vertices and indexes of the mesh. key 'vertices' & 'indices'
+    """        
+    #TODO: figure out why is it that some surfaces do not work
+    d = {}
+    occtopology = TopoDS_Shape(occtopology)
+    bt = BRep_Tool()
+    BRepMesh_IncrementalMesh(occtopology, linear_deflection,True, angle_deflection, True)
+    occshape_face_list = fetch.topo_explorer(occtopology, "face")
+    index_list = []
+    vert_list = []
+    cnt = 0
+    for occshape_face in occshape_face_list:
+        location = TopLoc_Location()
+        facing = bt.Triangulation(occshape_face, location).GetObject()
+        if facing:
+            tab = facing.Nodes()
+            verts = []
+            for v in range(tab.Length()):
+                pypt = modify.occpt_2_pypt(tab.Value(v+1))
+                verts.append(pypt)
+                if pypt not in vert_list:
+                    vert_list.append(pypt)
+                
+            tri = facing.Triangles()
+            for i in range(1, facing.NbTriangles()+1):
+                trian = tri.Value(i)
+                index1, index2, index3 = trian.Get()
+                indices = [index1-1, index2-1, index3-1]
+                
+                pt1 = verts[index1-1]
+                pt2 = verts[index2-1]
+                pt3 = verts[index3-1]
+                
+                oindex1 = vert_list.index(pt1)
+                oindex2 = vert_list.index(pt2)
+                oindex3 = vert_list.index(pt3)
+                
+                if reverse == False:
+                    indices = [oindex1, oindex2, oindex3]
+                else:
+                    indices = [oindex3, oindex2, oindex1]
+                index_list.append(indices)
+                
+        cnt+=1
+    d["vertices"] = vert_list
+    d["indices"] = index_list
+    
+    return d
+
 def face2mesh(occface, linear_deflection = 0.8, angle_deflection = 0.5):
     """
     This function creates a mesh (a dictionary of nodes and indexes are returned) of 
