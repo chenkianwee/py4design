@@ -11,7 +11,7 @@ __status__ = "Development"
 
 LONG_DESCRIPTION = "refer to https://github.com/chenkianwee/py4design for full installation instructions"
     
-INSTALL_REQUIRES = ['lxml', 'pyshp', 'numpy', 'scipy', 'sympy', 'pycollada', 'networkx', 'scikit-learn', 'pymf', 'cvxopt', 'matplotlib', 'numpy-stl']
+INSTALL_REQUIRES = ['lxml', 'pyshp', 'numpy', 'scipy', 'sympy', 'pycollada', 'networkx', 'scikit-learn', 'cvxopt', 'matplotlib']
 
 setup(name='py4design',
       packages = find_packages(),
