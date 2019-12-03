@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-__author__ = "Chen Kian Wee"
+__author__ = "CHEN Kian Wee"
 __copyright__ = "Copyright 2016, Chen Kian Wee"
-__credits__ = ["Chen Kian Wee"]
+__credits__ = ["CHEN Kian Wee"]
 __license__ = "GPL3"
-__version__ = "0.28"
+__version__ = "0.29"
 __maintainer__ = "Chen Kian Wee"
 __email__ = "chenkianwee@gmail.com"
 __status__ = "Development"
