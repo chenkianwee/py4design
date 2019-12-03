@@ -411,17 +411,20 @@ def write_2_stl(occtopology, stl_filepath, linear_deflection = 0.8, angle_deflec
     None : None
         The geometries are written to a STL file.
     """       
-    from OCC.StlAPI import StlAPI_Writer
-    from OCC.BRepMesh import BRepMesh_IncrementalMesh
-    from OCC.TopoDS import TopoDS_Shape
-    # Export to STL
-    stl_writer = StlAPI_Writer()
-    stl_writer.SetASCIIMode(True)
-    occtopology = TopoDS_Shape(occtopology)
-    mesh = BRepMesh_IncrementalMesh(occtopology, linear_deflection, True, angle_deflection, True)
-    assert mesh.IsDone()
-        
-    stl_writer.Write(occtopology,stl_filepath)
+    from OCC.Extend import DataExchange
+    DataExchange.write_stl_file(occtopology, stl_filepath, mode="ascii", linear_deflection=linear_deflection, angular_deflection=angle_deflection)
+    
+#    from OCC.Core.StlAPI import StlAPI_Writer
+#    from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
+#    from OCC.Core.TopoDS import TopoDS_Shape
+#    # Export to STL
+#    stl_writer = StlAPI_Writer()
+#    stl_writer.SetASCIIMode(True)
+#    occtopology = TopoDS_Shape(occtopology)
+#    mesh = BRepMesh_IncrementalMesh(occtopology, linear_deflection, True, angle_deflection, True)
+#    assert mesh.IsDone()
+#        
+#    stl_writer.Write(occtopology,stl_filepath)
     
 def write_2_stl2(occtopology, stl_filepath, is_meshed = True, linear_deflection = 0.8, angle_deflection = 0.5):
     """

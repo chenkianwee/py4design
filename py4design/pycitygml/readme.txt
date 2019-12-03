@@ -1,9 +1,9 @@
 to run the environment:
 
-1.) install anaconda for python2.7
+1.) install anaconda for python3
 instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html
 
 2.) libraries to download:
-	a.) conda install lxml (version 3.5.0) (for reading citygml)
+	a.) conda install lxml (for reading citygml)
 	
-3.) conda install spyder (2.3.8) (for editing the scripts)
+3.) conda install spyder (for editing the scripts)

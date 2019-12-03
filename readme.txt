@@ -20,7 +20,7 @@ Working examples are available at https://github.com/chenkianwee/py4design_examp
 
 To run the environment:
 
-1.) install miniconda for python2.7
+1.) install miniconda for python3
 (instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html)
 
 2.) libraries to download:
@@ -63,10 +63,14 @@ list of libraries used in py4design
 
 9.) scikit-learn (BSD 3-clause "New" or "Revised" License)
 
-10.) pymf
+10.) pymf (GNU General Public License (GPL))
 
 11.) cvxopt (GNU General Public License v3.0)
 
-12.) matplotlib 
+12.) matplotlib (PSF LICENSE)
 
-13.) numpy-stl
+13.) numpy-stl (BSD License)
+
+14.) gdal (MIT license)
+
+15.) pyproj (osi approved license))
