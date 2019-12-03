@@ -18,16 +18,16 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
+import os
 import colorsys
 
-import construct
-import calculate
-import fetch
-import modify
-import os
+from . import construct
+from . import calculate
+from . import fetch
+from . import modify
 
 from OCC.Display.SimpleGui import init_display
-from OCCUtils import Topology
+from .OCCUtils import Topology
 
 #========================================================================================================
 #NUMERIC & TEXT INPUTS
@@ -322,7 +322,7 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
     for c_cnt in range(len(c_srf_list)):
         c_srfs = c_srf_list[c_cnt]
         colour = colour_list[c_cnt]
-        from OCC.Quantity import Quantity_TOC_RGB, Quantity_Color
+        from OCC.Core.Quantity import Quantity_TOC_RGB, Quantity_Color
         compound = construct.make_compound(c_srfs)
         display.DisplayColoredShape(compound, color=Quantity_Color(colour[0], colour[1], colour[2], Quantity_TOC_RGB), update=True)
         
@@ -343,7 +343,7 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
             display.DisplayColoredShape(other_compound, color=other_colour, update=True)
             tc_cnt +=1
     
-    display.set_bg_gradient_color(0, 0, 0, 0, 0, 0)
+    display.set_bg_gradient_color([0, 0, 0], [0, 0, 0])
     display.View_Iso()
     display.FitAll()
     start_display()
@@ -385,7 +385,7 @@ def visualise(occtopo_2dlist, colour_list = None, backend = "qt-pyqt5"):
         display.DisplayColoredShape(compound, color = colour, update=True)
         sc_cnt+=1
         
-    display.set_bg_gradient_color(250, 250, 250, 250, 250, 250)
+    display.set_bg_gradient_color([250, 250, 250], [250, 250, 250])
     display.View_Iso()
     display.FitAll()
     start_display()
@@ -469,7 +469,7 @@ def write_2_stl2(occtopology, stl_filepath, is_meshed = True, linear_deflection 
                 index_list.append(p_index)
             face_index_2dlsit.append(index_list)
         elif len(f_pyptlist) > 3:
-            print "THE FACE HAS THE WRONG NUMBER OF VERTICES, IT HAS:", len(f_pyptlist), "VERTICES"
+            print("THE FACE HAS THE WRONG NUMBER OF VERTICES, IT HAS:", len(f_pyptlist), "VERTICES")
             tri_faces = construct.simple_mesh(face)
             for tri_face in tri_faces:
                 tps = fetch.points_frm_occface(tri_face)
@@ -504,12 +504,13 @@ def read_stl(stl_filepath):
     occtopology : OCCtopology
         The geometries from an STL file.
     """       
-    from OCC.StlAPI import StlAPI_Reader
-    from OCC.TopoDS import TopoDS_Shape
-    
-    stl_reader = StlAPI_Reader()
-    the_shape = TopoDS_Shape()
-    stl_reader.Read(the_shape, stl_filepath)
+    from OCC.Extend import DataExchange
+    #from OCC.Core.StlAPI import StlAPI_Reader
+    the_shape = DataExchange.read_stl_file(stl_filepath)
+#    print(stl_reader)
+#    stl_reader = StlAPI_Reader()
+#    the_shape = TopoDS_Shape()
+#    stl_reader.Read(the_shape, stl_filepath)
 
     assert not the_shape.IsNull()
 
@@ -533,7 +534,7 @@ def write_brep(occtopology, brep_filepath):
     None : None
         The geometries are written to a brep file.
     """       
-    from OCC.BRepTools import breptools_Write
+    from OCC.Core.BRepTools import breptools_Write
     breptools_Write(occtopology, brep_filepath)
     
 def read_brep(brep_filepath):
@@ -551,9 +552,9 @@ def read_brep(brep_filepath):
         Geometries read from the brep.
         OCCtopology includes: OCCshape, OCCcompound, OCCcompsolid, OCCsolid, OCCshell, OCCface, OCCwire, OCCedge, OCCvertex 
     """       
-    from OCC.BRepTools import breptools_Read
-    from OCC.TopoDS import TopoDS_Shape
-    from OCC.BRep import BRep_Builder
+    from OCC.Core.BRepTools import breptools_Read
+    from OCC.Core.TopoDS import TopoDS_Shape
+    from OCC.Core.BRep import BRep_Builder
     
     shape = TopoDS_Shape()
     builder = BRep_Builder()
@@ -592,7 +593,7 @@ def write_2_stl_gmsh(occtopology, stl_filepath, mesh_dim = 2, min_length = 1, ma
         The geometries are meshed and written to a stl file.
     """
     # dump the geometry to a brep file
-    from OCC.BRepTools import breptools_Write
+    from OCC.Core.BRepTools import breptools_Write
     import subprocess
     
     parent_path = os.path.abspath(os.path.join(stl_filepath, os.pardir))
@@ -618,13 +619,13 @@ def write_2_stl_gmsh(occtopology, stl_filepath, mesh_dim = 2, min_length = 1, ma
     os.chdir(gmsh_dir)
 
     command = "gmsh " +  geo_file + " -" + str(mesh_dim) + " -algo del3d -o " + stl_filepath + " -format stl"
-    print command
+    print(command)
     process = subprocess.call(command)
 
     
     # load the stl file
     if process == 0 and os.path.isfile(stl_filepath) :
-        print "WROTE TO:", stl_filepath
+        print("WROTE TO:", stl_filepath)
         os.chdir(cwd)
     else:
-        print "Be sure gmsh is in your PATH"
+        print("Be sure gmsh is in your PATH")

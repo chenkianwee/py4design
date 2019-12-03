@@ -18,10 +18,10 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import py3dmodel
-import pycitygml
-import urbangeom
-import shapeattributes
+from . import py3dmodel
+from . import pycitygml
+from . import urbangeom
+from . import shapeattributes
 import collada
 from collada import polylist, triangleset, lineset
 

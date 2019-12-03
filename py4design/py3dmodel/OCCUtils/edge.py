@@ -15,26 +15,26 @@
 ##You should have received a copy of the GNU Lesser General Public License
 ##along with pythonOCC.  If not, see <http://www.gnu.org/licenses/>
 
-from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
-from OCC.GCPnts import GCPnts_UniformAbscissa
-from OCC.Geom import Geom_OffsetCurve, Geom_TrimmedCurve
-from OCC.TopExp import topexp
-from OCC.TopoDS import TopoDS_Edge, TopoDS_Vertex, TopoDS_Face
-from OCC.gp import gp_Vec, gp_Dir, gp_Pnt
-from OCC.GeomLProp import GeomLProp_CurveTool
-from OCC.BRepLProp import BRepLProp_CLProps
-from OCC.GeomLib import geomlib
-from OCC.GCPnts import GCPnts_AbscissaPoint
-from OCC.GeomAPI import GeomAPI_ProjectPointOnCurve
-from OCC.ShapeAnalysis import ShapeAnalysis_Edge
-from OCC.BRep import BRep_Tool, BRep_Tool_Continuity
-from OCC.BRepIntCurveSurface import BRepIntCurveSurface_Inter
+from OCC.Core.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
+from OCC.Core.GCPnts import GCPnts_UniformAbscissa
+from OCC.Core.Geom import Geom_OffsetCurve, Geom_TrimmedCurve
+from OCC.Core.TopExp import topexp
+from OCC.Core.TopoDS import TopoDS_Edge, TopoDS_Vertex, TopoDS_Face
+from OCC.Core.gp import gp_Vec, gp_Dir, gp_Pnt
+from OCC.Core.GeomLProp import GeomLProp_CurveTool
+from OCC.Core.BRepLProp import BRepLProp_CLProps
+from OCC.Core.GeomLib import geomlib
+from OCC.Core.GCPnts import GCPnts_AbscissaPoint
+from OCC.Core.GeomAPI import GeomAPI_ProjectPointOnCurve
+from OCC.Core.ShapeAnalysis import ShapeAnalysis_Edge
+from OCC.Core.BRep import BRep_Tool, BRep_Tool_Continuity
+from OCC.Core.BRepIntCurveSurface import BRepIntCurveSurface_Inter
 
 # high-level
-from Common import vertex2pnt, minimum_distance, assert_isdone, fix_continuity
-from Construct import make_edge
-from types_lut import geom_lut
-from base import BaseObject
+from .Common import vertex2pnt, minimum_distance, assert_isdone, fix_continuity
+from .Construct import make_edge
+from .types_lut import geom_lut
+from .base import BaseObject
 
 
 class IntersectCurve(object):
@@ -207,11 +207,13 @@ class Edge(TopoDS_Edge, BaseObject):
             pass
         else:
             self._curve_handle = BRep_Tool().Curve(self)[0]
-            self._curve = self._curve_handle.GetObject()
+            self._curve = self._curve_handle#.GetObject()
         return self._curve
 
     @property
     def curve_handle(self):
+        self.curve
+
         if self._curve_handle is not None and not self.is_dirty:
             return self._curve_handle
         else:
@@ -321,7 +323,6 @@ class Edge(TopoDS_Edge, BaseObject):
         if isinstance(pnt_or_vertex, TopoDS_Vertex):
             pnt_or_vertex = vertex2pnt(pnt_or_vertex)
             
-        self.curve
         poc = GeomAPI_ProjectPointOnCurve(pnt_or_vertex, self.curve_handle)
         return poc.LowerDistanceParameter(), poc.NearestPoint()
 
@@ -458,7 +459,7 @@ class Edge(TopoDS_Edge, BaseObject):
 
 
 if __name__ == '__main__':
-    from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
+    from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
     from OCCUtils.Topology import Topo
     b = BRepPrimAPI_MakeBox(10, 20, 30).Shape()
     t = Topo(b)

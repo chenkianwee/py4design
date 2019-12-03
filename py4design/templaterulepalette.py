@@ -19,9 +19,9 @@
 #
 # ==================================================================================================
 import abc
-import py3dmodel
-import gml3dmodel
-import urbangeom
+from . import py3dmodel
+from . import gml3dmodel
+from . import urbangeom
 
 class BaseTemplateRule(object):
     """

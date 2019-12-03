@@ -19,11 +19,11 @@
 #
 # ==================================================================================================
 import abc
-import gml3dmodel
-import urbangeom
-import pycitygml
-import py3dmodel
-import utility
+from . import gml3dmodel
+from . import urbangeom
+from . import pycitygml
+from . import py3dmodel
+from . import utility
 
 class BaseParm(object):
     """

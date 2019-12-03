@@ -18,11 +18,11 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import construct
-import calculate
-import fetch
-import modify
-import utility
+from . import construct
+from . import calculate
+from . import fetch
+from . import modify
+from . import utility
 
 def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=None, 
                     occedge_list = None):
@@ -88,7 +88,6 @@ def occtopo_2_collada(dae_filepath, occface_list = None, face_rgb_colour_list=No
             normal_floats = []
             vcnt = []
             indices = []
-            
             face_list = fetch.topo_explorer(occshell, "face")
             vert_cnt = 0
             for face in face_list:

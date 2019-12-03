@@ -15,26 +15,26 @@
 ##You should have received a copy of the GNU Lesser General Public License
 ##along with pythonOCC.  If not, see <http://www.gnu.org/licenses/>
 
-from OCC.BRep import BRep_Tool_Surface, BRep_Tool
-from OCC.BRepTopAdaptor import BRepTopAdaptor_FClass2d
-from OCC.Geom import Geom_Curve
-from OCC.GeomAPI import GeomAPI_ProjectPointOnSurf
-from OCC.GeomLib import GeomLib_IsPlanarSurface
-from OCC.TopAbs import TopAbs_IN
-from OCC.TopExp import topexp
-from OCC.TopoDS import TopoDS_Vertex, TopoDS_Face, TopoDS_Edge
-from OCC.GeomLProp import GeomLProp_SLProps
-from OCC.BRepTools import breptools_UVBounds
-from OCC.BRepAdaptor import BRepAdaptor_Surface, BRepAdaptor_HSurface
-from OCC.ShapeAnalysis import ShapeAnalysis_Surface
-from OCC.GeomProjLib import geomprojlib
-from OCC.Adaptor3d import Adaptor3d_IsoCurve
-from OCC.gp import gp_Pnt2d, gp_Dir
+from OCC.Core.BRep import BRep_Tool_Surface, BRep_Tool
+from OCC.Core.BRepTopAdaptor import BRepTopAdaptor_FClass2d
+from OCC.Core.Geom import Geom_Curve
+from OCC.Core.GeomAPI import GeomAPI_ProjectPointOnSurf
+from OCC.Core.GeomLib import GeomLib_IsPlanarSurface
+from OCC.Core.TopAbs import TopAbs_IN
+from OCC.Core.TopExp import topexp
+from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Face, TopoDS_Edge
+from OCC.Core.GeomLProp import GeomLProp_SLProps
+from OCC.Core.BRepTools import breptools_UVBounds
+from OCC.Core.BRepAdaptor import BRepAdaptor_Surface, BRepAdaptor_HSurface
+from OCC.Core.ShapeAnalysis import ShapeAnalysis_Surface
+from OCC.Core.GeomProjLib import geomprojlib
+from OCC.Core.Adaptor3d import Adaptor3d_IsoCurve
+from OCC.Core.gp import gp_Pnt2d, gp_Dir
 
-from base import BaseObject
-from edge import Edge
-from Construct import TOLERANCE, to_adaptor_3d
-from Topology import Topo, WireExplorer
+from .base import BaseObject
+from .edge import Edge
+from .Construct import TOLERANCE, to_adaptor_3d
+from .Topology import Topo, WireExplorer
 
 
 class DiffGeomSurface(object):
@@ -59,7 +59,7 @@ class DiffGeomSurface(object):
 
         _domain = self.instance.domain()
         if u in _domain or v in _domain:
-            #print('<<<CORRECTING DOMAIN...>>>')
+            print('<<<CORRECTING DOMAIN...>>>')
             div = 1000
             delta_u, delta_v = (_domain[0] - _domain[1])/div, (_domain[2] - _domain[3])/div
 
@@ -223,7 +223,7 @@ class Face(TopoDS_Face, BaseObject):
     def surface(self):
         if self._srf is None or self.is_dirty:
             self._h_srf = BRep_Tool_Surface(self)
-            self._srf = self._h_srf.GetObject()
+            self._srf = self._h_srf#.GetObject()
         return self._srf
 
     @property
@@ -259,7 +259,7 @@ class Face(TopoDS_Face, BaseObject):
         '''checks if the surface is planar within a tolerance
         :return: bool, gp_Pln
         '''
-        #print(self.surface_handle)
+        print(self.surface_handle)
         is_planar_surface = GeomLib_IsPlanarSurface(self.surface_handle, tol)
         return is_planar_surface.IsPlanar()
 
@@ -379,7 +379,7 @@ class Face(TopoDS_Face, BaseObject):
         return self.__repr__()
 
 if __name__ == "__main__":
-    from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
+    from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeSphere
     sph = BRepPrimAPI_MakeSphere(1, 1).Face()
     fc = Face(sph)
     print(fc.is_trimmed())

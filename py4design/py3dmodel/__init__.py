@@ -38,9 +38,9 @@ Submodules
                                   dependencies: pycollada
 """
 
-import fetch
-import calculate
-import modify
-import construct
-import utility
-import export_collada
+from . import fetch
+from . import calculate
+from . import modify
+from . import construct
+from . import utility
+from . import export_collada

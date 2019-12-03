@@ -20,24 +20,31 @@
 # ==================================================================================================
 import math
 
-import fetch
-import construct
-import modify
+from . import fetch
+from . import construct
+from . import modify
 
-from OCCUtils import face, Common, Construct, Topology, edge
+#from OCCUtils import face, Common, Construct, Topology, edge
+from .OCCUtils import face, Common, Construct, Topology, edge
 
-from OCC import BRepFeat 
-from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Ax1, gp_Dir, gp_Trsf
-from OCC.TopAbs import TopAbs_IN, TopAbs_REVERSED 
-from OCC.BRepClass3d import BRepClass3d_SolidClassifier
-from OCC.GProp import GProp_GProps
-from OCC.BRepGProp import brepgprop_VolumeProperties
-from OCC.BRepCheck import BRepCheck_Wire, BRepCheck_Shell, BRepCheck_NoError
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace
-from OCC.BRep import BRep_Tool
-from OCC.IntCurvesFace import IntCurvesFace_ShapeIntersector
-from OCC.BRepExtrema import BRepExtrema_DistShapeShape
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+from OCC.Core import BRepFeat 
+from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Ax1, gp_Dir, gp_Trsf
+from OCC.Core.TopAbs import TopAbs_IN, TopAbs_REVERSED 
+from OCC.Core.BRepClass3d import BRepClass3d_SolidClassifier
+from OCC.Core.GProp import GProp_GProps
+from OCC.Core.BRepGProp import brepgprop_VolumeProperties
+from OCC.Core.BRepCheck import BRepCheck_Wire, BRepCheck_Shell, BRepCheck_NoError
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeFace
+from OCC.Core.BRep import BRep_Tool
+from OCC.Core.IntCurvesFace import IntCurvesFace_ShapeIntersector
+from OCC.Core.BRepExtrema import BRepExtrema_DistShapeShape
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+
+#face = OCCUtils.face
+
+#Construct = OCCUtils.Construct
+#Topology = OCCUtils.Topology
+#edge = OCCUtils.edge
 
 #========================================================================================================
 #POINT INPUTS
@@ -652,11 +659,11 @@ def sort_edges_into_order(occedge_list, isclosed = False):
     list of sorted edges : list of OCCedges
         A list of ordered OCCedges.
     """
-    from OCC.TopoDS import topods 
-    from OCC.TopExp import topexp
-    from OCC.BRep import BRep_Tool
-    from OCC.ShapeAnalysis import ShapeAnalysis_WireOrder
-    from OCC.Precision import precision
+    from OCC.Core.TopoDS import topods 
+    from OCC.Core.TopExp import topexp
+    from OCC.Core.BRep import BRep_Tool
+    from OCC.Core.ShapeAnalysis import ShapeAnalysis_WireOrder
+    from OCC.Core.Precision import precision
     
     sawo_statusdict={0:"all edges are direct and in sequence",
     1:"all edges are direct but some are not in sequence",
@@ -679,7 +686,7 @@ def sort_edges_into_order(occedge_list, isclosed = False):
     SAWO.Perform(isclosed)
     #print "SAWO.Status()", SAWO.Status()
     if not SAWO.IsDone():
-        raise RuntimeError, "build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()]
+        raise RuntimeError("build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()])
     else:
         if SAWO.Status() not in [0, -1]:
             pass # not critical, wirebuilder will handle this

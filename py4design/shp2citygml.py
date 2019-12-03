@@ -22,9 +22,9 @@ import re
 import uuid
 import shapefile
 
-import pycitygml
-import py3dmodel
-import gml3dmodel
+from . import pycitygml
+from . import py3dmodel
+from . import gml3dmodel
 
 #=========================================================================================================================================
 #NUMERIC AND STRING INPUTS

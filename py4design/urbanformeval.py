@@ -21,9 +21,10 @@
 import os
 import math
 import networkx as nx
-import py3dmodel
-import urbangeom
-import py2radiance
+
+from . import py3dmodel
+from . import urbangeom
+from . import py2radiance
     
 #================================================================================================================
 #FRONTAL AREA INDEX
@@ -292,7 +293,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     #designate peripheral points
     #======================================================================
     peripheral_ptlist, pedgelist, interptlist = designate_peripheral_pts(boundary_occface, network_occedgelist, precision)
-    print "NPLOTS", len(plot_occfacelist)
+    print("NPLOTS", len(plot_occfacelist))
     #======================================================================
     #connect the street network: connect midpt of each plot to the street network
     #======================================================================
@@ -307,6 +308,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
     G = nx.Graph()
     #add all the edges for the boundary
     edges4_networkx = new_network_occedgelist + pedgelist + midpt2_network_edgelist
+    #py3dmodel.utility.visualise([edges4_networkx], ["ORANGE"])
     fused_ntpts = []
     for ne in edges4_networkx:
         edge_nodes = py3dmodel.fetch.points_frm_edge(ne)
@@ -337,7 +339,7 @@ def route_directness(network_occedgelist, plot_occfacelist, boundary_occface, ob
         #check if the plot is a dead plot with no free edges
         plof_occface = plot_occfacelist[plcnt]
         if midpt not in fused_ntpts:
-            print "DEAD END PLOT"
+            print("DEAD END PLOT")
             fail_plots.append(plof_occface)
             pass_plots.remove(plof_occface)
         else:        

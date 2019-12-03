@@ -18,17 +18,17 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import calculate
-import modify
+from . import calculate
+from . import modify
 
-from OCCUtils import Topology
-from OCCUtils import edge
+from .OCCUtils import Topology
+from .OCCUtils import edge
 
-from OCC.TopExp import TopExp_Explorer
-from OCC.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX, TopAbs_REVERSED
-from OCC.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
-from OCC.Geom import Handle_Geom_BSplineCurve
-from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
+from OCC.Core.TopExp import TopExp_Explorer
+from OCC.Core.TopAbs import TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX, TopAbs_REVERSED
+from OCC.Core.TopoDS import topods_Compound, topods_CompSolid, topods_Solid, topods_Shell, topods_Face, topods_Wire, topods_Edge, topods_Vertex
+from OCC.Core.Geom import Handle_Geom_BSplineCurve_Create, Geom_BSplineCurve
+from OCC.Core.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_HCurve
 
 #========================================================================================================
 #EDGE INPUTS
@@ -131,9 +131,11 @@ def poles_from_bsplinecurve_edge(occedge):
     """
     adaptor = BRepAdaptor_Curve(occedge)
     adaptor_handle = BRepAdaptor_HCurve(adaptor)
-    handle_bspline = Handle_Geom_BSplineCurve()
-    bspline = handle_bspline.DownCast(adaptor.Curve().Curve()).GetObject()
-
+    bspline = adaptor.BSpline()
+    #handle_bspline = Handle_Geom_BSplineCurve_Create()
+    #bspline = Geom_BSplineCurve(adaptor.Curve())
+    #print(bspline)
+    #bspline = handle_bspline.DownCast(adaptor.Curve().Curve()).GetObject()
     npoles =  bspline.NbPoles()
     polelist = []
     for np in range(npoles):

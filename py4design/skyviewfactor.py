@@ -4,7 +4,7 @@ PART 1 - DISCRETIZATION OF 4-PI SPACE
 Reference: Yin, T., Gastellu-Etchegorry, J.P., Lauret, N., Grau, E. and Rubio, J., 2013. A new approach of direction discretization and oversampling for 3D anisotropic radiative transfer modeling. Remote Sensing of Environment, 135, pp.213-223.
 '''
 import math
-import py3dmodel
+from . import py3dmodel
 
 pi2 = math.pi*2
 
@@ -25,7 +25,7 @@ class direction(object):
         self.z=z1;
         
     def printNorm(self):
-        print math.sqrt(math.pow(self.x,2)+math.pow(self.y,2)+math.pow(self.z,2))
+        print(math.sqrt(math.pow(self.x,2)+math.pow(self.y,2)+math.pow(self.z,2)))
         
     def reverseDir(self):
         return direction(-self.x,-self.y,-self.z);
@@ -145,14 +145,14 @@ class tgDirs(object):
     def printDirList(self, mode=0):
         if mode==0:
             for dir in self.__listDir:
-                print dir.x, dir.y, dir.z
+                print(dir.x, dir.y, dir.z)
     #             dir.printNorm()
         elif mode==1:
             for dir in self.getDirUpperHemisphere():
-                print dir.x, dir.y, dir.z
+                print(dir.x, dir.y, dir.z)
         elif mode==2:
             for dir in self.getDirLowerHemisphere():
-                print dir.x, dir.y, dir.z
+                print(dir.x, dir.y, dir.z)
         
     def getDirList(self):
         return self.__listDir

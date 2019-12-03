@@ -18,9 +18,9 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import urbangeom
-import py3dmodel
-import pycitygml
+from . import urbangeom
+from . import py3dmodel
+from . import pycitygml
     
 #===========================================================================================================================
 #NUMERIC AND STRING INPUTS
@@ -96,9 +96,9 @@ def citygml2collada(citygml_filepath, collada_filepath):
         solid = py3dmodel.construct.make_occsolid_frm_pypolygons(pypolgon_list)
         stop_shell_list = py3dmodel.fetch.topo_explorer(solid, "shell")
         occshell_list.extend(stop_shell_list)
-    
-    py3dmodel.export_collada.write_2_collada(occshell_list, collada_filepath, occedge_list = occedge_list)
-    
+
+    py3dmodel.export_collada.write_2_collada(collada_filepath, occface_list = occshell_list, face_rgb_colour_list=None, 
+                                             occedge_list = occedge_list, text_string = None)
 #==============================================================================================================================
 #GML BUILDING INPUTS
 #==============================================================================================================================

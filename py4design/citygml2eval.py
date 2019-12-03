@@ -20,11 +20,11 @@
 # ==================================================================================================
 import os
 
-import pycitygml
-import py3dmodel
-import urbangeom
-import gml3dmodel
-import urbanformeval
+from . import pycitygml
+from . import py3dmodel
+from . import urbangeom
+from . import gml3dmodel
+from . import urbanformeval
 
 class Evals(object):
     """
@@ -771,7 +771,7 @@ class Evals(object):
             boundary_occface = py3dmodel.construct.merge_faces(all_flatten_rf_faces)[0]
             
         bsolid_list = self.building_occsolids
-        print "ANALYSING FAI ..."
+        print("ANALYSING FAI ...")
         res_dict = urbanformeval.frontal_area_index(bsolid_list, boundary_occface,wind_dir,xdim = xdim, ydim = ydim)
                                                                                                          
         return res_dict

@@ -19,7 +19,9 @@
 #
 # ==================================================================================================
 import math
-import py3dmodel
+from functools import reduce
+
+from . import py3dmodel
 
 #========================================================================================================
 #FACE INPUTS
@@ -1108,7 +1110,7 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_
                 break
             
         if isclash == True:
-            print "it is not feasible with these parameters to create a design variant"
+            print("it is not feasible with these parameters to create a design variant")
             #just append the original arrangements into the list
             return bldg_occsolid_list
         
@@ -1118,7 +1120,7 @@ def rearrange_building_position(bldg_occsolid_list, luse_gridded_pyptlist, luse_
             
     if other_occsolids:
         moved_buildings = moved_buildings[n_other_occsolid:]
-    print "successfully positioned the buildings"
+    print("successfully positioned the buildings")
     return moved_buildings
 
 #========================================================================================================

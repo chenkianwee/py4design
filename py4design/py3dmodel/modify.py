@@ -18,21 +18,22 @@
 #    along with py4design.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ==================================================================================================
-import fetch
-import calculate
-import construct
-import modify
+from . import fetch
+from . import calculate
+from . import construct
+from . import modify
+from . import utility
 
-from OCCUtils import Construct, Common
+from . import OCCUtils
 
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
-from OCC.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
-from OCC.ShapeFix import ShapeFix_Shell, ShapeFix_Solid, ShapeFix_Wire, ShapeFix_Face
-from OCC.BRepLib import breplib
-from OCC.Geom import Geom_TrimmedCurve
-from OCC.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
-from OCC.GeomConvert import geomconvert_CurveToBSplineCurve
-from OCC.BRep import BRep_Tool
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transform, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_GTransform
+from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Ax1, gp_Ax3, gp_Dir, gp_DZ, gp_Trsf, gp_GTrsf, gp_Mat
+from OCC.Core.ShapeFix import ShapeFix_Shell, ShapeFix_Solid, ShapeFix_Wire, ShapeFix_Face
+from OCC.Core.BRepLib import breplib
+from OCC.Core.Geom import Geom_TrimmedCurve
+from OCC.Core.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_CompCurve, BRepAdaptor_HCompCurve
+from OCC.Core.GeomConvert import geomconvert_CurveToBSplineCurve
+from OCC.Core.BRep import BRep_Tool
 
 #========================================================================================================
 #POINT INPUTS
@@ -254,7 +255,7 @@ def rmv_duplicated_pts_by_distance(pyptlist, distance = 1e-06):
     vert_list = construct.make_occvertex_list(pyptlist)
     occpt_list = occvertex_list_2_occpt_list(vert_list)
     
-    filtered_pt_list = Common.filter_points_by_distance(occpt_list, distance = distance)
+    filtered_pt_list = OCCUtils.Common.filter_points_by_distance(occpt_list, distance = distance)
     f_pyptlist = occpt_list_2_pyptlist(filtered_pt_list)
 
     return f_pyptlist
@@ -355,7 +356,7 @@ def trimedge(lbound, ubound, occedge):
     adaptor = BRepAdaptor_Curve(occedge)
     tr = Geom_TrimmedCurve(adaptor.Curve().Curve(), lbound, ubound)
     tr.SetTrim(lbound, ubound)
-    bspline_handle = geomconvert_CurveToBSplineCurve(tr.GetHandle())
+    bspline_handle = geomconvert_CurveToBSplineCurve(tr.BasisCurve())
     tr_edge = BRepBuilderAPI_MakeEdge(bspline_handle)
     
     return tr_edge.Edge()
@@ -443,7 +444,7 @@ def trim_wire(occwire, pypt1, pypt2, is_periodic=False):
     """
     gppnt1 = construct.make_gppnt(pypt1)
     gppnt2 = construct.make_gppnt(pypt2)
-    trimmed = Construct.trim_wire(occwire, gppnt1, gppnt2, periodic= is_periodic )
+    trimmed = OCCUtils.Construct.trim_wire(occwire, gppnt1, gppnt2, periodic= is_periodic )
     return trimmed
 
 def wire_2_bsplinecurve_edge(occwire):
@@ -462,9 +463,9 @@ def wire_2_bsplinecurve_edge(occwire):
     """
     adaptor = BRepAdaptor_CompCurve(occwire)
     hadap = BRepAdaptor_HCompCurve(adaptor)
-    from OCC.Approx import Approx_Curve3d
-    from OCC.GeomAbs import GeomAbs_C2
-    approx = Approx_Curve3d(hadap.GetHandle(), 1e-06, GeomAbs_C2 , 10000, 12)
+    from OCC.Core.Approx import Approx_Curve3d
+    from OCC.Core.GeomAbs import GeomAbs_C2
+    approx = Approx_Curve3d(hadap, 1e-06, GeomAbs_C2 , 10000, 12)
     bspline_handle = approx.Curve()
     occedge = BRepBuilderAPI_MakeEdge(bspline_handle)
     return occedge.Edge()
@@ -483,7 +484,7 @@ def resample_wire(occwire):
     resampled wire : OCCwire
         The resampled OCCwire.
     """
-    resample_curve = Common.resample_curve_with_uniform_deflection(occwire)
+    resample_curve = OCCUtils.Common.resample_curve_with_uniform_deflection(occwire)
     return resample_curve
 #========================================================================================================
 #FACE INPUTS
@@ -548,7 +549,6 @@ def rmv_duplicated_faces(occface_list):
             if fcnt2 != fcnt:
                 is_same = calculate.are_same_faces(occface, occface_list[fcnt2])
                 if is_same:
-                    print is_same
                     same_index.append(fcnt2)
                     
         same_index.sort()
@@ -612,7 +612,8 @@ def sort_face_by_xy(occface_list):
     #import utility
     #utility.visualise([occface_list, vlist], ["WHITE", "BLUE"])
     fitems = fdict.items()
-    fitems.sort(key=lambda x: [x[0][1], x[0][0]])
+    fitems = sorted(fitems, key=lambda x: [x[0][1], x[0][0]])
+#    fitems.sort(key=lambda x: [x[0][1], x[0][0]])
 
     flist = []
     for f in fitems:
@@ -672,10 +673,14 @@ def flatten_shell_z_value(occshell, z=0):
     f_face_list = []
     for occface in face_list:
         f_face = flatten_face_z_value(occface, z=zmin)
-        f_face_list.append(f_face)
+        
+        f_face_area = calculate.face_area(f_face)
+        if f_face_area > 1e-06:    
+            f_face_list.append(f_face)
         
     face_list = f_face_list
     flatten_shell = construct.make_compound(face_list)
+    face_list = rmv_duplicated_faces(face_list)
     nfaces = len(face_list)
     merged_faces = construct.merge_faces(face_list)
     dest_pt = [b_mid_pt[0], b_mid_pt[1], z]    
@@ -721,7 +726,7 @@ def flatten_shell_z_value(occshell, z=0):
                     else:
                         #construct.visualise([[occshell]],["WHITE"])
                         return None
-        except RuntimeError:
+        except(RuntimeError):
             flatten_vertex = fetch.topo_explorer(flatten_shell,"vertex")
             flatten_pts = modify.occvertex_list_2_occpt_list(flatten_vertex)
             flatten_pypts = modify.occpt_list_2_pyptlist(flatten_pts)
@@ -1013,5 +1018,5 @@ def fix_shape(occtopology):
     fixed topology : OCCtopology (OCCshape)
         The fixed OCCtopology.
     """
-    fixed_shape = Construct.fix_shape(occtopology)
+    fixed_shape = OCCUtils.Construct.fix_shape(occtopology)
     return fixed_shape

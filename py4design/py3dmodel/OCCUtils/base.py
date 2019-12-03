@@ -37,18 +37,18 @@ Can be a module, class or namespace.
 
 import functools
 
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Copy
-from OCC.BRepGProp import (brepgprop_VolumeProperties,
-                           brepgprop_LinearProperties,
-                           brepgprop_SurfaceProperties)
-from OCC.BRepCheck import (BRepCheck_Vertex, BRepCheck_Edge, BRepCheck_Wire,
-                           BRepCheck_Face, BRepCheck_Shell, BRepCheck_Analyzer)
-from OCC.GProp import GProp_GProps
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Copy
+from OCC.Core.BRepGProp import (brepgprop_VolumeProperties,
+                                brepgprop_LinearProperties,
+                                brepgprop_SurfaceProperties)
+from OCC.Core.BRepCheck import (BRepCheck_Vertex, BRepCheck_Edge, BRepCheck_Wire,
+                                BRepCheck_Face, BRepCheck_Shell, BRepCheck_Analyzer)
+from OCC.Core.GProp import GProp_GProps
 from OCC.Display.SimpleGui import init_display
 
-from Common import get_boundingbox
-from Construct import (make_vertex, TOLERANCE)
-from types_lut import shape_lut, topo_lut, curve_lut, surface_lut
+from .Common import get_boundingbox
+from .Construct import (make_vertex, TOLERANCE)
+from .types_lut import shape_lut, topo_lut, curve_lut, surface_lut
 
 #===========================================================================
 # DISPLAY

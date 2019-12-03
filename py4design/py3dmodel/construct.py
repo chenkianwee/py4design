@@ -20,24 +20,26 @@
 # ==================================================================================================
 import math
 
-import fetch
-import calculate
-import modify
+from . import fetch
+from . import calculate
+from . import modify
+from . import utility
 
-from OCCUtils import face, Construct, Common
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
-from OCC.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
-from OCC.ShapeAnalysis import ShapeAnalysis_FreeBounds
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Cut, BRepAlgoAPI_Fuse
-from OCC.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape
-from OCC.GeomAPI import GeomAPI_PointsToBSpline
-from OCC.TColgp import TColgp_Array1OfPnt
-from OCC.BRep import BRep_Builder, BRep_Tool
-from OCC.TopoDS import TopoDS_Shell, TopoDS_Shape
-from OCC.BRepMesh import BRepMesh_IncrementalMesh
-from OCC.TopLoc import TopLoc_Location
-from OCC.Visualization import Tesselator
+#from OCCUtils import face, Construct, Common
+from . import OCCUtils
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Sewing, BRepBuilderAPI_MakeSolid, BRepBuilderAPI_MakeWire
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Lin, gp_Circ, gp_Ax1, gp_Ax2, gp_Dir, gp_Ax3
+from OCC.Core.ShapeAnalysis import ShapeAnalysis_FreeBounds
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Common, BRepAlgoAPI_Section, BRepAlgoAPI_Cut, BRepAlgoAPI_Fuse
+from OCC.Core.TopTools import TopTools_HSequenceOfShape, Handle_TopTools_HSequenceOfShape_Create, TopTools_SequenceOfShape
+from OCC.Core.GeomAPI import GeomAPI_PointsToBSpline
+from OCC.Core.TColgp import TColgp_Array1OfPnt
+from OCC.Core.BRep import BRep_Builder, BRep_Tool
+from OCC.Core.TopoDS import TopoDS_Shell, TopoDS_Shape
+from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
+from OCC.Core.TopLoc import TopLoc_Location
+from OCC.Core.Visualization import Tesselator
 
 #========================================================================================================
 #NUMERIC & TEXT INPUTS
@@ -103,7 +105,7 @@ def make_brep_text(text_string, font_size):
     3D text : OCCcompound
         An OCCcompound of the 3D text.
     """
-    from OCC.Addons import text_to_brep, Font_FA_Bold
+    from OCC.Core.Addons import text_to_brep, Font_FA_Bold
     brepstr = text_to_brep(text_string, "Arial", Font_FA_Bold, font_size, True)
     return brepstr
 
@@ -125,7 +127,7 @@ def make_vertex(pypt):
         An OCCvertex constructed from the point
     """
     gppt = make_gppnt(pypt)
-    vert = Construct.make_vertex(gppt)
+    vert = OCCUtils.Construct.make_vertex(gppt)
     return vert
 
 def make_plane_w_dir(centre_pypt, normal_pydir):
@@ -145,8 +147,8 @@ def make_plane_w_dir(centre_pypt, normal_pydir):
     plane : OCCface
         An OCCface constructed from the point and direction
     """
-    plane_face = Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
-                         vec_normal = gp_Vec(normal_pydir[0], normal_pydir[1], normal_pydir[2]))
+    plane_face = OCCUtils.Construct.make_plane(center=gp_Pnt(centre_pypt[0],centre_pypt[1],centre_pypt[2]), 
+                                               vec_normal = gp_Vec(normal_pydir[0], normal_pydir[1], normal_pydir[2]))
     return plane_face
 
 def make_circle(centre_pypt, normal_pydir, radius):
@@ -391,12 +393,11 @@ def make_polygon(pyptlist):
     polygon : OCCface
         An OCCface constructed from the list of points
     """
-    array = []
-    for pt in pyptlist:
-        array.append(gp_Pnt(pt[0],pt[1],pt[2]))
-
     poly = BRepBuilderAPI_MakePolygon()
-    map(poly.Add, array)
+    for pt in pyptlist:
+        gppt = gp_Pnt(pt[0],pt[1],pt[2])
+        poly.Add(gppt)
+    
     poly.Build()
     poly.Close()
     
@@ -425,12 +426,10 @@ def make_polygon_w_holes(pyptlist, pyhole_list):
     polygon : OCCface
         An OCCface constructed from the list of points
     """
-    array = []
-    for pt in pyptlist:
-        array.append(gp_Pnt(pt[0],pt[1],pt[2]))
-
     poly = BRepBuilderAPI_MakePolygon()
-    map(poly.Add, array)
+    for pt in pyptlist:
+        gppnt = gp_Pnt(pt[0],pt[1],pt[2])
+        poly.Add(gppnt)
     poly.Build()
     poly.Close()
     
@@ -499,7 +498,7 @@ def make_bspline_edge_interpolate(pyptlist, is_closed):
         An OCCedge constructed from the list of points. The edge is opened or closed as specified.
     """
     gpptlist = make_gppnt_list(pyptlist)
-    bcurve = Common.interpolate_points_to_spline_no_tangency(gpptlist, closed=is_closed)
+    bcurve = OCCUtils.Common.interpolate_points_to_spline_no_tangency(gpptlist, closed=is_closed)
     curve_edge = BRepBuilderAPI_MakeEdge(bcurve)
     return curve_edge.Edge()
     
@@ -518,12 +517,11 @@ def make_wire(pyptlist):
     wire : OCCwire
         An OCCwire constructed from the list of points.
     """
-    array = []
-    for pt in pyptlist:
-        array.append(gp_Pnt(pt[0],pt[1],pt[2]))
-
     poly = BRepBuilderAPI_MakePolygon()
-    map(poly.Add, array)
+    for pt in pyptlist:
+        gppnt = gp_Pnt(pt[0],pt[1],pt[2])
+        poly.Add(gppnt)
+
     poly.Build()
     wire = poly.Wire()
     return wire
@@ -640,9 +638,9 @@ def convex_hull3d(pyptlist, return_area_volume = False ):
     else:
         face_list = []
         for simplex in hull.simplices:
-            pt1 = list(points[simplex[0]])
-            pt2 = list(points[simplex[1]])
-            pt3 = list(points[simplex[2]])
+            pt1 = pyptlist[simplex[0]]
+            pt2 = pyptlist[simplex[1]]
+            pt3 = pyptlist[simplex[2]]
             face = make_polygon([pt1,pt2,pt3])
             face_list.append(face)
         
@@ -736,7 +734,7 @@ def make_wire_frm_edges(occedge_list):
     wire : OCCwire
         An OCCwire constructed from the list of OCCedge.
     """
-    wire = Construct.make_wire(occedge_list)
+    wire = OCCUtils.Construct.make_wire(occedge_list)
     return wire
 
 def faces_frm_loose_edges(occedge_list):
@@ -754,15 +752,18 @@ def faces_frm_loose_edges(occedge_list):
     list of faces : list of OCCfaces
         A list of OCCfaces constructed from the list of OCCedges.
     """
-    edges = TopTools_HSequenceOfShape()
-    edges_handle = Handle_TopTools_HSequenceOfShape(edges)
+    toptool_seq_shape = TopTools_SequenceOfShape()
+    for edge in occedge_list: 
+        toptool_seq_shape.Append(edge)  
     
-    wires = TopTools_HSequenceOfShape()
-    wires_handle = Handle_TopTools_HSequenceOfShape(wires)
-    
+    edges = TopTools_HSequenceOfShape(toptool_seq_shape)
     # The edges are copied to the sequence
-    for edge in occedge_list: edges.Append(edge)
-                
+    #edges_handle = Handle_TopTools_HSequenceOfShape_Create()
+    #print(edges_handle)
+    
+    #wires = TopTools_HSequenceOfShape()
+    wires_handle = Handle_TopTools_HSequenceOfShape_Create()
+    
     # A wire is formed by connecting the edges
     ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-05, False, wires_handle)
     wires = wires_handle.GetObject()
@@ -805,10 +806,10 @@ def faces_frm_loose_edges2(occedge_list, roundndigit = 6, distance = 0.1):
         A list of OCCfaces constructed from the list of OCCedges.
     """
     edges = TopTools_HSequenceOfShape()
-    edges_handle = Handle_TopTools_HSequenceOfShape(edges)
+    edges_handle = Handle_TopTools_HSequenceOfShape_Create(edges)
     
     wires = TopTools_HSequenceOfShape()
-    wires_handle = Handle_TopTools_HSequenceOfShape(wires)
+    wires_handle = Handle_TopTools_HSequenceOfShape_Create(wires)
     
     # The edges are copied to the sequence
     for edge in occedge_list: edges.Append(edge)
@@ -877,11 +878,11 @@ def arrange_edges_2_wires(occedge_list, isclosed = False):
     list of wires : list of OCCwires
         A list of OCCwires constructed from the list of OCCedges.
     """
-    from OCC.TopoDS import topods 
-    from OCC.TopExp import topexp
-    from OCC.BRep import BRep_Tool
-    from OCC.ShapeAnalysis import ShapeAnalysis_WireOrder
-    from OCC.BRepBuilderAPI import BRepBuilderAPI_WireDone, BRepBuilderAPI_EmptyWire, BRepBuilderAPI_DisconnectedWire, BRepBuilderAPI_NonManifoldWire
+    from OCC.Core.TopoDS import topods 
+    from OCC.Core.TopExp import topexp
+    from OCC.Core.BRep import BRep_Tool
+    from OCC.Core.ShapeAnalysis import ShapeAnalysis_WireOrder
+    from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_WireDone, BRepBuilderAPI_EmptyWire, BRepBuilderAPI_DisconnectedWire, BRepBuilderAPI_NonManifoldWire
     
     wb_errdict={BRepBuilderAPI_WireDone:"No error", BRepBuilderAPI_EmptyWire:"Empty wire", BRepBuilderAPI_DisconnectedWire:"disconnected wire",
     BRepBuilderAPI_NonManifoldWire:"non-manifold wire"}
@@ -908,7 +909,7 @@ def arrange_edges_2_wires(occedge_list, isclosed = False):
     SAWO.Perform(isclosed)
     #print "SAWO.Status()", SAWO.Status()
     if not SAWO.IsDone():
-        raise RuntimeError, "build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()]
+        raise RuntimeError("build wire: Unable to reorder edges: \n" + sawo_statusdict[SAWO.Status()])
     else:
         if SAWO.Status() not in [0, -1]:
             pass # not critical, wirebuilder will handle this
@@ -927,16 +928,16 @@ def arrange_edges_2_wires(occedge_list, isclosed = False):
                 edge2w = occedge_list[idx-1]
                 wirebuilder.Add(edge2w)
                 if wirebuilder is None:
-                    raise RuntimeError, " build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i)
+                    raise RuntimeError("build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i))
                     err = wirebuilder.Error()
                     if err != BRepBuilderAPI_WireDone:
-                        raise RuntimeError, "Overlay2D: build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i) +": \n" + wb_errdict[err]
+                        raise RuntimeError("Overlay2D: build wire: Error adding edge number " + str(j+1) + " to Wire number " + str(i) +": \n" + wb_errdict[err])
                         try:
                             wirebuilder.Build()
                             aWire = wirebuilder.Wire()
                             wirelist.append(aWire)
-                        except Exception, err:
-                            raise RuntimeError, "Overlay2D: build wire: Creation of Wire number " + str(i) + " from edge(s) failed. \n" + str(err)
+                        except Exception(err):
+                            raise RuntimeError("Overlay2D: build wire: Creation of Wire number " + str(i) + " from edge(s) failed. \n" + str(err))
             
             wirebuilder.Build()
             aWire = wirebuilder.Wire()
@@ -961,7 +962,7 @@ def make_loft_with_wires(occwire_list):
     shape : OCCshape
         An OCCshape constructed from lofting the list of OCCwires.
     """
-    loft = Construct.make_loft(occwire_list, ruled = False)
+    loft = OCCUtils.Construct.make_loft(occwire_list, ruled = False)
     return loft
 
 def make_face_frm_wire(occwire):
@@ -1002,7 +1003,7 @@ def make_offset(occface, offset_value):
     offset face : OCCface
         The offsetted OCCface.
     """
-    o_wire = Construct.make_offset(occface, offset_value)
+    o_wire = OCCUtils.Construct.make_offset(occface, offset_value)
     o_face = BRepBuilderAPI_MakeFace(o_wire)
     return o_face.Face()
     
@@ -1023,7 +1024,7 @@ def make_offset_face2wire(occface, offset_value):
     offset wire : OCCwire
         The offsetted OCCwire.
     """
-    o_wire = Construct.make_offset(occface, offset_value)
+    o_wire = OCCUtils.Construct.make_offset(occface, offset_value)
     return fetch.topo2topotype(o_wire)
 
 def grid_face(occface, udim, vdim):
@@ -1049,7 +1050,7 @@ def grid_face(occface, udim, vdim):
     #returns a series of polygons 
     pt_list = []
     face_list = []
-    fc = face.Face(occface)
+    fc = OCCUtils.face.Face(occface)
     umin, umax, vmin, vmax = fc.domain()
     u_div = int(math.ceil((umax-umin)/udim))
     v_div = int(math.ceil((vmax-vmin)/vdim))
@@ -1187,7 +1188,13 @@ def merge_faces(occface_list, tolerance = 1e-06 ):
     free_edges = []
     for fe_cnt in range(nfreeedge):
         free_edges.append(sew.FreeEdge(fe_cnt+1))
-    face_list = faces_frm_loose_edges(free_edges)
+
+    wire_list = arrange_edges_2_wires(free_edges, isclosed = True)
+    face_list = []
+    for wire in wire_list:
+        face = make_face_frm_wire(wire)
+        face_list.append(face)
+    #face_list = faces_frm_loose_edges(free_edges)
     return face_list
 
 def make_loft(occface_list, rule_face = True, tolerance = 1e-06):
@@ -1216,7 +1223,7 @@ def make_loft(occface_list, rule_face = True, tolerance = 1e-06):
         wires = fetch.wires_frm_face(f)
         wire_list.extend(wires)
         
-    loft = Construct.make_loft(wire_list, ruled = rule_face, tolerance = tolerance )
+    loft = OCCUtils.Construct.make_loft(wire_list, ruled = rule_face, tolerance = tolerance )
     return loft
     
 def make_shell(occface_list):
@@ -1377,7 +1384,7 @@ def make_compound(occtopo_list):
     compound : OCCcompound
         An OCCcompound constructed from the list of OCCtopologies.
     """
-    return Construct.compound(occtopo_list)
+    return OCCUtils.Construct.compound(occtopo_list)
 
 def boolean_common(occtopology1, occtopology2):
     """
@@ -1422,8 +1429,8 @@ def boolean_fuse(occtopology1, occtopology2):
         An OCCcompound constructed from the fusion.
     """
     join = BRepAlgoAPI_Fuse(occtopology1, occtopology2)
-    join.RefineEdges()
-    join.FuseEdges()
+#    join.RefineEdges()
+#    join.FuseEdges()
     shape = join.Shape()
     compound = fetch.topo2topotype(shape)
     return compound
@@ -1450,8 +1457,8 @@ def boolean_difference(occstopology2cutfrm, cutting_occtopology):
     #difference = Construct.boolean_cut(occstopology2cutfrm, cutting_occtopology)
     
     difference = BRepAlgoAPI_Cut(occstopology2cutfrm, cutting_occtopology)
-    difference.RefineEdges()
-    difference.FuseEdges()
+#    difference.RefineEdges()
+#    difference.FuseEdges()
     difference  = difference.Shape()
     compound = fetch.topo2topotype(difference)
     return compound
@@ -1484,7 +1491,12 @@ def boolean_section(section_occface, occtopology2cut, roundndigit = 6, distance 
     """
     section = BRepAlgoAPI_Section(section_occface, occtopology2cut).Shape()
     edges = fetch.topo_explorer(section, "edge")
-    face_list = faces_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
+    wire_list = arrange_edges_2_wires(edges, isclosed = True)
+    face_list = []
+    for wire in wire_list:
+        face = make_face_frm_wire(wire)
+        face_list.append(face)
+    #face_list = faces_frm_loose_edges2(edges, roundndigit = roundndigit, distance = distance)
     compound = make_compound(face_list)
     #visualise([[compound]], ["BLUE"])
     return compound
@@ -1520,18 +1532,19 @@ def simple_mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5):
     cnt = 0
     for occshape_face in occshape_face_list:
         location = TopLoc_Location()
-        facing = bt.Triangulation(occshape_face, location).GetObject()
+#        facing = bt.Triangulation(occshape_face, location).GetObject()
+        facing = bt.Triangulation(occshape_face, location)
         if facing:
             tab = facing.Nodes()
             tri = facing.Triangles()
             for i in range(1, facing.NbTriangles()+1):
                 trian = tri.Value(i)
                 index1, index2, index3 = trian.Get()
-                #print index1, index2, index3
+                #print(index1, index2, index3)
                 pypt1 = modify.occpt_2_pypt(tab.Value(index1))
                 pypt2 = modify.occpt_2_pypt(tab.Value(index2))
                 pypt3 = modify.occpt_2_pypt(tab.Value(index3))
-                #print pypt1, pypt2, pypt3
+                #print(pypt1, pypt2, pypt3)
                 occface = make_polygon([pypt1, pypt2, pypt3])
                 occface_list.append(occface)
         cnt+=1
@@ -1709,7 +1722,7 @@ def tessellator(occtopology):
         tri_n2 = calculate.face_normal(tri)
         angle = calculate.angle_bw_2_vecs(avg_n, tri_n2)
         if angle > 170:
-            print angle
+            print(angle)
             tri = modify.reverse_face(tri)
         tri_list.append(tri)
         
@@ -1734,12 +1747,12 @@ def mesh_3d(occtopology, stl_filepath):
     from OCC.StdMeshers import StdMeshers_Propagation, StdMeshers_AutomaticLength, StdMeshers_UseExisting_2D, StdMeshers_QuadraticMesh, StdMeshers_Arithmetic1D, StdMeshers_TrianglePreference, StdMeshers_Regular_1D, StdMeshers_Projection_3D,StdMeshers_MEFISTO_2D, StdMeshers_Prism_3D, StdMeshers_QuadranglePreference, StdMeshers_Quadrangle_2D
     
     # Create the Mesh
-    print 'Creating mesh ...'
+    print('Creating mesh ...')
     aMeshGen = SMESH_Gen()
     aMesh = aMeshGen.CreateMesh(0, True)
-    print 'Done.'
+    print('Done.')
     
-    print 'Adding hypothesis and algorithms ...'
+    print('Adding hypothesis and algorithms ...')
     # 1D
     an1DHypothesis = StdMeshers_Arithmetic1D(0, 0, aMeshGen)#discretization of the wire
     an1DHypothesis.SetLength(0.01, False) #the smallest distance between 2 points
@@ -1767,12 +1780,12 @@ def mesh_3d(occtopology, stl_filepath):
     aMesh.AddHypothesis(occtopology, 2)
     aMesh.AddHypothesis(occtopology, 3)
     aMesh.AddHypothesis(occtopology, 4)
-    print 'Done.'
+    print('Done.')
     
     #Compute the data
-    print 'Computing mesh ...'
+    print('Computing mesh ...')
     aMeshGen.Compute(aMesh,aMesh.GetShapeToMesh())
-    print 'Done.'
+    print('Done.')
     
-    print aMesh.NbNodes()
+    print(aMesh.NbNodes())
     aMesh.ExportSTL(stl_filepath, False)

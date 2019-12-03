@@ -19,7 +19,7 @@
 #
 # ==================================================================================================
 import abc
-import py3dmodel
+from . import py3dmodel
 
 class BaseAnalysisRule(object):
     """

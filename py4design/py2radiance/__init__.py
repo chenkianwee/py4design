@@ -23,7 +23,7 @@ import os
 import subprocess
 import shutil
 
-import write_rad
+from . import write_rad
 
 
 class Rad(object):
@@ -330,7 +330,7 @@ class Rad(object):
         # os.system(command)#EXECUTE!!
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         result = process.communicate()
-        print result
+        print(result)
         self.result_file_path = result_file_path
 
     def execute_rvu(self, vp, vd, dict_parm):
@@ -638,8 +638,9 @@ class Rad(object):
         weaweatherfile = os.path.join(self.data_folder_path, weaweatherfilename)
         command1 = "epw2wea" + ' "' + weatherfile_path + '" "' + weaweatherfile + '"'
         proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
-        site_headers = proc.stdout.read()
-        site_headers_list = site_headers.split("\r\n")
+        site_headers = str(proc.stdout.read())
+        
+        site_headers_list = site_headers.split("\\r\\n")
         latitude = site_headers_list[1].split(" ")[1]
         longtitude = site_headers_list[2].split(" ")[1]
         meridian = site_headers_list[3].split(" ")[1]
@@ -770,6 +771,7 @@ class Rad(object):
             words = line.split("\t")
             words.remove("")
             numbers = map(float, words)
+            numbers = list(numbers)
             # IRRADIANCE RESULTS
             irradiance = round((0.265 * numbers[0]) + (0.670 * numbers[1]) + (0.065 * numbers[2]), 1)
             if output == "irradiance":
@@ -869,8 +871,8 @@ class Rad(object):
         f.close()
 
         proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
-        site_headers = proc.stdout.read()
-        site_headers_list = site_headers.split("\r\n")
+        site_headers = str(proc.stdout.read())
+        site_headers_list = site_headers.split("\\r\\n")
         hea_filepath = self.hea_file
         hea_file = open(hea_filepath, "a")
         for site_header in site_headers_list:

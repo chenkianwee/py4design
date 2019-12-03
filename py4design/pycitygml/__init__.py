@@ -22,7 +22,7 @@
 from lxml import etree
 from lxml.etree import ElementTree, Element
 
-import write_gml
+from . import write_gml
 
 class Writer(object):
     """
@@ -233,7 +233,7 @@ class Writer(object):
         """
         This function prints all the information into a string.           
         """
-        print etree.tostring(self.citymodel_node, pretty_print=True)
+        print(etree.tostring(self.citymodel_node, pretty_print=True))
         
     def write(self, filepath):
         """
@@ -835,8 +835,7 @@ class Reader(object):
         pos_list_str = lxmlpolygon_pt_list.text
         splitted_pt_list_str = pos_list_str.split(" ")
         srsdim = int(lxmlpolygon_pt_list.attrib["srsDimension"])
-        npts = len(splitted_pt_list_str)/srsdim
-                
+        npts = len(splitted_pt_list_str)//srsdim
         pt_list = []
         for c_cnt in range(npts):
             x = float(splitted_pt_list_str[c_cnt*srsdim])
