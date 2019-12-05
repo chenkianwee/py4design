@@ -22,7 +22,7 @@ The best way to install the library is through conda:
 1.) install miniconda/anaconda for python3
 (instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html)
 
-2.) conda install -c dlr-sc -c chenkianwee py4design
+2.) conda install -c dlr-sc -c algo4aud py4design
 
 3.) conda install spyder (for editing the scripts)
 
@@ -63,3 +63,5 @@ list of libraries used in py4design
 14.) gdal (MIT license)
 
 15.) pyproj (osi approved license))
+
+16.) laspy (BSD License (BSD))
