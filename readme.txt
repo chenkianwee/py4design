@@ -18,29 +18,18 @@ Chen, Kian Wee, and Leslie K Norford. 2016. “Workflow for Generating 3D Urban 
 API documentation available at http://chenkianwee.github.io/py4design/
 Working examples are available at https://github.com/chenkianwee/py4design_examples
 
-To run the environment:
-
-1.) install miniconda for python3
+The best way to install the library is through conda:
+1.) install miniconda/anaconda for python3
 (instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html)
 
-2.) libraries to download:
+2.) conda install -c dlr-sc -c chenkianwee py4design
 
-    a.) follow the conda install instruction for pythonocc from this link: http://www.pythonocc.org/download/ 
+3.) conda install spyder (for editing the scripts)
 
-    b.) conda install scipy (BSD accepted license)
-    
-    c.) conda install sympy
-    
-    d.) pip install numpy-stl
-
-3.) pip install py4design
-
-4.) install Daysim from http://daysim.ning.com/ for the daylighting analysis
+4.) (Optional) install Daysim for running solar simulation from http://daysim.ning.com/ for the daylighting analysis
 
     a.) if c:/daysim/radiance/bin on env path, delete it
 	
-5.) conda install spyder (for editing the scripts)
-
 #========================================================
 list of libraries used in py4design
 #========================================================
