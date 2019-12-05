@@ -22,7 +22,7 @@ The best way to install the library is through conda:
 1.) install miniconda/anaconda for python3
 (instructions on how to use anaconda: http://conda.pydata.org/docs/using/envs.html)
 
-2.) conda install -c dlr-sc -c algo4aud py4design
+2.) conda install -c dlr-sc -c algo4bex py4design
 
 3.) conda install spyder (for editing the scripts)
 
