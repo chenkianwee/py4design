@@ -1586,7 +1586,7 @@ def topo2mesh(occtopology, linear_deflection = 0.8, angle_deflection = 0.5, reve
     cnt = 0
     for occshape_face in occshape_face_list:
         location = TopLoc_Location()
-        facing = bt.Triangulation(occshape_face, location).GetObject()
+        facing = bt.Triangulation(occshape_face, location)#.GetObject()
         if facing:
             tab = facing.Nodes()
             verts = []
