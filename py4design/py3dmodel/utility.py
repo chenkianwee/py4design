@@ -305,7 +305,6 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
         maxval1 = maxval
         
     res_colours = falsecolour(results, minval1, maxval1, inverse=inverse)
-
     colour_list = []
     c_srf_list = []
     for r_cnt in range(len(res_colours)):
@@ -327,13 +326,13 @@ def visualise_falsecolour_topo(occtopo_list, results, other_occtopo_2dlist = Non
         display.DisplayColoredShape(compound, color=Quantity_Color(colour[0], colour[1], colour[2], Quantity_TOC_RGB), update=True)
         
     #display the edges of the grid
-    tedges = []
-    for t in occtopo_list:
-        edge = list(Topology.Topo(t).edges())
-        tedges.extend(edge)
+    # tedges = []
+    # for t in occtopo_list:
+    #     edge = list(Topology.Topo(t).edges())
+    #     tedges.extend(edge)
         
-    edgecompound = construct.make_compound(tedges)
-    display.DisplayColoredShape(edgecompound, color="BLACK", update=True)
+    # edgecompound = construct.make_compound(tedges)
+    # display.DisplayColoredShape(edgecompound, color="BLACK", update=True)
             
     if other_occtopo_2dlist != None:
         tc_cnt = 0

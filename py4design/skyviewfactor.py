@@ -58,12 +58,12 @@ class tgDirs(object):
         self.nbDirs = nbDirs;
         
         if self.nbDirs ==2:
-            self.num_updirect = self.nbDirs / 2;
+            self.num_updirect = self.nbDirs // 2;
             self.num_layer = 1;
         else:
             if self.nbDirs % 2 == 1:
                 self.nbDirs += 1;
-            self.num_updirect = self.nbDirs / 2;
+            self.num_updirect = self.nbDirs // 2;
             self.num_layer = int(math.ceil((math.sqrt(pi2 * float(self.num_updirect))) / 4));
         
         self.__listDir=[];
