@@ -765,7 +765,7 @@ def faces_frm_loose_edges(occedge_list):
     wires_handle = Handle_TopTools_HSequenceOfShape_Create()
     
     # A wire is formed by connecting the edges
-    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges_handle, 1e-05, False, wires_handle)
+    ShapeAnalysis_FreeBounds.ConnectEdgesToWires(edges, 1e-05, False, wires_handle)
     wires = wires_handle.GetObject()
         
     # From each wire a face is created
