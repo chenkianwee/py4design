@@ -113,6 +113,7 @@ def write_boundedby(parent_node, epsg, lower_bound, upper_bound):
     gml_boundedBy = SubElement(parent_node, "{" + XMLNamespaces.gml+ "}" + 'boundedBy')
     #TO DO: implement geometry operattions to find the boundary
     gml_Envelope = SubElement(gml_boundedBy, "{" + XMLNamespaces.gml+ "}" + 'Envelope')
+    gml_Envelope.attrib['srsDimension'] = '3'
     gml_Envelope.attrib['srsName'] = epsg
     gml_lowerCorner = SubElement(gml_Envelope, "{" + XMLNamespaces.gml+ "}" + 'lowerCorner')
     gml_lowerCorner.attrib['srsDimension'] = '3'
@@ -183,7 +184,7 @@ def write_landuse(lod, name, geometry_list, function = None, generic_attrib_dict
     cityObjectMember = Element('cityObjectMember')
 
     luse = SubElement(cityObjectMember, "{" + XMLNamespaces.luse+ "}" +'LandUse')
-    luse.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
+    # luse.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
 
     gml_name = SubElement(luse, "{" + XMLNamespaces.gml+ "}" + 'name')
     gml_name.text = name
@@ -207,8 +208,8 @@ def write_landuse(lod, name, geometry_list, function = None, generic_attrib_dict
         gml_MultiSurface = SubElement(luse_lod1MultiSurface, "{" + XMLNamespaces.gml+ "}" + 'MultiSurface')
         gml_MultiSurface.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
 
-    for geometry in geometry_list:
-        gml_MultiSurface.append(geometry.construct())
+        for geometry in geometry_list:
+            gml_MultiSurface.append(geometry.construct())
       
     return cityObjectMember
    
@@ -295,7 +296,7 @@ def write_transportation(trpt_type, lod, name, geometry_list, rd_class = None, f
     """
     cityObjectMember = Element('cityObjectMember')
     tran_trpt_type = SubElement(cityObjectMember, "{" + XMLNamespaces.trans+ "}" + trpt_type)
-    tran_trpt_type.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
+    # tran_trpt_type.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
     
     gml_name = SubElement(tran_trpt_type, "{" + XMLNamespaces.gml+ "}" + 'name')
     gml_name.text = name
@@ -323,7 +324,15 @@ def write_transportation(trpt_type, lod, name, geometry_list, rd_class = None, f
             gml_element = SubElement(gml_GeometricComplex, "{" + XMLNamespaces.gml+ "}" + 'element')
             gml_element.append(geometry.construct())
             gml_GeometricComplex.append(gml_element)
-   
+    
+    if lod == 'lod1':
+        tran_lod1MultiSurface = SubElement(tran_trpt_type, "{" + XMLNamespaces.trans+ "}" + 'lod1MultiSurface')
+        gml_MultiSurface = SubElement(tran_lod1MultiSurface, "{" + XMLNamespaces.gml+ "}" + 'MultiSurface')
+        gml_MultiSurface.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
+
+        for geometry in geometry_list:
+            gml_MultiSurface.append(geometry.construct())
+        
     return cityObjectMember
 
 def write_building(lod, name, geometry_list, bldg_class = None,function = None, usage = None,
@@ -377,10 +386,14 @@ def write_building(lod, name, geometry_list, bldg_class = None,function = None, 
     """
     cityObjectMember = Element('cityObjectMember')
     bldg_Building = SubElement(cityObjectMember, "{" + XMLNamespaces.bldg + "}" + "Building")
-    bldg_Building.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name        
+    # bldg_Building.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = id  
     #=======================================================================================================
     #attrib
     #=======================================================================================================
+    
+    b_name = SubElement(bldg_Building,"{" + XMLNamespaces.gml+ "}" + 'name')
+    b_name.text = name
+        
     if bldg_class != None:
         b_class = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'class')
         b_class.text = bldg_class
@@ -400,6 +413,7 @@ def write_building(lod, name, geometry_list, bldg_class = None,function = None, 
     if rooftype != None:
         bldg_roofType = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'roofType')
         bldg_roofType.text = rooftype
+        
     if height!=None:
         bldg_measuredHeight = SubElement(bldg_Building,"{" + XMLNamespaces.bldg+ "}" + 'measuredHeight')
         bldg_measuredHeight.attrib['uom'] = "m"
@@ -502,6 +516,183 @@ def write_cityfurniture(lod, name, geometry_list, furn_class = None,function = N
     '''
     return cityObjectMember
 
+def write_tree(lod, name, geometry_list=None, tree_class = None, tree_species = None,
+               function = None,tree_height = None, trunk_diameter = None, 
+               crown_diameter=None, generic_attrib_dict = None, implicit_geom = None,
+               trsf_matrix = None, ref_pt = None):
+    
+    """
+    This function writes the city vegetaton cityobjectmemeber. Currently, only works for lod1.
+ 
+    Parameters
+    ----------
+    lod : str
+        The level of detail of the geometry of the tree. The string should be in this form: "lod1". 
+        
+    name : str
+        The name of the tree.
+        
+    geometry_list : list of SurfaceMember, optional
+        The geometry of the tree, default=None.
+    
+    tree_class : str, optional
+        The class of the tree in gml code, Default = None. Refer to CityGML 
+        documentation for more information. https://www.citygml.org/
+        
+    tree_species : str, optional
+        The species of the tree in gml code, Default = None. Refer to CityGML 
+        documentation for more information. https://www.citygml.org/
+        
+    function : str, optional
+        The function of the tree in gml code, Default = None. Refer to CityGML 
+        documentation for more information. https://www.citygml.org/
+    
+    tree_height : float, optional
+        The height of the tree, Default = None.
+        
+    trunk_diameter : float, optional
+        The diatmeter of the tree trunk, Default = None.
+    
+    crown_diameter : float, optional
+        The diameter of the tree crown, Default = None..
+        
+    generic_attrib_dict : dictionary, optional
+        Extra attributes to be appended to the object, Default = None.
+        The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.
+    
+    implicit_geom : str or lxml element, optional
+        The id of the implicit geom, Default = None. If true the geometry is referenced.
+        if a str of the gml id is given, will just reference the id. If the lxml element is given, will write the geom.
+        
+    trsf_matrix : 2d list, optional
+        The transformation matrix 4x4, Default = None.
+        
+    ref_pt : pypt, optional
+        the reference point, Default = None.
+    """
+    
+    cityObjectMember = Element('cityObjectMember')
+    veg_svo = SubElement(cityObjectMember,"{" + XMLNamespaces.veg+ "}" + 'SolitaryVegetationObject')
+    # veg_svo.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = name
+    
+    t_name = SubElement(veg_svo,"{" + XMLNamespaces.gml+ "}" + 'name')
+    t_name.text = name
+    
+    #=======================================================================================================
+    #attrib
+    #=======================================================================================================
+    if tree_class !=None:
+        svo_class = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'class')
+        svo_class.text = tree_class
+        
+    if tree_species !=None:
+        svo_species = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'species')
+        svo_species.text = tree_species
+    
+    if function !=None:
+        svo_function = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'function')
+        svo_function.text = function
+        
+    if tree_height !=None:
+        svo_height = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'height')
+        svo_height.attrib['uom'] = "m"
+        svo_height.text = str(tree_height)
+        
+    if trunk_diameter !=None:
+        svo_tdia = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'trunkDiameter')
+        svo_tdia.attrib['uom'] = "m"
+        svo_tdia.text = str(trunk_diameter)
+        
+    if crown_diameter !=None:
+        svo_cdia = SubElement(veg_svo,"{" + XMLNamespaces.veg+ "}" + 'crownDiameter')
+        svo_cdia.attrib['uom'] = "m"
+        svo_cdia.text = str(crown_diameter)
+        
+    if generic_attrib_dict != None:
+        write_gen_attribute(veg_svo, generic_attrib_dict)
+   
+    #=======================================================================================================
+    #geometries
+    #=======================================================================================================
+    if lod == "lod1" and implicit_geom == None:
+        lod1Geometry = SubElement(veg_svo, "{" + XMLNamespaces.veg+ "}" + 'lod1Geometry')
+        gml_MultiSurface = SubElement(lod1Geometry, "{" + XMLNamespaces.gml+ "}" + 'MultiSurface')
+        gml_MultiSurface.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
+        for geometry in geometry_list:
+            gml_MultiSurface.append(geometry.construct())
+    
+    elif lod == "lod1" and implicit_geom != None:
+        lod1impgeo = SubElement(veg_svo, "{" + XMLNamespaces.veg+ "}" + 'lod1ImplicitRepresentation')
+        impgeo = SubElement(lod1impgeo, 'ImplicitGeometry')
+        trsf_mat = SubElement(impgeo, 'transformationMatrix')
+        trsf_matrix = pytrsf_mat2str_mat(trsf_matrix)
+        trsf_mat.text = trsf_matrix
+        
+        if type(implicit_geom) == str: 
+            rel_geom = SubElement(impgeo, 'relativeGMLGeometry')
+            rel_geom.attrib["{" + XMLNamespaces.xlink+ "}" +'href'] = implicit_geom
+            
+        else:
+            rel_geom = SubElement(impgeo, 'relativeGMLGeometry')
+            rel_geom.append(implicit_geom)
+        
+        rpt = SubElement(impgeo, 'referencePoint')
+        gml_pt = write_pt(ref_pt)
+        rpt.append(gml_pt)
+        
+    return cityObjectMember
+        
+def pytrsf_mat2str_mat(pytrsf):
+    """
+    Converts the pytrsf into text form for CityGML.
+ 
+    Parameters
+    ----------
+    pytrsf : 2d list
+        The transformation matrix 4x4.
+        
+    Returns
+    -------
+    str_mat : str
+        The pytrsf converted into string form.
+    """
+    s_trsf = []
+    for m in pytrsf:    
+        str_m = list(map(str, m))
+        s_trsf.append(str_m)
+        
+    str_mat = s_trsf[0][0]+' '+s_trsf[0][1]+' '+s_trsf[0][2]+' '+s_trsf[0][3]+' '+\
+              s_trsf[1][0]+' '+s_trsf[1][1]+' '+s_trsf[1][2]+' '+s_trsf[1][3]+' '+\
+              s_trsf[2][0]+' '+s_trsf[2][1]+' '+s_trsf[2][2]+' '+s_trsf[2][3]+' '+\
+              s_trsf[3][0]+' '+s_trsf[3][1]+' '+s_trsf[3][2]+' '+s_trsf[3][3]
+    
+    return str_mat 
+
+def write_gml_multisrf(geometry_list, unique_id = None):
+    """
+    Writes a geometry list to GML multisurfaces.
+ 
+    Parameters
+    ----------
+    geometry_list : list of lxml surfaces
+        List of lxml surfaces to be written.
+        
+    Returns
+    -------
+    multisurface : instance of the 
+        multisurface etree element.
+        
+    """
+    gml_MultiSurface = Element("{" + XMLNamespaces.gml+ "}" + 'MultiSurface')
+    if unique_id != None:
+        gml_MultiSurface.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = unique_id
+    else:
+        gml_MultiSurface.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
+        
+    for geometry in geometry_list:
+        gml_MultiSurface.append(geometry.construct())
+    return gml_MultiSurface
+            
 def pos_list2text(pyptlist):
     """
     This function converts the pyptlist into text form for CityGML.
@@ -529,7 +720,7 @@ def pos_list2text(pyptlist):
 
     return pos_text
 
-def write_surface_member(pyptlist):
+def write_surface_member(pyptlist, holes = None):
     """
     This function writes a GML surface member.
  
@@ -549,14 +740,25 @@ def write_surface_member(pyptlist):
     gml_Polygon.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
 
     gml_exterior = SubElement(gml_Polygon, "{" + XMLNamespaces.gml+ "}" + 'exterior')
-
+    
     gml_LinearRing = SubElement(gml_exterior, "{" + XMLNamespaces.gml+ "}" + 'LinearRing')
     gml_LinearRing.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
 
     gml_posList = SubElement(gml_LinearRing, "{" + XMLNamespaces.gml+ "}" + 'posList')
     gml_posList.attrib['srsDimension'] = '3'
-    
     gml_posList.text = pos_list2text(pyptlist)
+    
+    if holes !=None:
+        for hole in holes:
+            gml_interior = SubElement(gml_Polygon, "{" + XMLNamespaces.gml+ "}" + 'interior')
+    
+            gml_LinearRing = SubElement(gml_interior, "{" + XMLNamespaces.gml+ "}" + 'LinearRing')
+            gml_LinearRing.attrib["{" + XMLNamespaces.gml+ "}" +'id'] = 'UUID_' + str(uuid.uuid1())
+
+            gml_posList = SubElement(gml_LinearRing, "{" + XMLNamespaces.gml+ "}" + 'posList')
+            gml_posList.attrib['srsDimension'] = '3'
+    
+            gml_posList.text = pos_list2text(hole)
 
     return gml_surfaceMember
     
@@ -628,4 +830,4 @@ def write_pt(pypt):
     gml_pos = SubElement(gml_Point,"{" + XMLNamespaces.gml+ "}" + 'pos')
     gml_pos.attrib['srsDimension'] = "3"
     gml_pos.text = str(pypt[0]) + " " + str(pypt[1]) + " " + str(pypt[2])
-    return gml_pos
+    return gml_Point

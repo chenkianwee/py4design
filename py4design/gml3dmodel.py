@@ -423,20 +423,46 @@ def write_a_gml_srf_member(occface):
         The written surface.
         
     """
-    pypt_list = py3dmodel.fetch.points_frm_occface(occface)
-    #pypt_list = py3dmodel.modify.rmv_duplicated_pts(pypt_list, roundndigit = 6)
-    if len(pypt_list)>=3:
-        face_nrml = py3dmodel.calculate.face_normal(occface)
-        is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
-        if is_anticlockwise == False:
-            pypt_list.reverse()
-    
-        first_pt = pypt_list[0]
-        pypt_list.append(first_pt)
-        srf = pycitygml.SurfaceMember(pypt_list)
-        return srf
-    else:
-        return None
+    #check if the face have holes 
+    face_nrml = py3dmodel.calculate.face_normal(occface)
+    wires = py3dmodel.fetch.wires_frm_face(occface)
+    nwires = len(wires)
+    if nwires == 1:
+        #the face have holes
+        pyptlist = py3dmodel.fetch.points_frm_occface(occface)
+        if len(pyptlist)>=3:
+            is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pyptlist, face_nrml)
+            if is_anticlockwise == False:
+                pyptlist.reverse()
+        
+            first_pt = pyptlist[0]
+            pyptlist.append(first_pt)
+            srf = pycitygml.SurfaceMember(pyptlist)
+            return srf
+        else:
+            return None
+    else: 
+        #the face have holes
+        #anticlockwise = face
+        face_list = []
+        hole_list = []
+        for wire in wires:
+            #first check if there are holes and which wire are holes
+            pyptlist = py3dmodel.fetch.points_frm_wire(wire)
+            is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pyptlist, face_nrml)
+            first_pt = pyptlist[0]
+            pyptlist.append(first_pt)
+            if is_anticlockwise:
+                face_list.append(pyptlist)
+            else:
+                hole_list.append(pyptlist)
+        nfaces = len(face_list)
+        if nfaces == 1:
+            srf = pycitygml.SurfaceMember(face_list[0])
+            srf.add_holes(hole_list)
+            return srf
+        else:
+            return None
     
 def write_gml_srf_member(occface_list):
     """
@@ -490,6 +516,8 @@ def write_gml_triangle(occface_list):
                     #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(t_pypt_list, face_nrml)
                     #if is_anticlockwise == False:
                     #    t_pypt_list.reverse()
+                    first_pt = t_pypt_list[0]
+                    t_pypt_list.append(first_pt)
                     gml_tri = pycitygml.Triangle(t_pypt_list)
                     gml_geometry_list.append(gml_tri)
         else:
@@ -497,6 +525,8 @@ def write_gml_triangle(occface_list):
             #is_anticlockwise = py3dmodel.calculate.is_anticlockwise(pypt_list, face_nrml)
             #if is_anticlockwise == False:
             #    pypt_list.reverse()
+            first_pt = pypt_list[0]
+            pypt_list.append(first_pt)
             gml_tri = pycitygml.Triangle(pypt_list)
             gml_geometry_list.append(gml_tri)
             

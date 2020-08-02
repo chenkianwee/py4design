@@ -260,6 +260,43 @@ def rmv_duplicated_pts_by_distance(pyptlist, distance = 1e-06):
 
     return f_pyptlist
 
+def id_dup_pts_indices(pyptlist):
+    """
+    This function removes duplicated points.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        List of points to be analysed. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    Returns
+    -------
+    list of indices : ndarray
+        Indices of the dupicated points.
+    """ 
+    import numpy as np
+    if pyptlist != np.ndarray:
+        pyptlist = np.array(pyptlist)
+    
+    uniq, indices, inv_inds = np.unique(pyptlist, axis=0, 
+                                        return_index = True,
+                                        return_inverse = True)
+    
+    idx_sort = np.argsort(inv_inds)
+    sorted_lst = inv_inds[idx_sort]
+    
+    vals, idx_start, count = np.unique(sorted_lst, 
+                                       return_counts=True,
+                                       return_index=True)
+    
+    res = np.split(idx_sort, idx_start[1:])
+    
+    vals = vals[count > 1]
+    res = list(filter(lambda x: x.size > 1, res))
+    
+    return res
+
 def rmv_duplicated_pts(pyptlist, roundndigit = None):
     """
     This function removes duplicated points.
@@ -278,22 +315,15 @@ def rmv_duplicated_pts(pyptlist, roundndigit = None):
     list of fused points : pyptlist
         The list of fused points.
     """    
-    if roundndigit == None:
-        u_pyptlist = []
-        for pypt in pyptlist:
-            if pypt not in u_pyptlist:
-                u_pyptlist.append(pypt)
-                
-        return u_pyptlist
+    import numpy as np 
+    if pyptlist != np.ndarray:
+        pyptlist = np.array(pyptlist)
         
-    else:
-        round_pyptlist = []
-        for pypt in pyptlist:
-            round_pypt = (round(pypt[0],roundndigit), round(pypt[1],roundndigit), round(pypt[2],roundndigit))
-            if round_pypt not in round_pyptlist:
-                round_pyptlist.append(round_pypt)
-            
-    return round_pyptlist
+    if roundndigit != None:
+        pyptlist = pyptlist.round(roundndigit)
+    
+    uniq = np.unique(pyptlist, axis=0)
+    return uniq
     
 #========================================================================================================
 #EDGE INPUTS

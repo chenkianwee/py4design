@@ -252,7 +252,6 @@ def dot_product(pyvec1, pyvec2):
 
     return dot
 
-    
 def distance_between_2_pts(pypt1, pypt2):
     """
     This function measures the distance between two points. 
@@ -290,29 +289,284 @@ def points_mean(pyptlist):
     midpt : pypt
         The mean of all the points.
     """
-    x_list = []
-    y_list = []
-    z_list = []
+    import numpy as np
+    if type(pyptlist) != np.ndarray:
+        pyptlist = np.array(pyptlist)
+        
+    zip_pyptlist = pyptlist.T
     
-    for pypt in pyptlist:
-        x = pypt[0]
-        y = pypt[1]
-        z = pypt[2]
-        
-        x_list.append(x)
-        y_list.append(y)
-        z_list.append(z)
-        
+    x_list = zip_pyptlist[0]
+    y_list = zip_pyptlist[1]
+    z_list = zip_pyptlist[2]
         
     npts = len(x_list)
-    x_mean = sum(x_list)/npts
-    y_mean = sum(y_list)/npts
-    z_mean = sum(z_list)/npts
+    x_mean = (np.sum(x_list))/npts
+    y_mean = (np.sum(y_list))/npts
+    z_mean = (np.sum(z_list))/npts
     
     centre_pt = (x_mean, y_mean, z_mean)
 
     return centre_pt
 
+def points_in_bbox(pyptlist, rangex, rangey, rangez=[], indices = False):
+    """
+    This function if the points are within the given boundary box.
+ 
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+    rangex : tuple of 2
+        A tuple specifying the minimun and maximum x range, (xmin, xmax).
+    
+    rangey : tuple of 2
+        A tuple specifying the minimun and maximum y range, (ymin, ymax).
+    
+    rangez : tuple of 2, optional
+        A tuple specifying the minimun and maximum z range, (zmin, zmax).
+        
+    indices : bool, optional
+        Specify whether to return the indices of the points in the boundary. If True will not return the points. Default = False.
+    
+    Returns
+    -------
+    points_in_bdry : pyptlist or indices
+        The points that is in the boundary. If indices==True, this will be the indices instead of the actual points.
+    """
+    import numpy as np
+    
+    if type(pyptlist) != np.ndarray:
+        pyptlist = np.array(pyptlist)
+    
+    zip_pyptlist = pyptlist.T
+    xlist = zip_pyptlist[0] 
+    ylist = zip_pyptlist[0]
+    zlist = zip_pyptlist[0]
+    
+    x_valid = np.logical_and((rangex[0] <= xlist),
+                             (rangex[1] >= xlist))
+    
+    y_valid = np.logical_and((rangey[0] <= ylist),
+                             (rangey[1] >= ylist))
+    
+    if rangez:
+        z_valid = np.logical_and((rangez[0] <= zlist),
+                                 (rangez[1] >= zlist))
+    
+        index_list = np.where(np.logical_and(x_valid, y_valid, z_valid))[0]
+        
+    else:
+        index_list = np.where(np.logical_and(x_valid, y_valid))[0]
+    
+    if indices == True:
+        if index_list.size > 0:
+            return index_list
+        else:
+            return []
+    else:
+        pts_in_bdry = np.take(pyptlist, index_list, axis = 0)
+        return pts_in_bdry
+
+def is_pt_in_bbox(pypt, rangex, rangey, rangez=[]):
+    """
+    This function check if a point is in bounding box.  
+ 
+    Parameters
+    ----------
+    pypt : tuple of floats
+        The point to check. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z)
+        
+    rangex : tuple of 2
+        A tuple specifying the minimun and maximum x range, (xmin, xmax).
+    
+    rangey : tuple of 2
+        A tuple specifying the minimun and maximum y range, (ymin, ymax).
+    
+    rangez : tuple of 2, optional
+        A tuple specifying the minimun and maximum z range, (zmin, zmax).
+
+    Returns
+    -------
+    in_boundary : bool
+        True or False, is the point in bounding box.
+    """
+    x = pypt[0]
+    y = pypt[1]
+    z = pypt[2]
+    
+    in_bdry = False
+    if rangez:
+        if rangex[0]<=x<=rangex[1] and rangey[0]<=y<=rangey[1] and rangez[0]<=z<=rangez[1]:
+            in_bdry = True
+    else:
+        if rangex[0]<=x<=rangex[1] and rangey[0]<=y<=rangey[1]:
+            in_bdry = True
+    
+    return in_bdry
+    
+def pts_in_bboxes(pyptlist, bbox_list, zdim = True):
+    """
+    This function returns the point indices follow by the bbox indices which it is contained in.
+    
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+    
+    bbox_list : list of tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+        
+    zdim : bool, optional
+        If True will check the z-dimension.
+
+    Returns
+    -------
+    point_bbox_indices : nparray
+        point indices follow by the bbox indices.
+    """
+    import numpy as np
+    
+    if type(bbox_list) != np.ndarray:
+        bbox_list = np.array(bbox_list)
+        
+    if type(pyptlist) != np.ndarray:
+        pyptlist = np.array(pyptlist)
+        
+    def reshape_bdry(nparray, repeat):
+        arrx = np.expand_dims(nparray, axis=0)
+        arrx = np.repeat(arrx, repeat, axis=0)
+        return arrx
+    
+    npts = len(pyptlist)
+    tbdry = bbox_list.T
+    xmin_list = reshape_bdry(tbdry[0], npts)
+    ymin_list = reshape_bdry(tbdry[1], npts)
+    xmax_list = reshape_bdry(tbdry[3], npts)
+    ymax_list = reshape_bdry(tbdry[4], npts)
+    
+    tpt = pyptlist.T
+    xlist = tpt[0]
+    xlist.shape = (npts,1)
+    
+    ylist = tpt[1]
+    ylist.shape = (npts,1)
+    
+    zlist = tpt[2]
+    zlist.shape = (npts,1)
+    
+    x_valid = np.logical_and(xlist >= xmin_list,
+                             xlist <= xmax_list)
+    
+    y_valid = np.logical_and(ylist >= ymin_list,
+                             ylist <= ymax_list)
+    
+    if zdim == True:
+        zmin_list = reshape_bdry(tbdry[2], npts)
+        zmax_list = reshape_bdry(tbdry[5], npts)
+        z_valid = np.logical_and(zlist >= zmin_list,
+                                 zlist <= zmax_list)
+        xyz_valid = np.logical_and(x_valid, y_valid, z_valid)
+    else:
+        xyz_valid = np.logical_and(x_valid, y_valid)
+    
+    index = np.where(xyz_valid)
+    return index
+
+def id_bboxes_contain_pts(bbox_list, pyptlist, zdim = False):
+    """
+    This function returns the indices of the bbox which contains the points.
+    
+    Parameters
+    ----------
+    bbox_list : list of tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+        
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+            
+    zdim : bool, optional
+        If True will check the z-dimension.
+
+    Returns
+    -------
+    bbox_indices : nparray
+        Indices of the boundary that contains the point.
+    """
+    import numpy as np
+    indices = pts_in_bboxes(pyptlist, bbox_list, zdim = zdim)
+    bbox_indices = indices[1]
+    bbox_indices = np.unique(bbox_indices)
+    
+    return bbox_indices
+
+def id_pts_in_bboxes(pyptlist, bbox_list, zdim = False):
+    """
+    This function returns the indices of the bbox which contains the points.
+    
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+        
+    bbox_list : list of tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+        
+    zdim : bool, optional
+        If True will check the z-dimension.
+
+    Returns
+    -------
+    pt_indices : nparray
+        Indices of the points in the bboxes.
+    """
+    import numpy as np
+    indices = pts_in_bboxes(pyptlist, bbox_list, zdim = zdim)
+    pt_indices = indices[0]
+    pt_indices = np.unique(pt_indices)
+    
+    return pt_indices
+
+def get_bbox_pts(pyptlist):
+    """
+    This function returns the bbox which of the points.
+    
+    Parameters
+    ----------
+    pyptlist : a list of tuples
+        The list of points to be checked. List of points to be converted. A pypt is a tuple that documents the xyz coordinates of a pt e.g. (x,y,z), 
+        thus a pyptlist is a list of tuples e.g. [(x1,y1,z1), (x2,y2,z2), ...]
+
+    Returns
+    -------
+    bbox : tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+    """
+    import numpy as np
+    
+    if type(pyptlist) != np.ndarray:
+        pyptlist = np.array(pyptlist)
+    
+    pyptlist_t = pyptlist.T
+    x = pyptlist_t[0]
+    y = pyptlist_t[1]
+    z = pyptlist_t[2]
+    
+    mnx = np.amin(x)
+    mxx = np.amax(x)
+    
+    mny = np.amin(y)
+    mxy = np.amax(y)
+    
+    mnz = np.amin(z)
+    mxz = np.amax(z)
+    
+    return (mnx,mny,mnz,mxx,mxy,mxz)
+    
 def is_anticlockwise(pyptlist, ref_pyvec):
     """
     This function checks if the list of points are arranged anticlockwise in regards to the ref_pyvec. 

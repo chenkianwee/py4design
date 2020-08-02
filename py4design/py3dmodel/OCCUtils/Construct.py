@@ -665,10 +665,10 @@ def trim_wire(wire, shapeLimit1, shapeLimit2, periodic=False):
 
 
 def fix_shape(shp, tolerance=1e-3):
-    from OCC.ShapeFix import ShapeFix_Shape
+    from OCC.Core.ShapeFix import ShapeFix_Shape
     fix = ShapeFix_Shape(shp)
     fix.SetFixFreeShellMode(True)
-    sf = fix.FixShellTool().GetObject()
+    sf = fix.FixShellTool()
     sf.SetFixOrientationMode(True)
     fix.LimitTolerance(tolerance)
     fix.Perform()
@@ -676,7 +676,7 @@ def fix_shape(shp, tolerance=1e-3):
 
 
 def fix_face(shp, tolerance=1e-3):
-    from OCC.ShapeFix import ShapeFix_Face
+    from OCC.Core.ShapeFix import ShapeFix_Face
     fix = ShapeFix_Face(shp)
     fix.SetMaxTolerance(tolerance)
     fix.Perform()

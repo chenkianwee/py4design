@@ -39,7 +39,7 @@ from OCC.Core.BRep import BRep_Builder, BRep_Tool
 from OCC.Core.TopoDS import TopoDS_Shell, TopoDS_Shape
 from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.Core.TopLoc import TopLoc_Location
-from OCC.Core.Visualization import Tesselator
+from OCC.Core import Tesselator
 
 #========================================================================================================
 #NUMERIC & TEXT INPUTS
@@ -109,6 +109,73 @@ def make_brep_text(text_string, font_size):
     brepstr = text_to_brep(text_string, "Arial", Font_FA_Bold, font_size, True)
     return brepstr
 
+def grid_bbox2d(bbox, xdim, ydim):
+    """
+    Construct a list of bboxes of the grids.
+ 
+    Parameters
+    ----------
+    bbox : tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+        
+    xdim : float
+        The x-dimension of the grid.
+    
+    ydim : float
+        The y-dimension of the grid.
+        
+    Returns
+    -------
+    bbox_list : list of tuple
+        The tuple (xmin,ymin,zmin,xmax,ymax,zmax). The tuple specifies the boundaries.
+    """
+    import numpy as np
+    xmn = bbox[0]
+    ymn = bbox[1]
+    xmx = bbox[3]
+    ymx = bbox[4]
+    
+    xrange = xmx-xmn
+    yrange = ymx-ymn
+    
+    intervalx = int(math.ceil(xrange/xdim))
+    intervaly = int(math.ceil(yrange/ydim))
+    xstop = (intervalx*xdim) + xmn
+    ystop = (intervaly*ydim) + ymn
+    xs = np.arange(xmn, xstop+xdim, xdim)
+    ys = np.arange(ymn, ystop+ydim, ydim)
+    gx,gy = np.meshgrid(xs, ys, sparse = True)
+    gx = gx[0]
+    nx = len(gx)
+    ny = len(gy)
+    
+    xmns = np.delete(gx,[nx-1])
+    xmns = np.reshape(xmns, (1,nx-1))
+    xmns = np.repeat(xmns, ny-1, axis=0)
+    xmns = xmns.flatten()
+    
+    ymns = np.delete(gy,[ny-1])
+    ymns = np.repeat(ymns, nx-1, axis=0)
+    ymns = ymns.flatten()
+    
+    zmns = np.repeat(0,len(ymns))
+    
+    xmxs = np.delete(gx,[0])
+    xmxs = np.reshape(xmxs, (1,nx-1))
+    xmxs = np.repeat(xmxs, ny-1, axis=0)
+    xmxs = xmxs.flatten()
+    
+    ymxs = np.delete(gy,[0])
+    ymxs = np.repeat(ymxs, nx-1, axis=0)
+    ymxs = ymxs.flatten()
+    
+    zmxs = np.repeat(0,len(ymxs))
+    
+    bboxes = [xmns,ymns,zmns,xmxs,ymxs,zmxs]
+    bboxes = np.array(bboxes)
+    
+    bbox_list = bboxes.T
+    return bbox_list
 #========================================================================================================
 #POINT INPUTS
 #========================================================================================================    
@@ -436,10 +503,12 @@ def make_polygon_w_holes(pyptlist, pyhole_list):
     wire = poly.Wire()
     occface = BRepBuilderAPI_MakeFace(wire).Face()
     
+    
     wcnt = 0
     for hole in pyhole_list:
         firstpt = hole[0]
         lastpt = hole[-1]
+        
         if firstpt != lastpt:
             hole.append(hole[0])
         iwire = make_wire(hole)
@@ -1147,14 +1216,20 @@ def extrude(occface, pydir, magnitude):
         solid_list = fetch.topo_explorer(diff_cmpd, "solid")
         return solid_list[0]
     else:
-        moved_face = modify.move(orig_pt,dest_pt, occface)
-        loft = make_loft([occface, moved_face])
-        face_list = fetch.topo_explorer(loft, "face")
-        face_list.append(occface)
-        face_list.append(moved_face)
-        shell = sew_faces(face_list)[0]
-        solid = make_solid(shell)
-        solid = modify.fix_close_solid(solid)
+        import OCC.Extend.ShapeFactory as sf
+        pyptlist = fetch.points_frm_occface(occface)
+        if len(pyptlist) > 10000:
+            vec = gp_Vec(pydir[0],pydir[1],pydir[2])
+            solid = sf.make_extrusion(occface, magnitude, vector = vec)
+        else:
+            moved_face = modify.move(orig_pt,dest_pt, occface)
+            loft = make_loft([occface, moved_face])
+            face_list = fetch.topo_explorer(loft, "face")
+            face_list.append(occface)
+            face_list.append(moved_face)
+            shell = sew_faces(face_list)[0]
+            solid = make_solid(shell)
+            solid = modify.fix_close_solid(solid)
         return solid
     
 def merge_faces(occface_list, tolerance = 1e-06 ):

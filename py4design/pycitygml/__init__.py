@@ -212,6 +212,129 @@ class Writer(object):
         tin_relief = write_gml.write_tin_relief(lod,name,geometry_list)
         self.citymodel_node.append(tin_relief)
         
+    def add_tree(self, lod, name, geometry_list, tree_class = None, tree_species = None,
+                 function = None, tree_height = None, trunk_diameter = None, 
+                 crown_diameter=None, generic_attrib_dict = None):
+        """
+        This function writes the city vegetaton cityobjectmemeber. Currently, only works for lod1.
+ 
+        Parameters
+        ----------
+        lod : str
+            The level of detail of the geometry of the tree. The string should be in this form: "lod1". 
+            
+        name : str
+            The name of the tree.
+            
+        geometry_list : list of SurfaceMember
+            The geometry of the tree.
+        
+        tree_class : str, optional
+            The class of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+            
+        tree_species : str, optional
+            The species of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+            
+        function : str, optional
+            The function of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+        
+        tree_height : float, optional
+            The height of the tree, Default = None.
+        
+        crown_diameter : float, optional
+            The diameter of the tree crown, Default = None..
+            
+        generic_attrib_dict : dictionary, optional
+            Extra attributes to be appended to the object, Default = None.
+            The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.
+        
+        implicit_geom : str or lxml element, optional
+            The id of the implicit geom, Default = None. If true the geometry is referenced.
+            if a str of the gml id is given, will just reference the id. If the lxml element is given, will write the geom.
+            
+        trsf_matrix : 2d list, optional
+            The transformation matrix 4x4, Default = None.
+            
+        ref_pt : pypt, optional
+            the reference point, Default = None.
+        """
+        
+        tree = write_gml.write_tree(lod, name, geometry_list = geometry_list, 
+                                    tree_class=tree_class, tree_species=tree_species,
+                                    function=function, tree_height=tree_height, 
+                                    trunk_diameter=trunk_diameter, 
+                                    crown_diameter=crown_diameter, 
+                                    generic_attrib_dict = generic_attrib_dict,
+                                    implicit_geom = None,
+                                    trsf_matrix = None , 
+                                    ref_pt = None)
+        
+        self.citymodel_node.append(tree)
+        
+    def add_tree_implicit_geom(self, lod, name, implicit_geom, trsf_matrix, 
+                               ref_pt, tree_class = None, tree_species = None, 
+                               function = None, tree_height = None, 
+                               trunk_diameter = None, crown_diameter=None, 
+                               generic_attrib_dict = None):
+        """
+        This function writes the city vegetaton cityobjectmemeber. Currently, only works for lod1.
+ 
+        Parameters
+        ----------
+        lod : str
+            The level of detail of the geometry of the tree. The string should be in this form: "lod1". 
+            
+        name : str
+            The name of the tree.
+            
+        implicit_geom : str or lxml element
+            The id of the implicit geom. If true the geometry is referenced.
+            if a str of the gml id is given, will just reference the id. If the lxml element is given, will write the geom.
+        
+        trsf_matrix : 2d list
+            The transformation matrix 4x4.
+            
+        ref_pt : pypt
+            the reference point.
+            
+        tree_class : str, optional
+            The class of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+            
+        tree_species : str, optional
+            The species of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+            
+        function : str, optional
+            The function of the tree in gml code, Default = None. Refer to CityGML 
+            documentation for more information. https://www.citygml.org/
+        
+        tree_height : float, optional
+            The height of the tree, Default = None.
+        
+        crown_diameter : float, optional
+            The diameter of the tree crown, Default = None..
+            
+        generic_attrib_dict : dictionary, optional
+            Extra attributes to be appended to the object, Default = None.
+            The dictionary must have a string key which will be the name of the generic attributes, and either an int, float or str value.
+        """
+        
+        tree = write_gml.write_tree(lod, name, geometry_list = None, 
+                                    tree_class=tree_class, tree_species=tree_species,
+                                    function=function, tree_height=tree_height, 
+                                    trunk_diameter=trunk_diameter, 
+                                    crown_diameter=crown_diameter, 
+                                    generic_attrib_dict = generic_attrib_dict,
+                                    implicit_geom = implicit_geom,
+                                    trsf_matrix = trsf_matrix , 
+                                    ref_pt = ref_pt)
+        
+        self.citymodel_node.append(tree)
+        
     def add_bounded_by(self, epsg, lower_bound, upper_bound):
         """
         This function adds a bounded by object into the CityGML model.
@@ -245,7 +368,7 @@ class Writer(object):
             The file path of the CityGML file.
         """
         outFile = open(filepath, 'w')
-        ElementTree(self.citymodel_node).write(outFile,pretty_print = True, xml_declaration = True, encoding="UTF-8", standalone="yes")
+        ElementTree(self.citymodel_node).write(filepath,pretty_print = True, xml_declaration = True, encoding="UTF-8", standalone="yes")
         outFile.close()
 
 class Reader(object):
@@ -985,7 +1108,11 @@ class SurfaceMember(object):
     """
     def __init__(self, pyptlist):
         self.pos_list = pyptlist
-        
+        self.holes = None
+    
+    def add_holes(self, hole_list):
+        self.holes = hole_list
+    
     def construct(self):
         """
         This function writes a GML surface member.
@@ -995,7 +1122,7 @@ class SurfaceMember(object):
         surface member :  lxml Element
             lxml surface member element.
         """
-        surface = write_gml.write_surface_member(self.pos_list)
+        surface = write_gml.write_surface_member(self.pos_list, holes = self.holes)
         return surface
         
 class Triangle(object):
