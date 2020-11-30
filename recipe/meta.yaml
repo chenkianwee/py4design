@@ -11,7 +11,7 @@ requirements:
   build:
     - python
     - setuptools
-    - pythonocc-core 7.4.0
+    - pythonocc-core=7.4.0
     - numpy
     - scipy
     - sympy
@@ -25,7 +25,7 @@ requirements:
 
   run:
     - python
-    - pythonocc-core 7.4.0beta2
+    - pythonocc-core=7.4.0
     - numpy
     - scipy
     - sympy

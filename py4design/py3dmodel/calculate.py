@@ -442,6 +442,7 @@ def pts_in_bboxes(pyptlist, bbox_list, zdim = True):
     
     npts = len(pyptlist)
     tbdry = bbox_list.T
+    
     xmin_list = reshape_bdry(tbdry[0], npts)
     ymin_list = reshape_bdry(tbdry[1], npts)
     xmax_list = reshape_bdry(tbdry[3], npts)

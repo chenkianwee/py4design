@@ -25,7 +25,7 @@ import random
 import xml.dom.minidom
 from xml.dom.minidom import Document
 
-import analyse_xml
+from . import analyse_xml
 #================================================================================
 def frange(start, end=None, inc=None):
     """
@@ -59,7 +59,7 @@ def frange(start, end=None, inc=None):
     L = [None,] * count
 
     L[0] = start
-    for i in xrange(1,count):
+    for i in range(1,count):
         L[i] = L[i-1] + inc
     return L
     
@@ -365,7 +365,7 @@ class Individual(object):
         self.genotype_meta = genotype_meta
         self.genotype = Genotype(self.genotype_meta)
         self.live = True
-        self.scores = map(lambda x:None, range(score_meta.get_num_scores()))
+        self.scores = list(map(lambda x:None, range(score_meta.get_num_scores())))
         self.derivedparams = DerivedParams()
         self.generation = None
         self.distance = 0.0

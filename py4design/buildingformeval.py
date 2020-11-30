@@ -558,6 +558,8 @@ def read_cf_file(filepath, pitch_angle, direction):
             break 
         else:
             cf = 1 
+            
+    f.close()
     return float(cf)
 
 #================================================================================================================
@@ -659,37 +661,29 @@ def choose_efficient_cooling_system(system_dict_list):
         
     return chosen_systems
 
-def con_free_panels_w_fans(sensible_load, floor_area, area_per_person = 10.0, 
-                           operation_hrs = 3120, out_temp_c = 32.8, 
-                           interior_temp_c = 35.3, dewpt_temp_c = 26.3, 
+def con_free_panels_w_fans(floor_area, supply_temp_c, aust_c, operation_hrs = 3120, out_temp_c = 32.8,
                            m2_per_fan= 10, fan_power = 100, 
-                           percent_ceiling = 0.6, chiller_efficiency = 0.4):
+                           percent_ceiling = 0.6, chiller_efficiency = 0.4, sup_srf_td = 3.0):
     """
-    This function calculates the cooling energy consumption of the conditioned space using dvu & radiant panels.
+    This function calculates the cooling energy demand of the conditioned space using membrane-assisted radiant panels and fans.
     
     Parameters
     ----------
-    sensible_load : float
-        The sensible load of the conditioned space (W).
-        
     floor_area : float
         The floor area of the conditioned space.
         
-    area_per_person : float, optional
-        The amount of area for a person in the space, default = 10.0 m2/person.
+    supply_temp_c : float
+        The chilled water supply temperature required for a comfortable space.
+        
+    aust_c : float
+        The area weighted surface temperature.
         
     operation_hrs : int, optional
         The total operational hours of the conditioned space, default =3120 hrs, assuming a a 12hrs day, 5 days week for 52 weeks a year.
     
     out_temp_c : float, optional
         The air temperature, default =32.8 C, it is the hottest air temp of spore climate.
-        
-    interior_temp_c : float, optional
-        The air temperature, default =35.3 C, of the inteior.
-        
-    dewpt_temp_c : float, optional
-        The dew point temperature, default =26.3 C, it is the dew point temp of spore climate during hottest day.
-        
+
     m2_per_fan : float, optional
         The area per fan in the space, default = 10m2/fan.
         
@@ -705,145 +699,71 @@ def con_free_panels_w_fans(sensible_load, floor_area, area_per_person = 10.0,
     Returns
     -------
     system result dictionary : dictionary
-        A dictionary with this keys : {"feasible", "energy_consumed_hr", "energy_consumed_yr", "energy_consumed_yr_m2", "sensible_cop", 
+        A dictionary with this keys : {energy_consumed_hr", "energy_consumed_yr", "energy_consumed_yr_m2", "sensible_cop", 
         "required_panel_area", "available_panel_area", "supply_temperature_for_panels", "sensible_load", "sensible_panel", "panel_max_capacity", "cooling_system"}.
         
-        feasible : bool
-            True or False, if True the space can be conditioned with dvus + panels, if False cannot be conditioned.
-            
         energy_consumed_hr : float
-            The average energy consumed by the cooling system (Wh). This key exist only if feasible = True.
+            The average energy consumed by the cooling system (Wh).
             
         energy_consumed_yr : float
-            The energy consumed by the cooling system in a year (kWh), equals to energy_consumed_hr x operation hours. This key exist only if feasible = True.
+            The energy consumed by the cooling system in a year (kWh), equals to energy_consumed_hr x operation hours. 
             
         energy_consumed_yr_m2 : float
-            The energy consumed by the cooling system in a year normalised by the floor area (kWh/m2), equals to (energy_consumed_hr x operation hours)/floor area. This key exist only if feasible = True.
+            The energy consumed by the cooling system in a year normalised by the floor area (kWh/m2), equals to (energy_consumed_hr x operation hours)/floor area. 
         
         sensible_cop : float
-            The Coefficient of Performance of the sensible chiller. This key exist only if feasible = True.
-            
-        required_panel_area : float
-            The area required for the radiant panels to provide sufficient sensible cooling (m2). This key exist only if feasible = True.
+            The Coefficient of Performance of the sensible chiller.
             
         available_panel_area : float
-            The area available for the radiant panels to provide sensible cooling (m2). This key exist only if feasible = True.
+            The area available for the radiant panels to provide sensible cooling (m2). 
             
         supply_temperature_for_panels : float
-            The supply temperature used by the radiant panels to provide sensible cooling (K). This key exist only if feasible = True.
+            The supply temperature used by the radiant panels to provide sensible cooling (K).
             
         sensible_load : float
             The sensible load of the conditioned space (W).
+        
+        nfans : int
+            The number of fans.
+        
+        fan_power : float
+            The total energy demand of fans.
             
-        panel_max_capacity : float
-            The maximum cooling capacity of the radiant panels (W).
-            
-        air_speed : float
-            The air speed cause by the fan.
+        cooling_rate : float
+            The radiant heat flux from the radiant panel.
             
         cooling_system : str
             Specifies the cooling system used, the value is "Condensation-Free Panels with Fans".
     """
-    import numpy as np
     #calculate the sensible load that needs to be removed by the radiant panels
     panel_srf_area = floor_area*percent_ceiling 
-    
-    #calculate the total cooling capacity of the cooling panels
-    #the feasible supply temperature before condensation happens
-    sup_temp_lwr_limit = round((-2 * (interior_temp_c-dewpt_temp_c)) + dewpt_temp_c)
-    temp_range = int(25-sup_temp_lwr_limit)+1
-    sup_temp_list = []
-    for cnt in range(temp_range):
-        sup_temp_c = sup_temp_lwr_limit  + float(cnt)
-        sup_temp = sup_temp_c + 273.15
-        sup_temp_list.append(sup_temp)
-    
-    #calc the cooling provided by the fan
+    cooling_rate = calc_con_free_panel(supply_temp_c + 273.15, aust_kelvin = aust_c + 273.15, sup_srf_td = sup_srf_td)
+    radiant_load = cooling_rate * panel_srf_area
     nfans = int(floor_area/m2_per_fan)
-    air_speed = 1.0
-    hc = 10.4*(air_speed**0.56)
-    tskin = 0.3182*interior_temp_c + 22.406
-    tskin = round(tskin,1)
-    fan_cooling_rate = hc*(tskin-interior_temp_c)
-    #the skin area of a single person
-    occ_skin_area = 0.202*(60**0.425)*(1.65**0.725)
-    n_occ = floor_area/area_per_person
-    fan_capacity = fan_cooling_rate*occ_skin_area*n_occ
-    # print("tskin", tskin)
-    # print("tskin-airtemp", tskin-interior_temp_c)
-    # print("FAN CAPACITY", fan_capacity)
     
-    #cooling from evaporation 
-    w = 0.06 #skin wettedness
-    he = 16.5*hc
-    rh = (100 - (5*(out_temp_c-dewpt_temp_c)))/100
-    #calculated based on the antoine equation
-    p_sat_skin = 0.1333222 * math.exp(18.686 - (4030.183/(tskin + 235)))
-    p_sat_air = 0.1333222 * math.exp(18.686 - (4030.183/(interior_temp_c+235)))*rh
+    heat_rejection_temp =  out_temp_c + 273.15
+    sens_cop = calc_cooling_cop(supply_temp_c+273.15, heat_rejection_temp, chiller_efficiency = chiller_efficiency)
+    energy_consumed_hr = radiant_load/sens_cop#wh
+    total_fan_power = nfans*fan_power
+    energy_consumed_hr = energy_consumed_hr + total_fan_power
+    energy_consumed_yr = (energy_consumed_hr*operation_hrs)/1000 #kwh
+    energy_consumed_yr_m2 = energy_consumed_yr/floor_area #kwh
     
-    qev = w*he*(p_sat_skin - p_sat_air)
-    exposed_ratio = 0.2
-    eva_capacity = qev*occ_skin_area*exposed_ratio*n_occ
+    result_dict = {}
+    result_dict["energy_consumed_hr"] = energy_consumed_hr
+    result_dict["energy_consumed_yr"] = energy_consumed_yr
+    result_dict["energy_consumed_yr_m2"] = energy_consumed_yr_m2
     
-    sensible_panels = sensible_load
-    #check which supply temperature is enuf for removing the sensible load
-    req_panel_srf_area = -1
-    panel_temp = -1
+    result_dict["sensible_cop"] = sens_cop
+    result_dict["available_panel_area"] = panel_srf_area
+    result_dict["supply_temperature_for_panels"] = supply_temp_c + 273.15
     
-    sup_temp_list.reverse()
-    for supt in sup_temp_list:
-        cooling_rate = calc_con_free_panel(supt, 
-                                           aust_kelvin=interior_temp_c+273.15, 
-                                           sup_srf_td = 3.0)
-
-        max_cap = (panel_srf_area * cooling_rate) + fan_capacity + eva_capacity
-        if sensible_load <= max_cap:
-            req_panel_srf_area = sensible_panels/cooling_rate
-            panel_temp = supt
-            break
-    
-    if req_panel_srf_area < 0:
-        result_dict = {}
-        result_dict["feasible"] = False
-        result_dict["cooling_system"] = "Condensation-Free Panels with Fans"
-        result_dict["sensible_load"] = sensible_load
-        result_dict["panel_max_capacity"] = max_cap
-        result_dict["supply_temperature_for_panels"] = supt
-        result_dict["nfans"] = nfans
-        return result_dict
-    
-    else:    
-        heat_rejection_temp =  out_temp_c + 273.15
-        sens_cop = calc_cooling_cop(panel_temp, heat_rejection_temp, chiller_efficiency = chiller_efficiency)
-        energy_consumed_hr = sensible_panels/sens_cop#wh
-        total_fan_power = nfans*fan_power
-        energy_consumed_hr = energy_consumed_hr + total_fan_power
-        energy_consumed_yr = (energy_consumed_hr*operation_hrs)/1000 #kwh
-        energy_consumed_yr_m2 = energy_consumed_yr/floor_area #kwh
-        
-        result_dict = {}
-        result_dict["feasible"] = True
-        result_dict["energy_consumed_hr"] = energy_consumed_hr
-        result_dict["energy_consumed_yr"] = energy_consumed_yr
-        result_dict["energy_consumed_yr_m2"] = energy_consumed_yr_m2
-        
-        result_dict["sensible_cop"] = sens_cop
-        result_dict["required_panel_area"] = req_panel_srf_area
-        result_dict["available_panel_area"] = panel_srf_area
-        result_dict["supply_temperature_for_panels"] = panel_temp
-        
-        result_dict["sensible_load"] = sensible_load
-        result_dict["sensible_panel"] = sensible_panels
-        result_dict["panel_max_capacity"] = max_cap
-        result_dict["nfans"] = nfans
-        result_dict["fan_power"] = total_fan_power
-        result_dict["cooling_rate"] = cooling_rate
-        result_dict["panel_capacity"] = cooling_rate * panel_srf_area
-        result_dict["fan_capacity"] = fan_capacity
-        result_dict["eva_capacity"] = eva_capacity
-        
-        result_dict["cooling_system"] = "Condensation-Free Panels with Fans"
-        return result_dict
+    result_dict["sensible_load"] = radiant_load
+    result_dict["nfans"] = nfans
+    result_dict["fan_power"] = total_fan_power
+    result_dict["cooling_rate"] = cooling_rate
+    result_dict["cooling_system"] = "Condensation-Free Panels with Fans"
+    return result_dict
     
 def calc_ach_4_equip(floor_area, flr2flr_height, equip_load, lighting_load, 
                      solar_gain, solve4, mx_ach = 50, air_temp_c = 32.8):
@@ -957,7 +877,7 @@ def calc_solar_gain_rad(srfs_shp_attribs_obj_list, epwweatherfile, mode = "max")
         The file path of the epw weatherfile.
         
     mode : str, optional
-        The result to return from the calculation. It can be "max", "90" and "avg". Max returns the maximum solar load, 90 returns the 90 percentile, and "avg" returns the average. Default = "max".
+        The result to return from the calculation. It can be "max", "99" and "avg". Max returns the maximum solar load, 90 returns the 90 percentile, and "avg" returns the average. Default = "max".
         
     Returns
     -------
@@ -983,7 +903,7 @@ def calc_solar_gain_rad(srfs_shp_attribs_obj_list, epwweatherfile, mode = "max")
             
         mx = max(watt_list)
 
-        percentile_90 = np.percentile(watt_list2, 90)
+        percentile_99 = np.percentile(watt_list2, 99)
         
         avg_list = []
         for r in res:
@@ -1001,8 +921,8 @@ def calc_solar_gain_rad(srfs_shp_attribs_obj_list, epwweatherfile, mode = "max")
         
         if mode == "max":
             return mx
-        elif mode == "90":
-            return percentile_90
+        elif mode == "99":
+            return percentile_99
         elif mode == "avg":
             return avg
 
@@ -1010,7 +930,6 @@ def calc_solar_gain_rad(srfs_shp_attribs_obj_list, epwweatherfile, mode = "max")
     rad_base_filepath = os.path.join(os.path.dirname(__file__),'py2radiance','base.rad')
     data_folderpath = tempfile.mkdtemp()
     rad = py2radiance.Rad(rad_base_filepath, data_folderpath)
-    
     
     #loop thru the geometries and set up the radiance scene
     srfmat = "RAL2012" #reflectivity of 0.2 materials in the base file

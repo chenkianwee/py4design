@@ -869,9 +869,14 @@ class Rad(object):
         f.write(command1)
         f.write("\n")
         f.close()
-
-        proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
-        site_headers = str(proc.stdout.read())
+        
+        
+        with subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True) as proc:
+            site_headers = str(proc.stdout.read())
+            proc.kill()
+    
+        # proc = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
+        # site_headers = str(proc.stdout.read())
         site_headers_list = site_headers.split("\\r\\n")
         hea_filepath = self.hea_file
         hea_file = open(hea_filepath, "a")
@@ -1144,7 +1149,8 @@ class Rad(object):
                 resultlist_f.append(float(r))
             result_dict["result_list"] = resultlist_f
             res_dict_list.append(result_dict)
-
+        
+        ill_file.close()
         return res_dict_list
 
     def eval_ill_per_sensor(self):
