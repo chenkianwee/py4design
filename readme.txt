@@ -1,3 +1,6 @@
+This is no longer maintained. geomie3d is a successor to this library.
+
+
 #========================================================
 Py4design previously known as Pyliburo
 #========================================================
